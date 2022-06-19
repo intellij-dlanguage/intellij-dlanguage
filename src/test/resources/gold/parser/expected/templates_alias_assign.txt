@@ -37,7 +37,7 @@ D Language File
                   IDENTIFIER
                     PsiElement(DlangTokenType.ID)('T')
           PsiElement(DlangTokenType.;)(';')
-      PsiComment(DlangTokenType.LINE_COMMENT)('// assign new value to A')
+        PsiComment(DlangTokenType.LINE_COMMENT)('// assign new value to A')
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
           PsiElement(DlangTokenType.alias)('alias')
@@ -77,7 +77,7 @@ D Language File
                             PsiElement(DlangTokenType.int)('int')
           PsiElement(DlangTokenType.))(')')
         PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// prints int')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// prints int')
   DLanguageDeclarationImpl(DECLARATION)
     TEMPLATE_DECLARATION
       PsiElement(DlangTokenType.template)('template')
@@ -165,7 +165,7 @@ D Language File
                                           PsiElement(DlangTokenType.ID)('A')
                             PsiElement(DlangTokenType.))(')')
                 PsiElement(DlangTokenType.;)(';')
-      PsiComment(DlangTokenType.LINE_COMMENT)('// Alias Assign')
+              PsiComment(DlangTokenType.LINE_COMMENT)('// Alias Assign')
       DLanguageDeclarationImpl(DECLARATION)
         DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
           PsiElement(DlangTokenType.alias)('alias')
@@ -257,4 +257,4 @@ D Language File
                         PsiElement(DlangTokenType.ID)('TK')
           PsiElement(DlangTokenType.))(')')
         PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// prints tuple(3, (const(uint)), (int))')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// prints tuple(3, (const(uint)), (int))')

@@ -19,7 +19,7 @@ D Language File
               IDENTIFIER
                 PsiElement(DlangTokenType.ID)('a')
             PsiElement(DlangTokenType.;)(';')
-        PsiComment(DlangTokenType.LINE_COMMENT)('// array is privately owned by this instance')
+          PsiComment(DlangTokenType.LINE_COMMENT)('// array is privately owned by this instance')
         DLanguageDeclarationImpl(DECLARATION)
           DLanguagePostblitImpl(POSTBLIT)
             PsiElement(DlangTokenType.this)('this')
@@ -77,7 +77,7 @@ D Language File
             PsiElement(DlangTokenType.this)('this')
             PsiElement(DlangTokenType.))(')')
             PsiElement(DlangTokenType.;)(';')
-        PsiComment(DlangTokenType.LINE_COMMENT)('// disabling makes T not copyable')
+          PsiComment(DlangTokenType.LINE_COMMENT)('// disabling makes T not copyable')
         PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     STRUCT_DECLARATION
@@ -98,7 +98,7 @@ D Language File
               IDENTIFIER
                 PsiElement(DlangTokenType.ID)('t')
             PsiElement(DlangTokenType.;)(';')
-        PsiComment(DlangTokenType.LINE_COMMENT)('// uncopyable member makes S also not copyable')
+          PsiComment(DlangTokenType.LINE_COMMENT)('// uncopyable member makes S also not copyable')
         PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
@@ -152,5 +152,5 @@ D Language File
                                     IDENTIFIER
                                       PsiElement(DlangTokenType.ID)('s')
                     PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// error, S is not copyable')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// error, S is not copyable')
             PsiElement(DlangTokenType.})('}')

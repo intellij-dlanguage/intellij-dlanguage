@@ -97,7 +97,7 @@ D Language File
                   DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                     PsiElement(DlangTokenType.{)('{')
                     PsiElement(DlangTokenType.})('}')
-          PsiComment(DlangTokenType.LINE_COMMENT)('// disallowed!')
+            PsiComment(DlangTokenType.LINE_COMMENT)('// disallowed!')
           PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
@@ -125,7 +125,7 @@ D Language File
                   DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                     PsiElement(DlangTokenType.{)('{')
                     PsiElement(DlangTokenType.})('}')
-          PsiComment(DlangTokenType.LINE_COMMENT)('// bar is synchronized')
+            PsiComment(DlangTokenType.LINE_COMMENT)('// bar is synchronized')
           PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
@@ -147,7 +147,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DlangTokenType.ID)('foo')
               PsiElement(DlangTokenType.;)(';')
-          PsiComment(DlangTokenType.LINE_COMMENT)('// disallowed: public field')
+            PsiComment(DlangTokenType.LINE_COMMENT)('// disallowed: public field')
           PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
@@ -171,5 +171,5 @@ D Language File
                 IDENTIFIER
                   PsiElement(DlangTokenType.ID)('bar')
               PsiElement(DlangTokenType.;)(';')
-          PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
+            PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
           PsiElement(DlangTokenType.})('}')

@@ -97,7 +97,7 @@ D Language File
                   IDENTIFIER
                     PsiElement(DlangTokenType.ID)('bar')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// is it a type or a symbol?')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// is it a type or a symbol?')
   DLanguageDeclarationImpl(DECLARATION)
     STRUCT_DECLARATION
       PsiElement(DlangTokenType.struct)('struct')
@@ -149,7 +149,7 @@ D Language File
                   IDENTIFIER
                     PsiElement(DlangTokenType.ID)('i')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// illegal, s.i is an expression')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// illegal, s.i is an expression')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
       PsiElement(DlangTokenType.alias)('alias')
@@ -169,7 +169,7 @@ D Language File
                   IDENTIFIER
                     PsiElement(DlangTokenType.ID)('i')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
   DLanguageDeclarationImpl(DECLARATION)
     UNITTEST
       UNITTEST

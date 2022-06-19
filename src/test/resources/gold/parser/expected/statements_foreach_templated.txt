@@ -22,7 +22,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DlangTokenType.ID)('ParameterTypeTuple')
             PsiElement(DlangTokenType.;)(';')
-        PsiComment(DlangTokenType.LINE_COMMENT)('// introspection template')
+          PsiComment(DlangTokenType.LINE_COMMENT)('// introspection template')
         DLanguageDeclarationImpl(DECLARATION)
           FUNCTION_DECLARATION
             DLanguageTypeImpl(TYPE)

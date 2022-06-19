@@ -29,7 +29,7 @@ D Language File
                 PsiElement(DlangTokenType.,)(',')
                 PsiElement(DlangTokenType.])(']')
         PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// error')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// error')
   DLanguageDeclarationImpl(DECLARATION)
     ENUM_DECLARATION
       PsiElement(DlangTokenType.enum)('enum')

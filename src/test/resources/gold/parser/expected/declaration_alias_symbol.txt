@@ -57,4 +57,4 @@ D Language File
                                 PsiElement(DlangTokenType.DOUBLE_QUOTED_STRING)('"hello"')
                       PsiElement(DlangTokenType.))(')')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// actually calls string.strlen()')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// actually calls string.strlen()')

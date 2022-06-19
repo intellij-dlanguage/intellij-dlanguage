@@ -400,7 +400,7 @@ D Language File
                                           IDENTIFIER
                                             PsiElement(DlangTokenType.ID)('Outer')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// Ok')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// Ok')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -438,7 +438,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DlangTokenType.ID)('Inner')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// Error, no 'this' for Outer')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// Error, no 'this' for Outer')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -476,7 +476,7 @@ D Language File
                                             IDENTIFIER
                                               PsiElement(DlangTokenType.ID)('SInner')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// Ok')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// Ok')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -504,7 +504,7 @@ D Language File
                                           IDENTIFIER
                                             PsiElement(DlangTokenType.ID)('Nested')
                     PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// Ok')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// Ok')
             PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageClassDeclarationImpl(CLASS_DECLARATION)

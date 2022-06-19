@@ -165,6 +165,12 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    // documentation
+
+    public void testdocumentation_attached_declaration() {
+        doDlangParserTest(true, true);
+    }
+
     //  properties
     public void testproperties_init() {
         doDlangParserTest(true, true);

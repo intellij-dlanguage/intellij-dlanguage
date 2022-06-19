@@ -37,7 +37,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('t')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// default initialized')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// default initialized')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
@@ -84,7 +84,7 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DlangTokenType.ID)('t')
                   PsiElement(DlangTokenType.;)(';')
-          PsiComment(DlangTokenType.LINE_COMMENT)('// s.a is set to 3')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// s.a is set to 3')
           PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
     STRUCT_DECLARATION
@@ -303,7 +303,7 @@ D Language File
                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                 PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// sets s.a to 3')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// sets s.a to 3')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -327,5 +327,5 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DlangTokenType.ID)('s')
                   PsiElement(DlangTokenType.;)(';')
-          PsiComment(DlangTokenType.LINE_COMMENT)('// sets t.a to 3, S.opCall(s) is not called')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// sets t.a to 3, S.opCall(s) is not called')
           PsiElement(DlangTokenType.})('}')

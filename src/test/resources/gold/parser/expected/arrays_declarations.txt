@@ -12,7 +12,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('a')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// dynamic array of ints')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// dynamic array of ints')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -39,7 +39,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('b')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// array of 3 arrays of 4 ints each')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// array of 3 arrays of 4 ints each')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -61,7 +61,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('c')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// array of 5 dynamic arrays of ints.')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// array of 5 dynamic arrays of ints.')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -87,7 +87,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('d')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// array of 3 pointers to dynamic arrays of pointers to ints')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// array of 3 pointers to dynamic arrays of pointers to ints')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -103,4 +103,4 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('e')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// pointer to dynamic array of ints')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// pointer to dynamic array of ints')

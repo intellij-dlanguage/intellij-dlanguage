@@ -33,7 +33,7 @@ D Language File
                       IDENTIFIER
                         PsiElement(DlangTokenType.ID)('x')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// error, hides previous definition of x')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// error, hides previous definition of x')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -62,7 +62,7 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DlangTokenType.ID)('y')
                               PsiElement(DlangTokenType.;)(';')
-                        PsiComment(DlangTokenType.LINE_COMMENT)('// error, hides previous definition of y')
+                            PsiComment(DlangTokenType.LINE_COMMENT)('// error, hides previous definition of y')
                         DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                           DLanguageDeclarationImpl(DECLARATION)
                             DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -92,6 +92,6 @@ D Language File
                                 IDENTIFIER
                                   PsiElement(DlangTokenType.ID)('z')
                               PsiElement(DlangTokenType.;)(';')
-                      PsiComment(DlangTokenType.LINE_COMMENT)('// legal, previous z is out of scope')
+                            PsiComment(DlangTokenType.LINE_COMMENT)('// legal, previous z is out of scope')
                       PsiElement(DlangTokenType.})('}')
             PsiElement(DlangTokenType.})('}')

@@ -143,7 +143,7 @@ D Language File
           IDENTIFIER
             PsiElement(DlangTokenType.ID)('a')
         PsiElement(DlangTokenType.;)(';')
-    PsiComment(DlangTokenType.LINE_COMMENT)('// has UDA's (1, 2)')
+      PsiComment(DlangTokenType.LINE_COMMENT)('// has UDA's (1, 2)')
     DLanguageDeclarationImpl(DECLARATION)
       DLanguageAttributeImpl(ATTRIBUTE)
         DLanguageAtAttributeImpl(AT_ATTRIBUTE)
@@ -165,5 +165,5 @@ D Language File
           IDENTIFIER
             PsiElement(DlangTokenType.ID)('b')
         PsiElement(DlangTokenType.;)(';')
-    PsiComment(DlangTokenType.LINE_COMMENT)('// has UDA's (1, "string")')
+      PsiComment(DlangTokenType.LINE_COMMENT)('// has UDA's (1, "string")')
     PsiElement(DlangTokenType.})('}')

@@ -164,7 +164,7 @@ D Language File
                         PsiElement(DlangTokenType.()('(')
                         PsiElement(DlangTokenType.))(')')
         PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// create an instance of C')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// create an instance of C')
   DLanguageDeclarationImpl(DECLARATION)
     UNITTEST
       UNITTEST

@@ -7,7 +7,7 @@ D Language File
       DLanguageStructBodyImpl(STRUCT_BODY)
         PsiElement(DlangTokenType.{)('{')
         PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// S has postblit or destructor')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// S has postblit or destructor')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -20,7 +20,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('s')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// default construction of s')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// default construction of s')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -43,7 +43,7 @@ D Language File
                       IDENTIFIER
                         PsiElement(DlangTokenType.ID)('s')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// t is copy-constructed from s')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// t is copy-constructed from s')
   DLanguageDeclarationImpl(DECLARATION)
     UNITTEST
       UNITTEST
@@ -154,7 +154,7 @@ D Language File
                                 DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                   PsiElement(DlangTokenType.this)('this')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// bitcopy this into tmp')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// bitcopy this into tmp')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

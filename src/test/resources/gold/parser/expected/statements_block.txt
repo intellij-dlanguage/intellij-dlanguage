@@ -33,7 +33,7 @@ D Language File
                       IDENTIFIER
                         PsiElement(DlangTokenType.ID)('x')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// illegal, x shadows parameter x')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// illegal, x shadows parameter x')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -134,7 +134,7 @@ D Language File
                             IDENTIFIER
                               PsiElement(DlangTokenType.ID)('y')
                           PsiElement(DlangTokenType.;)(';')
-                      PsiComment(DlangTokenType.LINE_COMMENT)('// ok, this y is a member, not a local')
+                        PsiComment(DlangTokenType.LINE_COMMENT)('// ok, this y is a member, not a local')
                       PsiElement(DlangTokenType.})('}')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)

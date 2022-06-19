@@ -46,7 +46,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('f1')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// error, could be either A.Foo or B.Foo')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// error, could be either A.Foo or B.Foo')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -64,4 +64,4 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('f2')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// ok')

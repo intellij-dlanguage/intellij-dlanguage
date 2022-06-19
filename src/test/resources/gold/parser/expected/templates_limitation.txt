@@ -392,7 +392,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('xx')
                   PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// becomes a static member of Foo')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// becomes a static member of Foo')
               DLanguageDeclarationImpl(DECLARATION)
                 FUNCTION_DECLARATION
                   DLanguageTypeImpl(TYPE)
@@ -416,7 +416,7 @@ D Language File
                       DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                         PsiElement(DlangTokenType.{)('{')
                         PsiElement(DlangTokenType.})('}')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// non-virtual')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// non-virtual')
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageAttributeImpl(ATTRIBUTE)
                   PsiElement(DlangTokenType.static)('static')
@@ -431,7 +431,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('yy')
                   PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// Ok')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// Ok')
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageAttributeImpl(ATTRIBUTE)
                   PsiElement(DlangTokenType.static)('static')
@@ -467,6 +467,6 @@ D Language File
                       DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                         PsiElement(DlangTokenType.{)('{')
                         PsiElement(DlangTokenType.})('}')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// Ok')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// Ok')
               PsiElement(DlangTokenType.})('}')
           PsiElement(DlangTokenType.})('}')

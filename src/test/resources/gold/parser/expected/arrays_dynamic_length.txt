@@ -782,7 +782,7 @@ D Language File
                                             PsiElement(DlangTokenType.INTEGER_LITERAL)('10')
                                   PsiElement(DlangTokenType.))(')')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// request')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// request')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

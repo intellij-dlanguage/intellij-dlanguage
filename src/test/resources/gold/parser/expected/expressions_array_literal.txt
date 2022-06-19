@@ -34,7 +34,7 @@ D Language File
                           PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
                 PsiElement(DlangTokenType.])(']')
         PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// type is int[], with elements 1, 2 and 3')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// type is int[], with elements 1, 2 and 3')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
@@ -70,7 +70,7 @@ D Language File
                           PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
                 PsiElement(DlangTokenType.])(']')
         PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// type is uint[], with elements 1u, 2u, and 3u')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// type is uint[], with elements 1u, 2u, and 3u')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageTypeImpl(TYPE)

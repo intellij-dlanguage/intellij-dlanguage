@@ -671,7 +671,7 @@ D Language File
                               DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                                 PsiElement(DlangTokenType.INTEGER_LITERAL)('1')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// OK, rewritten to: S s = S(1);')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// OK, rewritten to: S s = S(1);')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
                 DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

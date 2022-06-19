@@ -250,5 +250,5 @@ D Language File
                                           PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
                                 PsiElement(DlangTokenType.])(']')
                   PsiElement(DlangTokenType.;)(';')
-          PsiComment(DlangTokenType.LINE_COMMENT)('// error, out of bounds')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// error, out of bounds')
           PsiElement(DlangTokenType.})('}')

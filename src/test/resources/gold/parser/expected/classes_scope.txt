@@ -39,7 +39,7 @@ D Language File
                       IDENTIFIER
                         PsiElement(DlangTokenType.ID)('f')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// error, reference to scope class must be scope')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// error, reference to scope class must be scope')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageAttributeImpl(ATTRIBUTE)
@@ -72,5 +72,5 @@ D Language File
                                     PsiElement(DlangTokenType.()('(')
                                     PsiElement(DlangTokenType.))(')')
                     PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// correct')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// correct')
             PsiElement(DlangTokenType.})('}')

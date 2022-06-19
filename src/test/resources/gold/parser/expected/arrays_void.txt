@@ -93,7 +93,7 @@ D Language File
                                     IDENTIFIER
                                       PsiElement(DlangTokenType.ID)('data1')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// OK, int[] implicit converts to void[].')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// OK, int[] implicit converts to void[].')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
@@ -193,7 +193,7 @@ D Language File
                                         IDENTIFIER
                                           PsiElement(DlangTokenType.ID)('arr')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// OK, can convert with explicit cast.')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// OK, can convert with explicit cast.')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
@@ -297,7 +297,7 @@ D Language File
                                     IDENTIFIER
                                       PsiElement(DlangTokenType.ID)('x')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// OK, lengths match')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// OK, lengths match')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -327,5 +327,5 @@ D Language File
                                     IDENTIFIER
                                       PsiElement(DlangTokenType.ID)('y')
                     PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// Error: int[2] is 8 bytes long, doesn't fit in 2 bytes.')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// Error: int[2] is 8 bytes long, doesn't fit in 2 bytes.')
             PsiElement(DlangTokenType.})('}')

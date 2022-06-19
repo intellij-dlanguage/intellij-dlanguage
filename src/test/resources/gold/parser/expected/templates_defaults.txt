@@ -170,7 +170,7 @@ D Language File
                         IDENTIFIER
                           PsiElement(DlangTokenType.ID)('Foo')
                       PsiElement(DlangTokenType.;)(';')
-                  PsiComment(DlangTokenType.LINE_COMMENT)('// declare variable Foo of type T')
+                    PsiComment(DlangTokenType.LINE_COMMENT)('// declare variable Foo of type T')
                   PsiElement(DlangTokenType.})('}')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)

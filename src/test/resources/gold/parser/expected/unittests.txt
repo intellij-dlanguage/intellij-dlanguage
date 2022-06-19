@@ -424,8 +424,8 @@ D Language File
                               PsiElement(DlangTokenType.))(')')
                     PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_DOC)('/// Math class')
   DLanguageDeclarationImpl(DECLARATION)
+    PsiComment(DlangTokenType.LINE_DOC)('/// Math class')
     DLanguageClassDeclarationImpl(CLASS_DECLARATION)
       PsiElement(DlangTokenType.class)('class')
       INTERFACE_OR_CLASS
@@ -433,8 +433,8 @@ D Language File
           PsiElement(DlangTokenType.ID)('Math')
         DLanguageStructBodyImpl(STRUCT_BODY)
           PsiElement(DlangTokenType.{)('{')
-          PsiComment(DlangTokenType.LINE_DOC)('/// add function')
           DLanguageDeclarationImpl(DECLARATION)
+            PsiComment(DlangTokenType.LINE_DOC)('/// add function')
             DLanguageAttributeImpl(ATTRIBUTE)
               PsiElement(DlangTokenType.static)('static')
             FUNCTION_DECLARATION
@@ -489,8 +489,8 @@ D Language File
                                               PsiElement(DlangTokenType.ID)('y')
                               PsiElement(DlangTokenType.;)(';')
                     PsiElement(DlangTokenType.})('}')
-          PsiComment(DlangTokenType.LINE_DOC)('///')
           DLanguageDeclarationImpl(DECLARATION)
+            PsiComment(DlangTokenType.LINE_DOC)('///')
             UNITTEST
               UNITTEST
                 PsiElement(DlangTokenType.unittest)('unittest')
@@ -542,8 +542,8 @@ D Language File
                             PsiElement(DlangTokenType.;)(';')
                   PsiElement(DlangTokenType.})('}')
           PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_DOC)('///')
   DLanguageDeclarationImpl(DECLARATION)
+    PsiComment(DlangTokenType.LINE_DOC)('///')
     UNITTEST
       UNITTEST
         PsiElement(DlangTokenType.unittest)('unittest')
@@ -619,8 +619,8 @@ D Language File
                                     PsiElement(DlangTokenType.))(')')
                     PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_DOC)('/// add function')
   DLanguageDeclarationImpl(DECLARATION)
+    PsiComment(DlangTokenType.LINE_DOC)('/// add function')
     FUNCTION_DECLARATION
       DLanguageTypeImpl(TYPE)
         DLanguageType_2Impl(TYPE_2)
@@ -673,8 +673,8 @@ D Language File
                                       PsiElement(DlangTokenType.ID)('y')
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_DOC)('/// code sample generated')
   DLanguageDeclarationImpl(DECLARATION)
+    PsiComment(DlangTokenType.LINE_DOC)('/// code sample generated')
     UNITTEST
       UNITTEST
         PsiElement(DlangTokenType.unittest)('unittest')
@@ -725,8 +725,8 @@ D Language File
                               PsiElement(DlangTokenType.))(')')
                     PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_DOC)('/// code sample not generated because the unittest is private')
   DLanguageDeclarationImpl(DECLARATION)
+    PsiComment(DlangTokenType.LINE_DOC)('/// code sample not generated because the unittest is private')
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.private)('private')
     UNITTEST
@@ -831,8 +831,8 @@ D Language File
                               PsiElement(DlangTokenType.))(')')
                     PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_DOC)('/// code sample generated, even if it only includes comments (or is empty)')
   DLanguageDeclarationImpl(DECLARATION)
+    PsiComment(DlangTokenType.LINE_DOC)('/// code sample generated, even if it only includes comments (or is empty)')
     UNITTEST
       UNITTEST
         PsiElement(DlangTokenType.unittest)('unittest')

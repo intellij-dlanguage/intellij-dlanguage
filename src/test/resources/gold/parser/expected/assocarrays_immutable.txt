@@ -85,7 +85,7 @@ D Language File
                       IDENTIFIER
                         PsiElement(DlangTokenType.ID)('temp')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// mutable buffer')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// mutable buffer')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageStatementImpl(STATEMENT)
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)

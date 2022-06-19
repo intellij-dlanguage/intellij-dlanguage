@@ -17,7 +17,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('abc')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// static array of 3 ints')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// static array of 3 ints')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
       DLanguageTypeImpl(TYPE)
@@ -57,7 +57,7 @@ D Language File
                         PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
               PsiElement(DlangTokenType.])(']')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// dynamic array of 3 ints')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// dynamic array of 3 ints')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageTypeImpl(TYPE)

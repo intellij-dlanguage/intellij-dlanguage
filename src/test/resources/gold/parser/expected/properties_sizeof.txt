@@ -100,5 +100,5 @@ D Language File
                                   IDENTIFIER
                                     PsiElement(DlangTokenType.ID)('sizeof')
                     PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// sets x to 4')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// sets x to 4')
             PsiElement(DlangTokenType.})('}')

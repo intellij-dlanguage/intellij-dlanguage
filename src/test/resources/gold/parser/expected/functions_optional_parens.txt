@@ -15,7 +15,7 @@ D Language File
           DLanguageBlockStatementImpl(BLOCK_STATEMENT)
             PsiElement(DlangTokenType.{)('{')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// no arguments')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// no arguments')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageTypeImpl(TYPE)
@@ -71,7 +71,7 @@ D Language File
           DLanguageBlockStatementImpl(BLOCK_STATEMENT)
             PsiElement(DlangTokenType.{)('{')
             PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// for UFCS')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// for UFCS')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageTypeImpl(TYPE)

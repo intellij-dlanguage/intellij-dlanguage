@@ -348,7 +348,7 @@ D Language File
                   DLanguagePrimaryExpressionImpl(PRIMARY_EXPRESSION)
                     PsiElement(DlangTokenType.DOUBLE_QUOTED_STRING)('"hello"')
           PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// works at any scope')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// works at any scope')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageStaticAssertDeclarationImpl(STATIC_ASSERT_DECLARATION)
       DLanguageStaticAssertDeclarationImpl(STATIC_ASSERT_DECLARATION)
@@ -378,7 +378,7 @@ D Language File
                           PsiElement(DlangTokenType.DOUBLE_QUOTED_STRING)('"hello"')
               PsiElement(DlangTokenType.))(')')
             PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// works normally')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// works normally')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageStaticAssertDeclarationImpl(STATIC_ASSERT_DECLARATION)
       DLanguageStaticAssertDeclarationImpl(STATIC_ASSERT_DECLARATION)
@@ -428,7 +428,7 @@ D Language File
                           PsiElement(DlangTokenType.))(')')
               PsiElement(DlangTokenType.))(')')
             PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// same normal type')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// same normal type')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageTypeImpl(TYPE)
@@ -480,5 +480,5 @@ D Language File
                                     IDENTIFIER
                                       PsiElement(DlangTokenType.ID)('a')
                         PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// and at nested scopes too')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// and at nested scopes too')
             PsiElement(DlangTokenType.})('}')

@@ -22,7 +22,7 @@ D Language File
       DLanguageFunctionBodyImpl(FUNCTION_BODY)
         DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
           PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// one required parameter: c')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// one required parameter: c')
   DLanguageDeclarationImpl(DECLARATION)
     FUNCTION_DECLARATION
       DLanguageTypeImpl(TYPE)
@@ -38,7 +38,7 @@ D Language File
       DLanguageFunctionBodyImpl(FUNCTION_BODY)
         DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
           PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
       PsiElement(DlangTokenType.import)('import')

@@ -9,7 +9,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('foo')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// Each thread has its own exclusive copy of foo.')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// Each thread has its own exclusive copy of foo.')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.__gshared)('__gshared')
@@ -22,7 +22,7 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('bar')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// bar is shared by all threads.')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// bar is shared by all threads.')
   DLanguageDeclarationImpl(DECLARATION)
     DLanguageClassDeclarationImpl(CLASS_DECLARATION)
       PsiElement(DlangTokenType.class)('class')

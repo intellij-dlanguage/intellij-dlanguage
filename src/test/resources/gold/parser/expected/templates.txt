@@ -67,7 +67,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('x')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// declare x to be of type int*')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// declare x to be of type int*')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -91,7 +91,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('x')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// same as TFoo!(int).t x;')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// same as TFoo!(int).t x;')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 TEMPLATE_DECLARATION
@@ -168,7 +168,7 @@ D Language File
                     IDENTIFIER
                       PsiElement(DlangTokenType.ID)('x')
                   PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// declare x to be of type int*')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// declare x to be of type int*')
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageDeclarationImpl(DECLARATION)
                 TEMPLATE_DECLARATION

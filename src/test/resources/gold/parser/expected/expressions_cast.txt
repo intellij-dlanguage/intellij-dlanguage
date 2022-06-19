@@ -146,7 +146,7 @@ D Language File
                                     IDENTIFIER
                                       PsiElement(DlangTokenType.ID)('a')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// error, need cast')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// error, need cast')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -181,7 +181,7 @@ D Language File
                                         IDENTIFIER
                                           PsiElement(DlangTokenType.ID)('a')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// bx is null if a is not a B')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// bx is null if a is not a B')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -205,7 +205,7 @@ D Language File
                                     IDENTIFIER
                                       PsiElement(DlangTokenType.ID)('b')
                     PsiElement(DlangTokenType.;)(';')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// no cast needed')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// no cast needed')
               DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
                 DLanguageDeclarationImpl(DECLARATION)
                   DLanguageVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -240,5 +240,5 @@ D Language File
                                         IDENTIFIER
                                           PsiElement(DlangTokenType.ID)('b')
                     PsiElement(DlangTokenType.;)(';')
-            PsiComment(DlangTokenType.LINE_COMMENT)('// no runtime check needed for upcast')
+                  PsiComment(DlangTokenType.LINE_COMMENT)('// no runtime check needed for upcast')
             PsiElement(DlangTokenType.})('}')

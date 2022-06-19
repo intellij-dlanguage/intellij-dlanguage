@@ -43,7 +43,7 @@ D Language File
                         PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
               PsiElement(DlangTokenType.])(']')
       PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// a[0] = 0, a[1] = 2, a[2] = 3')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// a[0] = 0, a[1] = 2, a[2] = 3')
   DLanguageDeclarationImpl(DECLARATION)
     ENUM_DECLARATION
       PsiElement(DlangTokenType.enum)('enum')
