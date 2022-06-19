@@ -32,3 +32,8 @@ gradle-app.setting
 jflex-install/
 
 /dev
+
+# exclude generated files
+# TODO should exclude all gen folder once psi elements will be generated automatically
+gen/io/github/intellij/dlanguage/DHighlightingLexer.java
+gen/io/github/intellij/dlanguage/DlangLexer.java
