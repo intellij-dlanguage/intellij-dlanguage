@@ -186,7 +186,6 @@ intellij {
             '--add-opens=java.desktop/com.apple.eawt.event=ALL-UNNAMED',  // Mac OSX only
             '--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED'
         ]
-
         systemProperties['idea.debug.mode'] = 'true'
         // The package names have to be prefixed with a #
         systemProperties['idea.log.debug.categories'] = '#io.github.intellij.dlanguage'

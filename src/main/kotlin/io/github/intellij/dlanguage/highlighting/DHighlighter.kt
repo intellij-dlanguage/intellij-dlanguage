@@ -26,7 +26,7 @@ class DHighlighter : SyntaxHighlighterBase() {
         in TokenSets.LINE_COMMENT -> DColor.LINE_COMMENT
         in TokenSets.LINE_DOCUMENTATION -> DColor.LINE_DOCUMENTATION
         in TokenSets.BLOCK_COMMENT -> DColor.BLOCK_COMMENT
-        //in TokenSets.BLOCK_DOCUMENTATION -> BLOCK_DOCUMENTATION
+        in TokenSets.BLOCK_DOCUMENTATION -> DColor.BLOCK_DOCUMENTATION
         in TokenSets.AT_ATTRIBUTE -> DColor.AT_ATTRIBUTE
         in TokenSets.STRING_LITERAL -> DColor.STRING_LITERAL
         in TokenSets.CHAR -> DColor.CHAR

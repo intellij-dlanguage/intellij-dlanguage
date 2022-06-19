@@ -9,6 +9,7 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
 %{
 
   private int nestedCommentDepth = 0;
+  private int nestedDocDepth = 0;
   private int tokenStringDepth = 0;
 
   public DlangLexer() {
@@ -106,12 +107,9 @@ HEX_DIGITS_NO_STARTING_US = {HEX_DIGIT} {HEX_DIGITS_US}?
 FLOAT_LITERAL = ({FLOAT} {SUFFIX}?) | ({INTEGER} {FLOAT_SUFFIX}) | ({INTEGER} {IMAGINARY_SUFFIX})
                 | ({INTEGER} {FLOAT_SUFFIX} {IMAGINARY_SUFFIX}) | ({INTEGER} {REAL_SUFFIX} {IMAGINARY_SUFFIX})
 FLOAT = {DECIMAL_FLOAT} | {HEX_FLOAT}
-// Note: divergence with the official lexing rules (official is the commented line DECIMAL_FLOAT), I suspect the official rule being wrong
 DECIMAL_FLOAT = ({LEADING_DECIMAL} \. ({DECIMAL_DIGITS_NO_STARTING_US} {DECIMAL_EXPONENT}?)?)
                 | (\. {DECIMAL_DIGITS_NO_STARTING_US} {DECIMAL_EXPONENT}?)
                 | ({LEADING_DECIMAL} {DECIMAL_EXPONENT})
-/*DECIMAL_FLOAT = ({LEADING_DECIMAL} \. {DECIMAL_DIGITS}?) | ({DECIMAL_DIGITS} \. {DECIMAL_DIGITS_NO_STARTING_US} {DECIMAL_EXPONENT})
-                | (\. {DECIMAL_INTEGER} {DECIMAL_EXPONENT}?) | ({LEADING_DECIMAL} {DECIMAL_EXPONENT})*/
 DECIMAL_EXPONENT = [eE] [\+\-]? {DECIMAL_DIGITS_NO_SINGLE_US}
 
 HEX_FLOAT = {HEX_PREFIX} {HEX_DIGITS_NO_SINGLE_US}? (\. {HEX_DIGITS_NO_STARTING_US})? {HEX_EXPONENT}
@@ -124,8 +122,16 @@ REAL_SUFFIX = L
 IMAGINARY_SUFFIX = i
 LEADING_DECIMAL = {DECIMAL_INTEGER} | (0 {DECIMAL_DIGITS_NO_SINGLE_US})
 
+LINE_DOC="///".*
+
+BLOCK_DOC_START = "/**"
+BLOCK_DOC_END = "*/"
+
+NESTING_BLOCK_DOC_START = "/++"
+NESTING_BLOCK_DOC_END = "+/"
 
 %state WAITING_VALUE, NESTING_COMMENT_CONTENT, TOKEN_STRING_CONTENT, BLOCK_COMMENT_CONTENT
+%state NESTING_DOC_CONTENT, BLOCK_DOC_CONTENT
 
 %%
 
@@ -158,7 +164,26 @@ LEADING_DECIMAL = {DECIMAL_INTEGER} | (0 {DECIMAL_DIGITS_NO_SINGLE_US})
     return DlangTypes.TOKEN_STRING;
 }
 
+<YYINITIAL> {NESTING_BLOCK_COMMENT_START}{NESTING_BLOCK_COMMENT_END} {
+    // Match this one before to prevent /++/ being consited as doc
+    return NESTING_BLOCK_COMMENT;
+}
 
+<YYINITIAL> {NESTING_BLOCK_DOC_START} {
+    yybegin(NESTING_DOC_CONTENT);
+    nestedDocDepth = 1;
+    return DlangTypes.NESTING_BLOCK_DOC;
+}
+
+<YYINITIAL> {BLOCK_COMMENT_START}{BLOCK_COMMENT_END} {
+    // Match this one before to prevent /**/ being consited as doc
+    return DlangTypes.BLOCK_COMMENT;
+}
+
+<YYINITIAL> {BLOCK_DOC_START} {
+          yybegin(BLOCK_DOC_CONTENT);
+          return DlangTypes.BLOCK_DOC;
+      }
 
 <YYINITIAL> {NESTING_BLOCK_COMMENT_START} {
     yybegin(NESTING_COMMENT_CONTENT);
@@ -183,35 +208,69 @@ LEADING_DECIMAL = {DECIMAL_INTEGER} | (0 {DECIMAL_DIGITS_NO_SINGLE_US})
 <YYINITIAL> {DELIMITED_STRING} { return DELIMITED_STRING; }
 
 <NESTING_COMMENT_CONTENT> {
-	{NESTING_BLOCK_COMMENT_START}	{
-		nestedCommentDepth += 1;
-		return DlangTypes.NESTING_BLOCK_COMMENT;
-	}
+    {NESTING_BLOCK_COMMENT_START} {
+        nestedCommentDepth += 1;
+        return DlangTypes.NESTING_BLOCK_COMMENT;
+    }
 
-	\/? {NESTING_BLOCK_COMMENT_END}	{
-		nestedCommentDepth -= 1;
-		if(nestedCommentDepth == 0) {
-			yybegin(YYINITIAL); //Exit nesting comment block
-		}
-		return DlangTypes.NESTING_BLOCK_COMMENT;
-	}
-	\/\/        {return DlangTypes.NESTING_BLOCK_COMMENT;}
-	\n|\/|\+	{return DlangTypes.NESTING_BLOCK_COMMENT;}
-	[^/+\n]+	{return DlangTypes.NESTING_BLOCK_COMMENT;}
+    \/? {NESTING_BLOCK_COMMENT_END}	{
+        nestedCommentDepth -= 1;
+        assert(nestedCommentDepth >= 0);
+        if(nestedCommentDepth == 0) {
+        yybegin(YYINITIAL); //Exit nesting comment block
+        }
+        return DlangTypes.NESTING_BLOCK_COMMENT;
+    }
+    \/\/        {return DlangTypes.NESTING_BLOCK_COMMENT;}
+    \n|\/|\+    {return DlangTypes.NESTING_BLOCK_COMMENT;}
+    [^/+\n]+    {return DlangTypes.NESTING_BLOCK_COMMENT;}
 }
 
 <BLOCK_COMMENT_CONTENT> {
-	{BLOCK_COMMENT_START}	{
-		return DlangTypes.BLOCK_COMMENT;
-	}
+    {BLOCK_COMMENT_START} {
+       return DlangTypes.BLOCK_COMMENT;
+    }
 
-	\/? {BLOCK_COMMENT_END}	{
-		yybegin(YYINITIAL);
-		return DlangTypes.BLOCK_COMMENT;
-	}
-	\/\/        {return DlangTypes.BLOCK_COMMENT;}
-	\n|\/|\*	{return DlangTypes.BLOCK_COMMENT;}
-	[^/*\n]+	{return DlangTypes.BLOCK_COMMENT;}
+    \/? {BLOCK_COMMENT_END} {
+        yybegin(YYINITIAL);
+        return DlangTypes.BLOCK_COMMENT;
+    }
+    \/\/        {return DlangTypes.BLOCK_COMMENT;}
+    \n|\/|\*	{return DlangTypes.BLOCK_COMMENT;}
+    [^/*\n]+	{return DlangTypes.BLOCK_COMMENT;}
+}
+
+<NESTING_DOC_CONTENT> {
+    {NESTING_BLOCK_DOC_START} {
+        nestedDocDepth += 1;
+        return DlangTypes.NESTING_BLOCK_DOC;
+    }
+
+    \/? {NESTING_BLOCK_DOC_END} {
+        nestedDocDepth -= 1;
+        assert(nestedDocDepth >= 0);
+        if(nestedDocDepth == 0) {
+            yybegin(YYINITIAL); //Exit nesting doc block
+        }
+        return DlangTypes.NESTING_BLOCK_DOC;
+    }
+    \/\/        {return DlangTypes.NESTING_BLOCK_DOC;}
+    \n|\/|\+    {return DlangTypes.NESTING_BLOCK_DOC;}
+    [^/+\n]+    {return DlangTypes.NESTING_BLOCK_DOC;}
+}
+
+<BLOCK_DOC_CONTENT> {
+    {BLOCK_DOC_START} {
+       return DlangTypes.BLOCK_DOC;
+    }
+
+    \/? {BLOCK_DOC_END}	{
+       yybegin(YYINITIAL);
+       return DlangTypes.BLOCK_DOC;
+    }
+    \/\/        {return DlangTypes.BLOCK_DOC;}
+    \n|\/|\*    {return DlangTypes.BLOCK_DOC;}
+    [^/*\n]+    {return DlangTypes.BLOCK_DOC;}
 }
 
 //todo add typedef
@@ -404,6 +463,7 @@ LEADING_DECIMAL = {DECIMAL_INTEGER} | (0 {DECIMAL_DIGITS_NO_SINGLE_US})
 <YYINITIAL> "=>"                       { return OP_LAMBDA_ARROW; }
 <YYINITIAL> "."                        { return OP_DOT; }
 <YYINITIAL> {ID}                       { return ID; }
+<YYINITIAL> {LINE_DOC}                 { return LINE_DOC; }
 <YYINITIAL> {LINE_COMMENT}             { return LINE_COMMENT; }
 <YYINITIAL> {SHEBANG}                  { return SHEBANG; }
 
