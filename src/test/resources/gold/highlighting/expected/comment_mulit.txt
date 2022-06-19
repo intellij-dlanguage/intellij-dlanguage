@@ -1,8 +1,0 @@
-DlangTokenType.BLOCK_COMMENT ('/*')
-DlangTokenType.BLOCK_COMMENT ('\n')
-DlangTokenType.BLOCK_COMMENT (' multiline comment')
-DlangTokenType.BLOCK_COMMENT ('\n')
-DlangTokenType.BLOCK_COMMENT (' is here')
-DlangTokenType.BLOCK_COMMENT ('\n')
-DlangTokenType.BLOCK_COMMENT (' ')
-DlangTokenType.BLOCK_COMMENT ('*/')

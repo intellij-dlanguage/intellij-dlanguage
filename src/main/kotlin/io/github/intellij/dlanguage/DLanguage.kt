@@ -21,6 +21,7 @@ import com.intellij.psi.TokenType
 import com.intellij.psi.search.GlobalSearchScope.allScope
 import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.tree.TokenSet.create
+import com.intellij.psi.tree.TokenSet.orSet
 import com.intellij.ui.EditorNotificationPanel
 import io.github.intellij.dlanguage.index.DModuleIndex.getFilesByModuleName
 import io.github.intellij.dlanguage.parser.ParserWrapper
@@ -136,7 +137,9 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
 
 class DLangParserDefinition : ParserDefinition {
     val WHITE_SPACES: TokenSet = create(TokenType.WHITE_SPACE)
-    val COMMENTS: TokenSet = create(DlangTypes.LINE_COMMENT, DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT)
+    val REGULAR_COMMENTS: TokenSet = create(DlangTypes.LINE_COMMENT, DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT)
+    val DOC_COMMENTS: TokenSet = create(DlangTypes.LINE_DOC, DlangTypes.BLOCK_DOC, DlangTypes.NESTING_BLOCK_DOC)
+    val COMMENTS: TokenSet = orSet(REGULAR_COMMENTS, DOC_COMMENTS)
 
     @NotNull
     override fun createParser(project: Project?): ParserWrapper = ParserWrapper()

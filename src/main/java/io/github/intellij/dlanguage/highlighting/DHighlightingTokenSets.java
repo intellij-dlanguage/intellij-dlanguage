@@ -27,7 +27,7 @@ public class DHighlightingTokenSets {
     public static final TokenSet LINE_COMMENT = TokenSet.create(DlangTypes.LINE_COMMENT);
     public static final TokenSet LINE_DOCUMENTATION = TokenSet.create(DlangTypes.LINE_DOC);
     public static final TokenSet BLOCK_COMMENT = TokenSet.create(DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT);
-//    public static final TokenSet BLOCK_DOCUMENTATION = TokenSet.create(DlangTypes.DOC_COMMENT); // todo: get highlighting lexer working with multiline documentation comments
+    public static final TokenSet BLOCK_DOCUMENTATION = TokenSet.create(DlangTypes.BLOCK_DOC, DlangTypes.NESTING_BLOCK_DOC);
     public static final TokenSet MODULE_DEFINITION = TokenSet.create(DlangTypes.MODULE_DEFINITION);
     //public static final TokenSet IMPORT_DEFINITION = TokenSet.create(DlangTypes.IMPORT_BIND, DlangTypes.IMPORT_BIND); // todo: get highlighting lexer working with imports
     //public static final TokenSet FUNCTION_DEFINITION = TokenSet.create(DlangTypes.FUNCTION_DEFINITION); // todo: get highlighting lexer working with function definition

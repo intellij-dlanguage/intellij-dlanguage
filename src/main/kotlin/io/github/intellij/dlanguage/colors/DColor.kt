@@ -15,7 +15,7 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
     LINE_COMMENT("Line Comment", Default.LINE_COMMENT),
     LINE_DOCUMENTATION("Line Documentation", Default.DOC_COMMENT),
     BLOCK_COMMENT("Block Comment", Default.BLOCK_COMMENT),
-    //BLOCK_DOCUMENTATION("Ddoc comment", Default.DOC_COMMENT),
+    BLOCK_DOCUMENTATION("Ddoc comment", Default.DOC_COMMENT),
     AT_ATTRIBUTE("Attribute", Default.METADATA),
     CHAR("Char", Default.STRING),
     STRING_LITERAL("String Literal", Default.STRING),

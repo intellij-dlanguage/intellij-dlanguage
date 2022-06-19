@@ -240,8 +240,9 @@ public interface DlangTypes {
     DlangElementType STATIC_FOREACH_DECLARATION = new DlangElementType("STATIC_FOREACH_DECLARATION");
     DlangElementType STATIC_FOREACH_STATEMENT = new DlangElementType("STATIC_FOREACH_STATEMENT");
 
-//    IElementType DOC_COMMENT = new DlangTokenType("DOC_COMMENT");
     DlangTokenType LINE_DOC = new DlangTokenType("LINE_DOC");
+    DlangTokenType BLOCK_DOC = new DlangTokenType("BLOCK_DOC");
+    DlangTokenType NESTING_BLOCK_DOC = new DlangTokenType("NESTING_BLOCK_DOC");
     DlangTokenType ALTERNATE_WYSIWYG_STRING = new DlangTokenType("ALTERNATE_WYSIWYG_STRING");
     DlangTokenType BLOCK_COMMENT = new DlangTokenType("BLOCK_COMMENT");
     DlangTokenType CHARACTER_LITERAL = new DlangTokenType("CHARACTER_LITERAL");

@@ -1,4 +1,0 @@
-/*
- multiline comment
- is here
- */

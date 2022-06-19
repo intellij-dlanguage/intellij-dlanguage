@@ -9,7 +9,7 @@ import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 %{
 
   private int nestedCommentDepth = 0;
-  private int blockCommentDepth = 0;
+  private int nestedDocDepth = 0;
 
   public DHighlightingLexer() {
     this((java.io.Reader)null);
@@ -315,14 +315,43 @@ OPERATOR = (":"    |
 
 FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 
+
+BLOCK_DOC_START = "/**"
+BLOCK_DOC_END = "*/"
+
+NESTING_BLOCK_DOC_START = "/++"
+NESTING_BLOCK_DOC_END = "+/"
+
 %state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT MODULE_VALUE FUNCTION_VALUE
-/*DOC_COMMENT_CONTENT */
+%state NESTING_DOC_CONTENT, BLOCK_DOC_CONTENT
 
 
 %%
 
 <YYINITIAL> {WHITE_SPACE_CHAR}+ { return com.intellij.psi.TokenType.WHITE_SPACE; }
 <YYINITIAL> {NEW_LINE}+         { return com.intellij.psi.TokenType.WHITE_SPACE; }
+
+<YYINITIAL> {NESTING_BLOCK_COMMENT_START}{NESTING_BLOCK_COMMENT_END} {
+    // Match this one before to prevent /++/ being consited as doc
+    return NESTING_BLOCK_COMMENT;
+}
+
+<YYINITIAL> {NESTING_BLOCK_DOC_START} {
+    yybegin(NESTING_DOC_CONTENT);
+    nestedDocDepth = 1;
+    return DlangTypes.NESTING_BLOCK_DOC;
+}
+
+<YYINITIAL> {BLOCK_COMMENT_START}{BLOCK_COMMENT_END} {
+    // Match this one before to prevent /**/ being consited as doc
+    return DlangTypes.BLOCK_COMMENT;
+}
+
+<YYINITIAL> {BLOCK_DOC_START} {
+          yybegin(BLOCK_DOC_CONTENT);
+          return DlangTypes.BLOCK_DOC;
+      }
+
 
 <YYINITIAL> {NESTING_BLOCK_COMMENT_START} {
 		yybegin(NESTING_COMMENT_CONTENT);
@@ -335,11 +364,6 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 		return DlangTypes.BLOCK_COMMENT;
 	}
 
-//<YYINITIAL> {DOC_COMMENT_START} {
-//		yybegin(DOC_COMMENT_CONTENT);
-//		blockCommentDepth = 1;
-//		return DlangTypes.DOC_COMMENT;
-//	}
 
 //<YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
 
@@ -376,23 +400,39 @@ FUNCTION_DEFINITION = {ID}\(.*\)([^;]|[\s]*|[\r]*|[\n]*)
 	[^/*\n]+	{return DlangTypes.BLOCK_COMMENT;}
 }
 
-//<DOC_COMMENT_CONTENT> {
-//	{DOC_COMMENT_START}	{
-//		blockCommentDepth += 1;
-//		return DlangTypes.DOC_COMMENT;
-//	}
-//
-//	\/? {DOC_COMMENT_END}	{
-//		blockCommentDepth -= 1;
-//		if(blockCommentDepth == 0) {
-//			yybegin(YYINITIAL); //Exit nesting comment block
-//		}
-//		return DlangTypes.DOC_COMMENT;
-//	}
-//	\/\/        {return DlangTypes.DOC_COMMENT;}
-//	\n|\/|\*	{return DlangTypes.DOC_COMMENT;}
-//	[^/**\n]+	{return DlangTypes.DOC_COMMENT;}
-//}
+
+<NESTING_DOC_CONTENT> {
+	{NESTING_BLOCK_DOC_START}	{
+		nestedDocDepth += 1;
+		return DlangTypes.NESTING_BLOCK_DOC;
+	}
+
+	\/? {NESTING_BLOCK_DOC_END}	{
+		nestedDocDepth -= 1;
+        assert(nestedDocDepth >= 0);
+		if(nestedDocDepth == 0) {
+			yybegin(YYINITIAL); //Exit nesting doc block
+		}
+		return DlangTypes.NESTING_BLOCK_DOC;
+	}
+	\/\/        {return DlangTypes.NESTING_BLOCK_DOC;}
+	\n|\/|\+	{return DlangTypes.NESTING_BLOCK_DOC;}
+	[^/+\n]+	{return DlangTypes.NESTING_BLOCK_DOC;}
+}
+
+<BLOCK_DOC_CONTENT> {
+	{BLOCK_DOC_START}	{
+		return DlangTypes.BLOCK_DOC;
+	}
+
+	\/? {BLOCK_DOC_END}	{
+		yybegin(YYINITIAL);
+		return DlangTypes.BLOCK_DOC;
+	}
+	\/\/        {return DlangTypes.BLOCK_DOC;}
+	\n|\/|\*	{return DlangTypes.BLOCK_DOC;}
+	[^/*\n]+	{return DlangTypes.BLOCK_DOC;}
+}
 
 // module import
 <YYINITIAL> module {

@@ -104,7 +104,7 @@ public class DlangHighlightingLexerTest extends DHighlightingLexerTestBase {
     public void testcomment_doc_multi() { doTest(true, true); }
     public void testcomment_doc_nested() { doTest(true, true); }
     public void testcomment_line() { doTest(true, true); }
-    public void testcomment_mulit() { doTest(true, true); }
+    public void testcomment_multi() { doTest(true, true); }
     public void testcomment_nested() { doTest(true, true); }
 
     // floats

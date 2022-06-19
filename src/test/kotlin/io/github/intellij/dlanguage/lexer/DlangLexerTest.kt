@@ -96,11 +96,11 @@ class DlangLexerTest : DlangLexerTestBase("lexer") {
 
     // comments
     fun testcomment_line() = doTest()
-    //    public void testcomment_doc_line()   doTestModule();
-    //    public void testcomment_doc_multi()   doTestModule();
-    //    public void testcomment_doc_nested()   doTestModule();
-    //    public void testcomment_mulit()   doTestModule();
-    //    public void testcomment_nested()   doTestModule();
+    fun testcomment_doc_line() = doTest()
+    fun testcomment_doc_multi() = doTest()
+    fun testcomment_doc_nested() = doTest()
+    fun testcomment_multi() = doTest()
+    fun testcomment_nested() = doTest()
 
 
     // floats

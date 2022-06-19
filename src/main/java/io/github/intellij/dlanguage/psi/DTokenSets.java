@@ -11,6 +11,10 @@ public class DTokenSets {
 
     public static final TokenSet BLOCK_COMMENTS = TokenSet.create(DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT);
 
+    public static final TokenSet LINE_DOCS = TokenSet.create(DlangTypes.LINE_DOC);
+
+    public static final TokenSet BLOCK_DOCS = TokenSet.create(DlangTypes.BLOCK_DOC, DlangTypes.NESTING_BLOCK_DOC);
+
     public static final TokenSet STRING_LITERALS = TokenSet.create(DlangTypes.DOUBLE_QUOTED_STRING,
         DlangTypes.KW_CHAR,
         DlangTypes.KW_DCHAR,
