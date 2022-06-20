@@ -9365,7 +9365,7 @@ class DLangParser {
         }
 
         final IElementType[] matchingTypes = IElementType.enumerate(
-            (IElementType type) -> type instanceof DlangTokenType && ((DlangTokenType) type).getDebugName().equals(tok)
+            (IElementType type) -> type instanceof DlangTokenType && ((DlangTokenType)type).getName().equals(tok)
         );
 
         if (matchingTypes.length != 1) {

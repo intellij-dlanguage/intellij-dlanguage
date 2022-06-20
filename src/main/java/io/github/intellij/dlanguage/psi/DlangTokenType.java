@@ -8,11 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class DlangTokenType extends IElementType {
 
-    private final String debugName;
+    private final String name;
 
     public DlangTokenType(@NotNull @NonNls final String debugName) {
         super(debugName, DLanguage.INSTANCE);
-        this.debugName = debugName;
+        this.name = debugName;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class DlangTokenType extends IElementType {
         return "DlangTokenType." + super.toString();
     }
 
-    public String getDebugName() {
-        return debugName;
+    public String getName() {
+        return name;
     }
 }
