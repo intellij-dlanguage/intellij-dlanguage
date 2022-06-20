@@ -172,7 +172,6 @@ NESTING_BLOCK_DOC_END = "+/"
 <YYINITIAL> {NESTING_BLOCK_DOC_START} {
     yybegin(NESTING_DOC_CONTENT);
     nestedDocDepth = 1;
-    return DlangTypes.NESTING_BLOCK_DOC;
 }
 
 <YYINITIAL> {BLOCK_COMMENT_START}{BLOCK_COMMENT_END} {
@@ -182,18 +181,15 @@ NESTING_BLOCK_DOC_END = "+/"
 
 <YYINITIAL> {BLOCK_DOC_START} {
           yybegin(BLOCK_DOC_CONTENT);
-          return DlangTypes.BLOCK_DOC;
       }
 
 <YYINITIAL> {NESTING_BLOCK_COMMENT_START} {
     yybegin(NESTING_COMMENT_CONTENT);
     nestedCommentDepth = 1;
-    return DlangTypes.NESTING_BLOCK_COMMENT;
 }
 
 <YYINITIAL> {BLOCK_COMMENT_START} {
           yybegin(BLOCK_COMMENT_CONTENT);
-          return DlangTypes.BLOCK_COMMENT;
       }
 
 <YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
@@ -210,40 +206,36 @@ NESTING_BLOCK_DOC_END = "+/"
 <NESTING_COMMENT_CONTENT> {
     {NESTING_BLOCK_COMMENT_START} {
         nestedCommentDepth += 1;
-        return DlangTypes.NESTING_BLOCK_COMMENT;
     }
 
     \/? {NESTING_BLOCK_COMMENT_END}	{
         nestedCommentDepth -= 1;
         assert(nestedCommentDepth >= 0);
         if(nestedCommentDepth == 0) {
-        yybegin(YYINITIAL); //Exit nesting comment block
+            yybegin(YYINITIAL); //Exit nesting comment block
+            return DlangTypes.NESTING_BLOCK_COMMENT;
         }
-        return DlangTypes.NESTING_BLOCK_COMMENT;
     }
-    \/\/        {return DlangTypes.NESTING_BLOCK_COMMENT;}
-    \n|\/|\+    {return DlangTypes.NESTING_BLOCK_COMMENT;}
-    [^/+\n]+    {return DlangTypes.NESTING_BLOCK_COMMENT;}
+    \/\/        {}
+    \n|\/|\+    {}
+    [^/+\n]+    {}
 }
 
 <BLOCK_COMMENT_CONTENT> {
-    {BLOCK_COMMENT_START} {
-       return DlangTypes.BLOCK_COMMENT;
-    }
+    {BLOCK_COMMENT_START} {}
 
     \/? {BLOCK_COMMENT_END} {
         yybegin(YYINITIAL);
         return DlangTypes.BLOCK_COMMENT;
     }
-    \/\/        {return DlangTypes.BLOCK_COMMENT;}
-    \n|\/|\*	{return DlangTypes.BLOCK_COMMENT;}
-    [^/*\n]+	{return DlangTypes.BLOCK_COMMENT;}
+    \/\/        {}
+    \n|\/|\*	{}
+    [^/*\n]+	{}
 }
 
 <NESTING_DOC_CONTENT> {
     {NESTING_BLOCK_DOC_START} {
         nestedDocDepth += 1;
-        return DlangTypes.NESTING_BLOCK_DOC;
     }
 
     \/? {NESTING_BLOCK_DOC_END} {
@@ -251,26 +243,25 @@ NESTING_BLOCK_DOC_END = "+/"
         assert(nestedDocDepth >= 0);
         if(nestedDocDepth == 0) {
             yybegin(YYINITIAL); //Exit nesting doc block
+            return DlangTypes.NESTING_BLOCK_DOC;
         }
-        return DlangTypes.NESTING_BLOCK_DOC;
     }
-    \/\/        {return DlangTypes.NESTING_BLOCK_DOC;}
-    \n|\/|\+    {return DlangTypes.NESTING_BLOCK_DOC;}
-    [^/+\n]+    {return DlangTypes.NESTING_BLOCK_DOC;}
+    \/\/        {}
+    \n|\/|\+    {}
+    [^/+\n]+    {}
 }
 
 <BLOCK_DOC_CONTENT> {
     {BLOCK_DOC_START} {
-       return DlangTypes.BLOCK_DOC;
     }
 
     \/? {BLOCK_DOC_END}	{
        yybegin(YYINITIAL);
        return DlangTypes.BLOCK_DOC;
     }
-    \/\/        {return DlangTypes.BLOCK_DOC;}
-    \n|\/|\*    {return DlangTypes.BLOCK_DOC;}
-    [^/*\n]+    {return DlangTypes.BLOCK_DOC;}
+    \/\/        {}
+    \n|\/|\*    {}
+    [^/*\n]+    {}
 }
 
 //todo add typedef

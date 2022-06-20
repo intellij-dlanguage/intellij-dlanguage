@@ -425,7 +425,8 @@ D Language File
                     PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
-    PsiComment(DlangTokenType.LINE_DOC)('/// Math class')
+    PsiElement(DlangTokenType.LINE_DOC)
+      PsiElement(DOC_DATA)('/// Math class')
     DLanguageClassDeclarationImpl(CLASS_DECLARATION)
       PsiElement(DlangTokenType.class)('class')
       INTERFACE_OR_CLASS
@@ -434,7 +435,8 @@ D Language File
         DLanguageStructBodyImpl(STRUCT_BODY)
           PsiElement(DlangTokenType.{)('{')
           DLanguageDeclarationImpl(DECLARATION)
-            PsiComment(DlangTokenType.LINE_DOC)('/// add function')
+            PsiElement(DlangTokenType.LINE_DOC)
+              PsiElement(DOC_DATA)('/// add function')
             DLanguageAttributeImpl(ATTRIBUTE)
               PsiElement(DlangTokenType.static)('static')
             FUNCTION_DECLARATION
@@ -490,7 +492,8 @@ D Language File
                               PsiElement(DlangTokenType.;)(';')
                     PsiElement(DlangTokenType.})('}')
           DLanguageDeclarationImpl(DECLARATION)
-            PsiComment(DlangTokenType.LINE_DOC)('///')
+            PsiElement(DlangTokenType.LINE_DOC)
+              PsiElement(DOC_DATA)('///')
             UNITTEST
               UNITTEST
                 PsiElement(DlangTokenType.unittest)('unittest')
@@ -543,7 +546,8 @@ D Language File
                   PsiElement(DlangTokenType.})('}')
           PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
-    PsiComment(DlangTokenType.LINE_DOC)('///')
+    PsiElement(DlangTokenType.LINE_DOC)
+      PsiElement(DOC_DATA)('///')
     UNITTEST
       UNITTEST
         PsiElement(DlangTokenType.unittest)('unittest')
@@ -620,7 +624,8 @@ D Language File
                     PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
-    PsiComment(DlangTokenType.LINE_DOC)('/// add function')
+    PsiElement(DlangTokenType.LINE_DOC)
+      PsiElement(DOC_DATA)('/// add function')
     FUNCTION_DECLARATION
       DLanguageTypeImpl(TYPE)
         DLanguageType_2Impl(TYPE_2)
@@ -674,7 +679,8 @@ D Language File
                       PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
-    PsiComment(DlangTokenType.LINE_DOC)('/// code sample generated')
+    PsiElement(DlangTokenType.LINE_DOC)
+      PsiElement(DOC_DATA)('/// code sample generated')
     UNITTEST
       UNITTEST
         PsiElement(DlangTokenType.unittest)('unittest')
@@ -726,7 +732,8 @@ D Language File
                     PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
-    PsiComment(DlangTokenType.LINE_DOC)('/// code sample not generated because the unittest is private')
+    PsiElement(DlangTokenType.LINE_DOC)
+      PsiElement(DOC_DATA)('/// code sample not generated because the unittest is private')
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.private)('private')
     UNITTEST
@@ -785,7 +792,8 @@ D Language File
         PsiElement(DlangTokenType.unittest)('unittest')
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
           PsiElement(DlangTokenType.{)('{')
-          PsiComment(DlangTokenType.LINE_DOC)('/// code sample not generated because the unittest isn't documented')
+          PsiElement(DlangTokenType.LINE_DOC)
+            PsiElement(DOC_DATA)('/// code sample not generated because the unittest isn't documented')
           DLanguageDeclarationsAndStatementsImpl(DECLARATIONS_AND_STATEMENTS)
             DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
               DLanguageStatementImpl(STATEMENT)
@@ -832,7 +840,8 @@ D Language File
                     PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
   DLanguageDeclarationImpl(DECLARATION)
-    PsiComment(DlangTokenType.LINE_DOC)('/// code sample generated, even if it only includes comments (or is empty)')
+    PsiElement(DlangTokenType.LINE_DOC)
+      PsiElement(DOC_DATA)('/// code sample generated, even if it only includes comments (or is empty)')
     UNITTEST
       UNITTEST
         PsiElement(DlangTokenType.unittest)('unittest')
