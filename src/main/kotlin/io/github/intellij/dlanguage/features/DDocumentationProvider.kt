@@ -4,19 +4,23 @@ import com.intellij.lang.documentation.AbstractDocumentationProvider
 import com.intellij.lang.documentation.DocumentationMarkup
 import com.intellij.lang.documentation.DocumentationProvider
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiManager
+import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
+import io.github.intellij.dlanguage.features.documentation.psi.DlangDocComment
+import io.github.intellij.dlanguage.psi.DLanguageDeclaration
+import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport
 import io.github.intellij.dlanguage.psi.references.DReference
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
+import java.util.function.Consumer
 
 /**
  * Created by francis on 7/18/2017.
  */
-class DDocumentationProvider : AbstractDocumentationProvider(), DocumentationProvider {
+class DDocumentationProvider : AbstractDocumentationProvider() {
 
     /**
      * Returns the text to show in the Ctrl-hover popup for the specified element.
@@ -51,6 +55,24 @@ class DDocumentationProvider : AbstractDocumentationProvider(), DocumentationPro
         }
 
         return emptyList()
+    }
+
+    @Suppress("UnstableApiUsage")
+    override fun collectDocComments(file: PsiFile, sink: Consumer<in PsiDocCommentBase>) {
+        if (file !is DlangFile) return
+        for (element in SyntaxTraverser.psiTraverser(file)) {
+            if (element is DlangDocComment) {
+                sink.accept(element)
+            }
+        }
+    }
+
+    @Suppress("UnstableApiUsage")
+    override fun generateRenderedDoc(comment: PsiDocCommentBase): String? {
+        if (comment !is DlangDocComment)
+            return super.generateRenderedDoc(comment)
+        // TODO generate HTML doc using parsed comment
+        return comment.text
     }
 
     /**
