@@ -132,6 +132,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testdeclaration_strings() {
+        doDlangParserTest(true, true);
+    }
+
     //  types
     public void testtype_arithmetic_conversion() {
         doDlangParserTest(true, true);

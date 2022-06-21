@@ -64,6 +64,7 @@ class DLangParser {
     private static final Token.IdType DOUBLE_QUOTED_STRING_TYPE = new Token.IdType(DOUBLE_QUOTED_STRING);
     private static final Token.IdType ALTERNATE_WYSIWYG_STRING_TYPE = new Token.IdType(ALTERNATE_WYSIWYG_STRING);
     private static final Token.IdType WYSIWYG_STRING_TYPE = new Token.IdType(WYSIWYG_STRING);
+    private static final Token.IdType DELIMITED_STRING_TYPE = new Token.IdType(DELIMITED_STRING);
     private static final Token.IdType TOKEN_STRING_TYPE = new Token.IdType(TOKEN_STRING);
 
     private static final HashMap<String, Token.IdType> tokenTypeIndex;
@@ -100,8 +101,9 @@ class DLangParser {
         tokenTypeIndex.put("ulongLiteral", INTEGER_LITERAL_TYPE);
         tokenTypeIndex.put("characterLiteral", CHARACTER_LITERAL_TYPE);
         tokenTypeIndex.put("stringLiteral", DOUBLE_QUOTED_STRING_TYPE);
-        tokenTypeIndex.put("dstringLiteral", ALTERNATE_WYSIWYG_STRING_TYPE); // todo: create an actual lexer entry for this
+        tokenTypeIndex.put("awstringLiteral", ALTERNATE_WYSIWYG_STRING_TYPE); // todo: create an actual lexer entry for this
         tokenTypeIndex.put("wstringLiteral", WYSIWYG_STRING_TYPE); // todo: create an actual lexer entry for this
+        tokenTypeIndex.put("dstringLiteral", DELIMITED_STRING_TYPE); // todo: create an actual lexer entry for this
         tokenTypeIndex.put("tokenstringLiteral", TOKEN_STRING_TYPE); // note has a special rule in advance to make up for the shortcomings of jflex. improve this todo
         tokenTypeIndex.put("typedef", ID_TYPE); // todo: create an actual lexer entry for this, could be the source of bugs
     }
@@ -111,9 +113,10 @@ class DLangParser {
     final int MAX_ERRORS = 200;
 
     private static final Token.IdType[] stringLiteralsArray = new IdType[] {
-        DOUBLE_QUOTED_STRING_TYPE,
         ALTERNATE_WYSIWYG_STRING_TYPE,
+        DOUBLE_QUOTED_STRING_TYPE,
         WYSIWYG_STRING_TYPE,
+        DELIMITED_STRING_TYPE,
         TOKEN_STRING_TYPE
     };
 
@@ -121,6 +124,7 @@ class DLangParser {
         ALTERNATE_WYSIWYG_STRING_TYPE,
         DOUBLE_QUOTED_STRING_TYPE,
         WYSIWYG_STRING_TYPE,
+        DELIMITED_STRING_TYPE,
         TOKEN_STRING_TYPE,
         CHARACTER_LITERAL_TYPE,
         tok("true"),
@@ -9392,28 +9396,13 @@ class DLangParser {
             );
         }
         Marker identifierMarker = null;
-        Marker tokenStringMarker = null;
         if (currentIs(tok("identifier"))) {
             identifierMarker = enter_section_(builder);
-        }
-        if (currentIs(tokenstringLiteralTok)) {
-            tokenStringMarker = enter_section_modified(builder);
         }
         builder.advanceLexer();
         index++;
         if (identifierMarker != null) {
             exit_section_(builder, identifierMarker, IDENTIFIER, true);
-        }
-        if (tokenStringMarker != null) {
-            while (builder.getTokenType().equals(TOKEN_STRING)) {
-                builder.advanceLexer();
-                index++;
-                if (builder.getTokenType() == null) {
-                    break;
-                }
-            }
-            exit_section_(builder, tokenStringMarker, STRING_LIT, true);
-            //todo this is not necessary in expect but may be necessary in the future.
         }
         return tokens[index - 1];
     }

@@ -11,6 +11,7 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
   private int nestedCommentDepth = 0;
   private int nestedDocDepth = 0;
   private int tokenStringDepth = 0;
+  private String stringDelimiter;
 
   public DlangLexer() {
     this((java.io.Reader)null);
@@ -59,13 +60,12 @@ NAMED_CHARACTER_ENTITY = "&" {ID} ";"
 WYSIWYG_STRING = "r"\" [^\"]* \" {STRING_POSTFIX}?
 ALTERNATE_WYSIWYG_STRING = ` [^`]* ` {STRING_POSTFIX}?
 DOUBLE_QUOTED_STRING = \" ( [^\\\"] |{ESCAPE_SEQUENCE})* \" {STRING_POSTFIX}?
-DELIMITED_STRING = ({DELIMITED_STRING_SQ_BR} | {DELIMITED_STRING_PARENTH}
-                  | {DELIMITED_STRING_ANGLE_PARENTH} | {DELIMITED_STRING_BRACE}) {STRING_POSTFIX}?
-
-DELIMITED_STRING_SQ_BR =         q\"\[ ([^\]] | \][^\"])* \]\"
-DELIMITED_STRING_PARENTH =       q\"\( ([^\)] | \)[^\"])* \)\"
-DELIMITED_STRING_ANGLE_PARENTH = q\"\< ([^\>] | \>[^\"])* \>\"
-DELIMITED_STRING_BRACE =         q\"\{ ([^}]  |  }[^\"])* }\"
+DELIMITED_STRING = q{DELIMITED_STRING_CONTENT} {STRING_POSTFIX}?
+DELIMITED_STRING_CONTENT = (\"\( ~(\)\")) | (\"\[ ~(\]\")) | (\"\{ ~(\}\")) | (\"\< ~(\>\")) |
+                            (\"{ID} {NEW_LINE} ~({NEW_LINE} {ID}\")) |
+                            // Note: spec are not clear for that, bellow tries to support what is known to be supported
+                            // TODO this is not an exhaustive list of supported delimiters, should find a way to support it
+                            (\"\/ ~(\/\")) | (\"\* ~(\*\")) | (\"\- ~(\-\")) | (\"\' ~(\'\"))
 
 TOKEN_STRING_START = q\{
 TOKEN_CLOSE_CURLY = \}
@@ -179,8 +179,8 @@ NESTING_BLOCK_DOC_END = "+/"
  {DOUBLE_QUOTED_STRING}     { return DOUBLE_QUOTED_STRING; }
  {WYSIWYG_STRING}           { return WYSIWYG_STRING; }
  {ALTERNATE_WYSIWYG_STRING} { return ALTERNATE_WYSIWYG_STRING; }
- {DOUBLE_QUOTED_STRING}     { return DOUBLE_QUOTED_STRING; }
  {DELIMITED_STRING}         { return DELIMITED_STRING; }
+ {DOUBLE_QUOTED_STRING}     { return DOUBLE_QUOTED_STRING; }
 
 //todo add typedef
 
@@ -401,8 +401,7 @@ NESTING_BLOCK_DOC_END = "+/"
     {TOKEN_STRING_START} {
         tokenStringDepth++;
     }
-    {TOKEN_STRING_CONTENT} {
-    }
+    {TOKEN_STRING_CONTENT} {}
 }
 
 

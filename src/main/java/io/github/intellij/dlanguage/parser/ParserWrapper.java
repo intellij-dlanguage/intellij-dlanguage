@@ -357,8 +357,6 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseStructMemberInitializer();
         } else if (type == DlangTypes.STRUCT_MEMBER_INITIALIZERS) {
             result = parser.parseStructMemberInitializers();
-        } else if (type == DlangTypes.STRING_LIT) {
-            result = false;
         } else if (type == DlangTypes.SWITCH_STATEMENT) {
             result = parser.parseSwitchStatement();
         } else if (type == DlangTypes.SYMBOL) {
