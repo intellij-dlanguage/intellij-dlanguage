@@ -27,17 +27,17 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
 WHITE_SPACE_CHAR = [\ \t\f]
 NEW_LINE = [\n\r]+
 
+
 LETTER = [:letter:]
 DIGIT = [:digit:]
 ID = (_|{LETTER}) (_|{DIGIT}|{LETTER})*
+
 
 LINE_COMMENT="//".*
 //BLOCK_COMMENT="/"\*(.|\n)*\*"/"
 
 BLOCK_COMMENT_START = "/*"
 BLOCK_COMMENT_END = "*/"
-
-SHEBANG = "#!" ([^\r\n])* (\r|\n|\r\n)?
 
 /* JFlex doesn't support recursive rules. So NESTING_BLOCK_COMMENT doesn't support nesting now. */
 NESTING_BLOCK_COMMENT_START = \/\+
@@ -46,6 +46,9 @@ NESTING_BLOCK_COMMENT_END = \+\/
 NESTING_BLOCK_COMMENT = "/+" {NESTING_BLOCK_COMMENT_CONTENT} "+/"
 NESTING_BLOCK_COMMENT_CONTENT = ( [^+] | "+"+ [^/] )*
 */
+
+
+SHEBANG = "#!" ([^\r\n])* (\r|\n|\r\n)?
 
 
 HEX_DIGIT = [0-9abcdefABCDEF]
@@ -80,6 +83,7 @@ ESCAPE_SEQUENCE_UNICODE = ("\\u" {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT}
               | ("\\U" {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT})
 
 CHARACTER_LITERAL = \' ( [^\r\n\t\f\\] | {ESCAPE_SEQUENCE} ) \'
+
 
 INTEGER_LITERAL = {INTEGER} {INTEGER_SUFFIX}?
 INTEGER = {DECIMAL_INTEGER} | {BINARY_INTEGER} | {HEXADECIMAL_INTEGER}
@@ -121,6 +125,7 @@ REAL_SUFFIX = L
 IMAGINARY_SUFFIX = i
 LEADING_DECIMAL = {DECIMAL_INTEGER} | (0 {DECIMAL_DIGITS_NO_SINGLE_US})
 
+
 LINE_DOC="///".*
 
 BLOCK_DOC_START = "/**"
@@ -134,8 +139,253 @@ NESTING_BLOCK_DOC_END = "+/"
 
 %%
 
-<YYINITIAL> {WHITE_SPACE_CHAR}+ { return com.intellij.psi.TokenType.WHITE_SPACE; }
-<YYINITIAL> {NEW_LINE}+         { return com.intellij.psi.TokenType.WHITE_SPACE; }
+<YYINITIAL> {
+ {WHITE_SPACE_CHAR}+       { return com.intellij.psi.TokenType.WHITE_SPACE; }
+ {NEW_LINE}+               { return com.intellij.psi.TokenType.WHITE_SPACE; }
+
+ {TOKEN_STRING_START} {
+    yybegin(TOKEN_STRING_CONTENT);
+    tokenStringDepth = 1;
+ }
+
+ {NESTING_BLOCK_COMMENT_START}{NESTING_BLOCK_COMMENT_END} {
+    // Match this one before to prevent /++/ being consited as doc
+    return NESTING_BLOCK_COMMENT;
+ }
+
+ {NESTING_BLOCK_DOC_START} {
+    yybegin(NESTING_DOC_CONTENT);
+    nestedDocDepth = 1;
+ }
+
+ {BLOCK_COMMENT_START}{BLOCK_COMMENT_END} {
+    // Match this one before to prevent /**/ being consited as doc
+    return DlangTypes.BLOCK_COMMENT;
+ }
+
+ {BLOCK_DOC_START}         {yybegin(BLOCK_DOC_CONTENT);}
+
+ {NESTING_BLOCK_COMMENT_START} {
+    yybegin(NESTING_COMMENT_CONTENT);
+    nestedCommentDepth = 1;
+ }
+
+ {BLOCK_COMMENT_START}      { yybegin(BLOCK_COMMENT_CONTENT);}
+
+ {CHARACTER_LITERAL}        { return CHARACTER_LITERAL; }
+ {INTEGER_LITERAL}          { return INTEGER_LITERAL; }
+ {INTEGER_LITERAL}/[^[\.[a-z][A-Z]]] { return INTEGER_LITERAL; }
+ {FLOAT_LITERAL}/[^[\.[a-z][A-Z]]]   {return FLOAT_LITERAL;}
+ {DOUBLE_QUOTED_STRING}     { return DOUBLE_QUOTED_STRING; }
+ {WYSIWYG_STRING}           { return WYSIWYG_STRING; }
+ {ALTERNATE_WYSIWYG_STRING} { return ALTERNATE_WYSIWYG_STRING; }
+ {DOUBLE_QUOTED_STRING}     { return DOUBLE_QUOTED_STRING; }
+ {DELIMITED_STRING}         { return DELIMITED_STRING; }
+
+//todo add typedef
+
+ "module"                   { return KW_MODULE; }
+ "import"                   { return KW_IMPORT; }
+ "static"                   { return KW_STATIC; }
+ "bool"                     { return KW_BOOL; }
+ "byte"                     { return KW_BYTE; }
+ "ubyte"                    { return KW_UBYTE; }
+ "short"                    { return KW_SHORT; }
+ "ushort"                   { return KW_USHORT; }
+ "int"                      { return KW_INT; }
+ "uint"                     { return KW_UINT; }
+ "long"                     { return KW_LONG; }
+ "ulong"                    { return KW_ULONG; }
+ "char"                     { return KW_CHAR; }
+ "wchar"                    { return KW_WCHAR; }
+ "dchar"                    { return KW_DCHAR; }
+ "float"                    { return KW_FLOAT; }
+ "double"                   { return KW_DOUBLE; }
+ "real"                     { return KW_REAL; }
+ "ifloat"                   { return KW_IFLOAT; }
+ "idouble"                  { return KW_IDOUBLE; }
+ "ireal"                    { return KW_IREAL; }
+ "cfloat"                   { return KW_CFLOAT; }
+ "cdouble"                  { return KW_CDOUBLE; }
+ "creal"                    { return KW_CREAL; }
+ "cent"                     { return KW_CENT; }
+ "ucent"                    { return KW_UCENT; }
+ "void"                     { return KW_VOID; }
+ "typeof"                   { return KW_TYPEOF; }
+ "const"                    { return KW_CONST; }
+ "immutable"                { return KW_IMMUTABLE; }
+ "shared"                   { return KW_SHARED; }
+ "inout"                    { return KW_INOUT; }
+ "delegate"                 { return KW_DELEGATE; }
+ "function"                 { return KW_FUNCTION; }
+ "nothrow"                  { return KW_NOTHROW; }
+ "pure"                     { return KW_PURE; }
+ "this"                     { return KW_THIS; }
+ "__FILE__"                 { return KW___FILE__; }
+ "__MODULE__"               { return KW___MODULE__; }
+ "__LINE__"                 { return KW___LINE__; }
+ "__FUNCTION__"             { return KW___FUNCTION__; }
+ "__PRETTY_FUNCTION__"      { return KW___PRETTY_FUNCTION__; }
+ "abstract"                 { return KW_ABSTRACT; }
+ "alias"                    { return KW_ALIAS; }
+ "auto"                     { return KW_AUTO; }
+ "deprecated"               { return KW_DEPRECATED; }
+ "enum"                     { return KW_ENUM; }
+ "extern"                   { return KW_EXTERN; }
+ "final"                    { return KW_FINAL; }
+ "override"                 { return KW_OVERRIDE; }
+ "__gshared"                { return KW___GSHARED; }
+ "scope"                    { return KW_SCOPE; }
+ "synchronized"             { return KW_SYNCHRONIZED; }
+ "return"                   { return KW_RETURN; }
+ "super"                    { return KW_SUPER; }
+ "align"                    { return KW_ALIGN; }
+ "pragma"                   { return KW_PRAGMA; }
+ "package"                  { return KW_PACKAGE; }
+ "private"                  { return KW_PRIVATE; }
+ "protected"                { return KW_PROTECTED; }
+ "public"                   { return KW_PUBLIC; }
+ "export"                   { return KW_EXPORT; }
+ "delete"                   { return KW_DELETE; }
+ "null"                     { return KW_NULL; }
+ "true"                     { return KW_TRUE; }
+ "false"                    { return KW_FALSE; }
+ "new"                      { return KW_NEW; }
+ "typeid"                   { return KW_TYPEID; }
+ "is"                       { return KW_IS; }
+// "!is"/[^a-z]               { return KW_NOT_IS; }
+ "struct"                   { return KW_STRUCT; }
+ "union"                    { return KW_UNION; }
+ "class"                    { return KW_CLASS; }
+ "interface"                { return KW_INTERFACE; }
+ "__parameters"             { return KW___PARAMETERS; }
+ "__DATE__"                 { return KW___DATE__; }
+ "__EOF__"                  { return KW___EOF__; }
+ "__FILE__"                 { return KW___FILE__; }
+ "__FILE_FULL_PATH__"       { return KW___FILE_FULL_PATH__; }
+ "__FUNCTION__"             { return KW___FUNCTION__; }
+ "__gshared"                { return KW___GSHARED; }
+ "__LINE__"                 { return KW___LINE__; }
+ "__MODULE__"               { return KW___MODULE__; }
+ "__parameters"             { return KW___PARAMETERS; }
+ "__PRETTY_FUNCTION__"      { return KW___PRETTY_FUNCTION__; }
+ "__TIME__"                 { return KW___TIME__; }
+ "__TIMESTAMP__"            { return KW___TIMESTAMP__; }
+ "__traits"                 { return KW___TRAITS; }
+ "__vector"                 { return KW___VECTOR; }
+ "__VENDOR__"               { return KW___VENDOR__; }
+ "__VERSION__"              { return KW___VERSION__; }
+ "in"                       { return KW_IN; }
+// "!in"/[^a-z]               { return KW_NOT_IN; }
+ "asm"                      { return KW_ASM; }
+ "assert"                   { return KW_ASSERT; }
+ "case"                     { return KW_CASE; }
+ "cast"                     { return KW_CAST; }
+ "ref"                      { return KW_REF; }
+ "break"                    { return KW_BREAK; }
+ "continue"                 { return KW_CONTINUE; }
+ "do"                       { return KW_DO; }
+ "else"                     { return KW_ELSE; }
+ "for"                      { return KW_FOR; }
+ "foreach"                  { return KW_FOREACH; }
+ "foreach_reverse"          { return KW_FOREACH_REVERSE; }
+ "goto"                     { return KW_GOTO; }
+ "if"                       { return KW_IF; }
+ "catch"                    { return KW_CATCH; }
+ "finally"                  { return KW_FINALLY; }
+ "switch"                   { return KW_SWITCH; }
+ "throw"                    { return KW_THROW; }
+ "try"                      { return KW_TRY; }
+ "default"                  { return KW_DEFAULT; }
+ "while"                    { return KW_WHILE; }
+ "with"                     { return KW_WITH; }
+ "version"                  { return KW_VERSION; }
+ "debug"                    { return KW_DEBUG; }
+ "mixin"                    { return KW_MIXIN; }
+ "invariant"                { return KW_INVARIANT; }
+ "template"                 { return KW_TEMPLATE; }
+ "lazy"                     { return KW_LAZY; }
+ "out"                      { return KW_OUT; }
+// "nogc"                     { return KW_NOGC; }//not a reserved word
+ "__traits"                 { return KW___TRAITS; }
+ "unittest"                 { return KW_UNITTEST; }
+ ";"                        { return OP_SCOLON; }
+ ":"                        { return OP_COLON; }
+ "="                        { return OP_EQ; }
+ ","                        { return OP_COMMA; }
+ "("                        { return OP_PAR_LEFT; }
+ ")"                        { return OP_PAR_RIGHT; }
+ "["                        { return OP_BRACKET_LEFT; }
+ "]"                        { return OP_BRACKET_RIGHT; }
+ "{"                        { return OP_BRACES_LEFT; }
+ "}"                        { return OP_BRACES_RIGHT; }
+ "*"                        { return OP_ASTERISK; }
+ ".."                       { return OP_DDOT; }
+ "..."                      { return OP_TRIPLEDOT; }
+ "@"                        { return OP_AT; }
+ "+="                       { return OP_PLUS_EQ; }
+ "-="                       { return OP_MINUS_EQ; }
+ "*="                       { return OP_MUL_EQ; }
+ "/="                       { return OP_DIV_EQ; }
+ "%="                       { return OP_MOD_EQ; }
+ "&="                       { return OP_AND_EQ; }
+ "|="                       { return OP_OR_EQ; }
+ "^="                       { return OP_XOR_EQ; }
+ "~="                       { return OP_TILDA_EQ; }
+ "<<="                      { return OP_SH_LEFT_EQ; }
+ ">>="                      { return OP_SH_RIGHT_EQ; }
+ ">>>="                     { return OP_USH_RIGHT_EQ; }
+ "^^="                      { return OP_POW_EQ; }
+ "?"                        { return OP_QUEST; }
+ "||"                       { return OP_BOOL_OR; }
+ "&&"                       { return OP_BOOL_AND; }
+ "|"                        { return OP_OR; }
+ "^"                        { return OP_XOR; }
+ "<<"                       { return OP_SH_LEFT; }
+ ">>"                       { return OP_SH_RIGHT; }
+ ">>>"                      { return OP_USH_RIGHT; }
+ "+"                        { return OP_PLUS; }
+ "-"                        { return OP_MINUS; }
+ "~"                        { return OP_TILDA; }
+ "/"                        { return OP_DIV; }
+ "%"                        { return OP_MOD; }
+ "&"                        { return OP_AND; }
+ "++"                       { return OP_PLUS_PLUS; }
+ "--"                       { return OP_MINUS_MINUS; }
+ "!"                        { return OP_NOT; }
+ "^^"                       { return OP_POW; }
+ "$"                        { return OP_DOLLAR; }
+ "=="                       { return OP_EQ_EQ; }
+ "!="                       { return OP_NOT_EQ; }
+ "<"                        { return OP_LESS; }
+ "<="                       { return OP_LESS_EQ; }
+ ">"                        { return OP_GT; }
+ ">="                       { return OP_GT_EQ; }
+ "!<>"                      { return OP_UNORD; }
+ "!<>="                     { return OP_UNORD_EQ; }
+ "<>"                       { return OP_LESS_GR; }
+ "<>="                      { return OP_LESS_GR_EQ; }
+ "!>"                       { return OP_NOT_GR; }
+ "!>="                      { return OP_NOT_GR_EQ; }
+ "!<"                       { return OP_NOT_LESS; }
+ "!<="                      { return OP_NOT_LESS_EQ; }
+ "=>"                       { return OP_LAMBDA_ARROW; }
+ "."                        { return OP_DOT; }
+ {ID}                       { return ID; }
+ {LINE_DOC}                 { return LINE_DOC; }
+ {LINE_COMMENT}             { return LINE_COMMENT; }
+ {SHEBANG}                  { return SHEBANG; }
+
+. { return com.intellij.psi.TokenType.BAD_CHARACTER; }
+
+}
+
+// States
+
+
+///////////////////////////////////////////
+// Strings
+///////////////////////////////////////////
 
 <TOKEN_STRING_CONTENT> {
     {TOKEN_OPEN_CURLY} {
@@ -154,48 +404,11 @@ NESTING_BLOCK_DOC_END = "+/"
     {TOKEN_STRING_CONTENT} {
     }
 }
-<YYINITIAL> {TOKEN_STRING_START} {
-    yybegin(TOKEN_STRING_CONTENT);
-    tokenStringDepth = 1;
-}
 
-<YYINITIAL> {NESTING_BLOCK_COMMENT_START}{NESTING_BLOCK_COMMENT_END} {
-    // Match this one before to prevent /++/ being consited as doc
-    return NESTING_BLOCK_COMMENT;
-}
 
-<YYINITIAL> {NESTING_BLOCK_DOC_START} {
-    yybegin(NESTING_DOC_CONTENT);
-    nestedDocDepth = 1;
-}
-
-<YYINITIAL> {BLOCK_COMMENT_START}{BLOCK_COMMENT_END} {
-    // Match this one before to prevent /**/ being consited as doc
-    return DlangTypes.BLOCK_COMMENT;
-}
-
-<YYINITIAL> {BLOCK_DOC_START} {
-          yybegin(BLOCK_DOC_CONTENT);
-      }
-
-<YYINITIAL> {NESTING_BLOCK_COMMENT_START} {
-    yybegin(NESTING_COMMENT_CONTENT);
-    nestedCommentDepth = 1;
-}
-
-<YYINITIAL> {BLOCK_COMMENT_START} {
-          yybegin(BLOCK_COMMENT_CONTENT);
-      }
-
-<YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
-<YYINITIAL> {INTEGER_LITERAL} { return INTEGER_LITERAL; }
-<YYINITIAL> {INTEGER_LITERAL}/[^[\.[a-z][A-Z]]] { return INTEGER_LITERAL; }
-<YYINITIAL> {FLOAT_LITERAL}/[^[\.[a-z][A-Z]]] {return FLOAT_LITERAL;}
-<YYINITIAL> {DOUBLE_QUOTED_STRING} { return DOUBLE_QUOTED_STRING; }
-<YYINITIAL> {WYSIWYG_STRING} { return WYSIWYG_STRING; }
-<YYINITIAL> {ALTERNATE_WYSIWYG_STRING} { return ALTERNATE_WYSIWYG_STRING; }
-<YYINITIAL> {DOUBLE_QUOTED_STRING} { return DOUBLE_QUOTED_STRING; }
-<YYINITIAL> {DELIMITED_STRING} { return DELIMITED_STRING; }
+///////////////////////////////////////////
+// Comments
+///////////////////////////////////////////
 
 <NESTING_COMMENT_CONTENT> {
     {NESTING_BLOCK_COMMENT_START} {
@@ -227,6 +440,10 @@ NESTING_BLOCK_DOC_END = "+/"
     [^/*\n]+	{}
 }
 
+///////////////////////////////////////////
+// Documentation
+///////////////////////////////////////////
+
 <NESTING_DOC_CONTENT> {
     {NESTING_BLOCK_DOC_START} {
         nestedDocDepth += 1;
@@ -257,200 +474,3 @@ NESTING_BLOCK_DOC_END = "+/"
     \n|\/|\*    {}
     [^/*\n]+    {}
 }
-
-//todo add typedef
-
-<YYINITIAL> "module"                   { return KW_MODULE; }
-<YYINITIAL> "import"                   { return KW_IMPORT; }
-<YYINITIAL> "static"                   { return KW_STATIC; }
-<YYINITIAL> "bool"                     { return KW_BOOL; }
-<YYINITIAL> "byte"                     { return KW_BYTE; }
-<YYINITIAL> "ubyte"                    { return KW_UBYTE; }
-<YYINITIAL> "short"                    { return KW_SHORT; }
-<YYINITIAL> "ushort"                   { return KW_USHORT; }
-<YYINITIAL> "int"                      { return KW_INT; }
-<YYINITIAL> "uint"                     { return KW_UINT; }
-<YYINITIAL> "long"                     { return KW_LONG; }
-<YYINITIAL> "ulong"                    { return KW_ULONG; }
-<YYINITIAL> "char"                     { return KW_CHAR; }
-<YYINITIAL> "wchar"                    { return KW_WCHAR; }
-<YYINITIAL> "dchar"                    { return KW_DCHAR; }
-<YYINITIAL> "float"                    { return KW_FLOAT; }
-<YYINITIAL> "double"                   { return KW_DOUBLE; }
-<YYINITIAL> "real"                     { return KW_REAL; }
-<YYINITIAL> "ifloat"                   { return KW_IFLOAT; }
-<YYINITIAL> "idouble"                  { return KW_IDOUBLE; }
-<YYINITIAL> "ireal"                    { return KW_IREAL; }
-<YYINITIAL> "cfloat"                   { return KW_CFLOAT; }
-<YYINITIAL> "cdouble"                  { return KW_CDOUBLE; }
-<YYINITIAL> "creal"                    { return KW_CREAL; }
-<YYINITIAL> "cent"                     { return KW_CENT; }
-<YYINITIAL> "ucent"                    { return KW_UCENT; }
-<YYINITIAL> "void"                     { return KW_VOID; }
-<YYINITIAL> "typeof"                   { return KW_TYPEOF; }
-<YYINITIAL> "const"                    { return KW_CONST; }
-<YYINITIAL> "immutable"                { return KW_IMMUTABLE; }
-<YYINITIAL> "shared"                   { return KW_SHARED; }
-<YYINITIAL> "inout"                    { return KW_INOUT; }
-<YYINITIAL> "delegate"                 { return KW_DELEGATE; }
-<YYINITIAL> "function"                 { return KW_FUNCTION; }
-<YYINITIAL> "nothrow"                  { return KW_NOTHROW; }
-<YYINITIAL> "pure"                     { return KW_PURE; }
-<YYINITIAL> "this"                     { return KW_THIS; }
-<YYINITIAL> "__FILE__"                 { return KW___FILE__; }
-<YYINITIAL> "__MODULE__"               { return KW___MODULE__; }
-<YYINITIAL> "__LINE__"                 { return KW___LINE__; }
-<YYINITIAL> "__FUNCTION__"             { return KW___FUNCTION__; }
-<YYINITIAL> "__PRETTY_FUNCTION__"      { return KW___PRETTY_FUNCTION__; }
-<YYINITIAL> "abstract"                 { return KW_ABSTRACT; }
-<YYINITIAL> "alias"                    { return KW_ALIAS; }
-<YYINITIAL> "auto"                     { return KW_AUTO; }
-<YYINITIAL> "deprecated"               { return KW_DEPRECATED; }
-<YYINITIAL> "enum"                     { return KW_ENUM; }
-<YYINITIAL> "extern"                   { return KW_EXTERN; }
-<YYINITIAL> "final"                    { return KW_FINAL; }
-<YYINITIAL> "override"                 { return KW_OVERRIDE; }
-<YYINITIAL> "__gshared"                { return KW___GSHARED; }
-<YYINITIAL> "scope"                    { return KW_SCOPE; }
-<YYINITIAL> "synchronized"             { return KW_SYNCHRONIZED; }
-<YYINITIAL> "return"                   { return KW_RETURN; }
-<YYINITIAL> "super"                    { return KW_SUPER; }
-<YYINITIAL> "align"                    { return KW_ALIGN; }
-<YYINITIAL> "pragma"                   { return KW_PRAGMA; }
-<YYINITIAL> "package"                  { return KW_PACKAGE; }
-<YYINITIAL> "private"                  { return KW_PRIVATE; }
-<YYINITIAL> "protected"                { return KW_PROTECTED; }
-<YYINITIAL> "public"                   { return KW_PUBLIC; }
-<YYINITIAL> "export"                   { return KW_EXPORT; }
-<YYINITIAL> "delete"                   { return KW_DELETE; }
-<YYINITIAL> "null"                     { return KW_NULL; }
-<YYINITIAL> "true"                     { return KW_TRUE; }
-<YYINITIAL> "false"                    { return KW_FALSE; }
-<YYINITIAL> "new"                      { return KW_NEW; }
-<YYINITIAL> "typeid"                   { return KW_TYPEID; }
-<YYINITIAL> "is"                       { return KW_IS; }
-//<YYINITIAL> "!is"/[^a-z]               { return KW_NOT_IS; }
-<YYINITIAL> "struct"                   { return KW_STRUCT; }
-<YYINITIAL> "union"                    { return KW_UNION; }
-<YYINITIAL> "class"                    { return KW_CLASS; }
-<YYINITIAL> "interface"                { return KW_INTERFACE; }
-<YYINITIAL> "__parameters"             { return KW___PARAMETERS; }
-<YYINITIAL> "__DATE__"                 { return KW___DATE__; }
-<YYINITIAL> "__EOF__"                  { return KW___EOF__; }
-<YYINITIAL> "__FILE__"                 { return KW___FILE__; }
-<YYINITIAL> "__FILE_FULL_PATH__"       { return KW___FILE_FULL_PATH__; }
-<YYINITIAL> "__FUNCTION__"             { return KW___FUNCTION__; }
-<YYINITIAL> "__gshared"                { return KW___GSHARED; }
-<YYINITIAL> "__LINE__"                 { return KW___LINE__; }
-<YYINITIAL> "__MODULE__"               { return KW___MODULE__; }
-<YYINITIAL> "__parameters"             { return KW___PARAMETERS; }
-<YYINITIAL> "__PRETTY_FUNCTION__"      { return KW___PRETTY_FUNCTION__; }
-<YYINITIAL> "__TIME__"                 { return KW___TIME__; }
-<YYINITIAL> "__TIMESTAMP__"            { return KW___TIMESTAMP__; }
-<YYINITIAL> "__traits"                 { return KW___TRAITS; }
-<YYINITIAL> "__vector"                 { return KW___VECTOR; }
-<YYINITIAL> "__VENDOR__"               { return KW___VENDOR__; }
-<YYINITIAL> "__VERSION__"              { return KW___VERSION__; }
-<YYINITIAL> "in"                       { return KW_IN; }
-//<YYINITIAL> "!in"/[^a-z]               { return KW_NOT_IN; }
-<YYINITIAL> "asm"                      { return KW_ASM; }
-<YYINITIAL> "assert"                   { return KW_ASSERT; }
-<YYINITIAL> "case"                     { return KW_CASE; }
-<YYINITIAL> "cast"                     { return KW_CAST; }
-<YYINITIAL> "ref"                      { return KW_REF; }
-<YYINITIAL> "break"                    { return KW_BREAK; }
-<YYINITIAL> "continue"                 { return KW_CONTINUE; }
-<YYINITIAL> "do"                       { return KW_DO; }
-<YYINITIAL> "else"                     { return KW_ELSE; }
-<YYINITIAL> "for"                      { return KW_FOR; }
-<YYINITIAL> "foreach"                  { return KW_FOREACH; }
-<YYINITIAL> "foreach_reverse"          { return KW_FOREACH_REVERSE; }
-<YYINITIAL> "goto"                     { return KW_GOTO; }
-<YYINITIAL> "if"                       { return KW_IF; }
-<YYINITIAL> "catch"                    { return KW_CATCH; }
-<YYINITIAL> "finally"                  { return KW_FINALLY; }
-<YYINITIAL> "switch"                   { return KW_SWITCH; }
-<YYINITIAL> "throw"                    { return KW_THROW; }
-<YYINITIAL> "try"                      { return KW_TRY; }
-<YYINITIAL> "default"                  { return KW_DEFAULT; }
-<YYINITIAL> "while"                    { return KW_WHILE; }
-<YYINITIAL> "with"                     { return KW_WITH; }
-<YYINITIAL> "version"                  { return KW_VERSION; }
-<YYINITIAL> "debug"                    { return KW_DEBUG; }
-<YYINITIAL> "mixin"                    { return KW_MIXIN; }
-<YYINITIAL> "invariant"                { return KW_INVARIANT; }
-<YYINITIAL> "template"                 { return KW_TEMPLATE; }
-<YYINITIAL> "lazy"                     { return KW_LAZY; }
-<YYINITIAL> "out"                      { return KW_OUT; }
-//<YYINITIAL> "nogc"                     { return KW_NOGC; }//not a reserved word
-<YYINITIAL> "__traits"                 { return KW___TRAITS; }
-<YYINITIAL> "unittest"                 { return KW_UNITTEST; }
-<YYINITIAL> ";"                        { return OP_SCOLON; }
-<YYINITIAL> ":"                        { return OP_COLON; }
-<YYINITIAL> "="                        { return OP_EQ; }
-<YYINITIAL> ","                        { return OP_COMMA; }
-<YYINITIAL> "("                        { return OP_PAR_LEFT; }
-<YYINITIAL> ")"                        { return OP_PAR_RIGHT; }
-<YYINITIAL> "["                        { return OP_BRACKET_LEFT; }
-<YYINITIAL> "]"                        { return OP_BRACKET_RIGHT; }
-<YYINITIAL> "{"                        { return OP_BRACES_LEFT; }
-<YYINITIAL> "}"                        { return OP_BRACES_RIGHT; }
-<YYINITIAL> "*"                        { return OP_ASTERISK; }
-<YYINITIAL> ".."                       { return OP_DDOT; }
-<YYINITIAL> "..."                      { return OP_TRIPLEDOT; }
-<YYINITIAL> "@"                        { return OP_AT; }
-<YYINITIAL> "+="                       { return OP_PLUS_EQ; }
-<YYINITIAL> "-="                       { return OP_MINUS_EQ; }
-<YYINITIAL> "*="                       { return OP_MUL_EQ; }
-<YYINITIAL> "/="                       { return OP_DIV_EQ; }
-<YYINITIAL> "%="                       { return OP_MOD_EQ; }
-<YYINITIAL> "&="                       { return OP_AND_EQ; }
-<YYINITIAL> "|="                       { return OP_OR_EQ; }
-<YYINITIAL> "^="                       { return OP_XOR_EQ; }
-<YYINITIAL> "~="                       { return OP_TILDA_EQ; }
-<YYINITIAL> "<<="                      { return OP_SH_LEFT_EQ; }
-<YYINITIAL> ">>="                      { return OP_SH_RIGHT_EQ; }
-<YYINITIAL> ">>>="                     { return OP_USH_RIGHT_EQ; }
-<YYINITIAL> "^^="                      { return OP_POW_EQ; }
-<YYINITIAL> "?"                        { return OP_QUEST; }
-<YYINITIAL> "||"                       { return OP_BOOL_OR; }
-<YYINITIAL> "&&"                       { return OP_BOOL_AND; }
-<YYINITIAL> "|"                        { return OP_OR; }
-<YYINITIAL> "^"                        { return OP_XOR; }
-<YYINITIAL> "<<"                       { return OP_SH_LEFT; }
-<YYINITIAL> ">>"                       { return OP_SH_RIGHT; }
-<YYINITIAL> ">>>"                      { return OP_USH_RIGHT; }
-<YYINITIAL> "+"                        { return OP_PLUS; }
-<YYINITIAL> "-"                        { return OP_MINUS; }
-<YYINITIAL> "~"                        { return OP_TILDA; }
-<YYINITIAL> "/"                        { return OP_DIV; }
-<YYINITIAL> "%"                        { return OP_MOD; }
-<YYINITIAL> "&"                        { return OP_AND; }
-<YYINITIAL> "++"                       { return OP_PLUS_PLUS; }
-<YYINITIAL> "--"                       { return OP_MINUS_MINUS; }
-<YYINITIAL> "!"                        { return OP_NOT; }
-<YYINITIAL> "^^"                       { return OP_POW; }
-<YYINITIAL> "$"                        { return OP_DOLLAR; }
-<YYINITIAL> "=="                       { return OP_EQ_EQ; }
-<YYINITIAL> "!="                       { return OP_NOT_EQ; }
-<YYINITIAL> "<"                        { return OP_LESS; }
-<YYINITIAL> "<="                       { return OP_LESS_EQ; }
-<YYINITIAL> ">"                        { return OP_GT; }
-<YYINITIAL> ">="                       { return OP_GT_EQ; }
-<YYINITIAL> "!<>"                      { return OP_UNORD; }
-<YYINITIAL> "!<>="                     { return OP_UNORD_EQ; }
-<YYINITIAL> "<>"                       { return OP_LESS_GR; }
-<YYINITIAL> "<>="                      { return OP_LESS_GR_EQ; }
-<YYINITIAL> "!>"                       { return OP_NOT_GR; }
-<YYINITIAL> "!>="                      { return OP_NOT_GR_EQ; }
-<YYINITIAL> "!<"                       { return OP_NOT_LESS; }
-<YYINITIAL> "!<="                      { return OP_NOT_LESS_EQ; }
-<YYINITIAL> "=>"                       { return OP_LAMBDA_ARROW; }
-<YYINITIAL> "."                        { return OP_DOT; }
-<YYINITIAL> {ID}                       { return ID; }
-<YYINITIAL> {LINE_DOC}                 { return LINE_DOC; }
-<YYINITIAL> {LINE_COMMENT}             { return LINE_COMMENT; }
-<YYINITIAL> {SHEBANG}                  { return SHEBANG; }
-
-. { return com.intellij.psi.TokenType.BAD_CHARACTER; }
-
