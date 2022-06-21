@@ -118,7 +118,6 @@ class DlangLexerTest : DlangLexerTestBase("lexer") {
     // strings
     fun teststring_delim()   = doTest()
     fun teststring_dq()      = doTest()
-    fun teststring_hex()     = doTest()
     fun teststring_tokens()  = doTest()
     fun teststring_wysiwyg() = doTest()
 
