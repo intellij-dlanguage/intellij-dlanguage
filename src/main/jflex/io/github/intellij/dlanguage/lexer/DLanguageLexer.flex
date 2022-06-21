@@ -140,27 +140,23 @@ NESTING_BLOCK_DOC_END = "+/"
 <TOKEN_STRING_CONTENT> {
     {TOKEN_OPEN_CURLY} {
         tokenStringDepth++;
-         return DlangTypes.TOKEN_STRING;
     }
     {TOKEN_CLOSE_CURLY} {
         tokenStringDepth--;
         if(tokenStringDepth == 0){
             yybegin(YYINITIAL);
+            return DlangTypes.TOKEN_STRING;
         }
-        return DlangTypes.TOKEN_STRING;
     }
     {TOKEN_STRING_START} {
         tokenStringDepth++;
-        return DlangTypes.TOKEN_STRING;
     }
     {TOKEN_STRING_CONTENT} {
-        return DlangTypes.TOKEN_STRING;
     }
 }
 <YYINITIAL> {TOKEN_STRING_START} {
     yybegin(TOKEN_STRING_CONTENT);
     tokenStringDepth = 1;
-    return DlangTypes.TOKEN_STRING;
 }
 
 <YYINITIAL> {NESTING_BLOCK_COMMENT_START}{NESTING_BLOCK_COMMENT_END} {
