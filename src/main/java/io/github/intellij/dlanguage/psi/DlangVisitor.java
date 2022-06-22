@@ -927,10 +927,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitString(@NotNull final DLanguageStringImpl o) {
-        visitPsiElement(o);
-    }
-
     public void visitBuiltinType(@NotNull final DLanguageBuiltinTypeImpl o) {
         visitPsiElement(o);
     }

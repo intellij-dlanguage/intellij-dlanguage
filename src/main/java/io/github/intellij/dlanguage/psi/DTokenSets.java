@@ -24,7 +24,6 @@ public class DTokenSets {
 //            DlangTypes.STRING_LITERAL,
 //            DlangTypes.STRING_LITERALS,
         DlangTypes.STRING,
-        DlangTypes.HEX_STRING,
         DlangTypes.CHARACTER_LITERAL,
         DlangTypes.DELIMITED_STRING,
         DlangTypes.WYSIWYG_STRING,

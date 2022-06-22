@@ -198,7 +198,6 @@ public interface DlangTypes {
     DlangElementType STRUCT_INITIALIZER = new DlangElementType("STRUCT_INITIALIZER");
     DlangElementType STRUCT_MEMBER_INITIALIZER = new DlangElementType("STRUCT_MEMBER_INITIALIZER");
     DlangElementType STRUCT_MEMBER_INITIALIZERS = new DlangElementType("STRUCT_MEMBER_INITIALIZERS");
-    DlangElementType STRING_LIT = new DlangElementType("STRING_LIT");
     DlangElementType SWITCH_STATEMENT = new DlangElementType("SWITCH_STATEMENT");
     DlangElementType SYMBOL = new DlangElementType("SYMBOL");
     DlangElementType SYNCHRONIZED_STATEMENT = new DlangElementType("SYNCHRONIZED_STATEMENT");
@@ -250,7 +249,6 @@ public interface DlangTypes {
     DlangTokenType DELIMITED_STRING = new DlangTokenType("DELIMITED_STRING");
     DlangTokenType DOUBLE_QUOTED_STRING = new DlangTokenType("DOUBLE_QUOTED_STRING");
     DlangTokenType FLOAT_LITERAL = new DlangTokenType("FLOAT_LITERAL");
-    DlangTokenType HEX_STRING = new DlangTokenType("HEX_STRING");
     DlangTokenType ID = new DlangTokenType("ID");
     DlangTokenType INTEGER_LITERAL = new DlangTokenType("INTEGER_LITERAL");
     DlangTokenType KW_ABSTRACT = new DlangTokenType("abstract");
@@ -854,8 +852,6 @@ public interface DlangTypes {
                 return new DlangInterfaceOrClassImpl(node);
             } else if (type == INTERFACE_DECLARATION) {
                 return new DLanguageInterfaceDeclarationImpl(node);
-            } else if (type == STRING_LIT) {
-                return new DLanguageStringImpl(node);
             } else if (type == IF_CONDITION) {
                 return new DLanguageIfConditionImpl(node);
             } else if (type == BUILTIN_TYPE) {
