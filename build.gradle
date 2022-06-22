@@ -11,8 +11,8 @@ buildscript {
 plugins {
     id 'org.jetbrains.intellij' version '1.5.3'
     id 'org.jetbrains.kotlin.jvm' version '1.7.0'
-    id 'net.saliman.cobertura' version '4.0.0'
-    id 'com.github.kt3k.coveralls' version '2.10.2'
+//    id 'net.saliman.cobertura' version '4.0.0'
+//    id 'com.github.kt3k.coveralls' version '2.10.2'
     id 'org.jetbrains.grammarkit' version '2021.1.3'
 }
 
@@ -31,14 +31,14 @@ version = "${version}"
 
 apply plugin: 'kotlin'
 
-apply plugin: 'cobertura'
+//apply plugin: 'cobertura'
 
 apply plugin: 'org.jetbrains.grammarkit'
 
-cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
-cobertura.coverageSourceDirs = [sourceSets.main.java.srcDirs, sourceSets.main.kotlin.srcDirs, 'gen']
-cobertura.coverageEncoding = 'UTF-8'
-cobertura.coverageExcludes = [ '.*uk.co.cwspencer.*' ]
+// cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
+// cobertura.coverageSourceDirs = [sourceSets.main.java.srcDirs, sourceSets.main.kotlin.srcDirs, 'gen']
+// cobertura.coverageEncoding = 'UTF-8'
+// cobertura.coverageExcludes = [ '.*uk.co.cwspencer.*' ]
 
 
 
@@ -276,8 +276,8 @@ idea {
 compileKotlin {
     kotlinOptions {
         suppressWarnings = true
-        apiVersion = "1.5"
-        languageVersion = "1.5"
+        apiVersion = "1.6"
+        languageVersion = "1.6"
         jvmTarget = javaVersion
         freeCompilerArgs = [ '-Xjvm-default=enable' ]
     }
