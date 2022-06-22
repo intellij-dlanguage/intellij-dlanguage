@@ -259,6 +259,8 @@ dependencies {
     implementation project(':errorreporting')
     implementation project(':debugger')
 
+    implementation 'com.google.code.gson:gson:2.9.+' // used by dub parser
+
     testImplementation 'io.kotlintest:kotlintest:2+'
     testImplementation 'net.bytebuddy:byte-buddy:1.11.18' // workaround for failing to mock inline mocks
 }
