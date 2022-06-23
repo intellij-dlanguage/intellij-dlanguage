@@ -26,6 +26,7 @@ package uk.co.cwspencer.gdb.messages;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.text.StringUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.gdbmi.GdbMiList;
 import uk.co.cwspencer.gdb.gdbmi.GdbMiResult;
@@ -181,9 +182,9 @@ public class GdbMiMessageConverter {
      * @return The new object, or null if it could not be created.
      */
     @Nullable
-    static Object processObject(Class<?> clazz, List<GdbMiResult> results) {
+    static Object processObject(@NotNull final Class<?> clazz, List<GdbMiResult> results) {
         try {
-            Object object = clazz.newInstance();
+            Object object = clazz.getDeclaredConstructor().newInstance();
 
             // Populate the fields with data from the result
             final Field[] fields = clazz.getFields();

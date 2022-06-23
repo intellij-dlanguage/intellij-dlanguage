@@ -678,6 +678,10 @@ public class Gdb {
         }
     }
 
+    public boolean isRunning() {
+        return !this.m_stopping && this.m_process.isAlive();
+    }
+
     /**
      * Interface for callbacks for results from completed GDB commands.
      */

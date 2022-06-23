@@ -184,6 +184,11 @@ public class GdbDebugProcess extends XDebugProcess implements GdbListener {
         m_gdb.sendCommand(String.format("%s %s:%s", "-exec-until", position.getFile().getPath(), (position.getLine() + 1)));
     }
 
+    @Override
+    public boolean checkCanPerformCommands() {
+        return m_gdb.isRunning();
+    }
+
     @NotNull
     @Override
     public ExecutionConsole createConsole() {
