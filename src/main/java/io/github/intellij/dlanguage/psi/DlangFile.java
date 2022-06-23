@@ -150,9 +150,13 @@ public class DlangFile extends PsiFileBase implements DlangPsiFile {
     public PsiElement setName(@NotNull final String name) throws IncorrectOperationException {
         final DLanguageModuleDeclaration module = findChildByClass(DLanguageModuleDeclaration.class);
         final String extensionLessName = removeEnd(name, ".d");
+        final String packageName = getPackageName();
+        String newModuleName = extensionLessName;
+        if (packageName != null && !packageName.isEmpty())
+            newModuleName = packageName + "." + extensionLessName;
 
         if (module != null) {
-            module.setName(extensionLessName);
+            module.setName(newModuleName);
         }
 
         return super.setName(extensionLessName + ".d");

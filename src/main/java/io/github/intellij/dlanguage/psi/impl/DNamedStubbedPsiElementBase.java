@@ -6,6 +6,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.util.IncorrectOperationException;
 import io.github.intellij.dlanguage.psi.DlangItemPresentation;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
@@ -47,7 +48,7 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
     @NotNull
     public PsiElement setName(@NotNull final String newName) {
         if (getNameIdentifier() == null) {
-            throw new IllegalStateException("Cannot rename. Identifier was Null");
+            throw new IncorrectOperationException("Cannot rename. Identifier was Null");
         }
         return getNameIdentifier().setName(newName);
     }

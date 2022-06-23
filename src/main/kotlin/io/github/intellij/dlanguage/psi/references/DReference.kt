@@ -4,6 +4,7 @@ import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.TextRange
+import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.*
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubIndex
@@ -261,13 +262,16 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
      * Called when renaming refactoring tries to rename the Psi tree.
      */
     @Throws(IncorrectOperationException::class)
-    override fun handleElementRename(newName: String): PsiElement {
+    override fun handleElementRename(newElementName: String): PsiElement {
         val element: PsiElement?
         if (myElement is DlangIdentifier) {
+            // Renaming files is tricky: we don't want to change `RenamePsiFileProcessor`,
+            // If it’s end by `.d` then it’s because we renamed a file
+            val newName = StringUtil.trimEnd(newElementName, ".d")
             element = myElement.setName(newName)
             return element
         }
-        return super.handleElementRename(newName)
+        return super.handleElementRename(newElementName)
     }
 
     companion object {

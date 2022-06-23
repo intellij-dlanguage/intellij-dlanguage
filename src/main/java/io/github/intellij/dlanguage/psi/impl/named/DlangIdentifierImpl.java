@@ -81,8 +81,7 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                 "Something went horribly wrong while renaming. Target nane:" + newName + " Project"
                     + getProject().toString() + " e:" + e);
         }
-        replace(e);
-        return this;
+        return replace(e);
     }
 
     @NotNull
