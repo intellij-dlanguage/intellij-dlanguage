@@ -10,6 +10,8 @@ import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
   private int nestedCommentDepth = 0;
   private int nestedDocDepth = 0;
+  private char stringDelimiter;
+  private boolean stringDelimiterClosed;
 
   public DHighlightingLexer() {
     this((java.io.Reader)null);
@@ -61,10 +63,8 @@ ALTERNATE_WYSIWYG_STRING = ` [^`]* ` {STRING_POSTFIX}?
 DOUBLE_QUOTED_STRING = \" ( [^\\\"] |{ESCAPE_SEQUENCE})* \" {STRING_POSTFIX}?
 DELIMITED_STRING = q{DELIMITED_STRING_CONTENT} {STRING_POSTFIX}?
 DELIMITED_STRING_CONTENT = (\"\( ~(\)\")) | (\"\[ ~(\]\")) | (\"\{ ~(\}\")) | (\"\< ~(\>\")) |
-                   (\"{ID} {NEW_LINE} ~({NEW_LINE} {ID}\")) |
-                   // Note: spec are not clear for that, bellow tries to support what is known to be supported
-                   // TODO this is not an exhaustive list of supported delimiters, should find a way to support it
-                   (\"\/ ~(\/\")) | (\"\* ~(\*\")) | (\"\- ~(\-\")) | (\"\' ~(\'\"))
+                   (\"{ID} {NEW_LINE} ~({NEW_LINE} {ID}\"))
+ALTERNATIVE_DELIMITED_STRING_START = q\"[^[:letter:][:number:]_[" "]]
 
 
 STRING_POSTFIX = [cwd]
@@ -320,7 +320,7 @@ NESTING_BLOCK_DOC_START = "/++"
 NESTING_BLOCK_DOC_END = "+/"
 
 %state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT MODULE_VALUE FUNCTION_VALUE
-%state NESTING_DOC_CONTENT, BLOCK_DOC_CONTENT
+%state NESTING_DOC_CONTENT, BLOCK_DOC_CONTENT, ALTERNATE_DELIMITED_STRING
 
 
 %%
@@ -364,6 +364,40 @@ NESTING_BLOCK_DOC_END = "+/"
 
 //<YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
 
+
+<ALTERNATE_DELIMITED_STRING> {
+    {STRING_POSTFIX} {
+          if (stringDelimiterClosed) {
+              yybegin(YYINITIAL);
+              return STRING;
+          }
+      }
+
+    \" {
+          if (yycharat(yylength()-2) == stringDelimiter) {
+              stringDelimiterClosed = true;
+          }
+      }
+
+    <<EOF>>     {
+          if (stringDelimiterClosed) {
+              yypushback(1);
+              yybegin(YYINITIAL);
+              return STRING;
+          }
+          yybegin(YYINITIAL);
+          return com.intellij.psi.TokenType.BAD_CHARACTER;
+      }
+
+    [^] {
+          if(stringDelimiterClosed) {
+              yypushback(1);
+              yybegin(YYINITIAL);
+              return STRING;
+          }
+      }
+
+}
 
 <NESTING_COMMENT_CONTENT> {
 	{NESTING_BLOCK_COMMENT_START}	{
@@ -502,6 +536,12 @@ NESTING_BLOCK_DOC_END = "+/"
 <YYINITIAL> {SEMICOLON} { return SEMICOLON; }
 <YYINITIAL> {DOT} { return DOT; }
 <YYINITIAL> {AT_ATTRIBUTE} { return AT_ATTRIBUTE; }
+
+<YYINITIAL> {ALTERNATIVE_DELIMITED_STRING_START} {
+    stringDelimiter = yycharat(yylength()-1);
+    stringDelimiterClosed = false;
+    yybegin(ALTERNATE_DELIMITED_STRING);
+  }
 
 
 <YYINITIAL> {ID}                       { return ID; }
