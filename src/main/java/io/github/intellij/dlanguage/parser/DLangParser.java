@@ -6893,6 +6893,11 @@ class DLangParser {
      */
     boolean parseStatementNoCaseNoDefault() {
         final Marker m = enter_section_modified(builder);
+        if (!moreTokens()) {
+            error("Expected statement instead of EOF");
+            exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
+            return false;
+        }
         final Token.IdType i = current().type;
         if (i.equals(tok("{"))) {
             if (!parseBlockStatement()) {
