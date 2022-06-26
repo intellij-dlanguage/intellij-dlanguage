@@ -1094,6 +1094,11 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    // dmd fail_compilation test file
+    public void teste15876_1() {
+        doDlangParserTest(true, false);
+    }
+
 // standard library
 
     public void teststdio() {
