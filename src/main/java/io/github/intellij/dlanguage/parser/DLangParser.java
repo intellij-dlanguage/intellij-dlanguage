@@ -5786,6 +5786,7 @@ class DLangParser {
                     cleanup(m, NON_VOID_INITIALIZER);
                     return false;
                 }
+                assignExpressionParsed = true;
             } else {
                 assignExpressionParsed = true;
                 assert (currentIs(tok("{")));
