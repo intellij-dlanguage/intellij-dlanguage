@@ -188,11 +188,15 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
                 lastTrailing = nextDecl
             }
 
+            // Don’t fold 1 line imports
+            if (lastTrailing == decl)
+                return
+
             val startOffset = decl.importDeclaration?.kW_IMPORT?.textRange?.endOffset ?: return
             val endOffset = lastTrailing.textRange.endOffset
             if (startOffset + 1 >= endOffset) return
             val range = TextRange(startOffset + 1, endOffset)
-            assert(range.length != 0)
+            assert(!range.isEmpty)
             descriptors += FoldingDescriptor(importDecl, range)
         }
 
