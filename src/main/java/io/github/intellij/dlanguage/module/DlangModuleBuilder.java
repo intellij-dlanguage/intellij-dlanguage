@@ -169,11 +169,7 @@ public class DlangModuleBuilder extends ModuleBuilder {
         if (sourcePaths == null) {
             @NonNls final String path = getContentEntryPath() + File.separator + "source";
 
-            if(new File(path).mkdirs()) {
-                LOG.info("Create source folder: " + path);
-            } else {
-                LOG.warn("Failed to create source folder: " + path);
-            }
+            createSourceDirIfNotExists(path);
 
             sourcePaths = Collections.singletonList(path);
         }
@@ -204,5 +200,17 @@ public class DlangModuleBuilder extends ModuleBuilder {
                 moduleBuilder.setModuleJdk(getJdk());
             }
         };
+    }
+
+    private void createSourceDirIfNotExists(@NonNls final String path) {
+        final File sourceDir = new File(path);
+
+        if(!sourceDir.exists()) {
+            if(sourceDir.mkdirs()) {
+                LOG.info("Create source folder: " + path);
+            } else {
+                LOG.warn("Failed to create source folder: " + path);
+            }
+        }
     }
 }
