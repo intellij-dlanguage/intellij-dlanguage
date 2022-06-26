@@ -153,10 +153,14 @@ BASIC_TYPES = ( bool |
                 creal |
                 auto |
                 enum |
-                string |
-                void )
+                void)
+ALIASED_TYPES = (string |
+                size_t |
+                ptrdiff_t |
+                noreturn)
 
 KEYWORD = ({BASIC_TYPES} |
+           {ALIASED_TYPES} |
            module |
            import |
            static |
