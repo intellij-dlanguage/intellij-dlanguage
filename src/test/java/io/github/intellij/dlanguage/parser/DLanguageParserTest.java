@@ -339,6 +339,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testexpressions_function_literal3() {
+        doDlangParserTest(true, true);
+    }
+
     public void testexpressions_import() {
         doDlangParserTest(true, true);
     }
