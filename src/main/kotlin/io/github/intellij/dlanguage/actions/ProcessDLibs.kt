@@ -32,7 +32,6 @@ import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
-import com.intellij.ui.components.JBList
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.library.DlangLibraryType
 import io.github.intellij.dlanguage.module.DlangModuleType
@@ -172,11 +171,17 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
         }
 
         private fun showModuleChoicePopup(e: AnActionEvent, project: Project, modules: Collection<Module>) {
-            val list = JBList(JBList.createDefaultListModel<Module>(*modules.toTypedArray()))
             val popup = JBPopupFactory.getInstance()
-                .createListPopupBuilder(list)
-                .setTitle("Process D libraries for module")
-                .setItemChoosenCallback { processDLibs(AnAction.getEventProject(e), list.selectedValue as Module) }
+                .createPopupChooserBuilder(modules.toList())
+                .setTitle("Select Module to Import Dependencies")
+                .setCancelKeyEnabled(true) // doesn't seem to have an affect
+                .setCancelOnWindowDeactivation(true)
+                .setCancelOnClickOutside(true)
+                .setItemChosenCallback { module -> processDLibs(AnAction.getEventProject(e), module) }
+                .setCancelCallback {
+                    LOG.warn("module selection popup for processing D libraries was cancelled")
+                    return@setCancelCallback true
+                }
                 .createPopup()
             popup.showCenteredInCurrentWindow(project)
         }
