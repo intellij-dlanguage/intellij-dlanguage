@@ -193,11 +193,11 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
 
 
     private static class DubInitListener extends ProcessAdapter {
-        private final StringBuilder builder = new StringBuilder();
+        private final StringBuffer buffer = new StringBuffer(); // use StringBuffer because StringBuilder is not thread safe
         private final AtomicBoolean errors = new AtomicBoolean();
 
         String getOutput() {
-            return builder.toString();
+            return buffer.toString();
         }
 
         boolean hasErrors() {
@@ -209,7 +209,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
             if (ProcessOutputTypes.STDERR.equals(outputType)) {
                 errors.set(true);
             }
-            builder.append(LocalTime.now()).append(" [").append(outputType).append("] ").append(event.getText());
+            buffer.append(LocalTime.now()).append(" [").append(outputType).append("] ").append(event.getText());
         }
     }
 }

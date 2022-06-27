@@ -269,13 +269,13 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                 return null
             }
 
-            val builder = StringBuilder()
+            val buffer = StringBuffer() // use StringBuffer because StringBuilder is not thread safe
             val errors = ArrayList<String>()
 
             process.addProcessListener(object : ProcessAdapter() {
                 override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
                     when (outputType.toString()) {
-                        "stdout" -> builder.append(event.text)
+                        "stdout" -> buffer.append(event.text)
                         "stderr" -> errors.add(event.text)
                     }
                 }
@@ -284,7 +284,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             process.startNotify()
             process.waitFor()
 
-            LOG.debug("output from fetching package: $builder")
+            LOG.debug("output from fetching package: $buffer")
 
             errors.forEach {
                 LOG.warn("Error when running '${dubCommand}' : $it")

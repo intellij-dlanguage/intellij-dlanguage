@@ -11,8 +11,9 @@ import java.util.*
  * created on 06/02/18
  */
 class DubProcessListener : ProcessAdapter() {
-    private val output = StringBuilder() // all output from stdout and stderr
-    private val stdout = StringBuilder()
+    // use StringBuffer because StringBuilder is not thread safe
+    private val output = StringBuffer() // all output from stdout and stderr
+    private val stdout = StringBuffer()
     private val errors = ArrayList<String>()
 
     override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
