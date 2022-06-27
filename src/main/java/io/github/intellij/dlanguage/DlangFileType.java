@@ -1,12 +1,13 @@
 package io.github.intellij.dlanguage;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
+import com.intellij.openapi.fileTypes.OSFileIdeAssociation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class DlangFileType extends LanguageFileType {
+public class DlangFileType extends LanguageFileType implements OSFileIdeAssociation {
 
     public static final DlangFileType INSTANCE = new DlangFileType();
     public static final String DEFAULT_EXTENSION = "d";
