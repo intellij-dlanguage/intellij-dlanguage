@@ -284,6 +284,7 @@
                 description="Format current file with DFormat formatter">
             <add-to-group group-id="CodeFormatGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
+            <synonym text="DFMT" />
         </action>
         <action id="DLanguage.DFix"
                 class="io.github.intellij.dlanguage.actions.DFixAction"
@@ -291,6 +292,7 @@
                 description="Fix current file with DFix">
             <add-to-group group-id="CodeFormatGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt M"/>
+            <synonym text="DFIX" />
         </action>
         <action id="io.github.intellij.dlanguage.actions.RestartDCD"
                 class="io.github.intellij.dlanguage.actions.RestartDCD"
