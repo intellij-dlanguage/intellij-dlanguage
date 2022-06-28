@@ -144,6 +144,7 @@ typealias MixinExpression = io.github.intellij.dlanguage.psi.DLanguageMixinExpre
 typealias MixinTemplateDeclaration = io.github.intellij.dlanguage.psi.DLanguageMixinTemplateDeclaration
 typealias MixinTemplateName = io.github.intellij.dlanguage.psi.DLanguageMixinTemplateName
 typealias MulExpression = io.github.intellij.dlanguage.psi.DLanguageMulExpression
+typealias NamedImportBind = io.github.intellij.dlanguage.psi.DLanguageNamedImportBind
 typealias NamespaceList = io.github.intellij.dlanguage.psi.DLanguageNamespaceList
 typealias NewAnonClassExpression = io.github.intellij.dlanguage.psi.DLanguageNewAnonClassExpression
 typealias NewExpression = io.github.intellij.dlanguage.psi.DLanguageNewExpression
