@@ -258,6 +258,9 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     @Override
     public void disposeUIResources() {
 
+        for (Tool tool: properties) {
+            tool.cancelUpdate();
+        }
     }
 
     /**
@@ -370,6 +373,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         private final ToolChangeListener publisher;
         private boolean dirty = false;
 
+        private Future<?> updateInProgress;
+
         Tool(final Project project, final String command, final ToolKey key,
              final TextFieldWithBrowseButton pathField,
              final RawCommandLineEditor flagsField, final JButton autoFindButton,
@@ -438,6 +443,18 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 propertyField.restoreState();
             }
         }
+
+        public void setUpdateInProgress(Future<?> future) {
+            cancelUpdate();
+            updateInProgress = future;
+        }
+
+        public void cancelUpdate() {
+            if (updateInProgress != null) {
+                updateInProgress.cancel(true);
+            }
+            updateInProgress = null;
+        }
     }
 
     private void updateVersionField(@NotNull final Tool tool) {
@@ -458,7 +475,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 .withCharset(StandardCharsets.UTF_8)
                 .withParameters("--version");
 
-            ApplicationManager.getApplication()
+            tool.setUpdateInProgress(ApplicationManager.getApplication()
                 .executeOnPooledThread(() -> {
                     try {
                         new DlangToolVersionProcessAdapter(tool, cmd)
@@ -466,7 +483,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                     } catch (final ExecutionException e) {
                         LOG.error("Could not run: " + cmd.getCommandLineString(), e);
                     }
-                });
+                }));
         }
     }
 
