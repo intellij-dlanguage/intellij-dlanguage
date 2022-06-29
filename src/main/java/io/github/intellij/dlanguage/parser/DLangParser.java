@@ -4691,6 +4691,10 @@ class DLangParser {
             }
             exit_section_(builder, ifCondition, IF_CONDITION, true);
         } else {
+            if (!moreTokens()) {
+                cleanup(m, IF_STATEMENT);
+                return false;
+            }
             // consume for TypeCtors = identifier
             if (isTypeCtor(current().type)) {
                 Bookmark before_advance = null;
