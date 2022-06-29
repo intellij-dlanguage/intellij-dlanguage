@@ -57,7 +57,7 @@ class DResolveUtil private constructor(val project: Project) {
             basicResolveResult = basicResolveResult.filter { it !is Constructor }.toSet()
         } else {
             val constructorsOnly = basicResolveResult.filter { it is Constructor }.toSet()
-            if (!constructorsOnly.isEmpty())
+            if (constructorsOnly.isNotEmpty())
                 return constructorsOnly
         }
         if (basicResolveResult.isEmpty())
@@ -102,7 +102,10 @@ class DResolveUtil private constructor(val project: Project) {
         if (parent is VersionCondition && versionIdentifiers.contains(name)) return true
         if (parent is LinkageAttribute && externAttributeIdentifiers.contains(name)) return true
         if (parent is TraitsExpression && traitsIdentifiers.contains(name)) return true
-        if (parent is FunctionDeclaration || parent is InterfaceOrClass || parent is StructDeclaration || parent is UnionDeclaration || parent is EnumDeclaration || parent is EnumMember || parent is AutoDeclarationPart || parent is Declarator || parent is TemplateDeclaration || parent is Catch) return true
+        if (parent is FunctionDeclaration || parent is InterfaceOrClass || parent is StructDeclaration ||
+            parent is UnionDeclaration || parent is EnumDeclaration || parent is EnumMember ||
+            parent is AutoDeclarationPart || parent is Declarator || parent is TemplateDeclaration ||
+            parent is Catch || parent is NamedImportBind) return true
         if (parent is Parameter)
             if (parent.identifier == e)
                 return true

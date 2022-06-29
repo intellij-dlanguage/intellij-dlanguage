@@ -54,7 +54,7 @@ public class DResolveTest extends DResolveTestCase {
         doTest();
     }
 
-    public void testImportBindresolve() {
+    public void testImportBindResolve() {
         doTest();
     }
 
@@ -64,6 +64,14 @@ public class DResolveTest extends DResolveTestCase {
 
     public void testImportFromPackage() {
         doTest();
+    }
+
+    public void testImportNamedBindResolve() {
+        doTest();
+    }
+
+    public void testImportNamedBindShouldNotResolveBindName() {
+        doTest(false);
     }
 }
 

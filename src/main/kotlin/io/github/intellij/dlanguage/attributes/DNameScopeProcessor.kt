@@ -54,7 +54,9 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
 
     val currentlyAlreadyDone: MutableSet<SingleImport> = mutableSetOf()
 
-    //returns false if results are found, true if more searching is needed b/c nothing was found
+    /**
+     * Returns false if results are found, true if more searching is needed b/c nothing was found
+     */
     private fun handleImport(import: SingleImport): Boolean {
         if (currentlyAlreadyDone.contains(import))
             return true
@@ -67,12 +69,12 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
         } else {
             //todo this can be done better:
             val bindDecls = import.applicableImportBinds.flatMap { DTopLevelDeclarationIndex.getTopLevelSymbols(it, import.importedModuleName, project) }
-            if (!bindDecls.filter { it.name == start.name }.isEmpty()) {
+            if (bindDecls.filter { it.name == start.name }.isNotEmpty()) {
                 result.addAll(bindDecls.filter { it.name == start.name })
                 return false
             }
             val bindDeclsMembers = import.applicableImportBinds.flatMap { DMembersIndex.getMemberSymbols(it, import.importedModuleName, project) }
-            if (!bindDeclsMembers.filter { it.name == start.name }.isEmpty()) {
+            if (bindDeclsMembers.filter { it.name == start.name }.isNotEmpty()) {
                 result.addAll(bindDeclsMembers.filter { it.name == start.name })
                 return false
             }
