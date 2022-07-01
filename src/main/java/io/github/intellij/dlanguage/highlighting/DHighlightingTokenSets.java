@@ -13,7 +13,8 @@ public class DHighlightingTokenSets {
     //public static final TokenSet SHEBANG = TokenSet.create(DlangTypes.SHEBANG); // todo: get highlighting lexer working with SHEBANG
     public static final TokenSet KEYWORD = TokenSet.create(DlangTypes.KEYWORD);
     public static final TokenSet NUMBER = TokenSet.create(DlangTypes.NUMBER);
-    public static final TokenSet STRING_LITERAL = TokenSet.create(DlangTypes.STRING); // todo: get highlighting lexer between a double quoted string and the x2 variations of wysiwyg string
+    public static final TokenSet STRING_LITERAL = TokenSet.create(DlangTypes.DOUBLE_QUOTED_STRING, DlangTypes.WYSIWYG_STRING, DlangTypes.ALTERNATE_WYSIWYG_STRING, DlangTypes.DELIMITED_STRING);
+    // todo: get highlighting lexer between a double quoted string and the x2 variations of wysiwyg string
 //    public static final TokenSet DOUBLE_QUOTED_STRING = TokenSet.create(DlangTypes.DOUBLE_QUOTED_STRING);
 //    public static final TokenSet WYSIWYG_STRING = TokenSet.create(DlangTypes.WYSIWYG_STRING, DlangTypes.ALTERNATE_WYSIWYG_STRING);
     public static final TokenSet CHAR = TokenSet.create(DlangTypes.CHARACTER_LITERAL);
