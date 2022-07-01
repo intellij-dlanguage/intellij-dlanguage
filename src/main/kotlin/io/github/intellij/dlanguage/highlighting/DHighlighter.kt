@@ -8,6 +8,7 @@ import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
 import io.github.intellij.dlanguage.colors.DColor
 import io.github.intellij.dlanguage.lexer.DHighlightingLexer
+import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.highlighting.DHighlightingTokenSets as TokenSets
 
 /**
@@ -43,6 +44,7 @@ class DHighlighter : SyntaxHighlighterBase() {
         StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN -> DColor.VALID_STRING_ESCAPE
         StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN -> DColor.INVALID_STRING_ESCAPE
         StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN -> DColor.INVALID_STRING_ESCAPE
+        DlangTypes.VALID_NAMED_CHARACTER_ENTITY -> DColor.STRING_NAMED_CHARACTER_ENTITY
         else -> null
     }
 }

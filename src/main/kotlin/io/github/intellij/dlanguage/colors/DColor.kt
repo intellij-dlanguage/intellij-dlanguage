@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.colors
 
+import com.intellij.openapi.editor.XmlHighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.options.colors.AttributesDescriptor
 
@@ -35,6 +36,7 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
 
     VALID_STRING_ESCAPE("String Escape Sequence", Default.VALID_STRING_ESCAPE),
     INVALID_STRING_ESCAPE("String Invalid Escape Sequence", Default.INVALID_STRING_ESCAPE),
+    STRING_NAMED_CHARACTER_ENTITY("String Named entity", XmlHighlighterColors.HTML_ENTITY_REFERENCE),
     ;
 
     val textAttributesKey = TextAttributesKey.createTextAttributesKey("io.github.intellij.dlanguage.$name", default)

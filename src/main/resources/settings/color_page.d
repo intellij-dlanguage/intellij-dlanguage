@@ -24,7 +24,9 @@ class ReportInformation {
 
     deprecated string originalId = "Some text\twith a gap";
 
-    string runId = `Some Text`;
+    string runId = `Some \n Text`;
+
+    string anotherId = "\&para;\U0001F603"; // ¶😃
 
     Feature[] features;
 

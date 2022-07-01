@@ -6,6 +6,7 @@ import com.intellij.openapi.util.text.StringUtil.isOctalDigit
 import com.intellij.psi.StringEscapesTokenTypes.*
 import com.intellij.psi.tree.IElementType
 import com.intellij.util.text.CharArrayUtil.indexOf
+import io.github.intellij.dlanguage.psi.DlangTypes.VALID_NAMED_CHARACTER_ENTITY
 import java.lang.Integer.min
 
 class DLiteralEscapesLexer(private val defaultToken: IElementType) : LexerBase() {
@@ -53,9 +54,14 @@ class DLiteralEscapesLexer(private val defaultToken: IElementType) : LexerBase()
                     else -> INVALID_CHARACTER_ESCAPE_TOKEN
                 }
             '\'', '"', '?', '\\', '0', 'a', 'b', 'f', 'n', 'r', 't', 'v' -> VALID_STRING_ESCAPE_TOKEN
+            '&' -> when {
+                isValidNamedCharacterEntities(tokenStart, tokenEnd) -> VALID_NAMED_CHARACTER_ENTITY
+                else -> INVALID_CHARACTER_ESCAPE_TOKEN
+            }
             else ->
                 when {
                     isValidOctalDigit(tokenStart, tokenEnd) -> VALID_STRING_ESCAPE_TOKEN
+                    isValidNamedCharacterEntities(tokenStart, tokenEnd) -> VALID_NAMED_CHARACTER_ENTITY
                     else -> INVALID_CHARACTER_ESCAPE_TOKEN
                 }
         }
@@ -104,6 +110,11 @@ class DLiteralEscapesLexer(private val defaultToken: IElementType) : LexerBase()
                 'x' -> {
                     return min(i + 2 + 1, endIdx)
                 }
+                '&' -> {
+                    var semicolonIdx = indexOf(bufferSequence, ";", i, bufferEnd)
+                    semicolonIdx = if (semicolonIdx == -1) bufferEnd else semicolonIdx
+                    return min(semicolonIdx + 1, endIdx)
+                }
             }
             // is octal?
             if (isOctalDigit(bufferSequence[i])) {
@@ -137,4 +148,7 @@ class DLiteralEscapesLexer(private val defaultToken: IElementType) : LexerBase()
     private fun isValidOctalDigit(start: Int, end: Int): Boolean =
         end - start <= 4 &&
             bufferSequence.subSequence(start + 1, end).all { isOctalDigit(it) }
+
+    private fun isValidNamedCharacterEntities(start: Int, end: Int): Boolean =
+        bufferSequence[end-1] == ';'
 }
