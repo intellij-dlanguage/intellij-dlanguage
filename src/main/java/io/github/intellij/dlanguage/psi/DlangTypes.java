@@ -11,7 +11,6 @@ public interface DlangTypes {
     DlangElementType KEYWORD = new DlangElementType("KEYWORD");
     DlangElementType OPERATOR = new DlangElementType("OPERATOR");
     DlangElementType NUMBER = new DlangElementType("NUMBER");
-    DlangElementType STRING = new DlangElementType("STRING");
     DlangElementType PARENTHESES_RIGHT = new DlangElementType("PARENTHESES_RIGHT");
     DlangElementType PARENTHESES_LEFT = new DlangElementType("PARENTHESES_LEFT");
     DlangElementType BRACES_RIGHT = new DlangElementType("BRACES_RIGHT");

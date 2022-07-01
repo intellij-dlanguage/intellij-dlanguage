@@ -122,12 +122,6 @@ LEADING_DECIMAL = {DECIMAL_INTEGER} | (0 {DECIMAL_DIGITS_NO_SINGLE_US})
 MODULE_DEFINITION = ([a-z_][a-zA-Z_0-9']+(\.[a-zA-Z_0-9']*)*)|[a-z]|[A-Z][a-zA-Z_0-9']*(\.[A-Z][a-zA-Z_0-9']*)*\.[a-z][a-zA-Z_0-9']*
 AT_ATTRIBUTE = "@" {ID}
 
-STRING = ({WYSIWYG_STRING} |
-          {ALTERNATE_WYSIWYG_STRING} |
-          {DOUBLE_QUOTED_STRING} |
-          {DELIMITED_STRING}
-)
-
 NUMBER = ({INTEGER_LITERAL} | {FLOAT_LITERAL})
 
 BASIC_TYPES = ( bool |
@@ -373,7 +367,7 @@ NESTING_BLOCK_DOC_END = "+/"
     {STRING_POSTFIX} {
           if (stringDelimiterClosed) {
               yybegin(YYINITIAL);
-              return STRING;
+              return DELIMITED_STRING;
           }
       }
 
@@ -387,7 +381,7 @@ NESTING_BLOCK_DOC_END = "+/"
           if (stringDelimiterClosed) {
               yypushback(1);
               yybegin(YYINITIAL);
-              return STRING;
+              return DELIMITED_STRING;
           }
           yybegin(YYINITIAL);
           return com.intellij.psi.TokenType.BAD_CHARACTER;
@@ -397,7 +391,7 @@ NESTING_BLOCK_DOC_END = "+/"
           if(stringDelimiterClosed) {
               yypushback(1);
               yybegin(YYINITIAL);
-              return STRING;
+              return DELIMITED_STRING;
           }
       }
 
@@ -524,9 +518,11 @@ NESTING_BLOCK_DOC_END = "+/"
 //}
 
 
-
 <YYINITIAL> {CHARACTER_LITERAL} { return CHARACTER_LITERAL; }
-<YYINITIAL> {STRING} { return STRING; }
+<YYINITIAL> {WYSIWYG_STRING} { return WYSIWYG_STRING; }
+<YYINITIAL> {ALTERNATE_WYSIWYG_STRING} { return ALTERNATE_WYSIWYG_STRING; }
+<YYINITIAL> {DOUBLE_QUOTED_STRING} { return DOUBLE_QUOTED_STRING; }
+<YYINITIAL> {DELIMITED_STRING} { return DELIMITED_STRING; }
 <YYINITIAL> {NUMBER} { return NUMBER; }
 <YYINITIAL> {KEYWORD} { return KEYWORD; }
 <YYINITIAL> {OPERATOR} { return OPERATOR; }
