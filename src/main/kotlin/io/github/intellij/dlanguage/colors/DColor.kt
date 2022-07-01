@@ -32,6 +32,9 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
     //FUNCTION_DEFINITION("Function Definition", Default.FUNCTION_DECLARATION),
     //IDENTIFIER("Identifier", Default.IDENTIFIER),
     TYPE_PARAMETER("Type Parameter", Default.PARAMETER),
+
+    VALID_STRING_ESCAPE("String Escape Sequence", Default.VALID_STRING_ESCAPE),
+    INVALID_STRING_ESCAPE("String Invalid Escape Sequence", Default.INVALID_STRING_ESCAPE),
     ;
 
     val textAttributesKey = TextAttributesKey.createTextAttributesKey("io.github.intellij.dlanguage.$name", default)

@@ -1,13 +1,13 @@
 package io.github.intellij.dlanguage.highlighting
 
-import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
+import com.intellij.psi.StringEscapesTokenTypes
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
-import io.github.intellij.dlanguage.DHighlightingLexer
 import io.github.intellij.dlanguage.colors.DColor
+import io.github.intellij.dlanguage.lexer.DHighlightingLexer
 import io.github.intellij.dlanguage.highlighting.DHighlightingTokenSets as TokenSets
 
 /**
@@ -17,7 +17,7 @@ import io.github.intellij.dlanguage.highlighting.DHighlightingTokenSets as Token
  */
 class DHighlighter : SyntaxHighlighterBase() {
 
-    override fun getHighlightingLexer(): Lexer = FlexAdapter(DHighlightingLexer())
+    override fun getHighlightingLexer(): Lexer = DHighlightingLexer()
 
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> = pack(tokenSetMap(tokenType)?.textAttributesKey)
 
@@ -40,6 +40,9 @@ class DHighlighter : SyntaxHighlighterBase() {
         in TokenSets.DOT -> DColor.DOT
         in TokenSets.MODULE_DEFINITION -> DColor.MODULE_DEFINITION
         in TokenSets.KEYWORD -> DColor.KEYWORD
+        StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN -> DColor.VALID_STRING_ESCAPE
+        StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN -> DColor.INVALID_STRING_ESCAPE
+        StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN -> DColor.INVALID_STRING_ESCAPE
         else -> null
     }
 }
