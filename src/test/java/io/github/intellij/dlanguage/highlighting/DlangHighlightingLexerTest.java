@@ -123,6 +123,12 @@ public class DlangHighlightingLexerTest extends DHighlightingLexerTestBase {
     public void teststring_hex() { doTest(true, true); }
     public void teststring_tokens() { doTest(true, true); }
     public void teststring_wysiwyg() { doTest(true, true); }
+    public void testchar() {
+        doTest(true, true);
+    }
+    public void teststrings_escapes() {
+        doTest(true, true);
+    }
 
     // tokens
     public void testtokens_and() { doTest(true, true); }
