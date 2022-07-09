@@ -7,9 +7,12 @@ import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.module.ModuleUtilCore
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.IndexNotReadyException
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ModuleRootManager
+import com.intellij.openapi.roots.OrderRootType
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.roots.ui.configuration.ProjectSettingsService
 import com.intellij.openapi.util.Computable
@@ -40,7 +43,66 @@ class DLanguageLexerAdapter : FlexAdapter(DlangLexer())
 class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
 
     private val log = Logger.getInstance(javaClass);
-    private val expectedModules = setOf("std.array", "std.ascii", "std.base64", "std.bigint", "std.bitmanip", "std.compiler", "std.complex", "std.concurrency", "std.conv", "std.csv", "std.demangle", "std.encoding", "std.exception", "std.file", "std.format", "std.functional", "std.getopt", "std.json", "std.math", "std.mathspecial", "std.meta", "std.mmfile", "std.numeric", "std.outbuffer", "std.parallelism", "std.path", "std.process", "std.random", "std.signals", "std.socket", "std.stdint", "std.stdio", "std.string", "std.system", "std.traits", "std.typecons", "std.uni", "std.uri", "std.utf", "std.uuid", "std.variant", "std.zip", "std.zlib")
+
+    // basic set of packages in phobos
+    private val expectedModules = setOf(
+        //"std.algorithm", // directory
+        "std.array",
+        "std.ascii",
+        "std.base64",
+        "std.bigint",
+        "std.bitmanip",
+        "std.checkedint",
+        "std.compiler",
+        "std.complex",
+        "std.concurrency",
+        //"std.container", // directory
+        "std.conv",
+        "std.csv",
+        //"std.datetime", // directory
+        "std.demangle",
+        //"std.digest", // directory
+        "std.encoding",
+        "std.exception",
+        //"std.experimental", // directory
+        "std.file",
+        //"std.format", // directory
+        "std.functional",
+        "std.getopt",
+        //"std.int128", // signed 128 bit integer type was added in 2.100.0 (we should check for it in later plugin releases)
+        //"std.internal", // directory
+        "std.json",
+        //"std.math", // directory
+        "std.mathspecial",
+        "std.meta",
+        "std.mmfile",
+        "std.numeric",
+        "std.outbuffer",
+        "std.parallelism",
+        "std.path",
+        "std.process",
+        "std.random", // The random number generators and API provided in this module are not designed to be cryptographically secure
+        "std.signals",
+        "std.socket",
+        "std.stdint",
+        "std.stdio",
+        "std.string",
+        "std.sumtype",
+        "std.system",
+        "std.traits",
+        "std.typecons",
+        "std.typetuple",
+        //"std.uni", // directory
+        "std.uni",
+        "std.uri",
+        "std.utf",
+        "std.uuid",
+        "std.variant", // the Algebraic template in this package is outdated and not recommended for use in new code. Instead, use std.sumtype.SumType.
+        //"std.windows", // directory
+        //"std.xml", // This module is considered out-dated and not up to Phobos' current standards. It will be removed from Phobos in 2.101.0
+        "std.zip",
+        "std.zlib"
+    )
 
     override fun isApplicableFor(project: Project, file: VirtualFile): Boolean {
         if (DlangFileType.INSTANCE != file.fileType) return false
@@ -73,8 +135,9 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
 
     private fun missingPhobosModules(project: Project): List<String> {
         val resolveFilesComputable = Computable {
+            val scope = allScope(project)
             expectedModules.filter {
-                getFilesByModuleName(project, it, allScope(project)).isEmpty()
+                getFilesByModuleName(project, it, scope).isEmpty()
             }
         }
         return DumbService.getInstance(project).runReadActionInSmartMode(resolveFilesComputable)
@@ -118,20 +181,35 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
     }
 
     override fun getErrorMessage(project: Project, file: VirtualFile): String? {
-        try {
-            if (cannotFindObjectDotD(project)) {
-                return DlangBundle.message("d.ui.dmd.object.path.not.set")
-            }
-            if (missingAnyPhobosFiles(project)) {
-                return DlangBundle.message("d.ui.dmd.phobos.path.not.set") + missingPhobosModules(project).foldRight("", { s: String, acc: String -> acc + " " + s })
-            }
-        } catch (e: IndexNotReadyException) {
-            //todo: this try/catch block is a bit of a kludge, at some point we should roll our own EditorNotifications.Provider<EditorNotificationPanel>()
-            // https://github.com/intellij-dlanguage/intellij-dlanguage/issues/402
-            // https://intellij-support.jetbrains.com/hc/en-us/community/posts/360000094950
-        }
+        val module = ModuleUtilCore.findModuleForFile(file, project)
 
-        return DlangBundle.message("d.ui.dmd.path.not.set")
+        if (module != null && !module.isDisposed) {
+            val sdk = ModuleRootManager.getInstance(module).sdk
+            if (sdk == null) {
+                return if (ModuleRootManager.getInstance(module).isSdkInherited) {
+                    DlangBundle.message("d.ui.project.sdk.not.defined")
+                } else {
+                    DlangBundle.message("d.ui.module.sdk.not.defined")
+                }
+            } else if(sdk.sdkType == DlangSdkType.getInstance() && sdk.rootProvider.getFiles(OrderRootType.SOURCES).isEmpty()) {
+                return DlangBundle.message("d.ui.compilerconfig.missing.sourcepaths")
+            } else if(sdk.sdkType == DlangSdkType.getInstance() && !DumbService.isDumb(project)) {
+                try {
+                    if (cannotFindObjectDotD(project)) {
+                        return DlangBundle.message("d.ui.dmd.object.path.not.set")
+                    }
+                    if (missingAnyPhobosFiles(project)) {
+                        return DlangBundle.message("d.ui.dmd.phobos.path.not.set") + missingPhobosModules(project).foldRight("") { s: String, acc: String -> "$acc $s" }
+                    }
+                } catch (e: IndexNotReadyException) {
+                    log.warn("Cannot check for existence of phobos or druntime as index not ready", e)
+                    //todo: this try/catch block is a bit of a kludge, at some point we should roll our own EditorNotifications.Provider<EditorNotificationPanel>()
+                    // https://github.com/intellij-dlanguage/intellij-dlanguage/issues/402
+                    // https://intellij-support.jetbrains.com/hc/en-us/community/posts/360000094950
+                }
+            }
+        }
+        return null
     }
 }
 
