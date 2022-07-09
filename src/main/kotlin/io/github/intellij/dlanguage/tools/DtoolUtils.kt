@@ -17,10 +17,10 @@ class DtoolUtils {
         const val SERVE_D_LATEST: String = "0.7.4"
 
         const val DUB_LATEST: String = "1.29.0"
-        const val DSCANNER_LATEST: String = "v0.12.1" // v0.5.0-rc1
+        const val DSCANNER_LATEST: String = "v0.12.2" // v0.5.0-rc1
         const val DCD_LATEST: String = "v0.13.6" // v0.9.10, OR v0.9.10-alpha.0
         const val DFORMAT_LATEST: String = "v0.14.2"
-        const val DFIX_LATEST: String = "v0.3.2"
+        const val DFIX_LATEST: String = "v0.3.2" // not updated in years. Consider dropping support: #744
 
         @JvmStatic
         fun String?.versionPredates(comparison: String?): Boolean {
