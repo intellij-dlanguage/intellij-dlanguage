@@ -84,25 +84,28 @@ public class DlangSdkType extends SdkType {
         } else if (SystemInfo.isUnix) {
             // The official .rpm and .deb installers are the priority
             DEFAULT_DMD_PATHS = new File[] {
-                new File("/usr/bin/dmd"), // Fedora (official .rpm)
+                new File("/usr/bin/dmd"), // Fedora (official .rpm), note that Arch also uses this path
                 new File("/usr/local/bin/dmd"), // Ubuntu
                 new File("/snap/bin/dmd") // snapcraft.io (symlink to /snap/dmd/current/bin/dmd)
             };
+            // the path to D documentation should contain "index.html"
             DEFAULT_DOCUMENTATION_PATHS = new File[] {
                 new File("/usr/share/dmd/html/d"), // Fedora (official .rpm)
                 new File("/usr/local/share/dmd/html/d"), // Ubuntu
-                new File("/usr/share/d/html/d")
+                new File("/usr/share/d/html/d") // Arch Linux (dmd-docs package is not consistent with dlang & dlang-dmd package paths)
             };
+            // the path to phobos should contain "etc.c.*" and "std.*"
             DEFAULT_PHOBOS_PATHS = new File[] {
                 new File("/usr/include/dmd/phobos"), // Fedora (official .rpm)
                 new File("/usr/local/include/dmd/phobos"), // Ubuntu (should it be src/phobos?)
-                new File("/usr/include/dlang/dmd"), // Arch Linux (see:#457 should this have /phobos on end?)
+                new File("/usr/include/dlang/dmd"), // Arch Linux uses non-standard directory structure (see: #457 and #743)
                 new File("/snap/dmd/current/import/phobos") // snapcraft.io
             };
+            // the path to phobos should contain "core.*", "importc.h", and "object.d"
             DEFAULT_DRUNTIME_PATHS = new File[] {
                 new File("/usr/include/dmd/druntime/import"), // Fedora (official .rpm)
                 new File("/usr/local/include/dmd/druntime/import"), // Ubuntu (should it be src/druntime/import?)
-                new File("/usr/include/dlang/dmd"), // Arch Linux (see:#457 should this have /druntime/import on end?)
+                new File("/usr/include/dlang/dmd"), // Arch Linux uses non-standard directory structure (see: #457 and #743)
                 new File("/snap/dmd/current/import/druntime") // snapcraft.io
             };
         } else {
