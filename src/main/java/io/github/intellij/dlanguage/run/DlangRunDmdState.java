@@ -1,19 +1,12 @@
 package io.github.intellij.dlanguage.run;
 
 import com.intellij.execution.ExecutionException;
-import com.intellij.execution.ExecutionResult;
-import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.filters.TextConsoleBuilder;
-import com.intellij.execution.filters.TextConsoleBuilderImpl;
 import com.intellij.execution.process.ColoredProcessHandler;
-import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessHandler;
-import com.intellij.execution.process.ProcessListener;
-import com.intellij.execution.process.ProcessOutputTypes;
+import com.intellij.execution.process.ProcessTerminatedListener;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -21,7 +14,6 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
-import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import io.github.intellij.dlanguage.run.exception.NoSourcesException;
 import io.github.intellij.dlanguage.DlangSdkType;
@@ -34,7 +26,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class DlangRunDmdState extends CommandLineState implements ProcessListener {
+public class DlangRunDmdState extends CommandLineState {
 
     private static final Logger LOG = Logger.getInstance(DlangRunDmdState.class);
 
@@ -47,20 +39,11 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
 
     @NotNull
     @Override
-    public ExecutionResult execute(@NotNull final Executor executor, @NotNull final ProgramRunner runner) throws ExecutionException {
-        final TextConsoleBuilder consoleBuilder = new TextConsoleBuilderImpl(config.getProject());
-        setConsoleBuilder(consoleBuilder);
-
-        return super.execute(executor, runner);
-    }
-
-    @NotNull
-    @Override
     protected ProcessHandler startProcess() throws ExecutionException {
         try {
             final GeneralCommandLine cmd = getDmdCommandLine(config);
             final ProcessHandler handler = new ColoredProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
-            handler.addProcessListener(this);
+            ProcessTerminatedListener.attach(handler, config.getProject());
             return handler;
         } catch (final NoValidDlangSdkFound e) {
             throw new ExecutionException("No valid DMD SDK found!");
@@ -128,30 +111,6 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
             LOG.warn("No valid D compiler found");
             throw new NoValidDlangSdkFound();
         }
-    }
-
-    @Override
-    public void startNotified(final ProcessEvent event) {
-        //skip
-    }
-
-    @Override
-    public void processTerminated(final ProcessEvent event) {
-        if (event.getExitCode() == 0) {
-            event.getProcessHandler().notifyTextAvailable("* Compilation successful", ProcessOutputTypes.SYSTEM);
-        } else {
-            event.getProcessHandler().notifyTextAvailable("* Compilation finished with errors", ProcessOutputTypes.SYSTEM);
-        }
-    }
-
-    @Override
-    public void processWillTerminate(final ProcessEvent event, final boolean willBeDestroyed) {
-        LOG.debug("Run DMD process terminating");
-    }
-
-    @Override
-    public void onTextAvailable(final ProcessEvent event, final Key outputType) {
-        //skip
     }
 
 }

@@ -1,17 +1,13 @@
 package io.github.intellij.dlanguage.run;
 
 import com.intellij.execution.ExecutionException;
-import com.intellij.execution.ExecutionResult;
-import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.CommandLineTokenizer;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.filters.TextConsoleBuilder;
-import com.intellij.execution.filters.TextConsoleBuilderImpl;
 import com.intellij.execution.process.ColoredProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
+import com.intellij.execution.process.ProcessTerminatedListener;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -36,7 +32,6 @@ import java.util.List;
 
 public class DlangRunAppState extends CommandLineState {
     private final DlangRunAppConfiguration config;
-    private Executor executor;
 
     protected DlangRunAppState(@NotNull final ExecutionEnvironment environment, @NotNull final DlangRunAppConfiguration config) {
         super(environment);
@@ -45,19 +40,12 @@ public class DlangRunAppState extends CommandLineState {
 
     @NotNull
     @Override
-    public ExecutionResult execute(@NotNull final Executor executor, @NotNull final ProgramRunner runner) throws ExecutionException {
-        final TextConsoleBuilder consoleBuilder = new TextConsoleBuilderImpl(config.getProject());
-        setConsoleBuilder(consoleBuilder);
-        this.executor = executor;
-        return super.execute(executor, runner);
-    }
-
-    @NotNull
-    @Override
     public ProcessHandler startProcess() throws ExecutionException {
         try {
             final GeneralCommandLine appCommandLine = getExecutableCommandLine(config);
-            return new ColoredProcessHandler(appCommandLine.createProcess(), appCommandLine.getCommandLineString());
+            final ProcessHandler handler = new ColoredProcessHandler(appCommandLine.createProcess(), appCommandLine.getCommandLineString());
+            ProcessTerminatedListener.attach(handler, config.getProject());
+            return handler;
         } catch (final NoValidDlangSdkFound e) {
             throw new ExecutionException("No valid DMD SDK found!");
         } catch (final ModuleNotFoundException e) {

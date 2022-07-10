@@ -1,17 +1,12 @@
 package io.github.intellij.dlanguage.run;
 
 import com.intellij.execution.ExecutionException;
-import com.intellij.execution.ExecutionResult;
-import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.executors.DefaultDebugExecutor;
-import com.intellij.execution.filters.TextConsoleBuilder;
-import com.intellij.execution.filters.TextConsoleBuilderImpl;
 import com.intellij.execution.process.ColoredProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
+import com.intellij.execution.process.ProcessTerminatedListener;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -36,7 +31,6 @@ import static io.github.intellij.dlanguage.utils.DUtil.isNotNullOrEmpty;
 
 public class DlangRunDubState extends CommandLineState {
     private final DlangRunDubConfiguration config;
-    private Executor executor;
 
     DlangRunDubState(@NotNull final ExecutionEnvironment environment,
                      @NotNull final DlangRunDubConfiguration config) {
@@ -46,19 +40,12 @@ public class DlangRunDubState extends CommandLineState {
 
     @NotNull
     @Override
-    public ExecutionResult execute(@NotNull final Executor executor, @NotNull final ProgramRunner runner) throws ExecutionException {
-        final TextConsoleBuilder consoleBuilder = new TextConsoleBuilderImpl(config.getProject());
-        setConsoleBuilder(consoleBuilder);
-        this.executor = executor;
-        return super.execute(executor, runner);
-    }
-
-    @NotNull
-    @Override
     protected ProcessHandler startProcess() throws ExecutionException {
         try {
             final GeneralCommandLine dubCommandLine = getExecutableCommandLine(config);
-            return new ColoredProcessHandler(dubCommandLine.createProcess(), dubCommandLine.getCommandLineString());
+            final ProcessHandler handler = new ColoredProcessHandler(dubCommandLine.createProcess(), dubCommandLine.getCommandLineString());
+            ProcessTerminatedListener.attach(handler, config.getProject());
+            return handler;
         } catch (final ExecutionException e) {
             final String message = e.getMessage();
             final Project project = config.getProject();
@@ -80,11 +67,7 @@ public class DlangRunDubState extends CommandLineState {
 
     /* Build command line to start DUB executable
      */
-    private GeneralCommandLine getExecutableCommandLine(final DlangRunDubConfiguration config)
-        throws ExecutionException {
-        if (executor.getActionName().equals(DefaultDebugExecutor.EXECUTOR_ID)) {
-            //todo add custom option overrides
-        }
+    private GeneralCommandLine getExecutableCommandLine(final DlangRunDubConfiguration config) throws ExecutionException {
         final Module module = config.getConfigurationModule().getModule();
         if (module == null) {
             throw new ExecutionException("Run configuration has no module selected.");
