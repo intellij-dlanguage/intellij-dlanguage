@@ -8,7 +8,7 @@ import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.executors.DefaultDebugExecutor;
 import com.intellij.execution.filters.TextConsoleBuilder;
 import com.intellij.execution.filters.TextConsoleBuilderImpl;
-import com.intellij.execution.process.OSProcessHandler;
+import com.intellij.execution.process.ColoredProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.ProgramRunner;
@@ -58,7 +58,7 @@ public class DlangRunDubState extends CommandLineState {
     protected ProcessHandler startProcess() throws ExecutionException {
         try {
             final GeneralCommandLine dubCommandLine = getExecutableCommandLine(config);
-            return new OSProcessHandler(dubCommandLine.createProcess(), dubCommandLine.getCommandLineString());
+            return new ColoredProcessHandler(dubCommandLine.createProcess(), dubCommandLine.getCommandLineString());
         } catch (final ExecutionException e) {
             final String message = e.getMessage();
             final Project project = config.getProject();

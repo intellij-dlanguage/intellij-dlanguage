@@ -8,7 +8,7 @@ import com.intellij.execution.configurations.CommandLineTokenizer;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.filters.TextConsoleBuilder;
 import com.intellij.execution.filters.TextConsoleBuilderImpl;
-import com.intellij.execution.process.OSProcessHandler;
+import com.intellij.execution.process.ColoredProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.ProgramRunner;
@@ -57,7 +57,7 @@ public class DlangRunAppState extends CommandLineState {
     public ProcessHandler startProcess() throws ExecutionException {
         try {
             final GeneralCommandLine appCommandLine = getExecutableCommandLine(config);
-            return new OSProcessHandler(appCommandLine.createProcess(), appCommandLine.getCommandLineString());
+            return new ColoredProcessHandler(appCommandLine.createProcess(), appCommandLine.getCommandLineString());
         } catch (final NoValidDlangSdkFound e) {
             throw new ExecutionException("No valid DMD SDK found!");
         } catch (final ModuleNotFoundException e) {

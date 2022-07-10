@@ -7,7 +7,11 @@ import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.filters.TextConsoleBuilder;
 import com.intellij.execution.filters.TextConsoleBuilderImpl;
-import com.intellij.execution.process.*;
+import com.intellij.execution.process.ColoredProcessHandler;
+import com.intellij.execution.process.ProcessEvent;
+import com.intellij.execution.process.ProcessHandler;
+import com.intellij.execution.process.ProcessListener;
+import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.notification.Notification;
@@ -55,7 +59,7 @@ public class DlangRunDmdState extends CommandLineState implements ProcessListene
     protected ProcessHandler startProcess() throws ExecutionException {
         try {
             final GeneralCommandLine cmd = getDmdCommandLine(config);
-            final OSProcessHandler handler = new OSProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
+            final ProcessHandler handler = new ColoredProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
             handler.addProcessListener(this);
             return handler;
         } catch (final NoValidDlangSdkFound e) {
