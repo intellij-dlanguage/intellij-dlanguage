@@ -17,25 +17,22 @@ import io.github.intellij.dlanguage.utils.SingleImport
 //todo handle static imports
 class DPublicImportIndex : StringStubIndexExtension<SingleImport>() {
 
-    override fun getVersion(): Int {
-        return super.getVersion() + VERSION
-    }
+    override fun getVersion(): Int = super.getVersion() + VERSION
 
     /**
      * use this method sparingly. better to implement stuff here, than doing raw queries
      */
-    override fun getKey(): StubIndexKey<String, SingleImport> {
-        return KEY
-    }
+    override fun getKey(): StubIndexKey<String, SingleImport> = KEY
 
     companion object {
-        private val KEY: StubIndexKey<String, SingleImport> = StubIndexKey.createIndexKey<String, SingleImport>("d.globally.accessible.import.public")
-        val VERSION = 3
+        private val KEY: StubIndexKey<String, SingleImport> = StubIndexKey.createIndexKey("d.globally.accessible.import.public")
+        private const val VERSION = 3
+
         fun <S : NamedStubBase<T>, T : DNamedElement> indexPublicImports(stub: S, sink: IndexSink) {
             if (stub is DlangSingleImportStub && topLevelDeclaration<S, T>(stub)) {
                 if ((stub as DlangSingleImportStub).attributes.visibility == DAttributesFinder.Visibility.PUBLIC) {
                     val fileName = (stub.psi.containingFile as DlangFile).getFullyQualifiedModuleName()
-                    sink.occurrence<SingleImport, String>(DPublicImportIndex.KEY, fileName)
+                    sink.occurrence(KEY, fileName)
                 }
             }
         }
@@ -48,12 +45,13 @@ class DPublicImportIndex : StringStubIndexExtension<SingleImport>() {
         //todo change type signature to stubs to force not loading psi
         private fun getAllPubliclyImported(modulesIn: Set<SingleImport>, project: Project): Set<SingleImport> {
             val alreadyProcessed = mutableSetOf<SingleImport>()
-            val toProcess = Sets.newHashSet<SingleImport>(modulesIn)
+            val toProcess = Sets.newHashSet(modulesIn)
+
             while (true) {
                 val tempSet = mutableSetOf<SingleImport>()
                 for (import in toProcess) {
                     if (!alreadyProcessed.contains(import)) {
-                        tempSet += StubIndex.getElements(DPublicImportIndex.KEY, import.importedModuleName, project, GlobalSearchScope.allScope(project), SingleImport::class.java)
+                        tempSet += StubIndex.getElements(KEY, import.importedModuleName, project, GlobalSearchScope.allScope(project), SingleImport::class.java)
                     }
                 }
                 alreadyProcessed.addAll(toProcess)
