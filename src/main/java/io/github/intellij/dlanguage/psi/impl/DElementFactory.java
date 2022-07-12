@@ -1,12 +1,12 @@
 package io.github.intellij.dlanguage.psi.impl;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
-import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
 import io.github.intellij.dlanguage.psi.DlangFile;
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
@@ -24,29 +24,35 @@ public class DElementFactory {
      * Takes a name and returns a Psi node of that name, or null.
      */
     @Nullable
-    public static DlangIdentifier createDLanguageIdentifierFromText(@NotNull final Project project,
-        @NotNull final String name) {
-        PsiElement element = createExpressionFromText(project, name);
+    public static DlangIdentifier createDLanguageIdentifierFromText(@NotNull final Project project, @NotNull final String name) {
+        @Nullable PsiElement element = createExpressionFromText(project, name);
+
         final DlangIdentifier e;
-        if (element instanceof DlangIdentifier)
+        if (element instanceof DlangIdentifier) {
             e = (DlangIdentifier) element;
-        else
-            e = findChildOfType(createExpressionFromText(project, name), DlangIdentifier.class);
-        if (e != null && e.getName().equals(name)) {
-            return e;
+        } else {
+            e = findChildOfType(element, DlangIdentifier.class);
         }
-        return null;
+
+        return e != null && e.getName().equals(name) ? e : null;
     }
 
     /**
      * Takes an expression in text and returns a Psi tree of that program.
      */
-    @NotNull
-    private static PsiElement createExpressionFromText(@NotNull final Project project,
-        @NotNull final String name) {
-        final DlangFile fileFromText = createFileFromText(project, name);
-        final PsiElement rhs = fileFromText.getFirstChild().getFirstChild().getLastChild();
-        return rhs.getLastChild().getLastChild().getLastChild();
+    @Nullable
+    private static PsiElement createExpressionFromText(@NotNull final Project project, @NotNull final String name) {
+        @NotNull final DlangFile fileFromText = createFileFromText(project, name);
+
+        @Nullable final PsiElement firstChild = fileFromText.getFirstChild();
+
+        // todo: this whole chain could do with being more defensive
+        return firstChild != null ? firstChild
+            .getFirstChild()
+            .getLastChild()
+            .getLastChild()
+            .getLastChild() // null when creating SingleImportFromText. check: firstChild.getFirstChild().getFirstChild().getNextSibling().getNextSibling().getText()
+            .getLastChild() : null;
     }
 
     /**
@@ -59,28 +65,39 @@ public class DElementFactory {
             .createFileFromText("A.hs", DLanguage.INSTANCE, text);
     }
 
-    public static PsiElement createDLanguageModuleFromText(final Project project,
-        final String name) {
-        final DLanguageModuleDeclaration e = findChildOfType(
-            createFileFromText(project, "module " + name + ";"), DLanguageModuleDeclaration.class);
-        if (e != null) {
-            return e;
+    @Nullable
+    public static DLanguageModuleDeclaration createDLanguageModuleFromText(@NotNull final Project project,
+                                                                           @NotNull final String name) {
+        if(StringUtil.isEmptyOrSpaces(name)) {
+            return null; // perhaps should throw exception
         }
-        return null;
+        return findChildOfType(
+            createFileFromText(project, "module " + name + ";"),
+            DLanguageModuleDeclaration.class
+        );
     }
 
-    public static PsiElement createDLanguageSingleImportFromText(final Project project,
-        final String name) {
-        final PsiElement e = createExpressionFromText(project, "import " + name + ";")
-            .getFirstChild();
-        if (e instanceof DLanguageImportDeclaration) {
-            return e;
-        }
-        return null;
-    }
+//    @Nullable // todo: either fix this or get rid of it completely
+//    public static DLanguageImportDeclaration createDLanguageSingleImportFromText(@NotNull final Project project,
+//                                                                 @NotNull final String name) {
+//        if(StringUtil.isEmptyOrSpaces(name)) {
+//            return null; // perhaps should throw exception
+//        }
+//        final PsiElement importExpression = createExpressionFromText(project, "import " + name + ";");
+//
+//        if(importExpression != null) {
+//            final PsiElement element = importExpression.getFirstChild();
+//            if (element instanceof DLanguageImportDeclaration) {
+//                return (DLanguageImportDeclaration)element;
+//            }
+//        }
+//
+//        return null;
+//    }
 
-    public static DLanguageAliasDeclaration createAliasDeclarationFromText(final Project project,
-        final String text) {
+    @Nullable
+    public static DLanguageAliasDeclaration createAliasDeclarationFromText(@NotNull final Project project,
+                                                                           @NotNull final String text) {
         final PsiFile fileFromText = PsiFileFactory.getInstance(project)
                                                    .createFileFromText("A.d", DLanguage.INSTANCE, text);
         return findChildOfType(fileFromText, DLanguageAliasDeclaration.class);
