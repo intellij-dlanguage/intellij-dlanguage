@@ -82,10 +82,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private RawCommandLineEditor dFormatFlags;
     private JButton dFormatAutoFind;
     private JTextField dFormatVersion;
-    private TextFieldWithBrowseButton dFixPath;
-    private RawCommandLineEditor dFixFlags;
-    private JButton dFixAutoFind;
-    private JTextField dFixVersion;
     private TextFieldWithBrowseButton GDBPath;
     private JButton GDBAutoFind;
     private RawCommandLineEditor GDBFlags;
@@ -100,7 +96,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             processor.addOptions("dscanner", null, "dscanner", D_TOOLS_ID, D_TOOLS_DISPLAY_NAME, true);
             processor.addOptions("dcd", "dcd", "dcd", D_TOOLS_ID, D_TOOLS_DISPLAY_NAME, false);
             processor.addOptions("dfmt", null, "dfmt", D_TOOLS_ID, D_TOOLS_DISPLAY_NAME, false);
-            processor.addOptions("dfix", null, "dfix", D_TOOLS_ID, D_TOOLS_DISPLAY_NAME, false);
             processor.addOptions("gdb", null, "gdb", D_TOOLS_ID, D_TOOLS_DISPLAY_NAME, false);
         }
     }
@@ -119,8 +114,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 dcdClientAutoFind, dcdClientVersion, DCD_LATEST, Topics.DCD_CLIENT_TOOL_CHANGE),
             new Tool(project, "dfmt", ToolKey.DFORMAT_KEY, dFormatPath, dFormatFlags,
                 dFormatAutoFind, dFormatVersion, DFORMAT_LATEST, Topics.DFMT_TOOL_CHANGE),
-            new Tool(project, "dfix", ToolKey.DFIX_KEY, dFixPath, dFixFlags,
-                dFixAutoFind, dFixVersion, DFIX_LATEST, Topics.DFIX_TOOL_CHANGE),
             new Tool(project, "gdb", ToolKey.GDB_KEY, GDBPath, GDBFlags,
                 GDBAutoFind, GDBVersion, null, Topics.GDB_TOOL_CHANGE)
         );

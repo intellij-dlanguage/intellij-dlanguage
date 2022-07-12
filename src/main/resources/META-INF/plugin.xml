@@ -286,14 +286,6 @@
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
             <synonym text="DFMT" />
         </action>
-        <action id="DLanguage.DFix"
-                class="io.github.intellij.dlanguage.actions.DFixAction"
-                text="Fix D Code with DFix"
-                description="Fix current file with DFix">
-            <add-to-group group-id="CodeFormatGroup" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt M"/>
-            <synonym text="DFIX" />
-        </action>
         <action id="io.github.intellij.dlanguage.actions.RestartDCD"
                 class="io.github.intellij.dlanguage.actions.RestartDCD"
                 text="Restart DCD Server"

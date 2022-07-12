@@ -27,7 +27,6 @@ class Topics {
         @JvmField val DCD_SERVER_TOOL_CHANGE = Topic.create("dcd server tool change", ToolChangeListener::class.java)
         @JvmField val DSCANNER_TOOL_CHANGE = Topic.create("dscanner tool change", ToolChangeListener::class.java)
         @JvmField val DFMT_TOOL_CHANGE = Topic.create("dfmt tool change", ToolChangeListener::class.java)
-        @JvmField val DFIX_TOOL_CHANGE = Topic.create("dfix tool change", ToolChangeListener::class.java)
         @JvmField val GDB_TOOL_CHANGE = Topic.create("gdb tool change", ToolChangeListener::class.java)
     }
 }
