@@ -62,7 +62,7 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
         } else if (type == DlangTypes.CATCH) {
             result = parser.parseCatch();
         } else if (type == DlangTypes.IF_CONDITION) {
-            result = false;
+            result = parser.parseIfCondition();
         } else if (type == DlangTypes.FOREACH_TYPE) {
             result = parser.parseForeachType();
         } else if (type == DlangTypes.PARAMETER) {

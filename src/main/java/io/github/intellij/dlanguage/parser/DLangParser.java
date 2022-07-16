@@ -4661,11 +4661,6 @@ class DLangParser {
      * <p>
      * $(GRAMMAR $(RULEDEF ifStatement):
      * $(LITERAL 'if') $(LITERAL '$(LPAREN)') $(RULE ifCondition) $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement) ($(LITERAL 'else') $(RULE declarationOrStatement))?
-     * $(RULEDEF ifCondition):
-     *   $(LITERAL 'auto') $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
-     * | $(RULE typeConstructors) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
-     * | $(RULE type) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
-     * | $(RULE expression)
      * ;)
      */
     boolean parseIfStatement() {
@@ -4678,70 +4673,9 @@ class DLangParser {
             cleanup(m, IF_STATEMENT);
             return false;
         }
-        if (currentIs(tok("auto"))) {
-            final Marker ifCondition = enter_section_(builder);
-            advance();
-            final Token i = expect(tok("identifier"));
-            if (i != null)
-                expect(tok("="));
-            if (!parseExpression()) {
-                cleanup(ifCondition, IF_CONDITION);
-                cleanup(m, IF_STATEMENT);
-                return false;
-            }
-            exit_section_(builder, ifCondition, IF_CONDITION, true);
-        } else {
-            if (!moreTokens()) {
-                cleanup(m, IF_STATEMENT);
-                return false;
-            }
-            // consume for TypeCtors = identifier
-            if (isTypeCtor(current().type)) {
-                Bookmark before_advance = null;
-                while (isTypeCtor(current().type)) {
-                    if (before_advance != null) {
-                        abandonBookmark(before_advance);
-                    }
-                    before_advance = setBookmark();
-                    advance();
-                }
-                // goes back for TypeCtor(Type) = identifier
-                if (currentIs(tok("("))) {
-                    goToBookmark(before_advance);
-                } else {
-                    abandonBookmark(before_advance);
-                }
-            }
-            final Bookmark b = setBookmark();
-            final boolean type = parseType().first;
-            if (!type || !currentIs(tok("identifier"))
-                || !peekIs(tok("="))) {
-                goToBookmark(b);
-                if (!parseExpression()) {
-                    cleanup(m, IF_STATEMENT);
-                    return false;
-                }
-            } else {
-                abandonBookmark(b);
-                final Marker ifCondition = enter_section_(builder);
-                if (!tokenCheck("identifier")) {
-                    cleanup(ifCondition, IF_CONDITION);
-                    cleanup(m, IF_STATEMENT);
-                    return false;
-                }
-                if (!tokenCheck("=")) {
-                    cleanup(ifCondition, IF_CONDITION);
-                    cleanup(m, IF_STATEMENT);
-                    return false;
-                }
-                if (!parseExpression()) {
-                    cleanup(ifCondition, IF_CONDITION);
-                    cleanup(m, IF_STATEMENT);
-                    return false;
-                }
-                exit_section_(builder, ifCondition, IF_CONDITION, true);
-            }
-
+        if (!parseIfCondition()) {
+            cleanup(m, IF_STATEMENT);
+            return false;
         }
 
         if (!tokenCheck(")")) {
@@ -4767,6 +4701,83 @@ class DLangParser {
         exit_section_modified(builder, m, IF_STATEMENT, true);
         return true;
     }
+
+
+    /**
+     * Parse IfCondition
+     *
+     * $(RULEDEF ifCondition):
+     *   $(LITERAL 'auto') $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
+     * | $(RULE typeConstructors) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
+     * | $(RULE type) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
+     * | $(RULE expression)
+     * ;)
+     */
+    public boolean parseIfCondition() {
+        // ex. case:
+        //    `if (auto identifier = exp)`
+        //    `if (scope identifier = exp)`
+        if (currentIsOneOf(tok("auto"), tok("scope"))) {
+            final Marker ifCondition = enter_section_(builder);
+            advance();
+            final Token i = expect(tok("identifier"));
+            if (i != null)
+                expect(tok("="));
+            if (!parseExpression()) {
+                cleanup(ifCondition, IF_CONDITION);
+                return false;
+            }
+            exit_section_(builder, ifCondition, IF_CONDITION, true);
+        } else {
+            if (!moreTokens()) {
+                return false;
+            }
+            // consume for TypeCtors = identifier
+            if (isTypeCtor(current().type)) {
+                Bookmark before_advance = null;
+                while (isTypeCtor(current().type)) {
+                    if (before_advance != null) {
+                        abandonBookmark(before_advance);
+                    }
+                    before_advance = setBookmark();
+                    advance();
+                }
+                // goes back for TypeCtor(Type) = identifier
+                if (currentIs(tok("("))) {
+                    goToBookmark(before_advance);
+                } else {
+                    abandonBookmark(before_advance);
+                }
+            }
+            final Bookmark b = setBookmark();
+            final boolean type = parseType().first;
+            if (!type || !currentIs(tok("identifier"))
+                || !peekIs(tok("="))) {
+                goToBookmark(b);
+                if (!parseExpression()) {
+                    return false;
+                }
+            } else {
+                abandonBookmark(b);
+                final Marker ifCondition = enter_section_(builder);
+                if (!tokenCheck("identifier")) {
+                    cleanup(ifCondition, IF_CONDITION);
+                    return false;
+                }
+                if (!tokenCheck("=")) {
+                    cleanup(ifCondition, IF_CONDITION);
+                    return false;
+                }
+                if (!parseExpression()) {
+                    cleanup(ifCondition, IF_CONDITION);
+                    return false;
+                }
+                exit_section_(builder, ifCondition, IF_CONDITION, true);
+            }
+        }
+        return true;
+    }
+
 
     /**
      * Parses an ImportBind
@@ -8780,7 +8791,7 @@ class DLangParser {
      * Parses a WhileStatement
      * <p>
      * $(GRAMMAR $(RULEDEF whileStatement):
-     * $(LITERAL 'while') $(LITERAL '$(LPAREN)') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement)
+     * $(LITERAL 'while') $(LITERAL '$(LPAREN)') $(RULE ifCondition) $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement)
      * ;)
      */
     boolean parseWhileStatement() {
@@ -8793,7 +8804,7 @@ class DLangParser {
             cleanup(m, WHILE_STATEMENT);
             return false;
         }
-        if (!parseExpression()) {
+        if (!parseIfCondition()) {
             cleanup(m, WHILE_STATEMENT);
             return false;
         }
@@ -9371,7 +9382,7 @@ class DLangParser {
         return tokens[index - 1];
     }
 
-    //@NotNull
+    @NotNull
     private Token.IdType tok(@NotNull final String tok) {
         final IdType tt = tokenTypeIndex.get(tok);
         if (tt != null) {

@@ -21,6 +21,9 @@ public interface DLanguageIfCondition extends PsiElement, DNamedElement,
     PsiElement getKW_AUTO();
 
     @Nullable
+    PsiElement getKW_SCOPE();
+
+    @Nullable
     DLanguageType getType();
 
     @Nullable
