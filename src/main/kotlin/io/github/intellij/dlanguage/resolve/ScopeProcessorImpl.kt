@@ -322,8 +322,13 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-        //todo should handle place
-        return true//todo check that while statement's can/can't contain truthy/falsy variable declarations or casts
+        var toContinue = true
+        if (element.ifCondition?.identifier != null) {
+            if (!processor.execute(element.ifCondition!!, state)) {
+                toContinue = false
+            }
+        }
+        return toContinue
     }
 
     @Suppress("UNUSED_PARAMETER")
