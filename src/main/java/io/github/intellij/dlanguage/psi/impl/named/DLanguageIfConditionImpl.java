@@ -63,6 +63,12 @@ public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DlangI
 
     @Nullable
     @Override
+    public PsiElement getKW_SCOPE() {
+        return findChildByType(DlangTypes.KW_SCOPE);
+    }
+
+    @Nullable
+    @Override
     public DLanguageType getType() {
         return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
     }

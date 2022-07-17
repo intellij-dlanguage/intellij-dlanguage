@@ -10,7 +10,7 @@ public interface DLanguageWhileStatement extends PsiElement {
     public PsiElement getKW_WHILE();
 
     @Nullable
-    public DLanguageExpression getExpression();
+    public DLanguageIfCondition getIfCondition();
 
     @Nullable
     public DLanguageDeclarationOrStatement getDeclarationOrStatement();

@@ -509,6 +509,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void teststatements_while_condition_assignment() {
+        doDlangParserTest(true, true);
+    }
+
     public void teststatements_with() {
         doDlangParserTest(true, true);
     }
@@ -516,6 +520,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void teststatements_unterminated_if() {
         doDlangParserTest(true, false);
     }
+
     // arrays
     public void testarrays() {
         doDlangParserTest(true, true);
