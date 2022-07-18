@@ -9,6 +9,6 @@ class DHighlightingLexer : LayeredLexer(FlexAdapter(DHighlightingLexer())) {
     init {
         registerLayer(DLiteralEscapesLexer(CHARACTER_LITERAL), CHARACTER_LITERAL)
         registerLayer(DLiteralEscapesLexer(DOUBLE_QUOTED_STRING), DOUBLE_QUOTED_STRING)
-
+        registerLayer(DDelimitedStringDelimiterLexer(), DELIMITED_STRING)
     }
 }
