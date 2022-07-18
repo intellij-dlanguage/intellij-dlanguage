@@ -469,6 +469,11 @@ public class DlangSdkType extends SdkType {
     }
 
     @Override
+    public boolean allowWslSdkForLocalProject() {
+        return true;
+    }
+
+    @Override
     public boolean isRootTypeApplicable(@NotNull final OrderRootType type) {
         return type != LibFileRootType.getInstance() && super.isRootTypeApplicable(type);
     }
