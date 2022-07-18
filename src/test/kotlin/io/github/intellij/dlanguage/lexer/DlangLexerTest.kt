@@ -124,10 +124,7 @@ class DlangLexerTest : DlangLexerTestBase("lexer") {
     fun teststring_delim_dash() = doTest("q\"-test-\"d", "DlangTokenType.DELIMITED_STRING ('q\"-test-\"d')")
     // Note q"/te/st/"d is technically invalid in D, but it’s better to have another lexer that ensure it’s a valid DELIMITED_STRING
     fun teststring_delim_multiple_dash() = doTest("q\"/te/st/\"d", "DlangTokenType.DELIMITED_STRING ('q\"/te/st/\"d')")
-    fun teststring_delim_invalid() = doTest("q\"_test_\"d", """
-DlangTokenType.ID ('q')
-DlangTokenType.DOUBLE_QUOTED_STRING ('"_test_"d')
-""")
+    fun teststring_delim_invalid() = doTest("q\"_test_\"d", "DlangTokenType.DELIMITED_STRING ('q\"_test_\"d')")
     fun teststring_delim_invalid_non_ending() = doTest("q\"/test\"d;", """
 BAD_CHARACTER ('q"/test"d;')
 """)
