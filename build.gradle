@@ -10,7 +10,7 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.intellij' version '1.8.0-SNAPSHOT'
-    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
 //    id 'net.saliman.cobertura' version '4.0.0'
 //    id 'com.github.kt3k.coveralls' version '2.10.2'
     id 'org.jetbrains.grammarkit' version '2021.2.2'
@@ -131,7 +131,7 @@ intellij {
     version = ideaVersion
     //type = 'CL' // maybe helpful to change this when trying other IDE. can be 'IC', 'IU', 'JPS', or 'CL'
     updateSinceUntilBuild = false
-    plugins = [ 'org.intellij.intelliLang', 'com.intellij.java', 'com.intellij.java.ide' ] // IDEA only (plugin was previously 'java')
+    plugins = [ 'uml', 'org.intellij.intelliLang', 'com.intellij.java', 'com.intellij.java.ide' ] // IDEA only (plugin was previously 'java')
     //plugins = [ 'org.intellij.intelliLang', 'com.intellij.cidr.base', 'com.intellij.cidr.lang' ] // CLion & AppCode
     //plugins = [ 'org.intellij.intelliLang', 'com.intellij.clion', 'com.intellij.cidr.base', 'com.intellij.cidr.lang' ] // CLion only
 
