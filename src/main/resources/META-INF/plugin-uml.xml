@@ -1,0 +1,9 @@
+<idea-plugin url="http://www.jetbrains.com/idea">
+    <depends>com.intellij.diagram</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <diagram.Provider implementation="io.github.intellij.dlanguage.diagrams.DlangClassDiagramProvider" />
+
+<!--        <diagram.changesProvider implementation="io.github.intellij.dlanguage.diagrams.Todo" />-->
+    </extensions>
+</idea-plugin>
