@@ -23,7 +23,7 @@ class ImplicitlyConcatenatedStrings : LocalInspectionTool() {
 
 class ImplicitlyConcatenatedStringsVisitor(val holder: ProblemsHolder) : DlangVisitor() {
     override fun visitPrimaryExpression(o: DLanguagePrimaryExpressionImpl) {
-        if (o.doublE_QUOTED_STRINGs.size > 1)
+        if (o.doublE_QUOTED_STRINGs.size + o.delimiteD_STRINGs.size > 1)
             holder.registerProblem(o, "Implicitly concatenated strings", ExplicitlyConcatenateStrings(o))
     }
 }
