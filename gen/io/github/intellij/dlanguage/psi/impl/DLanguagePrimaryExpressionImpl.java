@@ -254,6 +254,11 @@ public class DLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement impleme
         return findChildrenByType(DOUBLE_QUOTED_STRING);
     }
 
+    @NotNull
+    public List<PsiElement> getDELIMITED_STRINGs() {
+        return findChildrenByType(DELIMITED_STRING);
+    }
+
     @Nullable
     public PsiElement getCHARACTER_LITERAL() {
         return findChildByType(CHARACTER_LITERAL);

@@ -131,6 +131,9 @@ public interface DLanguagePrimaryExpression extends PsiElement {
     @NotNull
     public List<PsiElement> getDOUBLE_QUOTED_STRINGs();
 
+    @NotNull
+    public List<PsiElement> getDELIMITED_STRINGs();
+
     @Nullable
     public PsiElement getCHARACTER_LITERAL();
 

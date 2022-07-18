@@ -10,4 +10,9 @@ class DHighlightingAnnotatorTest : BasePlatformTestCase() {
         myFixture.configureByFile("type_parameters.d")
         myFixture.testHighlighting(false, true, false)
     }
+
+    fun testInvalidDelimiterString() {
+        myFixture.configureByFile("invalid_string_delimiters.d")
+        myFixture.testHighlighting(false, false, false);
+    }
 }
