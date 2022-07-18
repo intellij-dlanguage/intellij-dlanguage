@@ -11,6 +11,7 @@ import static io.github.intellij.dlanguage.psi.DlangTypes.*;
   private int nestedCommentDepth = 0;
   private int nestedDocDepth = 0;
   private char stringDelimiter;
+  private String stringDelimiter2;
   private boolean stringDelimiterClosed;
 
   public DHighlightingLexer() {
@@ -62,9 +63,9 @@ WYSIWYG_STRING = "r"\" [^\"]* \" {STRING_POSTFIX}?
 ALTERNATE_WYSIWYG_STRING = ` [^`]* ` {STRING_POSTFIX}?
 DOUBLE_QUOTED_STRING = \" ( [^\\\"] |{ESCAPE_SEQUENCE})* \" {STRING_POSTFIX}?
 DELIMITED_STRING = q{DELIMITED_STRING_CONTENT} {STRING_POSTFIX}?
-DELIMITED_STRING_CONTENT = (\"\( ~(\)\")) | (\"\[ ~(\]\")) | (\"\{ ~(\}\")) | (\"\< ~(\>\")) |
-                   (\"{ID} {NEW_LINE} ~({NEW_LINE} {ID}\"))
-ALTERNATIVE_DELIMITED_STRING_START = q\"[^[:letter:][:number:]_[" "]]
+DELIMITED_STRING_CONTENT = (\"\( ~(\)\")) | (\"\[ ~(\]\")) | (\"\{ ~(\}\")) | (\"\< ~(\>\"))
+ALTERNATIVE_DELIMITED_STRING_START = q\".
+ALTERNATIVE2_DELIMITED_STRING_START = q\"[^\"\r\n]+[\r\n]
 
 
 STRING_POSTFIX = [cwd]
@@ -318,7 +319,7 @@ NESTING_BLOCK_DOC_START = "/++"
 NESTING_BLOCK_DOC_END = "+/"
 
 %state WAITING_VALUE, NESTING_COMMENT_CONTENT BLOCK_COMMENT_CONTENT MODULE_VALUE FUNCTION_VALUE
-%state NESTING_DOC_CONTENT, BLOCK_DOC_CONTENT, ALTERNATE_DELIMITED_STRING
+%state NESTING_DOC_CONTENT, BLOCK_DOC_CONTENT, ALTERNATE_DELIMITED_STRING, ALTERNATE2_DELIMITED_STRING
 
 
 %%
@@ -395,6 +396,39 @@ NESTING_BLOCK_DOC_END = "+/"
           }
       }
 
+}
+
+<ALTERNATE2_DELIMITED_STRING> {
+    {STRING_POSTFIX} {
+          if (stringDelimiterClosed) {
+              yybegin(YYINITIAL);
+              return DELIMITED_STRING;
+          }
+      }
+
+    \n{ID}\" {
+          if (yytext().subSequence(1, yylength() -1).toString().equals(stringDelimiter2)) {
+              stringDelimiterClosed = true;
+          }
+      }
+
+    <<EOF>>     {
+          if (stringDelimiterClosed) {
+              yypushback(1);
+              yybegin(YYINITIAL);
+              return DELIMITED_STRING;
+          }
+          yybegin(YYINITIAL);
+          return com.intellij.psi.TokenType.BAD_CHARACTER;
+      }
+
+    [^] {
+          if(stringDelimiterClosed) {
+              yypushback(1);
+              yybegin(YYINITIAL);
+              return DELIMITED_STRING;
+          }
+      }
 }
 
 <NESTING_COMMENT_CONTENT> {
@@ -537,6 +571,12 @@ NESTING_BLOCK_DOC_END = "+/"
 <YYINITIAL> {DOT} { return DOT; }
 <YYINITIAL> {AT_ATTRIBUTE} { return AT_ATTRIBUTE; }
 
+<YYINITIAL> {ALTERNATIVE2_DELIMITED_STRING_START} {
+    stringDelimiter2 = yytext().subSequence(2, yylength() -1).toString();
+    stringDelimiterClosed = false;
+    yypushback(1); // to simpler match q"test\ntest";
+    yybegin(ALTERNATE2_DELIMITED_STRING);
+  }
 <YYINITIAL> {ALTERNATIVE_DELIMITED_STRING_START} {
     stringDelimiter = yycharat(yylength()-1);
     stringDelimiterClosed = false;

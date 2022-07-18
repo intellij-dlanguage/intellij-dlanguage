@@ -10,4 +10,10 @@ is a multi-line
 heredoc string
 EOS";
   string e = q"/foo]/";          // "foo]"
+  string f = q"TEST
+TEST";
+  string g = q"FOO
+a"
+b"
+FOO"; // a"\nb"\n
 }
