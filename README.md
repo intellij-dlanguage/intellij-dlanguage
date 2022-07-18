@@ -1,7 +1,7 @@
 Intellij D Language
 ===================
 
-Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA and CLion (Clion support is experimental. See [CLion issues](https://github.com/intellij-dlanguage/intellij-dlanguage/labels/Clion))
+Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA (planned Clion support is experimental. See [CLion issues](https://github.com/intellij-dlanguage/intellij-dlanguage/labels/Clion))
 
 [![JetBrains IntelliJ plugins](https://img.shields.io/jetbrains/plugin/d/8115.svg)](https://plugins.jetbrains.com/plugin/8115)
 
