@@ -20,7 +20,8 @@ class DStringLiteralAnnotator : Annotator {
         if (element !is PrimaryExpression) return
         if (element.delimiteD_STRINGs.isNotEmpty()) {
             for (elem in element.delimiteD_STRINGs) {
-                val value = elem.text.substring(2, elem.textLength - 1) // Skip `q"` and `"`
+                val endPos = if (elem.text[elem.textLength - 1] == '"')  1 else 2;
+                val value = elem.text.substring(2, elem.textLength - endPos) // Skip `q"` and `"`
                 val openingDelimiter = getOpeningDelimiter(value)
                 if (openingDelimiter == null) {
                     when {
