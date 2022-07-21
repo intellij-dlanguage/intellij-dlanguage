@@ -41,8 +41,10 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
     COMMA("Braces and Operators//Comma", Default.COMMA),
 
     MODULE_DEFINITION("Module Definition", Default.GLOBAL_VARIABLE),
-    //FUNCTION_DEFINITION("Function Definition", Default.FUNCTION_DECLARATION),
+    FUNCTION_DEFINITION("Function Definition", Default.FUNCTION_DECLARATION),
+    FUNCTION_CALL("Function Call", Default.FUNCTION_CALL),
     //IDENTIFIER("Identifier", Default.IDENTIFIER),
+    PARAMETER("Parameter", Default.PARAMETER),
     TYPE_PARAMETER("Type Parameter", Default.PARAMETER),
     ;
 
