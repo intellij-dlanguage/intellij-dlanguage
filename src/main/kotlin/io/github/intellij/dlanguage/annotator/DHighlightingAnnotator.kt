@@ -21,7 +21,7 @@ class DHighlightingAnnotator : Annotator {
             else -> null
         } ?: return
 
-        holder.newSilentAnnotation(HighlightSeverity.INFORMATION).textAttributes(color.textAttributesKey).create()
+        holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(partToHighlight).textAttributes(color.textAttributesKey).create()
     }
 
     private fun highlightReference(element: PsiElement): Pair<TextRange, DColor>? {
