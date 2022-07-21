@@ -18,5 +18,5 @@ public interface DLanguageShortenedFunctionBody extends PsiElement {
     DLanguageExpression getExpression();
 
     @NotNull
-    PsiElement getSEMICOLON();
+    PsiElement getOP_SCOLON();
 }

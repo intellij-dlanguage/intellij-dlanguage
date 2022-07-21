@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.SEMICOLON;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_SCOLON;
 
 public class DLanguageMissingFunctionBodyImpl extends ASTWrapperPsiElement implements
     DLanguageMissingFunctionBody {
@@ -40,7 +40,7 @@ public class DLanguageMissingFunctionBodyImpl extends ASTWrapperPsiElement imple
     }
 
     @Nullable
-    public PsiElement getSEMICOLON() {
-        return findChildByType(SEMICOLON);
+    public PsiElement getOP_SCOLON() {
+        return findChildByType(OP_SCOLON);
     }
 }

@@ -13,7 +13,7 @@ public interface DLanguagePragmaStatement extends PsiElement {
     DLanguageBlockStatement getBlockStatement();
 
     @Nullable
-    PsiElement getSEMICOLON();
+    PsiElement getOP_SCOLON();
 
     @Nullable
     DLanguageStatement getStatement();

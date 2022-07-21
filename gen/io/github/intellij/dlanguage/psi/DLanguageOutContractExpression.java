@@ -13,7 +13,7 @@ public interface DLanguageOutContractExpression extends PsiElement {
     PsiElement getOP_PAR_LEFT();
 
     @NotNull
-    PsiElement getSEMICOLON();
+    PsiElement getOP_SCOLON();
 
     @NotNull
     DLanguageAssertArguments getAssertArguments();

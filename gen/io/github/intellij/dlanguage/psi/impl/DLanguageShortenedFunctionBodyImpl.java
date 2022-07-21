@@ -14,8 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_LAMBDA_ARROW;
-import static io.github.intellij.dlanguage.psi.DlangTypes.SEMICOLON;
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 public class DLanguageShortenedFunctionBodyImpl extends ASTWrapperPsiElement implements
     DLanguageShortenedFunctionBody {
@@ -52,7 +51,7 @@ public class DLanguageShortenedFunctionBodyImpl extends ASTWrapperPsiElement imp
     }
 
     @NotNull
-    public PsiElement getSEMICOLON() {
-        return findChildByType(SEMICOLON);
+    public PsiElement getOP_SCOLON() {
+        return findChildByType(OP_SCOLON);
     }
 }
