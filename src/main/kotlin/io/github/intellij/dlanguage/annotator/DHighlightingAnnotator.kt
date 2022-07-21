@@ -14,6 +14,8 @@ import io.github.intellij.dlanguage.utils.*
 class DHighlightingAnnotator : Annotator {
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         val (partToHighlight, color) = when (element) {
+            is AtAttribute -> element.textRange to DColor.AT_ATTRIBUTE
+            is ModuleDeclaration -> element.identifierChain?.textRange to DColor.MODULE_DEFINITION
             is IdentifierOrTemplateInstance -> highlightReference(element)
             is TemplateSingleArgument -> highlightReference(element)
             is TemplateParameter -> highlightNotReference(element)
