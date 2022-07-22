@@ -11,6 +11,13 @@ import io.github.intellij.dlanguage.psi.DLanguageType_2
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.utils.*
 
+// TODO find a better place for this variable
+/**
+ * Contains the "standard aliased types" as defined in the specs.
+ * The standards aliased types are not native types but are defined in object.d
+ */
+val DlangAliasedTypes = setOf("size_t", "ptrdiff_t", "noreturn", "string", "wstring", "dstring")
+
 class DHighlightingAnnotator : Annotator {
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         val (partToHighlight, color) = when (element) {
@@ -90,6 +97,13 @@ class DHighlightingAnnotator : Annotator {
                 DColor.FUNCTION_CALL
         }
         is TemplateDeclaration -> DColor.FUNCTION_CALL
+        is AliasInitializer -> {
+            // Colorize standard alias types as if they were keywords
+            if (element.identifier?.text in DlangAliasedTypes)
+                DColor.KEYWORD
+            else
+                null
+        }
         else -> null
     }
 
