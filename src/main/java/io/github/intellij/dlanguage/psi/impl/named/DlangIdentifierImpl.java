@@ -51,12 +51,14 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
         visitor.visitDNamedElement(this);visitor.visitIdentifier(this);
     }
 
+    @Override
     public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
         else super.accept(visitor);
     }
 
     @NotNull
+    @Override
     public String getName() {
         final DlangIdentifierStub stub = this.getGreenStub();
         if (stub != null) return StringUtil.notNullize(stub.getName());
@@ -64,16 +66,19 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
     }
 
     @Nullable
+    @Override
     public DlangIdentifier getNameIdentifier() {
         return this;
     }
 
     @NotNull
+    @Override
     public PsiReference getReference() {
         return new DReference(this, TextRange.from(0, getName().length()));
     }
 
     @NotNull
+    @Override
     public PsiElement setName(@NotNull final String newName) {
         final PsiElement e = DElementFactory.createDLanguageIdentifierFromText(getProject(), newName);
         if (e == null) {
@@ -85,6 +90,7 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
     }
 
     @NotNull
+    @Override
     public ItemPresentation getPresentation() {
         return new DlangItemPresentation(getContainingFile()) {
             @NotNull
@@ -211,6 +217,7 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
         };
     }
 
+    @Override
     public void delete() {
         final Set<PsiNamedElement> definitionNode = DResolveUtil.Companion.getInstance(getProject()).findDefinitionNode(this, false);
         if (definitionNode.size() != 1)
