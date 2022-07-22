@@ -45,29 +45,6 @@ public class DElementFactoryTest extends LightPlatform4TestCase {
         assertNull(DElementFactory.createDLanguageModuleFromText(getProject(), ""));
     }
 
-//    @Test
-//    public void createDLanguageSingleImportFromText_Foo() {
-//        final DLanguageImportDeclaration result = DElementFactory.createDLanguageSingleImportFromText(getProject(), "foo");
-//
-//        assertEquals("import foo;", result.getText());
-//        assertEquals("foo", result.getNavigationElement().getText());
-//        assertEquals(DLanguage.INSTANCE, result.getNavigationElement().getLanguage());
-//    }
-//
-//    @Test
-//    public void createDLanguageSingleImportFromText_FooBar() {
-//        final DLanguageImportDeclaration result = DElementFactory.createDLanguageSingleImportFromText(getProject(), "foo.bar");
-//
-//        assertEquals("import foo.bar;", result.getText());
-//        assertEquals("foo.bar", result.getNavigationElement().getText());
-//        assertEquals(DLanguage.INSTANCE, result.getNavigationElement().getLanguage());
-//    }
-//
-//    @Test
-//    public void createDLanguageSingleImportFromText_EmptyString() {
-//        assertNull(DElementFactory.createDLanguageSingleImportFromText(getProject(), ""));
-//    }
-
     @Test // alias myint = abc.Foo.bar;
     public void createAliasDeclarationFromText_1() {
         final DLanguageAliasDeclaration result = DElementFactory.createAliasDeclarationFromText(getProject(), "alias myint = abc.Foo.bar;");

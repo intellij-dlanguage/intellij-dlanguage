@@ -51,7 +51,7 @@ public class DElementFactory {
             .getFirstChild()
             .getLastChild()
             .getLastChild()
-            .getLastChild() // null when creating SingleImportFromText. check: firstChild.getFirstChild().getFirstChild().getNextSibling().getNextSibling().getText()
+            .getLastChild()
             .getLastChild() : null;
     }
 
@@ -76,24 +76,6 @@ public class DElementFactory {
             DLanguageModuleDeclaration.class
         );
     }
-
-//    @Nullable // todo: either fix this or get rid of it completely
-//    public static DLanguageImportDeclaration createDLanguageSingleImportFromText(@NotNull final Project project,
-//                                                                 @NotNull final String name) {
-//        if(StringUtil.isEmptyOrSpaces(name)) {
-//            return null; // perhaps should throw exception
-//        }
-//        final PsiElement importExpression = createExpressionFromText(project, "import " + name + ";");
-//
-//        if(importExpression != null) {
-//            final PsiElement element = importExpression.getFirstChild();
-//            if (element instanceof DLanguageImportDeclaration) {
-//                return (DLanguageImportDeclaration)element;
-//            }
-//        }
-//
-//        return null;
-//    }
 
     @Nullable
     public static DLanguageAliasDeclaration createAliasDeclarationFromText(@NotNull final Project project,
