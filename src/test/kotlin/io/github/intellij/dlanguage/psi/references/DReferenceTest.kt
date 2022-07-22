@@ -1,5 +1,7 @@
 package io.github.intellij.dlanguage.psi.references
 
+import com.intellij.ide.util.PropertiesComponent
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiNamedElement
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
@@ -51,13 +53,54 @@ class DReferenceTest : BasePlatformTestCase() {
     }
 
     @Test
+    fun `test DReference getVariants() for native completion (incomplete test)`() {
+        val source = """import std.stdio : writeln;
+            |class MyClass {
+            |    private string message;
+            |    this(string message) {
+            |        this.message = message;
+            |    }
+            |
+            |    public void print() {
+            |        writeln(this.message);
+            |    }
+            |}
+            |void main() {
+            |    auto myC = new MyClass("Hello World!");
+            |
+            |    myC.<caret>print();
+            |}
+            """.trimMargin()
+
+        myFixture.configureByText(DlangFileType.INSTANCE, source)
+
+        val element = myFixture.elementAtCaret as PsiNamedElement
+        val textRange: TextRange = element.textRange
+
+        val ref = DReference(element, textRange)
+
+        PropertiesComponent.getInstance().setValue("USE_NATIVE_CODE_COMPLETION", false)
+
+        assertTrue("With native completion disabled the result should be an empty array", ref.variants.isEmpty())
+
+        PropertiesComponent.getInstance().setValue("USE_NATIVE_CODE_COMPLETION", true)
+
+        val results = ref.variants
+
+        assertNotNull("With native completion enabled there should be results", results)
+        assertTrue(results.isNotEmpty())
+        assertEquals(152, results.size) // todo: fix this test. Should be able to resolve definition
+    }
+
+    @Test
     fun `test DReference handleElementRename with Identifier`() {
         val element: PsiNamedElement = DElementFactory.createDLanguageIdentifierFromText(project, "myvar")!!
 
         val ref = DReference(element, element.textRange)
 
-        val result = ref.handleElementRename("betterName")
-
-        assertEquals("betterName", result.text)
+        WriteCommandAction.runWriteCommandAction(project) {
+            val result = ref.handleElementRename("betterName")
+            assertEquals("betterName", result.text)
+        }
     }
 }
