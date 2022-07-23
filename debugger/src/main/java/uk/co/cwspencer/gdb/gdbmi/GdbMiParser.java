@@ -31,6 +31,7 @@ import java.util.Stack;
 /**
  * Parser for GDB/MI output.
  */
+@Deprecated(forRemoval = true) // dead code, can probably get removed
 public class GdbMiParser {
     // State of the parser FSM
     private final Stack<FsmState> m_state;

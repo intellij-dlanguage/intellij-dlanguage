@@ -30,6 +30,7 @@ import java.util.List;
 /**
  * Lexer for GDB/MI output.
  */
+@Deprecated(forRemoval = true) // dead code, can probably get removed
 public class GdbMiLexer {
     // State of the lexer FSM
     private FsmState m_state = FsmState.Idle;

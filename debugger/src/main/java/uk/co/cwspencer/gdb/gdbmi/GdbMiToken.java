@@ -27,6 +27,7 @@ package uk.co.cwspencer.gdb.gdbmi;
 /**
  * Class representing a token read from a GDB/MI stream.
  */
+@Deprecated(forRemoval = true) // dead code, can probably get removed
 public class GdbMiToken {
     /**
      * The type of token.
