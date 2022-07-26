@@ -30,7 +30,9 @@ class DubExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
         if (!(funcDecl.isAuto || /*funcDecl.isNoreturn ||*/ // TODO enable when support of noreturn will be added
             listOf("void", "int").contains((element.parent.parent as DlangFunctionDeclaration).type?.type_2?.text)))
             return false
-        if (!(funcDecl.parameters == null || funcDecl.parameters!!.parameters.size < 2))
+        if (funcDecl.parameters == null)
+            return false
+        if (funcDecl.parameters!!.parameters.size >= 2)
             return false
 
         val param = funcDecl.parameters!!.parameters.getOrNull(0) ?: return true
