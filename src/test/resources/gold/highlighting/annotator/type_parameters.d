@@ -1,62 +1,62 @@
-class Foo(<info descr="">T</info>) {
-    <info descr="">T</info>[] bar;
+class Foo(<info descr="null">T</info>) {
+    <info descr="null">T</info>[] bar;
 
-    void test(<info descr="">T</info> item, <info descr="">T</info> a, <info descr="">T</info> b) {
+    void <info descr="null">test</info>(<info descr="null">T</info> item, <info descr="null">T</info> a, <info descr="null">T</info> b) {
         if (item > 0) {
-            <info descr="">T</info> a = b;
+            <info descr="null">T</info> a = b;
         } else {
-            <info descr="">T</info> b = a;
+            <info descr="null">T</info> b = a;
         }
 
-        static if (hasIndirections!<info descr="">T</info>) {
-            bar[0 .. last + 1] = <info descr="">T</info>.init;
+        static if (<info descr="null">hasIndirections</info>!<info descr="null">T</info>) {
+            bar[0 .. last + 1] = <info descr="null">T</info>.init;
         }
     }
 }
 
-interface Addable(<info descr="">T</info>) {
-    final auto add(<info descr="">T</info> t) {
+interface Addable(<info descr="null">T</info>) {
+    final auto <info descr="null">add</info>(<info descr="null">T</info> t) {
         return this;
     }
 }
 
-class List(<info descr="">T</info>) : Addable!<info descr="">T</info> {
-    List remove(<info descr="">T</info> t) {
+class List(<info descr="null">T</info>) : Addable!<info descr="null">T</info> {
+    List <info descr="null">remove</info>(<info descr="null">T</info> t) {
         return this;
     }
 }
 
-void main() {
+void <info descr="null">main</info>() {
     auto list = new List!int;
 }
 
-Vector!(<info descr="">T</info>, <info descr="">n</info>) optVecValue(<info descr="">T</info>, <info descr="">int n</info>, <info descr="">E : Exception</info>)(
+Vector!(<info descr="null">T</info>, <info descr="null">n</info>) <info descr="null">optVecValue</info>(<info descr="null">T</info>, int <info descr="null">n</info>, <info descr="null">E</info> : Exception)(
     in string path,
-    Vector!(<info descr="">T</info>, <info descr="">n</info>) defaultVal = Vector!(<info descr="">T</info>, <info descr="">n</info>).init
+    Vector!(<info descr="null">T</info>, <info descr="null">n</info>) defaultVal = <info descr="null">Vector</info>!(<info descr="null">T</info>, <info descr="null">n</info>).init
 ) {
     Node node = findNodeByPath(path, getRootNode());
 
     if (node is null)
         return defaultVal;
 
-    return getVecValueFromNode!(<info descr="">T</info>, <info descr="">n</info>, <info descr="">E</info>)(node);
+    return <info descr="null">getVecValueFromNode</info>!(<info descr="null">T</info>, <info descr="null">n</info>, <info descr="null">E</info>)(node);
 }
 
-mixin template MyMixin(<info descr="">T</info>, <info descr="">N</info>) {
-    <info descr="">T</info> foo;
-    <info descr="">N</info> bar;
+mixin template <info descr="null">MyMixin</info>(<info descr="null">T</info>, <info descr="null">N</info>) {
+    <info descr="null">T</info> foo;
+    <info descr="null">N</info> bar;
 }
 
-template myTemplate(<info descr="">T</info>, <info descr="">alias b</info>) {
+template <info descr="null">myTemplate</info>(<info descr="null">T</info>, alias <info descr="null">b</info>) {
 }
 
 struct S {
-    const void foo(<info descr="">this T</info>)(int i) {
-        writeln(typeid(<info descr="">T</info>));
+    const void <info descr="null">foo</info>(this <info descr="null">T</info>)(int i) {
+        writeln(typeid(<info descr="null">T</info>));
     }
 }
 
-void logError(<info descr="">C</info>, <info descr="">T...</info>)(in <info descr="">C</info>[] fmt, <info descr="">T</info> args) {
+void <info descr="null">logError</info>(<info descr="null">C</info>, <info descr="null">T...</info>)(in <info descr="null">C</info>[] fmt, <info descr="null">T</info> args) {
     auto app = Application.getInstance();
-    debug app.logError(fmt, args);
+    debug app.<info descr="null">logError</info>(fmt, args);
 }
