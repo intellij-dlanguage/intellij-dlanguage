@@ -8,8 +8,8 @@ import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration
 import io.github.intellij.dlanguage.psi.DLanguageDeclaration
 import io.github.intellij.dlanguage.psi.named.DlangAliasInitializer
 import io.github.intellij.dlanguage.utils.StructBody
-import io.kotlintest.mock.`when`
-import io.kotlintest.mock.mock
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import junit.framework.TestCase
 import org.junit.Test
 
@@ -18,7 +18,7 @@ class ScopeProcessorTest : UsefulTestCase() {
     @Test
     fun testProcessDeclarationsWithEmptyList() {
         val element = mock<StructBody>()
-        `when`(element.declarations).thenReturn(emptyList())
+        whenever(element.declarations).thenReturn(emptyList())
         val processor = mock<PsiScopeProcessor>()
         val state = mock<ResolveState>()
         val lastParent = mock<PsiElement>()
@@ -32,15 +32,15 @@ class ScopeProcessorTest : UsefulTestCase() {
     fun testProcessDeclarationsShouldntContinue() {
         val alias = mock<DLanguageAliasDeclaration>()
         val aliasInitializer: DlangAliasInitializer = mock<DlangAliasInitializer>()
-        `when`(alias.aliasInitializers).thenReturn(listOf(aliasInitializer))
+        whenever(alias.aliasInitializers).thenReturn(listOf(aliasInitializer))
         val declaration = mock<DLanguageDeclaration>()
-        `when`(declaration.aliasDeclaration).thenReturn(alias)
+        whenever(declaration.aliasDeclaration).thenReturn(alias)
 
         val element = mock<StructBody>()
-        `when`(element.declarations).thenReturn(listOf(declaration))
+        whenever(element.declarations).thenReturn(listOf(declaration))
         val processor = mock<PsiScopeProcessor>()
         val state = mock<ResolveState>()
-        `when`(processor.execute(declaration, state)).thenReturn(false)
+        whenever(processor.execute(declaration, state)).thenReturn(false)
         val lastParent = mock<PsiElement>()
         val place = mock<PsiElement>()
 

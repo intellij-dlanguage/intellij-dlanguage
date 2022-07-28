@@ -7,12 +7,12 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import com.intellij.testFramework.LightPlatform4TestCase
-import io.kotlintest.mock.mock
-import io.kotlintest.mock.`when`
 import org.junit.Test
 import org.mockito.ArgumentMatchers.*
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 /**
  * @author Samael Bate (singingbush)
@@ -80,7 +80,7 @@ class CreateDlangClassActionTest : LightPlatform4TestCase() {
     fun testBuildDialog() {
         val directory: PsiDirectory = mock()
         val builder: CreateFileFromTemplateDialog.Builder = mock()
-        `when`(builder.setTitle(anyString())).thenReturn(builder)
+        whenever(builder.setTitle(anyString())).thenReturn(builder)
 
         this.action.buildDialog(super.getProject(), directory, builder)
 
@@ -93,9 +93,9 @@ class CreateDlangClassActionTest : LightPlatform4TestCase() {
 //    fun testCreateFileFromTemplate() {
 //        val directory: PsiDirectory = mock()
 //        val virtualDir: VirtualFile = mock()
-//        `when`(virtualDir.path).thenReturn("")
-//        `when`(directory.virtualFile).thenReturn(virtualDir)
-//        `when`(directory.project).thenReturn(super.getProject())
+//        whenever(virtualDir.path).thenReturn("")
+//        whenever(directory.virtualFile).thenReturn(virtualDir)
+//        whenever(directory.project).thenReturn(super.getProject())
 //
 //        val template: FileTemplate = mock()
 //
