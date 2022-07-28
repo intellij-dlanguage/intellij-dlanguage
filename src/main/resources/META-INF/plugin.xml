@@ -61,8 +61,7 @@
 
 
         <!-- All notification group id's should be defined here. See #654 -->
-        <notificationGroup id="DLANG_POPUP" displayType="BALLOON" isLogByDefault="true" bundle="i18n"
-                           icon="io.github.intellij.dlanguage.icons.DlangIcons.MODULE" />
+        <notificationGroup id="DLANG_POPUP" displayType="BALLOON" isLogByDefault="true" bundle="i18n" />
 
         <lang.parserDefinition language="D" implementationClass="io.github.intellij.dlanguage.DLangParserDefinition"/>
 
