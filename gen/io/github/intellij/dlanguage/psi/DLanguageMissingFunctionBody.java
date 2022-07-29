@@ -11,5 +11,5 @@ public interface DLanguageMissingFunctionBody extends PsiElement {
     List<DLanguageFunctionContract> getFunctionContracts();
 
     @Nullable
-    PsiElement getSEMICOLON();
+    PsiElement getOP_SCOLON();
 }

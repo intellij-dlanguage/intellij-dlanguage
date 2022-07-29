@@ -28,7 +28,6 @@ class DHighlighter : SyntaxHighlighterBase() {
         in TokenSets.LINE_DOCUMENTATION -> DColor.LINE_DOCUMENTATION
         in TokenSets.BLOCK_COMMENT -> DColor.BLOCK_COMMENT
         in TokenSets.BLOCK_DOCUMENTATION -> DColor.BLOCK_DOCUMENTATION
-        in TokenSets.AT_ATTRIBUTE -> DColor.AT_ATTRIBUTE
         in TokenSets.STRING_LITERAL -> DColor.STRING_LITERAL
         in TokenSets.CHAR -> DColor.CHAR
         in TokenSets.NUMBER -> DColor.NUMBER
@@ -39,7 +38,6 @@ class DHighlighter : SyntaxHighlighterBase() {
         in TokenSets.SEMICOLON -> DColor.SEMICOLON
         in TokenSets.COMMA -> DColor.COMMA
         in TokenSets.DOT -> DColor.DOT
-        in TokenSets.MODULE_DEFINITION -> DColor.MODULE_DEFINITION
         in TokenSets.KEYWORD -> DColor.KEYWORD
         StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN -> DColor.VALID_STRING_ESCAPE
         StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN -> DColor.INVALID_STRING_ESCAPE

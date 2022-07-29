@@ -29,9 +29,9 @@ class DBraceMatcher : PairedBraceMatcher {
 
     companion object {
         private val PAIRS = arrayOf(
-            BracePair(DlangTypes.PARENTHESES_LEFT, DlangTypes.PARENTHESES_RIGHT, false),
-            BracePair(DlangTypes.BRACES_LEFT, DlangTypes.BRACES_RIGHT, true),
-            BracePair(DlangTypes.BRACKETS_LEFT, DlangTypes.BRACKETS_RIGHT, false)
+            BracePair(DlangTypes.OP_PAR_LEFT, DlangTypes.OP_PAR_RIGHT, false),
+            BracePair(DlangTypes.OP_BRACES_LEFT, DlangTypes.OP_BRACES_RIGHT, true),
+            BracePair(DlangTypes.OP_BRACKET_LEFT, DlangTypes.OP_BRACKET_RIGHT, false)
         )
         private val alwaysMatch = TokenSet.create(DlangTypes.OP_BRACES_LEFT)
     }

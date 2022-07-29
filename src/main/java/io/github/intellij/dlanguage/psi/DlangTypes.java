@@ -8,22 +8,6 @@ import io.github.intellij.dlanguage.psi.impl.*;
 import io.github.intellij.dlanguage.psi.impl.named.*;
 
 public interface DlangTypes {
-    DlangElementType KEYWORD = new DlangElementType("KEYWORD");
-    DlangElementType OPERATOR = new DlangElementType("OPERATOR");
-    DlangElementType NUMBER = new DlangElementType("NUMBER");
-    DlangElementType VALID_NAMED_CHARACTER_ENTITY = new DlangElementType("VALID_NAMED_CHARACTER_ENTITY");
-    DlangElementType PARENTHESES_RIGHT = new DlangElementType("PARENTHESES_RIGHT");
-    DlangElementType PARENTHESES_LEFT = new DlangElementType("PARENTHESES_LEFT");
-    DlangElementType BRACES_RIGHT = new DlangElementType("BRACES_RIGHT");
-    DlangElementType BRACES_LEFT = new DlangElementType("BRACES_LEFT");
-    DlangElementType BRACKETS_RIGHT = new DlangElementType("BRACKETS_RIGHT");
-    DlangElementType BRACKETS_LEFT = new DlangElementType("BRACKETS_LEFT");
-    DlangElementType COMMA = new DlangElementType("COMMA");
-    DlangElementType SEMICOLON = new DlangElementType("SEMICOLON");
-    DlangElementType DOT = new DlangElementType("DOT");
-    DlangElementType MODULE_DEFINITION = new DlangElementType("MODULE_DEFINITION");
-    DlangElementType FUNCTION_DEFINITION = new DlangElementType("FUNCTION_DEFINITION");
-
     IElementType IDENTIFIER = DElementTypeFactory.factory("IDENTIFIER");
     IElementType FUNCTION_DECLARATION = DElementTypeFactory.factory("FUNCTION_DECLARATION");
     IElementType INTERFACE_OR_CLASS = DElementTypeFactory.factory("INTERFACE_OR_CLASS");
@@ -434,6 +418,9 @@ public interface DlangTypes {
     DlangTokenType KW___VERSION__ = new DlangTokenType("__VERSION__");
 
     DlangTokenType SPECIAL_EMPTY_TOKEN = new DlangTokenType("SPECIAL_EMPTY_TOKEN");
+
+    // Highlighting specific
+    DlangElementType VALID_NAMED_CHARACTER_ENTITY = new DlangElementType("VALID_NAMED_CHARACTER_ENTITY");
 
     class Factory {
         public static PsiElement createElement(final ASTNode node) {

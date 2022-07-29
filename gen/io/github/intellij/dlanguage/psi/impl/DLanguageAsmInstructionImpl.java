@@ -65,8 +65,8 @@ public class DLanguageAsmInstructionImpl extends ASTWrapperPsiElement implements
     }
 
     @Nullable
-    public PsiElement getSEMICOLON() {
-        return findChildByType(SEMICOLON);
+    public PsiElement getOP_SCOLON() {
+        return findChildByType(OP_SCOLON);
     }
 
 }

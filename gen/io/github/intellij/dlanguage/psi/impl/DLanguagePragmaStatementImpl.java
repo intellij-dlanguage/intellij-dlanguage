@@ -10,7 +10,7 @@ import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.SEMICOLON;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_SCOLON;
 
 public class DLanguagePragmaStatementImpl extends ASTWrapperPsiElement implements
     DLanguagePragmaStatement {
@@ -42,8 +42,8 @@ public class DLanguagePragmaStatementImpl extends ASTWrapperPsiElement implement
     }
 
     @Nullable
-    public PsiElement getSEMICOLON() {
-        return findChildByType(SEMICOLON);
+    public PsiElement getOP_SCOLON() {
+        return findChildByType(OP_SCOLON);
     }
 
     @Nullable

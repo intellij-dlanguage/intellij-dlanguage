@@ -42,8 +42,8 @@ public class DLanguageOutContractExpressionImpl extends ASTWrapperPsiElement imp
     }
 
     @NotNull
-    public PsiElement getSEMICOLON() {
-        return findChildByType(SEMICOLON);
+    public PsiElement getOP_SCOLON() {
+        return findChildByType(OP_SCOLON);
     }
 
     @NotNull

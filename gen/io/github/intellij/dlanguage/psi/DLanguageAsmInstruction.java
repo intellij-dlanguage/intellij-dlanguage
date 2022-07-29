@@ -26,6 +26,6 @@ public interface DLanguageAsmInstruction extends PsiElement {
     public PsiElement getOP_COLON();
 
     @Nullable
-    public PsiElement getSEMICOLON();
+    public PsiElement getOP_SCOLON();
 
 }

@@ -30,11 +30,11 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             //.aroundInside(OP_COLON, IMPORT_DECLARATION).spaces(1) // import std.stdio : stderr, writeln;
             //.afterInside(COMMA, IMPORT_DECLARATION).spaces(1) // import std.stdio : stderr, writeln;
             .between(KW_CASE, ARGUMENT_LIST).spaces(1)
-            .before(COMMA).spaceIf(false)
-            .after(COMMA).spaceIf(true)
-            .before(SEMICOLON).spaceIf(false)
-            .after(SEMICOLON).spaceIf(true)
-            .around(DOT).none()
+            .before(OP_COMMA).spaceIf(false)
+            .after(OP_COMMA).spaceIf(true)
+            .before(OP_SCOLON).spaceIf(false)
+            .after(OP_SCOLON).spaceIf(true)
+            .around(OP_DOT).none()
             .before(ARGUMENT_LIST).none()
             .afterInside(OP_PAR_LEFT, ARGUMENT_LIST).none()
             .beforeInside(OP_PAR_RIGHT, ARGUMENT_LIST).none()
