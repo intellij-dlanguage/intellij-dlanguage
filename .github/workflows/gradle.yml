@@ -13,8 +13,8 @@ jobs:
         jdk: [ '11' ]
         #os: [ubuntu-latest, windows-latest, macOS-latest]
         include:
-          - { idea: '2022.1.2', jdk: '11', kotlin: '1.6.20' }
-          - { idea: '2022.2', jdk: '17', kotlin: '1.6.21' } # 2022.2 requires Java 17
+          - { idea: '2022.2', jdk: '11' }
+        #  - { idea: '2022.2', jdk: '17' }
 
     steps:
     - uses: actions/checkout@v2
