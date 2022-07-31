@@ -58,6 +58,16 @@ allprojects {
         scanForTestClasses false
         include '**/**/*Test.class'
 
+        jvmArgs = [
+            '--illegal-access=warn',
+            '--add-opens=java.base/java.lang=ALL-UNNAMED',
+            '--add-opens=java.base/java.io=ALL-UNNAMED',
+            '--add-opens=java.desktop/sun.awt=ALL-UNNAMED',
+            '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
+            '--add-opens=java.desktop/java.awt.event=ALL-UNNAMED',
+            '--add-opens=java.desktop/javax.swing=ALL-UNNAMED'
+        ]
+
         testLogging {
             beforeSuite { suite ->
                 if (!suite.parent) { // will match the outermost suite
