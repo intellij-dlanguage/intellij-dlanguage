@@ -131,8 +131,7 @@ intellij {
     version = ideaVersion
     //type = 'CL' // maybe helpful to change this when trying other IDE. can be 'IC', 'IU', 'JPS', or 'CL'
     updateSinceUntilBuild = false
-    plugins = ['java']
-    //plugins = [ 'org.intellij.intelliLang', 'com.intellij.java', 'com.intellij.java.ide' ] // IDEA only (plugin was previously 'java')
+    plugins = [ 'org.intellij.intelliLang', 'com.intellij.java', 'com.intellij.java.ide' ] // IDEA only (plugin was previously 'java')
     //plugins = [ 'org.intellij.intelliLang', 'com.intellij.cidr.base', 'com.intellij.cidr.lang' ] // CLion & AppCode
     //plugins = [ 'org.intellij.intelliLang', 'com.intellij.clion', 'com.intellij.cidr.base', 'com.intellij.cidr.lang' ] // CLion only
 
