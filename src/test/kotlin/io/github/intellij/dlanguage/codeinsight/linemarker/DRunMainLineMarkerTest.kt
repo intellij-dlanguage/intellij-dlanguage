@@ -134,4 +134,13 @@ class DRunMainLineMarkerTest : DLightPlatformCodeInsightFixtureTestCase("codeins
             void main(string args) {}
         """, false)
     }
+
+    @Test
+    fun `test should not find incomplete main`() {
+        doTest("""
+            module test;
+
+            void main
+        """, false)
+    }
 }
