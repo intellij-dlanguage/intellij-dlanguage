@@ -231,12 +231,25 @@ task generateSyntaxLexer(type : GenerateLexerTask) {
     targetClass = 'DlangLexer'
 }
 
+task copyGenScript(type: Copy) {
+    from 'src/main/resources/types_regen_script.d'
+    into 'gen/io/github/intellij/dlanguage/psi/'
+}
+
+task generatePsi(type: Exec) {
+    dependsOn copyGenScript
+    workingDir 'gen/io/github/intellij/dlanguage/psi/'
+    commandLine 'rdmd', 'types_regen_script.d'
+}
+
 compileJava{
     dependsOn generateSyntaxLexer
+    dependsOn generatePsi
 }
 
 compileKotlin{
     dependsOn generateSyntaxLexer
+    dependsOn generatePsi
 }
 
 repositories {
