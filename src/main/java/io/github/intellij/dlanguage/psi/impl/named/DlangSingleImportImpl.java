@@ -23,6 +23,8 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static io.github.intellij.dlanguage.resolve.SpecialCaseResolveKt.getImportText;
+
 /**
  * Created by francis on 7/14/2017.
  * todo remove al references to a single imports name. This no longer means the same thing
@@ -105,7 +107,7 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
             return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
 
-        return getIdentifierChain().getImportText();
+        return getImportText(getIdentifierChain());
     }
 
     @Nullable
