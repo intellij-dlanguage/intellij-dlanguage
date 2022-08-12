@@ -7,14 +7,12 @@ import io.github.intellij.dlanguage.psi.DLanguageDeprecated;
 import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.stubs.DlangModuleDeclarationStub;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.stubs.DlangModuleDeclarationStub;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 
-public interface DLanguageModuleDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangModuleDeclarationStub> {
+public interface DlangModuleDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangModuleDeclarationStub> {
 
     @Nullable
     List<DLanguageAtAttribute> getAtAttributes();

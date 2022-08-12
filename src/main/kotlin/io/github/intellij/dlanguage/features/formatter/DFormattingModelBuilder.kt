@@ -17,7 +17,7 @@ import io.github.intellij.dlanguage.psi.DLanguageDeclaration
 import io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements
 import io.github.intellij.dlanguage.psi.DLanguageStatement
 import io.github.intellij.dlanguage.psi.DlangTypes.*
-import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration
+import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
 import io.github.intellij.dlanguage.utils.DUtil.getPrevSiblingOfType
 import io.github.intellij.dlanguage.utils.DeclarationOrStatement
 import java.util.*
@@ -202,7 +202,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                     return lineBreak()
                 } else if (psi2.text == "}" && psi1 is DLanguageDeclaration) {
                     return lineBreak()
-                } else if (psi1 is DLanguageModuleDeclaration && psi2 is DLanguageDeclaration) {
+                } else if (psi1 is DlangModuleDeclaration && psi2 is DLanguageDeclaration) {
                     return lineBreak()
                 }
 
@@ -256,7 +256,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             )
 
             private fun isTopLevelDeclaration(element: PsiElement): Boolean {
-                return element is DLanguageModuleDeclaration
+                return element is DlangModuleDeclaration
                     || element is io.github.intellij.dlanguage.psi.DLanguageImportDeclaration
                     || element is DLanguageDeclaration
                     || element is DLanguageStatement && element.getParent() is io.github.intellij.dlanguage.psi.DlangFile

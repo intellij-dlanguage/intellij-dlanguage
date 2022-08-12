@@ -14,7 +14,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.named.DLanguageVersionSpecification;
+import io.github.intellij.dlanguage.psi.named.DlangVersionSpecification;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
@@ -23,17 +23,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class DLanguageVersionSpecificationImpl extends
+public class DlangVersionSpecificationImpl extends
     DNamedStubbedPsiElementBase<VersionSpecificationStub> implements
-    DLanguageVersionSpecification {
+    DlangVersionSpecification {
 
-    public DLanguageVersionSpecificationImpl(
+    public DlangVersionSpecificationImpl(
         @NotNull final VersionSpecificationStub stub,
         final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
-    public DLanguageVersionSpecificationImpl(final ASTNode node) {
+    public DlangVersionSpecificationImpl(final ASTNode node) {
         super(node);
     }
 

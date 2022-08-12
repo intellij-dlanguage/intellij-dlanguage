@@ -4,8 +4,8 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.util.io.StringRef;
-import io.github.intellij.dlanguage.psi.named.DLanguageVersionSpecification;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageVersionSpecificationImpl;
+import io.github.intellij.dlanguage.psi.named.DlangVersionSpecification;
+import io.github.intellij.dlanguage.psi.impl.named.DlangVersionSpecificationImpl;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.stubs.VersionSpecificationStub;
 import java.io.IOException;
@@ -15,20 +15,20 @@ import org.jetbrains.annotations.NotNull;
  * Created by francis on 1/5/2018.
  */
 public class VersionSpecificationElementType extends
-    DNamedStubElementType<VersionSpecificationStub, DLanguageVersionSpecification> {
+    DNamedStubElementType<VersionSpecificationStub, DlangVersionSpecification> {
 
     public VersionSpecificationElementType(final String debugName) {
         super(debugName);
     }
 
     @Override
-    public DLanguageVersionSpecification createPsi(@NotNull final VersionSpecificationStub stub) {
-        return new DLanguageVersionSpecificationImpl(stub, this);
+    public DlangVersionSpecification createPsi(@NotNull final VersionSpecificationStub stub) {
+        return new DlangVersionSpecificationImpl(stub, this);
     }
 
     @NotNull
     @Override
-    public VersionSpecificationStub createStub(@NotNull final DLanguageVersionSpecification psi,
+    public VersionSpecificationStub createStub(@NotNull final DlangVersionSpecification psi,
         final StubElement parentStub) {
         return new VersionSpecificationStub(parentStub, this, psi.getName(), psi.getAttributes());
     }

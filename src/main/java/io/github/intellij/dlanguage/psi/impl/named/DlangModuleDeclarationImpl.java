@@ -9,7 +9,7 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
+import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.impl.DElementFactory;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
@@ -21,13 +21,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DLanguageModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DlangModuleDeclarationStub> implements DLanguageModuleDeclaration {
+public class DlangModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DlangModuleDeclarationStub> implements DlangModuleDeclaration {
 
-    public DLanguageModuleDeclarationImpl(final DlangModuleDeclarationStub stub, final IStubElementType type) {
+    public DlangModuleDeclarationImpl(final DlangModuleDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageModuleDeclarationImpl(final ASTNode node) {
+    public DlangModuleDeclarationImpl(final ASTNode node) {
         super(node);
     }
 

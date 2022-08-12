@@ -4,7 +4,7 @@ import com.intellij.psi.stubs.IndexSink
 import com.intellij.psi.stubs.NamedStubBase
 import com.intellij.psi.stubs.StringStubIndexExtension
 import com.intellij.psi.stubs.StubIndexKey
-import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration
+import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
 import io.github.intellij.dlanguage.utils.ModuleDeclaration
 
 /**
@@ -23,7 +23,7 @@ class DModuleDeclarationIndex : StringStubIndexExtension<ModuleDeclaration>() {
         val KEY = StubIndexKey.createIndexKey<String, ModuleDeclaration>("d.module")
         val VERSION = 3
         fun <S : NamedStubBase<*>> indexModuleDeclarations(stub: S, sink: IndexSink, name: String) {
-            if (stub is DLanguageModuleDeclaration) {
+            if (stub is DlangModuleDeclaration) {
                 sink.occurrence(DModuleDeclarationIndex.KEY, name)
             }
         }
