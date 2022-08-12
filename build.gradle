@@ -137,9 +137,9 @@ intellij {
 
     // uncomment to test/run/debug the plugin with another IDE such as CLion or AppCode
     //localPath = '<path to>/CLion.app'
-    //localPath = 'C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\212.5457.51'
-    //localPath = "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5457.51"
-    //localPath = "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/202.7660.16"
+    //localPath = 'C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\222.3345.126'
+    //localPath = "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.3345.126"
+    //localPath = "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/222.3739.37"
 
     buildSearchableOptions {
         // workaround for https://youtrack.jetbrains.com/issue/IDEA-210683
@@ -199,6 +199,9 @@ intellij {
 
         // Enable internal mode (https://plugins.jetbrains.com/docs/intellij/enabling-internal.html)
         systemProperties['idea.is.internal'] = "true"
+
+        // idea.auto.reload.plugins=false
+        systemProperties['ide.show.tips.on.startup.default.value'] = "false"
 
         // Set these properties to test alternative languages
         // systemProperties["user.language"] = "de"
