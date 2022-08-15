@@ -442,7 +442,7 @@ public interface DlangTypes {
             } else if (type == LABELED_STATEMENT) {
                 return new DLanguageLabeledStatementImpl(node);
             } else if (type == MODULE_DECLARATION) {
-                return new DLanguageModuleDeclarationImpl(node);
+                return new DlangModuleDeclarationImpl(node);
             } else if (type == PARAMETER) {
                 return new DLanguageParameterImpl(node);
             } else if (type == SHARED_STATIC_CONSTRUCTOR) {
@@ -822,7 +822,7 @@ public interface DlangTypes {
             } else if (type == VERSION_CONDITION) {
                 return new DLanguageVersionConditionImpl(node);
             } else if (type == VERSION_SPECIFICATION) {
-                return new DLanguageVersionSpecificationImpl(node);
+                return new DlangVersionSpecificationImpl(node);
             } else if (type == WHILE_STATEMENT) {
                 return new DLanguageWhileStatementImpl(node);
             } else if (type == WITH_STATEMENT) {

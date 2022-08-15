@@ -13,6 +13,7 @@ import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.stubs.index.DPublicImportIndex
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import io.github.intellij.dlanguage.utils.*
+import java.util.stream.Collectors
 
 object SpecialCaseResolve {
     /**
@@ -185,3 +186,8 @@ object SpecialCaseResolve {
     }
 
 }
+
+val IdentifierChain.importText: String
+    get() {
+        return identifiers.stream().map(DlangIdentifier::getText).collect(Collectors.joining("."))
+    }

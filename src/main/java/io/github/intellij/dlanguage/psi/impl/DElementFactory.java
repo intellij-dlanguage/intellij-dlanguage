@@ -8,7 +8,7 @@ import com.intellij.psi.PsiFileFactory;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
 import io.github.intellij.dlanguage.psi.DlangFile;
-import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
+import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -66,14 +66,14 @@ public class DElementFactory {
     }
 
     @Nullable
-    public static DLanguageModuleDeclaration createDLanguageModuleFromText(@NotNull final Project project,
-                                                                           @NotNull final String name) {
+    public static DlangModuleDeclaration createDLanguageModuleFromText(@NotNull final Project project,
+                                                                       @NotNull final String name) {
         if(StringUtil.isEmptyOrSpaces(name)) {
             return null; // perhaps should throw exception
         }
         return findChildOfType(
             createFileFromText(project, "module " + name + ";"),
-            DLanguageModuleDeclaration.class
+            DlangModuleDeclaration.class
         );
     }
 

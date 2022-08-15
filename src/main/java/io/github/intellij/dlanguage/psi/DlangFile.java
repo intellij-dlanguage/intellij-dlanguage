@@ -8,7 +8,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.util.IncorrectOperationException;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangFileType;
-import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
+import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil;
 import io.github.intellij.dlanguage.stubs.DlangFileStub;
 import javax.swing.Icon;
@@ -47,8 +47,8 @@ public class DlangFile extends PsiFileBase implements DlangPsiFile {
     }
 
     private Optional<String> findModuleDeclaration() {
-        return Optional.ofNullable(findChildByClass(DLanguageModuleDeclaration.class))
-            .map(DLanguageModuleDeclaration::getIdentifierChain)
+        return Optional.ofNullable(findChildByClass(DlangModuleDeclaration.class))
+            .map(DlangModuleDeclaration::getIdentifierChain)
             .map(DLanguageIdentifierChain::getIdentifiers)
             .filter(CollectionUtils::isNotEmpty)
             .map(identifiers -> identifiers.stream()
@@ -121,7 +121,7 @@ public class DlangFile extends PsiFileBase implements DlangPsiFile {
                     toContinue = false;
                 }
             }
-            if (element instanceof DLanguageModuleDeclaration) {
+            if (element instanceof DlangModuleDeclaration) {
                 if (!processor.execute(element, state)) {
                     toContinue = false;
                 }
@@ -148,7 +148,7 @@ public class DlangFile extends PsiFileBase implements DlangPsiFile {
      */
     @Override
     public PsiElement setName(@NotNull final String name) throws IncorrectOperationException {
-        final DLanguageModuleDeclaration module = findChildByClass(DLanguageModuleDeclaration.class);
+        final DlangModuleDeclaration module = findChildByClass(DlangModuleDeclaration.class);
         final String extensionLessName = removeEnd(name, ".d");
         final String packageName = getPackageName();
         String newModuleName = extensionLessName;

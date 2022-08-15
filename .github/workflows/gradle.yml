@@ -23,6 +23,8 @@ jobs:
       with:
         distribution: zulu
         java-version: ${{ matrix.jdk }}
+    - name: Install D compiler
+      uses: dlang-community/setup-dlang@v1
 
     - name: build & check
       env:
