@@ -5,7 +5,9 @@ import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.module.ModuleUtil
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.ProjectLocator
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.ui.popup.ListPopup
 import com.intellij.openapi.vfs.VirtualFile
@@ -46,7 +48,11 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
     override fun getWidgetState(file: VirtualFile?): WidgetState {
         if (file?.fileType !is DlangFileType) return WidgetState.HIDDEN
 
-        val dcdServer: DCDCompletionServer? = DCDCompletionServer.getInstance() // can't use project.getComponent(DCDCompletionServer::class.java)
+        val project = ProjectLocator.getInstance().guessProjectForFile(file)
+        project?: return WidgetState.HIDDEN
+        val module = ModuleUtil.findModuleForFile(file,myProject);
+        module?: return WidgetState.HIDDEN
+        val dcdServer: DCDCompletionServer = module.getService(DCDCompletionServer::class.java)
 
         val state: WidgetState = when(dcdServer) {
             null -> WidgetState.HIDDEN

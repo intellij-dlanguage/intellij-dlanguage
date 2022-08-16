@@ -67,7 +67,7 @@ public class RestartDCD extends AnAction implements DumbAware { // todo: conside
     }
 
     private static void restartDcdServer(@NotNull final AnActionEvent e, @NotNull final Module module) {
-        final DCDCompletionServer dcdServer = module.getComponent(DCDCompletionServer.class);
+        final DCDCompletionServer dcdServer = module.getService(DCDCompletionServer.class);
         if (dcdServer == null) displayError(e, "Could not find module component for dcd-server.");
         else dcdServer.restart();
     }

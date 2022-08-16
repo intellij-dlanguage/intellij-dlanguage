@@ -35,7 +35,8 @@ final class DCompletionProvider extends CompletionProvider<CompletionParameters>
 
         final CompletableFuture<List<Completion>> completionsFuture = CompletableFuture.runAsync(() -> {
             final Module module = ModuleUtilCore.findModuleForPsiElement(file);
-            final DCDCompletionServer dcdCompletionServer = module.getComponent(DCDCompletionServer.class);
+            assert module != null;
+            final DCDCompletionServer dcdCompletionServer = module.getService(DCDCompletionServer.class);
             try {
                 dcdCompletionServer.exec();
             } catch (final Exception e) {
