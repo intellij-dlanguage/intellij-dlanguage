@@ -9,11 +9,8 @@ import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileEvent;
 import com.intellij.openapi.vfs.VirtualFileListener;
-import com.intellij.util.messages.Topic;
 import io.github.intellij.dlanguage.actions.ProcessDLibs;
-import io.github.intellij.dlanguage.messagebus.DubChangeNotifier;
 import io.github.intellij.dlanguage.messagebus.Topics;
-import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,8 +80,7 @@ public class DubConfigFileListener implements VirtualFileListener {
             Notifications.Bus.notify(
                 new Notification("Dub", "Dub",
                     "dub.json or dub.sdl file deleted.",
-                    NotificationType.WARNING)
-                    .setListener(new DToolsNotificationListener(project)),
+                    NotificationType.WARNING),
                 project);
         }
     }

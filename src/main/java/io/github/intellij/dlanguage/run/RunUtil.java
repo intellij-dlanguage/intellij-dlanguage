@@ -16,7 +16,7 @@ import com.intellij.xdebugger.XDebugProcessStarter;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManager;
 import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
+import io.github.intellij.dlanguage.utils.DToolsNotificationAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.co.cwspencer.gdb.Gdb;
@@ -43,9 +43,9 @@ public class RunUtil {
         if (gdbPath == null) {
             Notifications.Bus.notify(
                 new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
-                    "GDB executable path is empty<br/><a href='configureDLanguageTools'>Configure</a>",
+                    "GDB executable path is empty",
                     NotificationType.ERROR)
-                    .setListener(new DToolsNotificationListener(project)),
+                    .addAction(new DToolsNotificationAction("Configure")),
                 project);
 
             return null;
