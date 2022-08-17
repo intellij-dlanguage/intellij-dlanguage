@@ -45,8 +45,7 @@ public class ToolKey {
         return path == null || path.isEmpty() ? null : StringUtil.trim(path);
     }
 
-    @NotNull
-    public void setPath(final String newValue) {
+    public void setPath(@Nullable final String newValue) {
         PropertiesComponent.getInstance().setValue(pathKey, StringUtil.trim(newValue));
     }
 
