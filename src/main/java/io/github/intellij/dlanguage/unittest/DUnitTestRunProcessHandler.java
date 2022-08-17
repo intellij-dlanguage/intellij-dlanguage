@@ -37,7 +37,7 @@ import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression;
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
+
 import java.io.File;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -212,8 +212,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSP
                 new Notification("Dunit Test Runner",
                     DlangBundle.INSTANCE.message("d.ui.unittest.notification.title.dub-path-missing"),
                     DlangBundle.INSTANCE.message("d.ui.unittest.notification.content.dub-path-missing"),
-                    NotificationType.WARNING)
-                    .setListener(new DToolsNotificationListener(project)),
+                    NotificationType.WARNING),
                 project);
             return;
         }

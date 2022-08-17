@@ -267,11 +267,10 @@
 
         <postStartupActivity
             implementation="io.github.intellij.dlanguage.project.DubListenerComponent"/>
-    </extensions>
 
-    <application-components>
-        <!-- Add your application components here -->
-    </application-components>
+        <moduleService
+            serviceImplementation="io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer"/>
+    </extensions>
 
     <actions>
         <action id="DLanguage.NewDLanguageClass" class="io.github.intellij.dlanguage.actions.CreateDlangClassAction"
@@ -298,16 +297,5 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
     </actions>
-
-    <module-components>
-        <component>
-            <implementation-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
-        </component>
-    </module-components>
-
-    <project-components>
-        <!-- Add your project components here -->
-    </project-components>
-
 
 </idea-plugin>

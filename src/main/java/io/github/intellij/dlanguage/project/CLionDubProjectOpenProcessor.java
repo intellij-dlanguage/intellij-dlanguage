@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.project;
 
 import com.intellij.ide.GeneralSettings;
+import com.intellij.ide.impl.OpenProjectTask;
 import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.project.Project;
@@ -76,7 +77,7 @@ public class CLionDubProjectOpenProcessor extends ProjectOpenProcessor {
     final VirtualFile baseDir = virtualFile.isDirectory() ? virtualFile : virtualFile.getParent();
 
     final Project project = ProjectManagerEx.getInstanceEx()
-        .newProject(baseDir.getName(), baseDir.getPath(), true, false);
+        .newProject(baseDir.toNioPath(), OpenProjectTask.build().withProjectName(baseDir.getName()));
 
     if (project != null) {
       WriteAction.run(() -> {

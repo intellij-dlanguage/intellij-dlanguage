@@ -11,9 +11,10 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleComponent;
+import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
@@ -43,14 +44,12 @@ import static io.github.intellij.dlanguage.utils.DUtil.isNotNullOrEmpty;
 /**
  * Process wrapper for DCD Server.  Implements ModuleComponent so destruction of processes coincides with closing projects.
  */
-public final class DCDCompletionServer implements ModuleComponent, ToolChangeListener, Disposable {
+public final class DCDCompletionServer implements ToolChangeListener, Disposable, DumbAware {
 
     private static final Logger LOG = Logger.getInstance(DCDCompletionServer.class);
 
-    private static DCDCompletionServer instance;
-
     @NotNull
-    public final Module module;
+    public Module module;
 
     @Nullable
     public String path;
@@ -66,22 +65,13 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
     /**
      * Package Private constructor used during module component initialization.
      */
-    DCDCompletionServer(@NotNull final Module module) {
-        synchronized (this) {
-            instance = this;
-        }
-
+    DCDCompletionServer(@NotNull Module module) {
         this.module = module;
         this.path = lookupPath();
         this.flags = lookupFlags();
 
         // Ensure that we are notified of changes to the settings.
-        module.getProject().getMessageBus().connect().subscribe(Topics.DCD_SERVER_TOOL_CHANGE, this);
-    }
-
-    @Nullable
-    public static DCDCompletionServer getInstance() {
-        return instance;
+        ApplicationManager.getApplication().getMessageBus().connect().subscribe(Topics.DCD_SERVER_TOOL_CHANGE, this);
     }
 
     public boolean isExecutable() {
@@ -132,7 +122,7 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
         } catch (final ExecutionException e) {
             Notifications.Bus.notify(new Notification("DCDNotification", "DCD Error",
                 "Unable to start a dcd server. Make sure that you have specified the path to the dcd-server and dcd-client executables correctly. You can specify executable paths under File > Settings > Languages & Frameworks > D Tools",
-                NotificationType.ERROR), module.getProject());
+                NotificationType.ERROR), null);
             LOG.error("Error spawning DCD process", e);
         }
     }
@@ -247,36 +237,6 @@ public final class DCDCompletionServer implements ModuleComponent, ToolChangeLis
                 LOG.error(e);
             }
         }
-    }
-
-    @Override
-    public void moduleAdded() {
-        LOG.debug("moduleAdded()");
-        if(StringUtil.isNotEmpty(this.path)) {
-            try {
-                this.exec();
-            } catch (final Exception e) {
-                LOG.warn("Failed to start DCD Server during component initialisation", e);
-            }
-        }
-    }
-
-    @Override
-    public void initComponent() {
-        // tried starting DCD Server during component initialisation but the source roots aren't available this early
-    }
-
-    // Implemented methods for ModuleComponent.
-
-    @Override
-    public void disposeComponent() {
-        // this isn't called anymore, so I've used Disposable::dispose()
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "DCDCompletionServer";
     }
 
     @Override

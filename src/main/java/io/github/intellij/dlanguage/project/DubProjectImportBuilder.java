@@ -14,7 +14,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.InvalidDataException;
-import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.packaging.artifacts.ModifiableArtifactModel;
@@ -22,7 +21,7 @@ import com.intellij.projectImport.ProjectImportBuilder;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.module.DlangDubModuleBuilder;
-import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
+import io.github.intellij.dlanguage.utils.DToolsNotificationAction;
 import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -112,8 +111,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
         Notifications.Bus.notify(
             new Notification("Dub Import", "Dub Import",
                 "Dub project does not seem to contain dub.json or dub.sdl.",
-                NotificationType.WARNING)
-                .setListener(new DToolsNotificationListener(module.getProject())),
+                NotificationType.WARNING),
             module.getProject());
         return null;
     }
@@ -127,7 +125,7 @@ public class DubProjectImportBuilder extends ProjectImportBuilder<DubPackage> {
                 new Notification("Dub Import", "Dub Import",
                     "DUB executable path is empty<br/><a href='configureDLanguageTools'>Configure</a>",
                     NotificationType.WARNING)
-                    .setListener(new DToolsNotificationListener(project)),
+                    .addAction(new DToolsNotificationAction("Configure")),
                 project);
         }
         final DubConfigurationParser dubConfigurationParser = new DubConfigurationParser(project,

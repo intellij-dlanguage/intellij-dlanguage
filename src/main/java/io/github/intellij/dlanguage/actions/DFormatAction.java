@@ -5,7 +5,6 @@ import com.intellij.execution.process.CapturingProcessAdapter;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -23,7 +22,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.util.ExceptionUtil;
 import io.github.intellij.dlanguage.psi.DlangFile;
 import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
+import io.github.intellij.dlanguage.utils.DToolsNotificationAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,18 +69,18 @@ public class DFormatAction extends AnAction implements DumbAware {
             if (dfmtPath == null || dfmtPath.isEmpty()) {
 
                 showNotification(NOTIFICATION_TITLE,
-                    "DFormat executable path is empty<br/><a href='configureDLanguageTools'>Configure</a>",
+                    "DFormat executable path is empty",
                     NotificationType.WARNING,
-                    new DToolsNotificationListener(project),
+                    new DToolsNotificationAction("Configure"),
                     project);
                 return;
             }
 
             if(!Paths.get(dfmtPath).toFile().canExecute()) {
                 showNotification(NOTIFICATION_TITLE,
-                    "DFormat executable path is not valid<br/><a href='configureDLanguageTools'>Configure</a>",
+                    "DFormat executable path is not valid",
                     NotificationType.WARNING,
-                    new DToolsNotificationListener(project),
+                    new DToolsNotificationAction("Configure"),
                     project);
 
                 return;
@@ -159,13 +158,12 @@ public class DFormatAction extends AnAction implements DumbAware {
     private void showNotification(@NotNull final String title,
                                   @NotNull final String content,
                                   @NotNull final NotificationType type,
-                                  @Nullable final NotificationListener listener,
+                                  @Nullable final AnAction action,
                                   @Nullable final Project project) {
         final Notification notification = new Notification(NOTIFICATION_GROUPID, title, content, type);
 
-        if(listener != null) {
-            notification.setListener(listener);
-        }
+        if (action != null)
+            notification.addAction(action);
 
         Notifications.Bus.notify(notification, project);
     }

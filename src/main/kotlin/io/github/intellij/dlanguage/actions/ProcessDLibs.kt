@@ -38,7 +38,7 @@ import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dlanguage.project.DubConfigurationParser
 import io.github.intellij.dlanguage.project.DubPackage
 import io.github.intellij.dlanguage.settings.ToolKey
-import io.github.intellij.dlanguage.utils.DToolsNotificationListener
+import io.github.intellij.dlanguage.utils.DToolsNotificationAction
 
 /**
  * ported from Java on 06/02/18
@@ -122,10 +122,10 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                 if (!this.dubPathAlreadWarned) {
                     val notification = Notification(
                         NOTIFICATION_GROUPID, "Process D Libraries",
-                        "DUB executable path is empty<br/><a href='configureDLanguageTools'>Configure</a>",
+                        "DUB executable path is empty",
                         NotificationType.WARNING
                     )
-                    notification.setListener(DToolsNotificationListener(project))
+                    notification.addAction(DToolsNotificationAction("Configure"))
 
                     Notifications.Bus.notify(notification, project)
                     this.dubPathAlreadWarned = true
@@ -151,7 +151,6 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                     "Added your dub dependency libraries",
                     NotificationType.INFORMATION
                 )
-                notification.setListener(DToolsNotificationListener(project))
 
                 Notifications.Bus.notify(notification, project)
             }

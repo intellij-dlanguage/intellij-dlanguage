@@ -16,17 +16,13 @@ import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
+import io.github.intellij.dlanguage.utils.DToolsNotificationAction;
 import io.github.intellij.dlanguage.utils.DUtil;
-import io.github.intellij.dlanguage.settings.ToolKey;
-import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
-
-import static io.github.intellij.dlanguage.utils.DUtil.isNotNullOrEmpty;
 
 
 public class DlangRunDubState extends CommandLineState {
@@ -55,10 +51,9 @@ public class DlangRunDubState extends CommandLineState {
             if (isEmpty || notCorrect) {
                 Notifications.Bus.notify(
                     new Notification("DUB run configuration", "DUB settings",
-                        "DUB executable is " + (isEmpty ? "not specified" : "not specified correctly") +
-                            "<br/><a href='configureDLanguageTools'>Configure</a> executable",
+                        "DUB executable is " + (isEmpty ? "not specified" : "not specified correctly"),
                         NotificationType.ERROR)
-                        .setListener(new DToolsNotificationListener(project)),
+                        .addAction(new DToolsNotificationAction("Configure")),
                     project);
             }
             throw e;
