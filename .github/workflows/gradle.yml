@@ -9,12 +9,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        idea: ['2022.1', '2022.1.4']
+        idea: [ '2022.1', '2022.1.4', '2022.2', '2022.2.2' ]
         jdk: [ '11' ]
         #os: [ubuntu-latest, windows-latest, macOS-latest]
         include:
-          - { idea: '2022.2', jdk: '11' }
-        #  - { idea: '2022.2', jdk: '17' }
+          - { idea: '2022.2', jdk: '17' }
+          - { idea: '2022.2.2', jdk: '17' }
+        #  - { idea: 'LATEST-EAP-SNAPSHOT', jdk: '17' }
 
     steps:
     - uses: actions/checkout@v2
