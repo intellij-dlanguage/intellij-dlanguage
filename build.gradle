@@ -11,9 +11,9 @@ buildscript {
 plugins {
     id 'org.jetbrains.intellij' version '1.9.0'
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
-//    id 'net.saliman.cobertura' version '4.0.0'
-//    id 'com.github.kt3k.coveralls' version '2.10.2'
     id 'org.jetbrains.grammarkit' version '2021.2.2'
+    id 'com.github.nbaztec.coveralls-jacoco' version '1.2.14'
+    id 'jacoco-report-aggregation' // will automatically do 'jacoco' coverage for each sub module and aggregate reports in xml and html
 }
 
 
@@ -31,14 +31,7 @@ version = "${version}"
 
 apply plugin: 'kotlin'
 
-//apply plugin: 'cobertura'
-
 apply plugin: 'org.jetbrains.grammarkit'
-
-// cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
-// cobertura.coverageSourceDirs = [sourceSets.main.java.srcDirs, sourceSets.main.kotlin.srcDirs, 'gen']
-// cobertura.coverageEncoding = 'UTF-8'
-// cobertura.coverageExcludes = [ '.*uk.co.cwspencer.*' ]
 
 
 
@@ -295,4 +288,62 @@ compileKotlin {
         jvmTarget = javaVersion
         freeCompilerArgs = [ '-Xjvm-default=enable' ]
     }
+}
+
+
+// Make JaCoCo report generation part of the 'check' lifecycle phase
+tasks.named("check") {
+    dependsOn(jacocoTestCoverageVerification)
+}
+
+
+jacocoTestCoverageVerification {
+    //dependsOn test
+    dependsOn testCodeCoverageReport
+    //dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+
+//    reports {
+//        html.required = false //!(System.getenv("CI") == null)
+//        xml.required = true
+//    }
+
+    violationRules {
+//        rule {
+//            includes = [ 'io.github.intellij.dlanguage.*', 'uk.co.cwspencer.*' ]
+//            limit {
+//                counter = 'INSTRUCTION'
+//                value = 'COVEREDRATIO' // 'TOTALCOUNT', 'MISSEDCOUNT', 'COVEREDCOUNT'
+//                minimum = 0.5
+//            }
+//        }
+
+        rule {
+            limit {
+                counter = 'CLASS'
+                value = 'COVEREDRATIO'
+                minimum = 0.5
+            }
+        }
+
+        rule {
+            limit {
+                counter = 'METHOD'
+                value = 'COVEREDRATIO'
+                minimum = 0.3
+            }
+        }
+
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.4
+            }
+        }
+    }
+}
+
+coverallsJacoco {
+    dryRun = false
+    //coverallsRequest = file('build/req.json')
 }

@@ -5,27 +5,27 @@ name: Test Coverage
 ##
 
 on:
-    # Trigger the workflow on push or pull request,
-    # but only for the master and develop branches
-    push:
-        branches:
-            - dont_run
-#            - master
-#            - develop  ## disable coverage on develop branch until cobertura supports Gradle 7: https://github.com/stevesaliman/gradle-cobertura-plugin/pull/178
+  # Trigger the workflow on push or pull request,
+  # but only for the master and develop branches
+  push:
+    branches:
+      - 'master'
+      - 'develop'
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v2
-            - name: Set up Java
-              uses: actions/setup-java@v3
-              with:
-                  distribution: zulu
-                  java-version: 11
+    steps:
+      - uses: actions/checkout@v2
 
-            - name: Cobertura coveralls.io
-              run: ./gradlew cobertura coveralls
-              env:
-                  COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 11
+
+      - name: Cobertura coveralls.io
+        run: ./gradlew jacocoTestCoverageVerification coverallsJacoco
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
