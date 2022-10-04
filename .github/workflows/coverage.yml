@@ -26,6 +26,9 @@ jobs:
           distribution: zulu
           java-version: 11
 
+      - name: Install D compiler
+        uses: dlang-community/setup-dlang@v1
+
       - name: Cobertura coveralls.io
         run: ./gradlew jacocoTestCoverageVerification coverallsJacoco
         env:

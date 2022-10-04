@@ -20,6 +20,9 @@ jobs:
                   distribution: zulu
                   java-version: 11
 
+            - name: Install D compiler
+              uses: dlang-community/setup-dlang@v1
+
             - name: Publish Plugin
               run: ./gradlew publishPlugin
               env:
