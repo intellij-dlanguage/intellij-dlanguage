@@ -12,7 +12,7 @@ plugins {
     id 'org.jetbrains.intellij' version '1.9.0'
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
     id 'org.jetbrains.grammarkit' version '2021.2.2'
-    id 'com.github.nbaztec.coveralls-jacoco' version '1.2.14'
+    id 'com.github.nbaztec.coveralls-jacoco' version '1.2.15'
     id 'jacoco-report-aggregation' // will automatically do 'jacoco' coverage for each sub module and aggregate reports in xml and html
 }
 
@@ -344,6 +344,7 @@ jacocoTestCoverageVerification {
 }
 
 coverallsJacoco {
-    dryRun = false
+    reportPath = "build/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
+    dryRun = true
     //coverallsRequest = file('build/req.json')
 }

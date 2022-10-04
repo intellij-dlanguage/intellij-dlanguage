@@ -11,6 +11,7 @@ on:
     branches:
       - 'master'
       - 'develop'
+      - 'tests/jacoco_coverage_report'
 
 jobs:
   build:
