@@ -44,7 +44,9 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
 
     private val log = Logger.getInstance(javaClass);
 
-    // basic set of packages in phobos
+    // basic set of packages in phobos. Due to packages being moved around in phobos we can't check all of them.
+    // At some point, if we can support language versions (need to implement com.intellij.openapi.projectRoots.Sdk)
+    // then perhaps we can verify phobos packages relevant to the version of D being used.
     private val expectedModules = setOf(
         //"std.algorithm", // directory
         "std.array",
@@ -52,7 +54,7 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
         "std.base64",
         "std.bigint",
         "std.bitmanip",
-        "std.checkedint",
+        //"std.checkedint", see #770: Don't check "std.checkedint" as before D 2.099 it was "std.experimental.checkedint"
         "std.compiler",
         "std.complex",
         "std.concurrency",
