@@ -107,6 +107,9 @@ public class DlangHighlightingLexerTest extends DHighlightingLexerTestBase {
     public void testcomment_multi() { doTest(true, true); }
     public void testcomment_nested() { doTest(true, true); }
 
+    // Ensure that the parser don’t crash if a comment is unclosed
+    public void testcomment_unclosed() { doTest("/* unclosed comment", "DlangTokenType.BLOCK_COMMENT ('/* unclosed comment')", createLexer()); }
+
     // floats
     public void testfloat_decimal() { doTest(true, true); }
     public void testfloat_hex() { doTest(true, true); }
