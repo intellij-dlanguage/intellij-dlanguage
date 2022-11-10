@@ -500,6 +500,11 @@ NESTING_BLOCK_DOC_END = "+/"
             return DlangTypes.NESTING_BLOCK_COMMENT;
         }
     }
+    <<EOF>>	{
+        yybegin(YYINITIAL); //Exit nesting comment block
+        return DlangTypes.NESTING_BLOCK_COMMENT;
+    }
+
     \/\/        {}
     \n|\/|\+    {}
     [^/+\n]+    {}
@@ -509,6 +514,10 @@ NESTING_BLOCK_DOC_END = "+/"
     {BLOCK_COMMENT_START} {}
 
     \/? {BLOCK_COMMENT_END} {
+        yybegin(YYINITIAL);
+        return DlangTypes.BLOCK_COMMENT;
+    }
+    <<EOF>> {
         yybegin(YYINITIAL);
         return DlangTypes.BLOCK_COMMENT;
     }
@@ -534,6 +543,10 @@ NESTING_BLOCK_DOC_END = "+/"
             return DlangTypes.NESTING_BLOCK_DOC;
         }
     }
+    <<EOF>> {
+        yybegin(YYINITIAL); //Exit nesting doc block
+        return DlangTypes.NESTING_BLOCK_DOC;
+    }
     \/\/        {}
     \n|\/|\+    {}
     [^/+\n]+    {}
@@ -544,6 +557,10 @@ NESTING_BLOCK_DOC_END = "+/"
     }
 
     \/? {BLOCK_DOC_END}	{
+       yybegin(YYINITIAL);
+       return DlangTypes.BLOCK_DOC;
+    }
+    <<EOF>>	{
        yybegin(YYINITIAL);
        return DlangTypes.BLOCK_DOC;
     }

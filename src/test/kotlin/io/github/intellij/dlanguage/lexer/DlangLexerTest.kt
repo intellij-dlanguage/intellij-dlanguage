@@ -102,6 +102,9 @@ class DlangLexerTest : DlangLexerTestBase("lexer") {
     fun testcomment_multi() = doTest()
     fun testcomment_nested() = doTest()
 
+    // Ensure that the parser don’t crash if a comment is unclosed
+    fun testcomment_unclosed() = doTest("/* unclosed comment", "DlangTokenType.BLOCK_COMMENT ('/* unclosed comment')")
+
 
     // floats
     fun testfloat_decimal() = doTest()

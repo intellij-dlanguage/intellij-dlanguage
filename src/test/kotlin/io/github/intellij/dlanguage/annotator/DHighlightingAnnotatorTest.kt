@@ -15,4 +15,9 @@ class DHighlightingAnnotatorTest : BasePlatformTestCase() {
         myFixture.configureByFile("invalid_string_delimiters.d")
         myFixture.testHighlighting(false, false, false);
     }
+
+    fun testUnclosedComment() {
+        myFixture.configureByFile("unclosed_comment.d")
+        myFixture.testHighlighting(false, false, false);
+    }
 }

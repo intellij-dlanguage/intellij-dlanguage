@@ -20,6 +20,7 @@ D Language File
                   DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
                     DLanguageIfStatementImpl(IF_STATEMENT)
                       PsiElement(DlangTokenType.if)('if')
-                      PsiElement(DlangTokenType.()('(/*Comment started\n}')
+                      PsiElement(DlangTokenType.()('(')
             PsiErrorElement:Expected } instead of EOF
               <empty list>
+    PsiComment(DlangTokenType.BLOCK_COMMENT)('/*Comment started\n}')
