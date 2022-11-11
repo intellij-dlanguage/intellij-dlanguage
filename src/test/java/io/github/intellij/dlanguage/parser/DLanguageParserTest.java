@@ -319,6 +319,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testexpressions_lambda_auto_ref() {
+        doDlangParserTest(true, true);
+    }
+
     public void testexpressions_new() {
         doDlangParserTest(true, true);
     }

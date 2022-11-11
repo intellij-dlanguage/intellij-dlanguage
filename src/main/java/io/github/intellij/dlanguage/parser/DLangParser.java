@@ -4379,21 +4379,25 @@ class DLangParser {
      * Parses a FunctionLiteralExpression
      * <p>
      * $(GRAMMAR $(RULEDEF functionLiteralExpression):
-     * | $(LITERAL 'delegate') $(LITERAL 'ref')? $(RULE type)? ($(RULE parameters) $(RULE functionAttribute)*)? $(RULE specifiedFunctionBody)
-     * | $(LITERAL 'function') $(LITERAL 'ref')? $(RULE type)? ($(RULE parameters) $(RULE functionAttribute)*)? $(RULE specifiedFunctionBody)
-     * | $(LITERAL 'ref')? $(RULE parameters) $(RULE functionAttribute)* $(RULE specifiedFunctionBody)
+     * | $(LITERAL 'delegate') $($(LITERAL 'auto')? LITERAL 'ref')? $(RULE type)? ($(RULE parameters) $(RULE functionAttribute)*)? $(RULE specifiedFunctionBody)
+     * | $(LITERAL 'function') $($(LITERAL 'auto')? LITERAL 'ref')? $(RULE type)? ($(RULE parameters) $(RULE functionAttribute)*)? $(RULE specifiedFunctionBody)
+     * | $($(LITERAL 'auto')? LITERAL 'ref')? $(RULE parameters) $(RULE functionAttribute)* $(RULE specifiedFunctionBody)
      * | $(RULE specifiedFunctionBody)
      * | $(LITERAL Identifier) $(LITERAL '=>') $(RULE assignExpression)
-     * | $(LITERAL 'function') $(LITERAL 'ref')? $(RULE type)? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
-     * | $(LITERAL 'delegate') $(LITERAL 'ref')? $(RULE type)? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
-     * | $(LITERAL 'ref')? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
+     * | $(LITERAL 'function') $($(LITERAL 'auto')? LITERAL 'ref')? $(RULE type)? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
+     * | $(LITERAL 'delegate') $($(LITERAL 'auto')? LITERAL 'ref')? $(RULE type)? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
+     * | $($(LITERAL 'auto')? LITERAL 'ref')? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
      * ;)
      */
     boolean parseFunctionLiteralExpression() {
         final Marker m = enter_section_modified(builder);
         if (currentIsOneOf(tok("function"), tok("delegate"))) {
             advance();
-            if (currentIs(tok("ref"))) {
+            if (currentIs(tok("auto"))) {
+                advance();
+                expect(tok("ref"));
+            }
+            else if (currentIs(tok("ref"))) {
                 advance();
             }
             if (!currentIsOneOf(tok("("), tok("in"), tok("do"),
@@ -4412,8 +4416,14 @@ class DLangParser {
             }
             exit_section_modified(builder, m, FUNCTION_LITERAL_EXPRESSION, true);
             return true;
-        } else if (currentIs(tok("(")) || currentIs(tok("ref")) && peekIs(tok("("))) {
-            if (currentIs(tok("ref"))) {
+        } else if (currentIs(tok("("))
+            || currentIs(tok("ref")) && peekIs(tok("("))
+            || currentIs(tok("auto")) && peekAre(tok("ref"), tok("("))) {
+            if (currentIs(tok("auto"))) {
+                advance();
+                expect(tok("ref"));
+            }
+            else if (currentIs(tok("ref"))) {
                 advance();
             }
             if (!parseParameters()) {
@@ -6453,6 +6463,18 @@ class DLangParser {
                 }
             } else if (!parseArrayLiteral()) {
                 cleanup(m, PRIMARY_EXPRESSION);
+                return false;
+            }
+        } else if (i.equals(tok("auto"))) {
+            if (peekAre(tok("ref"), tok("("))) {
+                if (!parseFunctionLiteralExpression()) {
+                    cleanup(m, PRIMARY_EXPRESSION);
+                    return false;
+                }
+            } else {
+                // goto default
+                error("Primary expression expected");
+                exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
                 return false;
             }
         } else if (i.equals(tok("ref"))) {
