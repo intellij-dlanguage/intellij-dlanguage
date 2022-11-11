@@ -5485,11 +5485,21 @@ class DLangParser {
     public boolean parseMissingFunctionBody() {
         final Marker m = enter_section_modified(builder);
         boolean haveContract = false;
+        boolean lastIsOutContractExpression = false;
         while (currentIsOneOf(tok("in"), tok("out"))) {
-            if (parseFunctionContract())
-                haveContract = true;
+            boolean isOut = currentIs(tok("out"));
+            Bookmark b = setBookmark();
+            if (parseFunctionContract(false)) {
+                lastIsOutContractExpression = isOut;
+            } else {
+                lastIsOutContractExpression = false;
+                goToBookmark(b);
+                if (parseFunctionContract())
+                    haveContract = true;
+            }
+            abandonBookmark(b);
         }
-        if (!haveContract) {
+        if (!haveContract || lastIsOutContractExpression) {
             if (expect(tok(";")) == null) {
                 cleanup(m, MISSING_FUNCTION_BODY);
                 return false;
@@ -6811,9 +6821,17 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         boolean requireDo = false;
         while (currentIsOneOf(tok("in"), tok("out"))) {
-            if (parseFunctionContract()) {
-                requireDo = true;
+            Bookmark b = setBookmark();
+            if (parseFunctionContract(false)) {
+                requireDo = false;
             }
+            else {
+                goToBookmark(b);
+                if (parseFunctionContract()) {
+                    requireDo = true;
+                }
+            }
+            abandonBookmark(b);
         }
         if (currentIs(tok("do")) || currentIs(tok("identifier"))) {
             advance();
