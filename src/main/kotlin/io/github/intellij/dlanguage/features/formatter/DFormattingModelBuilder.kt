@@ -91,6 +91,11 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                     return indentOfMultipleDeclarationChild(type, DECLARATION, LINE_COMMENT, BLOCK_COMMENT)
                 }
             }
+            if (type == DECLARATIONS_AND_STATEMENTS) {
+                if (parentType == CASE_STATEMENT || parentType == CASE_RANGE_STATEMENT || parentType == DEFAULT_STATEMENT) {
+                    return indentOfMultipleDeclarationChild(type, DECLARATIONS_AND_STATEMENTS, LINE_COMMENT, BLOCK_COMMENT)
+                }
+            }
             if (type == OP_BRACES_RIGHT || type == OP_BRACES_LEFT) {
                 return Indent.getNoneIndent()
             }
