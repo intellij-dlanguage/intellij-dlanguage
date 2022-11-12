@@ -14,19 +14,110 @@ class DLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() {
     companion object {
         @org.intellij.lang.annotations.Language("D")
         private const val DEFAULT_CODE_SAMPLE =
-            """ module foo.bar.example;
+"""
+module foo.bar.example;
 
-                import std.stdio : writeln;
+import std.stdio : writeln;
 
-                void main() {
-                   writeln("Hello");
-                }
-            """
+class A {
+private:
+    int a;
+public:
+    void foo() {
+        import std.stdio : writefln;
+        string bar = "test";
+        writefln("variable bar = `%s`", bar);
+    }
+    protected float[] n;
+}
+
+alias AClass = A;
+
+version (Test) {
+    static assert (10 == 5 * 2, "The computation arithmetic is buggy");
+}
+
+string bar(int i) {
+    string ret = "got ";
+    switch (i) {
+        case 1:
+            return ret ~ "one";
+        case 2:
+            throw Exception("two is forbidden");
+        case 3: .. case 12:
+            ret ~= "three to twelve";
+        case 13:
+        case 14:
+            ret ~= "thirteen or fourteen";
+        default:
+            assert(false);
+    }
+    return ret;
+}
+
+void foo(int x, string...) {
+    try {
+        writeln(bar(3));
+    } catch (Exception e) {
+        writeln(e);
+    }
+}
+
+long square_root(long x) pure @system @nogc
+in {
+    assert(x >= 0);
+} out (result) {
+    assert((result * result) <= x
+        && (result+1) * (result+1) > x);
+} do {
+    return cast(long)std.math.sqrt(cast(real)x);
+}
+
+@safe unittest
+{
+    import std.exception : assertThrown, assertNotThrown;
+    static import std.file;
+
+    auto deleteme = testFilename();
+    std.file.write(deleteme, "foo");
+    scope(exit) std.file.remove(deleteme);
+    auto f = File(deleteme);
+    assert(f.readln() == "foo");
+}
+
+void doSomething(int function(int, int) doer) {
+    // call passed function
+    doer(5,5);
+}
+
+auto add(T)(T lhs, T rhs) {
+    return lhs + rhs;
+}
+
+void main() {
+    string a = "this
+    is
+    a
+    multiline string";
+
+    mixin(`string b = r"raw \n string";`);
+
+    "Hello".writeln;
+    add(3f, 12.67f);
+    doSomething(&add);
+
+    bool compiles = __traits(compiles, obvious error - ${'$'}%42);
+
+    int[string] assoc_array;
+    assoc_array["shoe"] = 12;
+    assoc_array["tie"] = 1;
+}
+"""
     }
 
     override fun getLanguage(): Language = DLanguage
 
-    override fun getCodeSample(settingsType: SettingsType): String = DEFAULT_CODE_SAMPLE.trimIndent()
+    override fun getCodeSample(settingsType: SettingsType): String = DEFAULT_CODE_SAMPLE
 
     override fun getIndentOptionsEditor(): IndentOptionsEditor = SmartIndentOptionsEditor()
 
