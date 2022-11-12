@@ -2159,7 +2159,7 @@ class DLangParser {
             cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
-        if (!parseDeclarationsAndStatements()) {
+        if (!parseDeclarationsAndStatements(false)) {
             cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
