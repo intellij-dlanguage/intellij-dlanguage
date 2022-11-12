@@ -173,6 +173,9 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 return ChildAttributes(Indent.getNormalIndent(), null)
             }
 
+            if (type == EXPRESSION_STATEMENT)
+                return ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null)
+
             return ChildAttributes(childIndent, null)
         }
 
