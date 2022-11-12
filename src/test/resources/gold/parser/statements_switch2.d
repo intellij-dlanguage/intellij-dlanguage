@@ -25,5 +25,7 @@ switch (number)
     case 1:     // valid: the body is empty
     case 2:     // valid: this is the last case in the switch statement.
         message = "one or two";
+    case 12: .. case 15:    // valid: case range
+        message ~= "twelve to fifteen";
 }
 }
