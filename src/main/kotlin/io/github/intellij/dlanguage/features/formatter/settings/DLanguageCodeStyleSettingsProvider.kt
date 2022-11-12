@@ -7,6 +7,7 @@ import com.intellij.application.options.SmartIndentOptionsEditor
 import com.intellij.lang.Language
 import com.intellij.psi.codeStyle.*
 import io.github.intellij.dlanguage.DLanguage
+import io.github.intellij.dlanguage.features.formatter.DCodeStyleSettings
 
 class DLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() {
 
@@ -36,6 +37,8 @@ class DLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() {
                 DCodeStyleMainPanel(currentSettings, settings)
         }
 
+    override fun createCustomSettings(settings: CodeStyleSettings): CustomCodeStyleSettings = DCodeStyleSettings(settings)
+
     override fun customizeDefaults(commonSettings: CommonCodeStyleSettings,
                                    indentOptions: CommonCodeStyleSettings.IndentOptions) {
         indentOptions.INDENT_SIZE = 4
@@ -52,7 +55,10 @@ class DLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() {
     override fun customizeSettings(consumer: CodeStyleSettingsCustomizable, settingsType: SettingsType) {
         when(settingsType) {
             SettingsType.SPACING_SETTINGS -> {
-                consumer.showAllStandardOptions()
+                consumer.showCustomOption(DCodeStyleSettings::class.java,
+                    "SPACE_BEFORE_IMPORT_BINDS_COLON",
+                    "Space before import colon",
+                    CodeStyleSettingsCustomizableOptions.getInstance().SPACES_OTHER)
             }
             SettingsType.WRAPPING_AND_BRACES_SETTINGS -> {
             }

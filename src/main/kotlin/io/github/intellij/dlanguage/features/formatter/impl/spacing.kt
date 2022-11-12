@@ -3,12 +3,12 @@ package io.github.intellij.dlanguage.features.formatter.impl
 import com.intellij.formatting.SpacingBuilder
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import io.github.intellij.dlanguage.DLanguage
+import io.github.intellij.dlanguage.features.formatter.DCodeStyleSettings
 import io.github.intellij.dlanguage.psi.DlangTypes.*
 
-fun createSpacingBuilder(settings: CodeStyleSettings): SpacingBuilder {
+fun createSpacingBuilder(settings: CodeStyleSettings, dSettings: DCodeStyleSettings): SpacingBuilder {
         return SpacingBuilder(settings, DLanguage)
-            //.aroundInside(OP_COLON, IMPORT_DECLARATION).spaces(1) // import std.stdio : stderr, writeln;
-            //.afterInside(COMMA, IMPORT_DECLARATION).spaces(1) // import std.stdio : stderr, writeln;
+            .between(SINGLE_IMPORT, IMPORT_BINDINGS).spaceIf(dSettings.SPACE_BEFORE_IMPORT_BINDS_COLON) // import std.stdio : stderr, writeln;
             .between(KW_CASE, ARGUMENT_LIST).spaces(1)
             .between(ARGUMENT_LIST, CASE_STATEMENT).spacing(0, 0, 0, false, 0)
             .afterInside(OP_COLON, CASE_STATEMENT).lineBreakInCode()

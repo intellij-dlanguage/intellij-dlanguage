@@ -25,8 +25,9 @@ class DFormattingModelBuilder : FormattingModelBuilder {
     override fun createModel(formattingContext: FormattingContext): FormattingModel {
         val element = formattingContext.psiElement
         val settings = formattingContext.codeStyleSettings
+        val dSettings = settings.getCustomSettings(DCodeStyleSettings::class.java)
 
-        val block = DFormattingBlock(element.node, AlignmentStrategy.getNullStrategy(), Indent.getNoneIndent(), null, createSpacingBuilder(settings))
+        val block = DFormattingBlock(element.node, AlignmentStrategy.getNullStrategy(), Indent.getNoneIndent(), null, createSpacingBuilder(settings, dSettings))
         return FormattingModelProvider.createFormattingModelForPsiFile(element.containingFile, block, settings)
     }
 
