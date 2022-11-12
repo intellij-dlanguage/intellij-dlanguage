@@ -167,7 +167,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             val childIndent = Indent.getNoneIndent()
 
             val type = myNode.elementType
-            if (type == BLOCK_STATEMENT || type == STRUCT_BODY || type == TEMPLATE_DECLARATION || type == CONDITIONAL_DECLARATION || type == CONDITIONAL_STATEMENT || type == DECLARATION) {
+            if (type == BLOCK_STATEMENT || type == STRUCT_BODY || type == TEMPLATE_DECLARATION || type == CONDITIONAL_DECLARATION || type == CONDITIONAL_STATEMENT) {
                 return ChildAttributes(Indent.getNormalIndent(), null)
             }
 
