@@ -34,10 +34,9 @@ class DFormatterTest : FormatterTestCase() {
         doTextTest("void main() {\n    foo();\n  bar();\n}", "void main() {\n    foo();\n    bar();\n}")
     }
 
-    // todo: fix this in DFormattingModelBuilder
-//    fun testFormattingImport() {
-//        doTextTest("import std.stdio:stderr,writeln;", "import std.stdio : stderr, writeln;");
-//    }
+    fun testFormattingImport() {
+        doTextTest("import std.stdio:stderr,writeln;", "import std.stdio : stderr, writeln;");
+    }
 
     @Throws(Exception::class)
     fun testMultilineArrays() {

@@ -9,6 +9,7 @@ import io.github.intellij.dlanguage.psi.DlangTypes.*
 fun createSpacingBuilder(settings: CodeStyleSettings, dSettings: DCodeStyleSettings): SpacingBuilder {
         return SpacingBuilder(settings, DLanguage)
             .between(SINGLE_IMPORT, IMPORT_BINDINGS).spaceIf(dSettings.SPACE_BEFORE_IMPORT_BINDS_COLON) // import std.stdio : stderr, writeln;
+            .afterInside(OP_COLON, IMPORT_BINDINGS).spaces(1) // import std.stdio : stderr, writeln;
             .between(KW_CASE, ARGUMENT_LIST).spaces(1)
             .between(ARGUMENT_LIST, CASE_STATEMENT).spacing(0, 0, 0, false, 0)
             .afterInside(OP_COLON, CASE_STATEMENT).lineBreakInCode()
