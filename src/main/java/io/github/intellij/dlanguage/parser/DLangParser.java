@@ -3188,7 +3188,7 @@ class DLangParser {
     boolean parseDeclarationsAndStatements(final boolean includeCases) {
         final Marker m = enter_section_modified(builder);
         while (!currentIsOneOf(tok("}"), tok("else")) && moreTokens() && suppressedErrorCount() <= MAX_ERRORS) {
-            if (currentIs(tok("case")) && !includeCases) {
+            if (currentIsOneOf(tok("case"), tok("default")) && !includeCases) {
                 break;
             }
             if (currentIs(tok("while"))) {
