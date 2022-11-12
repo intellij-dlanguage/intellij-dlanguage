@@ -2137,8 +2137,7 @@ class DLangParser {
      * $(LITERAL 'case') $(RULE assignExpression) $(LITERAL ':') $(LITERAL '...') $(LITERAL 'case') $(RULE assignExpression) $(LITERAL ':') $(RULE declarationsAndStatements)
      * ;)
      */
-    boolean parseCaseRangeStatement() {
-        final Marker m = enter_section_modified(builder);
+    boolean parseCaseRangeStatement(Marker m) {
 //            assert (low != null);
 //            node.low = low;
         if (!tokenCheck(":")) {
@@ -2167,6 +2166,11 @@ class DLangParser {
         return true;
     }
 
+    boolean parseCaseRangeStatement() {
+        Marker m = enter_section_modified(builder);
+        return parseCaseRangeStatement(m);
+    }
+
     /**
      * Parses an CaseStatement
      * <p>
@@ -2174,8 +2178,7 @@ class DLangParser {
      * $(LITERAL 'case') $(RULE argumentList) $(LITERAL ':') $(RULE declarationsAndStatements)
      * ;)
      */
-    boolean parseCaseStatement() {
-        final Marker m = enter_section_modified(builder);
+    boolean parseCaseStatement(Marker m) {
         final Token colon = expect(tok(":"));
         if (colon == null) {
             cleanup(m, CASE_STATEMENT);
@@ -2187,6 +2190,11 @@ class DLangParser {
         }
         exit_section_modified(builder, m, CASE_STATEMENT, true);
         return true;
+    }
+
+    boolean parseCaseStatement() {
+        final Marker m = enter_section_modified(builder);
+        return parseCaseStatement(m);
     }
 
     private boolean parseDeclarationsAndStatements() {
@@ -6891,17 +6899,19 @@ class DLangParser {
         }
         final Token.IdType i = current().type;
         if (i.equals(tok("case"))) {
+            final Marker m_case = enter_section_modified(builder);
             advance();
             final Pair<Boolean, Integer> argumentListRetVal = parseArgumentList();
             final boolean argumentList = argumentListRetVal.first;
             if (!argumentList) {
+                m.drop();
                 cleanup(m, STATEMENT);
                 return false;
             }
             if (argumentListRetVal.second == 1 && startsWith(tok(":"), tok("..")))
-                parseCaseRangeStatement();
+                parseCaseRangeStatement(m_case);
             else
-                parseCaseStatement();
+                parseCaseStatement(m_case);
         } else if (i.equals(tok("default"))) {
             if (!parseDefaultStatement()) {
                 cleanup(m, STATEMENT);
