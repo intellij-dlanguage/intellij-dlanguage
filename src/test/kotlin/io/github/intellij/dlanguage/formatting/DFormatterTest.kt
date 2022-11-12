@@ -35,22 +35,22 @@ class DFormatterTest : FormatterTestCase() {
     }
 
     fun testFormattingImport() {
-        doTextTest("import std.stdio:stderr,writeln;", "import std.stdio : stderr, writeln;");
+        doTextTest("import std.stdio:stderr,writeln;", "import std.stdio : stderr, writeln;")
     }
 
     @Throws(Exception::class)
     fun testMultilineArrays() {
-        doTest();
+        doTest()
     }
 
     @Throws(Exception::class)
     fun testMultilineFuncArgs() {
-        doTest();
+        doTest()
     }
 
     @Throws(Exception::class)
     fun testCallChaining() {
-        doTest();
+        doTest()
     }
 
     @Throws(Exception::class)
