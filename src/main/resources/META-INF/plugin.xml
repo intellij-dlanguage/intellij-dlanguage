@@ -194,7 +194,6 @@
         <lang.formatter
             implementationClass="io.github.intellij.dlanguage.features.formatter.DFormattingModelBuilder"
             language="D"/>
-        <codeStyleSettingsProvider implementation="io.github.intellij.dlanguage.features.formatter.settings.DCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider implementation="io.github.intellij.dlanguage.features.formatter.settings.DLanguageCodeStyleSettingsProvider"/>
 
         <!-- dunit support -->

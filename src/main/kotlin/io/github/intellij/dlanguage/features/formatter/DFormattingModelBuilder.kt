@@ -4,15 +4,12 @@ import com.google.common.collect.Sets.newHashSet
 import com.intellij.formatting.*
 import com.intellij.formatting.alignment.AlignmentStrategy
 import com.intellij.lang.ASTNode
-import com.intellij.openapi.util.TextRange
-import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
-import com.intellij.psi.codeStyle.CodeStyleSettings
+import com.intellij.psi.formatter.common.AbstractBlock
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.TokenSet
-import io.github.intellij.dlanguage.DLanguage
+import io.github.intellij.dlanguage.features.formatter.impl.createSpacingBuilder
 import io.github.intellij.dlanguage.psi.DLanguageDeclaration
 import io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements
 import io.github.intellij.dlanguage.psi.DLanguageStatement
@@ -25,84 +22,24 @@ import java.util.*
 
 class DFormattingModelBuilder : FormattingModelBuilder {
 
-    private fun createSpacingBuilder(settings: CodeStyleSettings): SpacingBuilder {
-        return SpacingBuilder(settings, DLanguage)
-            //.aroundInside(OP_COLON, IMPORT_DECLARATION).spaces(1) // import std.stdio : stderr, writeln;
-            //.afterInside(COMMA, IMPORT_DECLARATION).spaces(1) // import std.stdio : stderr, writeln;
-            .between(KW_CASE, ARGUMENT_LIST).spaces(1)
-            .before(OP_COMMA).spaceIf(false)
-            .after(OP_COMMA).spaceIf(true)
-            .before(OP_SCOLON).spaceIf(false)
-            .after(OP_SCOLON).spaceIf(true)
-            .around(OP_DOT).none()
-            .before(ARGUMENT_LIST).none()
-            .afterInside(OP_PAR_LEFT, ARGUMENT_LIST).none()
-            .beforeInside(OP_PAR_RIGHT, ARGUMENT_LIST).none()
-            .afterInside(OP_PAR_LEFT, PARAMETERS).none()
-            .beforeInside(OP_PAR_RIGHT, PARAMETERS).none()
-            .after(INTERFACE_DECLARATION).spaces(1)
-            .after(KW_RETURN).spaces(1)
-            .after(KW_CONTINUE).spaces(1)
-            .after(KW_BREAK).spaces(1)
-            .after(KW_FOREACH).spaces(1)
-            .after(KW_FOR).spaces(1)
-            .after(KW_IF).spaces(1)
-            .after(KW_ELSE).spaces(1)
-            .after(KW_SWITCH).spaces(1)
-            .after(LINE_COMMENT).lineBreakInCode()
-    }
-
     override fun createModel(formattingContext: FormattingContext): FormattingModel {
         val element = formattingContext.psiElement
         val settings = formattingContext.codeStyleSettings
+        val dSettings = settings.getCustomSettings(DCodeStyleSettings::class.java)
 
-        val block = DFormattingBlock(element.node, null, Indent.getNoneIndent(), null, settings, createSpacingBuilder(settings))
+        val block = DFormattingBlock(element.node, AlignmentStrategy.getNullStrategy(), Indent.getNoneIndent(), null, createSpacingBuilder(settings, dSettings))
         return FormattingModelProvider.createFormattingModelForPsiFile(element.containingFile, block, settings)
     }
 
-    override fun getRangeAffectingIndent(file: PsiFile, offset: Int, elementAtOffset: ASTNode): TextRange? {
-        return null
-    }
-
-    private class DFormattingBlock(private val myNode: ASTNode,
-                                   private val myAlignment: Alignment?,
+    private class DFormattingBlock(node: ASTNode,
+                                   private val myAlignmentStrategy: AlignmentStrategy,
                                    private val myIndent: Indent?,
-                                   private val myWrap: Wrap?,
-                                   private val mySettings: CodeStyleSettings,
-                                   private val mySpacingBuilder: SpacingBuilder) : UserDataHolderBase(), ASTBlock {
-        private var mySubBlocks: List<Block>? = null
+                                   wrap: Wrap?,
+                                   private val mySpacingBuilder: SpacingBuilder) : AbstractBlock(node, wrap, myAlignmentStrategy.getAlignment(node.elementType)) {
 
-        override fun getNode(): ASTNode {
-            return myNode
-        }
+        override fun getIndent(): Indent? = myIndent
 
-        override fun getTextRange(): TextRange {
-            return myNode.textRange
-        }
-
-        override fun getWrap(): Wrap? {
-            return myWrap
-        }
-
-        override fun getIndent(): Indent? {
-            return myIndent
-        }
-
-        override fun getAlignment(): Alignment? {
-            return myAlignment
-        }
-
-        override fun getSubBlocks(): List<Block> {
-//            if(PsiTreeUtil.hasErrorElements(myNode.psi))
-//                return emptyList()
-            if (mySubBlocks == null) {
-                mySubBlocks = buildSubBlocks()
-            }
-            return mySubBlocks.orEmpty()
-        }
-
-        private fun buildSubBlocks(): List<Block> {
-            val strategy: AlignmentStrategy.AlignmentPerTypeStrategy? = null
+        override fun buildChildren(): List<Block> {
             val blocks = mutableListOf<Block>()
             var child: ASTNode? = myNode.firstChildNode
             while (child != null) {
@@ -116,7 +53,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                     continue
                 }
                 val substitutor = if (childType === BLOCK_COMMENT) LINE_COMMENT else childType
-                val alignment = strategy?.getAlignment(substitutor)
+                val alignment = myAlignmentStrategy.getAlignment(substitutor)
                 val e = buildSubBlock(child, alignment)
                 blocks.add(e)
                 child = child.treeNext
@@ -126,7 +63,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
 
         private fun buildSubBlock(child: ASTNode, alignment: Alignment?): DFormattingBlock {
             val indent = calcIndent(child)
-            return DFormattingBlock(child, alignment, indent, null, mySettings, mySpacingBuilder)
+            return DFormattingBlock(child, AlignmentStrategy.wrap(alignment), indent, null, mySpacingBuilder)
         }
 
         private fun calcIndent(child: ASTNode): Indent {
@@ -153,6 +90,11 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             } else if (type == DECLARATION) {
                 if (parentType == CONDITIONAL_DECLARATION) {
                     return indentOfMultipleDeclarationChild(type, DECLARATION, LINE_COMMENT, BLOCK_COMMENT)
+                }
+            }
+            if (type == DECLARATIONS_AND_STATEMENTS) {
+                if (parentType == CASE_STATEMENT || parentType == CASE_RANGE_STATEMENT || parentType == DEFAULT_STATEMENT) {
+                    return indentOfMultipleDeclarationChild(type, DECLARATIONS_AND_STATEMENTS, LINE_COMMENT, BLOCK_COMMENT)
                 }
             }
             if (type == OP_BRACES_RIGHT || type == OP_BRACES_LEFT) {
@@ -225,15 +167,17 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             // This governs the indent on the new line when pressing the ENTER key
             val childIndent = Indent.getNoneIndent()
 
-            val parentType = myNode.elementType
-            if (parentType == BLOCK_STATEMENT || parentType == STRUCT_BODY || parentType == TEMPLATE_DECLARATION || parentType == CONDITIONAL_DECLARATION || parentType == CONDITIONAL_STATEMENT || parentType == DECLARATION) {
+            val type = myNode.elementType
+            if (type == BLOCK_STATEMENT || type == STRUCT_BODY || type == TEMPLATE_DECLARATION || type == CONDITIONAL_DECLARATION || type == CONDITIONAL_STATEMENT
+                || type == ENUM_BODY) {
                 return ChildAttributes(Indent.getNormalIndent(), null)
             }
 
+            if (type == EXPRESSION_STATEMENT)
+                return ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null)
+
             return ChildAttributes(childIndent, null)
         }
-
-        override fun isIncomplete(): Boolean = false // todo implement
 
         override fun isLeaf(): Boolean = false // todo implement
 
