@@ -254,7 +254,7 @@ static this() {
     types_children["TraitsExpression"] = ["KW___TRAITS","TemplateArgumentList","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["TryStatement"] = ["KW_TRY","DeclarationOrStatement","Catches","Finally"];
     types_children["Type"] = ["Attribute","Type_2","TypeSuffix*"];
-    types_children["Type_2"] = ["TypeofExpression","TypeConstructor","TraitsExpression","MixinExpression","Vector","Type","IdentifierOrTemplateChain","TypeIdentifierPart","OP_DOT","OP_PAR_RIGHT","OP_PAR_LEFT"]; /*todo builtin Types*/
+    types_children["Type_2"] = ["TypeofExpression","TypeConstructor","TraitsExpression","MixinExpression","Vector","BuiltinType","IdentifierOrTemplateChain","TypeIdentifierPart","OP_DOT","OP_PAR_RIGHT","OP_PAR_LEFT"]; /*todo builtin Types*/
     types_children["TypeConstructor"] = ["KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED","KW_SCOPE"];
     types_children["TypeConstructors"] = ["TypeConstructor*"];
     types_children["TypeIdentifierPart"] = ["OP_DOT", "IdentifierOrTemplateInstance", "OP_BRACKET_LEFT", "OP_BRACKET_RIGHT", "AssignExpression", "OP_DDOT", "TypeIdentifierPart"];
