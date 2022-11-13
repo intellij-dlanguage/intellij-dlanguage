@@ -24,6 +24,26 @@ fun presentableName(psi: PsiElement?): String? = when (psi) {
     is AliasDeclaration -> {
         psi.aliasInitializers.joinToString(", ") { it.name }
     }
+    is Type -> {
+        if (psi.type_2?.typeIdentifierPart != null)
+            if (psi.typeSuffixs.isNotEmpty())
+                if (psi.typeSuffixs.first().kW_DELEGATE != null || psi.typeSuffixs.first().kW_FUNCTION != null)
+                    psi.type_2?.typeIdentifierPart?.text + " " +  presentableName(psi.typeSuffixs.first())
+                else
+                    psi.type_2?.typeIdentifierPart?.text +  presentableName(psi.typeSuffixs.first())
+            else
+                psi.type_2?.typeIdentifierPart?.text
+        else
+            psi.text
+    }
+    is TypeSuffix -> {
+        if (psi.kW_DELEGATE != null)
+            psi.kW_DELEGATE!!.text + "(" + psi.parameters!!.parameters.mapNotNull{ presentableName(it.type) }.joinToString(", ") + ")"
+        else if (psi.kW_FUNCTION != null)
+            psi.kW_FUNCTION!!.text + "(" + psi.parameters!!.parameters.mapNotNull{ presentableName(it.type) }.joinToString(", ") + ")"
+        else
+            psi.text
+    }
     else -> psi.toString()
 }
 
