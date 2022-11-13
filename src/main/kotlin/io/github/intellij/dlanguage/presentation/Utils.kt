@@ -2,7 +2,7 @@ package io.github.intellij.dlanguage.presentation
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
-import io.github.intellij.dlanguage.icons.DlangIcons
+import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.structure.Visibility
 import io.github.intellij.dlanguage.structure.fromPsiAttribute
@@ -24,32 +24,52 @@ fun presentableName(psi: PsiElement?): String? = when (psi) {
     is AliasDeclaration -> {
         psi.aliasInitializers.joinToString(", ") { it.name }
     }
+    is Type -> {
+        if (psi.type_2?.typeIdentifierPart != null)
+            if (psi.typeSuffixs.isNotEmpty())
+                if (psi.typeSuffixs.first().kW_DELEGATE != null || psi.typeSuffixs.first().kW_FUNCTION != null)
+                    psi.type_2?.typeIdentifierPart?.text + " " +  presentableName(psi.typeSuffixs.first())
+                else
+                    psi.type_2?.typeIdentifierPart?.text +  presentableName(psi.typeSuffixs.first())
+            else
+                psi.type_2?.typeIdentifierPart?.text
+        else
+            psi.text
+    }
+    is TypeSuffix -> {
+        if (psi.kW_DELEGATE != null)
+            psi.kW_DELEGATE!!.text + "(" + psi.parameters!!.parameters.mapNotNull{ presentableName(it.type) }.joinToString(", ") + ")"
+        else if (psi.kW_FUNCTION != null)
+            psi.kW_FUNCTION!!.text + "(" + psi.parameters!!.parameters.mapNotNull{ presentableName(it.type) }.joinToString(", ") + ")"
+        else
+            psi.text
+    }
     else -> psi.toString()
 }
 
 fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
-    is ClassDeclaration -> DlangIcons.NODE_CLASS
-    is InterfaceDeclaration -> DlangIcons.NODE_INTERFACE
+    is ClassDeclaration -> DLanguage.Icons.NODE_CLASS
+    is InterfaceDeclaration -> DLanguage.Icons.NODE_INTERFACE
     is FunctionDeclaration -> {
         when {
-            psiElementIsGetter(psi) -> DlangIcons.NODE_PROPERTY_GETTER
-            psiElementIsSetter(psi) -> DlangIcons.NODE_PROPERTY_SETTER
-            psiElementIsProperty(psi) -> DlangIcons.NODE_PROPERTY
-            psiElementIsMethod(psi) -> DlangIcons.NODE_METHOD
-            else -> DlangIcons.NODE_FUNCTION
+            psiElementIsGetter(psi) -> DLanguage.Icons.NODE_PROPERTY_GETTER
+            psiElementIsSetter(psi) -> DLanguage.Icons.NODE_PROPERTY_SETTER
+            psiElementIsProperty(psi) -> DLanguage.Icons.NODE_PROPERTY
+            psiElementIsMethod(psi) -> DLanguage.Icons.NODE_METHOD
+            else -> DLanguage.Icons.NODE_FUNCTION
         }
     }
-    is Constructor -> DlangIcons.NODE_METHOD
+    is Constructor -> DLanguage.Icons.NODE_METHOD
     is InterfaceOrClass -> getPresentationIcon(psi.parent)
-    is EnumDeclaration -> DlangIcons.NODE_ENUM
-    is StructDeclaration -> DlangIcons.NODE_STRUCT
-    is UnionDeclaration -> DlangIcons.NODE_UNION
+    is EnumDeclaration -> DLanguage.Icons.NODE_ENUM
+    is StructDeclaration -> DLanguage.Icons.NODE_STRUCT
+    is UnionDeclaration -> DLanguage.Icons.NODE_UNION
     is StructBody -> getPresentationIcon(psi.parent)
-    is VariableDeclaration -> DlangIcons.NODE_FIELD
-    is AliasDeclaration -> DlangIcons.NODE_ALIAS
-    is MixinTemplateDeclaration -> DlangIcons.NODE_MIXIN
+    is VariableDeclaration -> DLanguage.Icons.NODE_FIELD
+    is AliasDeclaration -> DLanguage.Icons.NODE_ALIAS
+    is MixinTemplateDeclaration -> DLanguage.Icons.NODE_MIXIN
     is TemplateDeclaration -> getPresentationIcon(psi.parent)
-    is DlangFile -> DlangIcons.FILE
+    is DlangFile -> DLanguage.Icons.FILE
     else -> null
 }
 

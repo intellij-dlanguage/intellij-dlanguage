@@ -77,18 +77,18 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
                         psiElementIsGetter(element) -> append(" : ${element.type?.text}")
                         psiElementIsSetter(element) -> {
                             val parametersNode = element.parameters
-                            appendCommaList(parametersNode?.parameters?.mapNotNull { it.type?.text })
+                            appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
                         }
                         else -> {
                             val parametersNode = element.parameters
-                            appendCommaList(parametersNode?.parameters?.mapNotNull { it.type?.text })
+                            appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
                             append(" : ${element.type?.text}")
                         }
                     }
                 }
                 is Constructor -> {
                     val parametersNode = element.parameters
-                    appendCommaList(parametersNode?.parameters?.mapNotNull { it.type?.text })
+                    appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
                 }
                 is VariableDeclaration -> {
                     if (element.autoDeclaration == null) {
