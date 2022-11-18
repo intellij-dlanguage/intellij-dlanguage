@@ -10,7 +10,7 @@ import com.intellij.openapi.roots.libraries.ui.LibraryRootsComponentDescriptor;
 import com.intellij.openapi.roots.ui.configuration.FacetsProvider;
 import com.intellij.openapi.vfs.VirtualFile;
 import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.module.DlangModuleType;
+//import io.github.intellij.dlanguage.module.DlangModuleType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +43,8 @@ public class DlangLibraryType extends LibraryType<DummyLibraryProperties> {
 
     @Override
     public boolean isSuitableModule(@NotNull final Module module, @NotNull final FacetsProvider facetsProvider) {
-        return ModuleType.get(module).equals(DlangModuleType.getInstance());
+        return ModuleType.get(module).getClass().getName().equals("DlangModuleType");
+        //return ModuleType.get(module).equals(DlangModuleType.getInstance());
     }
 
     @Override
