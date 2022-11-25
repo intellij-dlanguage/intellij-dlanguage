@@ -29,7 +29,7 @@ class DPublicImportIndex : StringStubIndexExtension<SingleImport>() {
         private const val VERSION = 3
 
         fun <S : NamedStubBase<T>, T : DNamedElement> indexPublicImports(stub: S, sink: IndexSink) {
-            if (stub is DlangSingleImportStub && topLevelDeclaration<S, T>(stub)) {
+            if (stub is DlangSingleImportStub && topLevelDeclaration(stub)) {
                 if ((stub as DlangSingleImportStub).attributes.visibility == DAttributesFinder.Visibility.PUBLIC) {
                     val fileName = (stub.psi.containingFile as DlangFile).getFullyQualifiedModuleName()
                     sink.occurrence(KEY, fileName)
