@@ -1,11 +1,8 @@
 package io.github.intellij.dlanguage.project;
 
-import com.intellij.ide.GeneralSettings;
-import com.intellij.ide.impl.OpenProjectTask;
 import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -62,22 +59,9 @@ public class CLionDubProjectOpenProcessor extends ProjectOpenProcessor {
   public Project doOpenProject(@NotNull final VirtualFile virtualFile,
                                @Nullable final Project projectToClose,
                                final boolean forceOpenInNewFrame) {
-    if (projectToClose != null && !forceOpenInNewFrame) {
-      final int exitCode = ProjectUtil.confirmOpenNewProject(false);
-      if (exitCode == GeneralSettings.OPEN_PROJECT_SAME_WINDOW) {
-        if (!ProjectManagerEx.getInstanceEx().closeAndDispose(projectToClose)) {
-          return null;
-        }
-      } else if (exitCode != GeneralSettings.OPEN_PROJECT_NEW_WINDOW) {
-        // not in a new window
-        return null;
-      }
-    }
-
     final VirtualFile baseDir = virtualFile.isDirectory() ? virtualFile : virtualFile.getParent();
 
-    final Project project = ProjectManagerEx.getInstanceEx()
-        .newProject(baseDir.toNioPath(), OpenProjectTask.build().withProjectName(baseDir.getName()));
+    final Project project = ProjectUtil.openOrCreateProject(baseDir.getName(), baseDir.toNioPath());
 
     if (project != null) {
       WriteAction.run(() -> {
@@ -87,7 +71,7 @@ public class CLionDubProjectOpenProcessor extends ProjectOpenProcessor {
         builder.setModuleJdk(sdk);
         builder.commit(project);
       });
-      ProjectManagerEx.getInstanceEx().openProject(project);
+      ProjectUtil.focusProjectWindow(project, true);
     }
     return project;
   }

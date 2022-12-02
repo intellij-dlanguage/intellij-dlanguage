@@ -87,7 +87,7 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
 
     override fun createInstance(project: Project): StatusBarWidget = DCDServerStatusBarWidget(project)
 
-    override fun createPopup(context: DataContext?): ListPopup? {
+    override fun createPopup(context: DataContext): ListPopup? {
         val group = DefaultActionGroup.createPopupGroupWithEmptyText()
 
         group.add(ActionManager.getInstance().getAction(RestartDCD.ID))
