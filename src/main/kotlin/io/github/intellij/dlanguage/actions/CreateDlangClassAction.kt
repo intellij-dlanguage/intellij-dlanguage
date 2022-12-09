@@ -141,8 +141,8 @@ open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "",
         enum class Template(val id: String, val readableName: String, val icon: Icon) {
             MODULE("d_language_module", "module", DLanguage.Icons.MODULE),
             CLASS("d_language_class", "class", DLanguage.Icons.NODE_CLASS),
-            INTERFACE("d_language_class", "interface", DLanguage.Icons.NODE_INTERFACE),
-            STRUCT("d_language_class", "struct", DLanguage.Icons.NODE_STRUCT),
+            INTERFACE("d_language_interface", "interface", DLanguage.Icons.NODE_INTERFACE),
+            STRUCT("d_language_struct", "struct", DLanguage.Icons.NODE_STRUCT),
             UNION("d_language_union", "union", DLanguage.Icons.NODE_UNION),
             ENUM("d_language_enum", "enum", DLanguage.Icons.NODE_ENUM)
         }
