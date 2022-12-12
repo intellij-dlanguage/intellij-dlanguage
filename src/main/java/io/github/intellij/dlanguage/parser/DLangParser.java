@@ -6908,10 +6908,17 @@ class DLangParser {
                 cleanup(m, STATEMENT);
                 return false;
             }
-            if (argumentListRetVal.second == 1 && startsWith(tok(":"), tok("..")))
-                parseCaseRangeStatement(m_case);
-            else
-                parseCaseStatement(m_case);
+            if (argumentListRetVal.second == 1 && startsWith(tok(":"), tok(".."))) {
+                if (!parseCaseRangeStatement(m_case)) {
+                    cleanup(m, STATEMENT);
+                    return false;
+                }
+            } else {
+                if (!parseCaseStatement(m_case)) {
+                    cleanup(m, STATEMENT);
+                    return false;
+                }
+            }
         } else if (i.equals(tok("default"))) {
             if (!parseDefaultStatement()) {
                 cleanup(m, STATEMENT);
