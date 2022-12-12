@@ -6904,7 +6904,7 @@ class DLangParser {
             final Pair<Boolean, Integer> argumentListRetVal = parseArgumentList();
             final boolean argumentList = argumentListRetVal.first;
             if (!argumentList) {
-                m.drop();
+                m_case.drop();
                 cleanup(m, STATEMENT);
                 return false;
             }
