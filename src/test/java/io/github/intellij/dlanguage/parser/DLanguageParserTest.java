@@ -429,6 +429,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void teststatements_switch_unterminated_case() {
+        doDlangParserTest(true, false);
+    }
+
     public void teststatements_block() {
         doDlangParserTest(true, true);
     }
