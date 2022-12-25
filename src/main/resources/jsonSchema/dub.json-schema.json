@@ -1,0 +1,334 @@
+{
+    "title": "Dub package file format",
+    "description": "Dub package file format",
+    "type": "object",
+    "required": ["name"],
+    "anyOf": [
+        {"$ref": "#/$defs/generalSection"},
+        {"$ref": "#/$defs/buildSection"}
+    ],
+
+    "$defs": {
+        "generalSection": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the package, used to uniquely identify the package. Must be comprised of only lower case ASCII alpha-numeric characters, \"-\" or \"_\"."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Brief description of the package"
+                },
+                "toolchainRequirements": {
+                    "type": "object",
+                    "description": "Set of version requirements for DUB, for compilers and for language frontend. See the toolchain requirements section.",
+                    "properties": {
+                        "dub": {
+                            "type": "string"
+                        },
+                        "frontend": {
+                            "type": "string"
+                        },
+                        "dmd": {
+                            "type": "string"
+                        },
+                        "ldc": {
+                            "type": "string"
+                        },
+                        "gdc": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "homepage": {
+                    "type": "string",
+                    "description": "URL of the project website"
+                },
+                "authors": {
+                    "type": "array",
+                    "description": "List of project authors (the suggested format is either \"Peter Parker\" or \"Peter Parker <pparker@example.com>\")",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "copyright": {
+                    "type": "string",
+                    "description": "Copyright declaration string"
+                },
+                "license": {
+                    "type": "string",
+                    "description": "License(s) under which the project can be used - see the license specification section for possible values",
+                    "examples": [
+                        "GPL-3.0",
+                        "GPL-2.0 or later",
+                        "GPL-2.0 or later or proprietary",
+                        "GPL-2.0 or LGPL-3.0",
+                        "LGPL-2.1 or proprietary"
+                    ]
+                },
+                "subPackages": {
+                    "type": "array",
+                    "description": "Defines an array of sub-packages defined in the same directory as the root project, where each entry is either a path of a sub folder or an object of the same format as a dub.json file - see the sub package section for more information",
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "object",
+                            "$ref": "#"
+                        }
+                    ]
+                },
+                "configurations": {
+                    "type": "array",
+                    "description": "Speficies an optional list of build configurations (chosen on the command line using --config=...) - see the configurations section for more details",
+                    "items": {
+                        "type": "object",
+                        "required": ["name"],
+                        "anyOf": [
+                            {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "platforms": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            {"$ref": "#/$defs/buildSection"}
+                        ]
+                    }
+                },
+                "buildTypes": {
+                    "type": "object",
+                    "description": "Defines additional custom build types or overrides the default ones (chosen on the command line using --build=...) - see the build types section for an example",
+                    "additionalProperties": {
+                        "type": "object",
+                        "$ref": "#/$defs/buildSection"
+                    }
+                },
+                "-ddoxFilterArgs": {
+                    "type": "array",
+                    "description": "Specifies a list of command line flags usable for controlling filter behavior for --build=ddox",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "buildSection": {
+            "properties": {
+                "dependencies": {
+                    "type": "object",
+                    "description": "List of project dependencies given as pairs of \"<name>\" : <version-spec>",
+                    "additionalProperties": {
+                        "anyOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "version": {
+                                        "type": "string",
+                                        "description": "The version specification as used for the simple form. A version specification should only be specified when no \"path\" attribute is present, or when compatibility with older versions of DUB (< 0.9.22) is desired."
+                                    },
+                                    "path": {
+                                        "type": "string",
+                                        "description": "Use a folder to source a package from. References a package in a specific path. This can be used in situations where a specific copy of a package needs to be used. Examples of this include packages that are included as GIT submodules, or packages in sub folders of the main package, such as example projects."
+                                    },
+                                    "optional": {
+                                        "type": "boolean",
+                                        "description": "Indicates an optional dependency. With this set to true, the dependency will only be used if explicitly selected in dub.selections.json. If omitted, this attribute defaults to false."
+                                    },
+                                    "default": {
+                                        "type": "boolean",
+                                        "description": "Choose an optional dependency by default. With this set to true, the dependency will be chosen by default if no dub.selections.json exists yet. If omitted, this attribute defaults to false. Note that this only has an effect if the \"optional\" attribute is set to true."
+                                    },
+                                    "repository": {
+                                        "type": "string",
+                                        "description": "clone a git repository as dependency. This also requires \"version\" to be set to the git commit hash (7 to 40 hex characters)."
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "systemDependencies": {
+                    "type": "string",
+                    "description": "A textual description of the required system dependencies (external C libraries) required by the package. This will be visible on the registry and will be displayed in case of linker errors - this setting does not support platform suffixes"
+                },
+                "targetType": {
+                    "type": "string",
+                    "description": "Specifies a specific target type - this setting does not support platform suffixes",
+                    "enum": [
+                        "autodetect",
+                        "none",
+                        "executable",
+                        "library",
+                        "sourceLibrary",
+                        "staticLibrary",
+                        "dynamicLibrary"
+                    ]
+                },
+                "targetName": {
+                    "type": "string",
+                    "description": "Sets the base name of the output file; type and platform specific pre- and suffixes are added automatically - this setting does not support platform suffixes"
+                },
+                "targetPath": {
+                    "type": "string",
+                    "description": "The destination path of the output binary - this setting does not support platform suffixes"
+                },
+                "workingDirectory": {
+                    "type": "string",
+                    "description": "A fixed working directory from which the generated executable will be run - this setting does not support platform suffixes"
+                },
+                "subConfigurations": {
+                    "type": "object",
+                    "description": "Locks the dependencies to specific configurations; a map from package name to configuration name, see also the configurations section - this setting does not support platform suffixes",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "buildRequirements": {
+                    "type": "array",
+                    "description": "List of required settings for the build process. See the build requirements section for details.",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "allowWarnings",
+                            "silenceWarnings",
+                            "disallowDeprecations",
+                            "silenceDeprecations",
+                            "disallowInlining",
+                            "disallowOptimization",
+                            "requireBoundsCheck",
+                            "requireContracts",
+                            "relaxProperties",
+                            "noDefaultFlags"
+                        ]
+                    }
+                },
+                "buildOptions": {
+                    "type": "array",
+                    "description": "List of build option identifiers (corresponding to compiler flags) - see the build options section for details.",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "debugMode",
+                            "releaseMode",
+                            "coverage",
+                            "coverageCTFE",
+                            "debugInfo",
+                            "debugInfoC",
+                            "alwaysStackFrame",
+                            "stackStomping",
+                            "inline",
+                            "noBoundsCheck",
+                            "optimize",
+                            "profile",
+                            "profileGC",
+                            "unittests",
+                            "verbose",
+                            "ignoreUnknownPragmas",
+                            "syntaxOnly",
+                            "warnings",
+                            "warningsAsErrors",
+                            "ignoreDeprecations",
+                            "deprecationWarnings",
+                            "deprecationErrors",
+                            "property",
+                            "betterC",
+                            "lowmem"
+                        ]
+                    }
+                },
+                "libs": {
+                    "type": "array",
+                    "description": "A list of external library names - depending on the compiler, these will be converted to the proper linker flag (e.g. \"ssl\" might get translated to \"-L-lssl\"). On Posix platforms dub will try to find the correct linker flags by using pkg-config",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "sourceFiles": {
+                    "type": "array",
+                    "description": "Additional files passed to the compiler - can be useful to add certain configuration dependent source files that are not contained in the general source folder"
+                },
+                "sourcePaths": {
+                    "type": "array",
+                    "description": "Allows to customize the path where to look for source files (any folder \"source\" or \"src\" is automatically used as a source path if no sourcePaths setting is specified) - note that you usually also need to define \"importPaths\" as \"sourcePaths\" don't influence those"
+                },
+                "excludedSourcesFiles": {
+                    "type": "array",
+                    "description": "Files that should be removed for the set of already added source files (takes precedence over \"sourceFiles\" and \"sourcePaths\") - Glob matching can be used to pattern match multiple files at once"
+                },
+                "mainSourceFile": {
+                    "type": "string",
+                    "description": "Determines the file that contains the main() function. This setting can be used by dub to exclude this file in situations where a different main function is defined (e.g. for \"dub test\") - this setting does not support platform suffixes"
+                },
+                "copyFiles": {
+                    "type": "array",
+                    "description": "A list of globs matching files or directories to be copied to targetPath. Matching directories are copied recursively, i.e. \"copyFiles\": [\"path/to/dir\"]\" recursively copies dir, while \"copyFiles\": [\"path/to/dir/*\"]\" only copies files within dir."
+                },
+                "extraDependencyFiles": {
+                    "type": "array",
+                    "description": "A list of globs matching files to be checked for rebuilding the dub project."
+                },
+                "versions": {
+                    "type": "array",
+                    "description": "A list of D versions to be defined during compilation"
+                },
+                "debugVersions": {
+                    "type": "array",
+                    "description": "A list of D debug identifiers to be defined during compilation"
+                },
+                "importPaths": {
+                    "type": "array",
+                    "description": "Additional import paths to search for D modules (the source/ folder is used by default as a source folder, if it exists)"
+                },
+                "stringImportPaths": {
+                    "type": "array",
+                    "description": "Additional import paths to search for string imports/views (the views/ folder is used by default as a string import folder, if it exists)"
+                },
+                "preGenerateCommands": {
+                    "type": "array",
+                    "description": "A list of shell commands that is always executed before project generation is started"
+                },
+                "postGenerateCommands": {
+                    "type": "array",
+                    "description": "A list of shell commands that is always executed after project generation is finished"
+                },
+                "preBuildCommands": {
+                    "type": "array",
+                    "description": "A list of shell commands that is executed before the package is built"
+                },
+                "postBuildCommands": {
+                    "type": "array",
+                    "description": "A list of shell commands that is executed after the package is built"
+                },
+                "preRunCommands": {
+                    "type": "array",
+                    "description": "A list of shell commands that is executed always before the project is run"
+                },
+                "postRunCommands": {
+                    "type": "array",
+                    "description": "A list of shell commands that is executed always after the project is run"
+                },
+                "dflags": {
+                    "type": "array",
+                    "description": "Additional flags passed to the D compiler - note that these flags are usually specific to the compiler in use, but a set of flags is automatically translated from DMD to the selected compiler"
+                },
+                "lflags": {
+                    "type": "array",
+                    "description": "Additional flags passed to the linker - note that these flags are usually specific to the linker in use"
+                },
+                "injectSourceFiles": {
+                    "type": "array",
+                    "description": "Source files that will be compiled into binaries that depend on this package. Warning: this should be under a permissive license (like Boost) or you risk infecting a users binary with an incompatible license."
+                }
+            }
+        }
+    }
+}

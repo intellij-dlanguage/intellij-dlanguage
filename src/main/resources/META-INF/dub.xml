@@ -1,0 +1,5 @@
+<idea-plugin package="io.github.intellij.dlanguage">
+    <extensions defaultExtensionNs="JavaScript">
+        <JsonSchema.ProviderFactory implementation="io.github.intellij.dlanguage.dub.packageConfig.DubJsonSchemaProviderFactory"/>
+    </extensions>
+</idea-plugin>

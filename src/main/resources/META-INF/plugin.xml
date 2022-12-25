@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">-->
-<idea-plugin>
+<idea-plugin xmlns:xi="http://www.w3.org/2001/XInclude" allow-bundled-update="true">
     <id>net.masterthought.dlanguage</id>
     <name>D Language</name>
     <version>@version@</version>
@@ -39,6 +39,8 @@
     <depends optional="true" config-file="clion-only.xml">com.intellij.modules.cidr.lang</depends>
     <!--<depends optional="true" config-file="clion-only.xml">com.intellij.modules.clion</depends>-->
     <!--<depends optional="true" config-file="appcode-only.xml">com.intellij.modules.appcode</depends>-->
+
+    <xi:include href="/META-INF/dub.xml" xpointer="xpointer(/idea-plugin/*)"/>
 
     <extensions defaultExtensionNs="com.intellij">
 
