@@ -2,4 +2,13 @@
     <extensions defaultExtensionNs="JavaScript">
         <JsonSchema.ProviderFactory implementation="io.github.intellij.dlanguage.dub.packageConfig.DubJsonSchemaProviderFactory"/>
     </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <localInspection language="JSON"
+                         displayName="Invalid dependency version"
+                         groupPath="D"
+                         groupName="Dub packages"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="io.github.intellij.dlanguage.dub.packageConfig.inspections.PackageVersionValidationInspection"/>
+    </extensions>
 </idea-plugin>
