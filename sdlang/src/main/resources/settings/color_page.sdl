@@ -1,0 +1,34 @@
+// This is a node with a single string value
+<TAG_IDENTIFIER>title</TAG_IDENTIFIER> "Hello, World"
+
+// Multiple values are supported, too
+<TAG_IDENTIFIER>bookmarks</TAG_IDENTIFIER> 12 15 188 1234
+
+// Nodes can have attributes
+<TAG_IDENTIFIER>author</TAG_IDENTIFIER> "Peter Parker" email="peter@example.org" active=true
+
+// Nodes can be arbitrarily nested
+<TAG_IDENTIFIER>contents</TAG_IDENTIFIER> {
+	<TAG_IDENTIFIER>section</TAG_IDENTIFIER> "First section" {
+		<TAG_IDENTIFIER>paragraph</TAG_IDENTIFIER> "This is the first paragraph"
+		<TAG_IDENTIFIER>paragraph</TAG_IDENTIFIER> "This is the second paragraph"
+	}
+}
+
+// Anonymous nodes are supported
+"This text is the value of an anonymous node!"
+
+// This makes things like matrix definitions very convenient
+<TAG_IDENTIFIER>matrix</TAG_IDENTIFIER> {
+	1 0 0
+	0 1 0
+	0 0 1
+}
+
+<TAG_IDENTIFIER>foo</TAG_IDENTIFIER> 2013/2/22 07:53:34.123-GMT+05:30 bar=null
+
+<TAG_IDENTIFIER>xml</TAG_IDENTIFIER> `
+<product>
+   <shoes color="blue"/>
+</product>
+`

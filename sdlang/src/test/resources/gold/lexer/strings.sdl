@@ -1,0 +1,13 @@
+name "hello"
+line "he said \"hello there\""
+whitespace "item1\titem2\nitem3\titem4"
+continued "this is a long line \
+    of text"
+winfile `c:\directory\myfile.xls`
+talk `I said "something"`
+xml `
+<product>
+   <shoes color="blue"/>
+</product>
+`
+regex `\w+\.suite\(\)`
