@@ -1,0 +1,78 @@
+{
+  parserClass="io.github.intellij.dlanguage.sdlang.parser.SDLangParser"
+  parserUtilClass="io.github.intellij.dlanguage.sdlang.parser.SDLangParserUtil"
+  psiPackage = 'io.github.intellij.dlanguage.sdlang.psi'
+  psiImplPackage = 'io.github.intellij.dlanguage.sdlang.impl'
+
+  tokenTypeClass="io.github.intellij.dlanguage.sdlang.psi.SDLangTokenType"
+  psiClassPrefix = "SDLang"
+  psiVisitorName = "SDLangElementVisitor"
+
+  elementTypeHolderClass="io.github.intellij.dlanguage.sdlang.psi.SDLangElementTypes"
+  elementTypeClass="io.github.intellij.dlanguage.sdlang.psi.SDLangCompositeType"
+
+  implements("Tag") = "io.github.intellij.dlanguage.sdlang.psi.SDLangElement"
+  extends("Tag") = "io.github.intellij.dlanguage.sdlang.psi.impl.SDLangElementImpl"
+
+
+  tokens=[
+    LINE_COMMENT='regexp:(//|#|--).*'
+    BLOCK_COMMENT='regexp:/\*([^*/])*(\*+/)?'
+    TRUE="true"
+    FALSE="false"
+
+    NULL="null"
+
+    L_CURLY='{'
+    R_CURLY='}'
+    COLON=':'
+    SEMICOLON=';'
+    EQUALS='='
+
+    REGULAR_STRING
+    RAW_STRING
+    CHARACTER
+    IDENTIFIER
+    DECIMAL
+    DOUBLE
+    FLOAT
+    LONG_INT
+    INTEGER
+    DATE_TIME
+    DATE
+    TIME
+    BINARY
+  ]
+}
+
+File ::= Tags?
+private Tags ::= Tag ';' Tags? | Tag <<atNewLine Tags>>?
+Tag ::= TagId? Value+ Attribute* Childrens? |
+        TagId Value* Attribute* Childrens?
+
+private IDFull ::= (Namespace ':')? Name
+
+TagId ::= IDFull
+
+private Name ::= IDENTIFIER
+
+private Namespace ::= IDENTIFIER
+
+Value ::= StringLiteral | NumberLiteral | BooleanLiteral
+    | DateTimeLiteral | BinaryLiteral | NullLiteral
+
+BooleanLiteral ::= TRUE | FALSE
+
+BinaryLiteral ::= BINARY
+
+NullLiteral ::= NULL
+
+StringLiteral ::= REGULAR_STRING | RAW_STRING | CHARACTER
+
+NumberLiteral ::= INTEGER | LONG_INT | FLOAT | DOUBLE | DECIMAL
+
+DateTimeLiteral ::= DATE_TIME | DATE | TIME
+
+Attribute ::= IDFull '=' Value
+
+Childrens ::= '{' <<atNewLine Tags+>> <<atNewLine '}'>>

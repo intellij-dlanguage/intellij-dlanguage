@@ -42,6 +42,8 @@
 
     <xi:include href="/META-INF/dub.xml" xpointer="xpointer(/idea-plugin/*)"/>
 
+    <xi:include href="/META-INF/sdlang.xml" xpointer="xpointer(/idea-plugin/*)"/>
+
     <extensions defaultExtensionNs="com.intellij">
 
         <!-- Add your extensions here -->

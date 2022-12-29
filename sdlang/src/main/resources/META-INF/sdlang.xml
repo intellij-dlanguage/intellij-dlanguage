@@ -1,0 +1,22 @@
+<idea-plugin>
+
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="SDLang"
+                  language="SDLang"
+                  implementationClass="io.github.intellij.dlanguage.sdlang.SDLangFileType"
+                  fieldName="INSTANCE"
+                  extensions="sdl"/>
+        <lang.parserDefinition language="SDLang" implementationClass="io.github.intellij.dlanguage.sdlang.parser.SDLangParserDefinition"/>
+
+        <lang.syntaxHighlighterFactory language="SDLang" implementationClass="io.github.intellij.dlanguage.sdlang.highlighting.SDLangHighlighterFactory"/>
+        <colorSettingsPage implementation="io.github.intellij.dlanguage.sdlang.colors.SDLangColorSettingsPage"/>
+
+        <annotator language="SDLang" implementationClass="io.github.intellij.dlanguage.sdlang.annotator.SDLangHighlightAnnotator"/>
+
+        <lang.commenter language="SDLang" implementationClass="io.github.intellij.dlanguage.sdlang.editor.SDLangCommenter"/>
+
+        <lang.quoteHandler language="SDLang" implementationClass="io.github.intellij.dlanguage.sdlang.editor.SDLangQuoteHandler"/>
+    </extensions>
+</idea-plugin>
