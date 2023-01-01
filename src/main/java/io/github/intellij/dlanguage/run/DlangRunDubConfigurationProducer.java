@@ -38,7 +38,7 @@ public class DlangRunDubConfigurationProducer extends LazyRunConfigurationProduc
             ProjectRootManager.getInstance(context.getProject()).getFileIndex().isInContent(virtualFile) &&
             !DlangWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)) {
 
-            // dont try to run this producer if is a test file
+            // don't try to run this producer if is a test file
             if (isDunitTestFile(psiFile)) {
                 log.debug(psiFile.getName() + " is a dunit test file");
                 return null;
@@ -46,8 +46,6 @@ public class DlangRunDubConfigurationProducer extends LazyRunConfigurationProduc
                 return virtualFile;
             }
         }
-
-        log.warn("No runnable D file found");
         return null;
     }
 
