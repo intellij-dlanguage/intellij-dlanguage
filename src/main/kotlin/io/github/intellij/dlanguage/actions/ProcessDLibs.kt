@@ -15,6 +15,8 @@ import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
+import com.intellij.openapi.module.ModuleTypeManager
+import com.intellij.openapi.module.ModuleUtil
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
@@ -34,7 +36,6 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.library.DlangLibraryType
-import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dlanguage.project.DubConfigurationParser
 import io.github.intellij.dlanguage.project.DubPackage
 import io.github.intellij.dlanguage.settings.ToolKey
@@ -56,7 +57,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             displayError(e, "Unable to process D libraries - No active project.")
             return
         }
-        val modules = DlangModuleType.findModules(project)
+        val modules = ModuleUtil.getModulesOfType(project, ModuleTypeManager.getInstance().findByID(DLanguage.MODULE_TYPE_ID))
 
         when (modules.size) {
             //0 -> displayError(e, "Unable to process D libraries - No DLanguage modules are used in this project.")
