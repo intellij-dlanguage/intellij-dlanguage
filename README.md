@@ -20,7 +20,7 @@ For a list of older releases and their supported IDE versions see our [Compatibi
 
 ## Installation
 
-Assuming you have IntelliJ IDEA, CLion, or another Intellij based IDE installed. You can simply install the plugin via the IDE.
+Assuming you have IntelliJ IDEA, CLion (or another Intellij based IDE installed), you can simply install the plugin via the IDE:
 
 Go to *Settings* (Preferences on Mac) > *Plugins* > Browse Repositories and search For "D Language" (**you may see 2 plugins, Choose the DLanguage one**) then click install and restart IntelliJ
 
