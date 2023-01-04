@@ -8958,12 +8958,13 @@ class DLangParser {
     }
 
     boolean isAssociativeArrayLiteral() {
-        if (cachedAAChecks.keySet().contains(index))
-            return true;
+        if (cachedAAChecks.containsKey(index))
+            return cachedAAChecks.get(index);
+        int currentIndex = index;
         final Bookmark b = setBookmark();
         advance();
         final boolean result = !currentIs(tok("]")) && parseExpression() && currentIs(tok(":"));
-        cachedAAChecks.put(index, result);
+        cachedAAChecks.put(currentIndex, result);
         goToBookmark(b);
         return result;
     }
