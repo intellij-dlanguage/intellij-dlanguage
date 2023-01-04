@@ -8,6 +8,8 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessOutputTypes;
+import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
@@ -18,6 +20,7 @@ import com.intellij.openapi.module.ModuleWithNameAlreadyExists;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
@@ -49,6 +52,14 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
 
     public DlangDubModuleBuilder() {
         super(BUILDER_ID, DlangBundle.INSTANCE.message("module.dub.title"), DlangBundle.INSTANCE.message("module.dub.description"));
+    }
+
+    @Override
+    public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext, @NotNull ModulesProvider modulesProvider) {
+        return new ModuleWizardStep[] {
+            new DubBinaryForModuleStep(wizardContext),
+            new DubInitForModuleStep(wizardContext)
+        };
     }
 
     /*
