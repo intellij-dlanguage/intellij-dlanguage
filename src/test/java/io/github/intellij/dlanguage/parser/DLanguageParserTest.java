@@ -1114,11 +1114,6 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
-    // dmd fail_compilation test file
-    public void teste15876_1() {
-        doDlangParserTest(true, false);
-    }
-
 // standard library
 
     public void teststdio() {
@@ -1154,6 +1149,15 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     public void testexpression() {
         doDlangParserTest(true, true);
     }
+
+    // dmd fail_compilation test file
+    public void teste15876_1() {
+        doDlangParserTest(true, false);
+    }
+
+
+    // libdparse incompleteStatement198_1.d test file
+    public void testincompleteStatement198_1() { doDlangParserTest(true, false);}
 
     //below test errors waiting on libdparse
 //    public void testobject(){

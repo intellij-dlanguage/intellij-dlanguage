@@ -2671,6 +2671,10 @@ class DLangParser {
             cleanup(m, CONTINUE_STATEMENT);
             return false;
         }
+        if (!moreTokens()) {
+            cleanup(m, CONTINUE_STATEMENT);
+            return false;
+        }
         final Token.IdType i = current().type;
         if (i.equals(tok("identifier"))) {
             advance();
@@ -7241,7 +7245,7 @@ class DLangParser {
      * | $(LITERAL 'override')
      * | $(LITERAL '')
      * | $(LITERAL 'ref')
-     * | $(LITERAL '___gshared')
+     * | $(LITERAL '__gshared')
      * | $(LITERAL 'scope')
      * | $(LITERAL 'static')
      * | $(LITERAL 'synchronized')
