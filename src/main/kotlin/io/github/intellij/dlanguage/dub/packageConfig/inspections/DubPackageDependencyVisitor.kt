@@ -32,6 +32,8 @@ data class JsonPackageDependency(
 
 fun collectElements(packageElement: JsonProperty) : Map<String, JsonElement> {
     if (packageElement.value !is JsonObject) {
+        if (packageElement.value == null)
+            return mapOf()
         return mapOf("version" to packageElement.value!!)
     }
     val properties = packageElement.value as JsonObject
