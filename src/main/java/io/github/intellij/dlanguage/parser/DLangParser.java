@@ -192,6 +192,7 @@ class DLangParser {
     @NotNull
     private final PsiBuilder builder;
     private final Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
+    private final Map<Integer, Boolean> cachedTypedChecks = new HashMap<>();
 
     // private final HashMap<Marker, Integer> beginnings = new HashMap<>();//todo this maybe useful in the future but commented out for now
     // private Bookmark debugBookmark = null;//used to be able to eval expressions while debugging and then rollback side effects
@@ -7562,15 +7563,32 @@ class DLangParser {
      */
     boolean parseTemplateArgument() {
         final Marker m = enter_section_modified(builder);
-        final Bookmark b = setBookmark();
-        final boolean t = parseType().first;
-        if (t && currentIsOneOf(tok(","), tok(")"))) {
-            abandonBookmark(b);
-        } else {
-            goToBookmark(b);
-            if (!parseAssignExpression()) {
-                cleanup(m, TEMPLATE_ARGUMENT);
-                return false;
+        int startIndex = index;
+        boolean p = cachedTypedChecks.containsKey(index);
+        if (p) {
+            if (cachedTypedChecks.get(index)) {
+                parseType();
+            }
+            else {
+                if (!parseAssignExpression()) {
+                    cleanup(m, TEMPLATE_ARGUMENT);
+                    return false;
+                }
+            }
+        }
+        else {
+            final Bookmark b = setBookmark();
+            final boolean t = parseType().first;
+            if (t && currentIsOneOf(tok(","), tok(")"))) {
+                cachedTypedChecks.put(startIndex, true);
+                abandonBookmark(b);
+            } else {
+                cachedTypedChecks.put(startIndex, false);
+                goToBookmark(b);
+                if (!parseAssignExpression()) {
+                    cleanup(m, TEMPLATE_ARGUMENT);
+                    return false;
+                }
             }
         }
         exit_section_modified(builder, m, TEMPLATE_ARGUMENT, true);

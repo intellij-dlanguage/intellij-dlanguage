@@ -1159,6 +1159,7 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     // libdparse incompleteStatement198_1.d test file
     public void testincompleteStatement198_1() { doDlangParserTest(true, false);}
 
+    public void testkiller() { doDlangParserTest(false, false); }
     public void testkiller2() { doDlangParserTest(false, false); }
 
     public void testobject(){
