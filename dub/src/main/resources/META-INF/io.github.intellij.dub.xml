@@ -1,0 +1,31 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Tool Windows are the bits generally displayed on right hand side of Intellij (eg: Ant,Maven,Gradle)-->
+        <toolWindow id="DubToolBar" anchor="right" icon="/icons/dub-ball.png"
+                    factoryClass="io.github.intellij.dub.toolwindow.DubToolWindow" />
+
+        <!--<externalSystemManager id="DubManager" implementation="net.masterthought.dlanguage.dub.DubManager"/>-->
+        <!--<externalSystemConfigLocator implementation="io.github.intellij.dub.ConfigLocator"/>-->
+        <!--<externalProjectDataService implementation=""/>-->
+        <!--<externalSystemViewContributor implementation=""/>-->
+        <!--<externalProjectStructureCustomizer implementation=""/>-->
+        <!--<externalSystemNotificationExtension implementation=""/>-->
+        <!--<externalSystemTaskNotificationListener implementation=""/>-->
+        <!--<externalSystemExecutionConsoleManager implementation=""/>-->
+    </extensions>
+
+    <actions>
+        <!-- Actions for Dub -->
+        <action id="dub.build.action" class="io.github.intellij.dub.actions.DubBuildAction"
+                text="_Run Dub"
+                description="Run Dub using selected options"
+                icon="AllIcons.Actions.Execute">
+        </action>
+
+        <action id="dub.settings.action" class="io.github.intellij.dub.actions.ConfigureDToolsAction"
+                text="_Configure D Tools"
+                icon="AllIcons.General.GearPlain">
+        </action>
+    </actions>
+
+</idea-plugin>

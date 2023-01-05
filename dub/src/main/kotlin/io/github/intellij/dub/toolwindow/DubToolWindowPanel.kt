@@ -22,10 +22,10 @@ import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.SimpleTextAttributes
 import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.IconUtil
+import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dub.actions.ConfigureDToolsAction
 import io.github.intellij.dub.actions.DubBuildAction
 import io.github.intellij.dlanguage.actions.ProcessDLibs
-import io.github.intellij.dlanguage.icons.DlangIcons
 import io.github.intellij.dlanguage.messagebus.DubChangeNotifier
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener
 import io.github.intellij.dlanguage.messagebus.Topics
@@ -189,7 +189,7 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
             node.userObject?.let {
                 when (it) {
                     is ProjectViewModuleNode -> {
-                        icon = DlangIcons.LIBRARY
+                        icon = DLanguage.Icons.LIBRARY
                         append(it.value.name) //, SimpleTextAttributes.STYLE_BOLD)
                     }
                     is RunnerAndConfigurationSettingsNode -> {
