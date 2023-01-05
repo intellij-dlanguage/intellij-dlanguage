@@ -1,16 +1,6 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
-}
-
-compileJava   {
-  sourceCompatibility = JavaVersion.VERSION_11
-  targetCompatibility = JavaVersion.VERSION_11
-}
-
-repositories {
-    mavenCentral()
-//    maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 apply plugin: 'kotlin'
@@ -37,11 +27,4 @@ verifyPlugin.enabled = false
 
 intellij {
     version = ideaVersion
-}
-
-dependencies {
-    //compileOnly "com.jetbrains.intellij.platform:core:$intellijPlatformVersion"
-    //compileOnly "com.jetbrains.intellij.platform:lang:$intellijPlatformVersion"
-
-    //testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
