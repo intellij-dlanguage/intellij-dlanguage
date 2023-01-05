@@ -1,6 +1,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.grammarkit.tasks.*
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
     repositories {
@@ -9,6 +10,8 @@ buildscript {
 }
 
 plugins {
+    id 'org.gradle.idea'
+    id 'java'
     id 'org.jetbrains.intellij' version '1.10.1'
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
 //    id 'net.saliman.cobertura' version '4.0.0'
@@ -43,14 +46,29 @@ apply plugin: 'org.jetbrains.grammarkit'
 
 
 allprojects {
+
+    repositories {
+        mavenCentral()
+    }
+
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
         options.encoding = 'UTF-8'
         options.compilerArgs << "-Xlint:deprecation"
+    }
+
+    tasks.withType(KotlinCompile).configureEach {
+        kotlinOptions {
+            suppressWarnings = true
+            apiVersion = "1.6"
+            languageVersion = "1.6"
+            jvmTarget = javaVersion
+            freeCompilerArgs = [ '-Xjvm-default=enable' ]
+        }
     }
 
     tasks.withType(Test) {
@@ -69,6 +87,7 @@ allprojects {
         ]
 
         testLogging {
+            exceptionFormat = 'full'
             beforeSuite { suite ->
                 if (!suite.parent) { // will match the outermost suite
                     logger.lifecycle ' ----------- Building Tests -----------'
@@ -104,24 +123,6 @@ allprojects {
             }
         }
     }
-
-    // take the version number defined in gradle build and use that in plugin.xml
-    task initConfig(type: Copy) {
-        from('src/main/resources') {
-            include '**/plugin.xml'
-            filter(ReplaceTokens, tokens: [version: version])
-        }
-    }
-
-    task testCompilation(type: Test, group: 'Verification', dependsOn: [classes, testClasses]) {
-        useJUnit {
-            include 'io/github/intellij/dlanguage/build/**'
-        }
-        testLogging {
-            exceptionFormat = 'full'
-        }
-    }
-
 
 }
 
@@ -220,40 +221,52 @@ intellij {
 }
 
 
-task generateSyntaxLexer(type : GenerateLexerTask) {
-    // source flex file
-    source = 'src/main/jflex/io/github/intellij/dlanguage/lexer/DLanguageLexer.flex'
-
-    // target directory for lexer
-    targetDir = 'gen/io/github/intellij/dlanguage/'
-
-    // target classname, target file will be targetDir/targetClass.java
-    targetClass = 'DlangLexer'
+// take the version number defined in gradle build and use that in plugin.xml
+tasks.register('initConfig', Copy) {
+    from('src/main/resources') {
+        include '**/plugin.xml'
+        filter(ReplaceTokens, tokens: [version: version])
+    }
 }
 
-task copyGenScript(type: Copy) {
+tasks.register('testCompilation', Test) {
+    group 'Verification'
+    dependsOn classes, testClasses
+    useJUnit {
+        include 'io/github/intellij/dlanguage/build/**'
+    }
+}
+
+tasks.register('generateSyntaxLexer', GenerateLexerTask) {
+    // source flex file
+    source.set('src/main/jflex/io/github/intellij/dlanguage/lexer/DLanguageLexer.flex')
+
+    // target directory for lexer
+    targetDir.set('gen/io/github/intellij/dlanguage/')
+
+    // target classname, target file will be targetDir/targetClass.java
+    targetClass.set('DlangLexer')
+}
+
+tasks.register('copyGenScript', Copy) {
     from 'src/main/resources/types_regen_script.d'
     into 'gen/io/github/intellij/dlanguage/psi/'
 }
 
-task generatePsi(type: Exec) {
+tasks.register('generatePsi', Exec) {
     dependsOn copyGenScript
     workingDir 'gen/io/github/intellij/dlanguage/psi/'
     commandLine 'rdmd', 'types_regen_script.d'
 }
 
-compileJava{
-    dependsOn generateSyntaxLexer
-    dependsOn generatePsi
+tasks.withType(JavaCompile).configureEach {
+    it.dependsOn(generateSyntaxLexer)
+    it.dependsOn(generatePsi)
 }
 
-compileKotlin{
-    dependsOn generateSyntaxLexer
-    dependsOn generatePsi
-}
-
-repositories {
-    mavenCentral()
+tasks.withType(KotlinCompile).configureEach {
+    it.dependsOn(generateSyntaxLexer)
+    it.dependsOn(generatePsi)
 }
 
 dependencies {
@@ -286,14 +299,5 @@ idea {
     }
     module {
         generatedSourceDirs += file('gen')
-    }
-}
-compileKotlin {
-    kotlinOptions {
-        suppressWarnings = true
-        apiVersion = "1.6"
-        languageVersion = "1.6"
-        jvmTarget = javaVersion
-        freeCompilerArgs = [ '-Xjvm-default=enable' ]
     }
 }
