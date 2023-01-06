@@ -165,6 +165,7 @@
 
         <!-- Editing utils -->
         <lang.braceMatcher language="D" implementationClass="io.github.intellij.dlanguage.features.DBraceMatcher"/>
+        <lang.quoteHandler language="D" implementationClass="io.github.intellij.dlanguage.features.DQuoteHandler"/>
         <lang.commenter language="D" implementationClass="io.github.intellij.dlanguage.features.DCommenter"/>
 
         <completion.contributor language="D"
