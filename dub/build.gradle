@@ -26,6 +26,8 @@ verifyPlugin.enabled = false
 
 intellij {
     version = ideaVersion
+
+    plugins = [ 'org.intellij.intelliLang', 'com.intellij.java', 'com.intellij.java.ide' ] // IDEA only (plugin was previously 'java')
 }
 
 dependencies {

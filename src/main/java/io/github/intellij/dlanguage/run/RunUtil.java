@@ -29,7 +29,7 @@ public class RunUtil {
     private static final String NOTIFICATION_TITLE = "Debugging Error";
 
     @Nullable
-    static RunContentDescriptor startDebugger(ProgramRunner<?> buildRunner, RunProfileState state, ExecutionEnvironment env, Project project, Executor executor, String execName) throws ExecutionException {
+    public static RunContentDescriptor startDebugger(ProgramRunner<?> buildRunner, RunProfileState state, ExecutionEnvironment env, Project project, Executor executor, String execName) throws ExecutionException {
         final ExecutionResult result = state.execute(executor, buildRunner);
         if (result == null) {
             return null;

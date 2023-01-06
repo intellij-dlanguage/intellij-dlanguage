@@ -4,13 +4,14 @@ import com.intellij.execution.configurations.ConfigurationType
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.impl.RunManagerImpl
 import com.intellij.execution.runners.ExecutionEnvironment
+import com.intellij.execution.runners.ProgramRunner
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.ModuleManager
 import io.github.intellij.dlanguage.run.DlangRunDubConfiguration
 import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType
-import io.github.intellij.dlanguage.run.DubBuildRunner
+import io.github.intellij.dub.run.DubBuildRunner
 
 /**
  * @author Samael Bate (singingbush)
@@ -51,7 +52,8 @@ class DubBuildAction : DubAction("_Run Dub", "", AllIcons.Actions.Execute) {
             runManager.selectedConfiguration = runDubSettings
 
             // now actually start the process
-            val dubBuildRunner = DubBuildRunner.PROGRAM_RUNNER_EP.findExtensionOrFail(DubBuildRunner::class.java)
+            val dubBuildRunner = ProgramRunner.PROGRAM_RUNNER_EP.findExtensionOrFail(
+                DubBuildRunner::class.java)
             val env = ExecutionEnvironment(DefaultRunExecutor(), dubBuildRunner, runDubSettings, it)
             dubBuildRunner.execute(env) { LOG.info("DubBuildRunner started") }
         }

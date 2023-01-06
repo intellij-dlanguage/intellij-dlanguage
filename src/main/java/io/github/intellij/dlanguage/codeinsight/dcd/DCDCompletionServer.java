@@ -29,7 +29,6 @@ import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.settings.ToolSettings;
 import io.github.intellij.dlanguage.DlangSdkType;
-import io.github.intellij.dlanguage.project.DubConfigurationParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -166,7 +165,8 @@ public final class DCDCompletionServer implements ToolChangeListener, Disposable
         });
 
         // try to auto add dub dependencies
-        final DubConfigurationParser dubParser = new DubConfigurationParser(module.getProject(),
+        // FIXME should not use dub to get dependencies
+        /*final DubConfigurationParser dubParser = new DubConfigurationParser(module.getProject(),
             ToolKey.DUB_KEY.getPath(), false);
 
         if (dubParser.canUseDub()) {
@@ -181,7 +181,7 @@ public final class DCDCompletionServer implements ToolChangeListener, Disposable
             }));
         } else {
             LOG.info("not possible to run 'dub describe'");
-        }
+        }*/
 
         return commandLine;
     }

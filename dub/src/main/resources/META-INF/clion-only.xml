@@ -1,0 +1,7 @@
+<idea-plugin>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <projectOpenProcessor id="DubProjectOpenProcessor"
+                              implementation="io.github.intellij.dub.project.CLionDubProjectOpenProcessor" order="first"/>
+    </extensions>
+</idea-plugin>

@@ -46,8 +46,6 @@
     <!--<depends optional="true" config-file="clion-only.xml">com.intellij.modules.clion</depends>-->
     <!--<depends optional="true" config-file="appcode-only.xml">com.intellij.modules.appcode</depends>-->
 
-    <xi:include href="/META-INF/dub.xml" xpointer="xpointer(/idea-plugin/*)"/>
-
     <xi:include href="/META-INF/sdlang.xml" xpointer="xpointer(/idea-plugin/*)"/>
 
     <xi:include href="/META-INF/io.github.intellij.dub.xml" xpointer="xpointer(/idea-plugin/*)"/>
@@ -113,9 +111,6 @@
 
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationType"/>
-        <programRunner implementation="io.github.intellij.dlanguage.run.DubBuildRunner"/>
-        <consoleFilterProvider implementation="io.github.intellij.dlanguage.run.DubConsoleFilterProvider"/>
-        <analyzeStacktraceFilter implementation="io.github.intellij.dlanguage.run.DubBuildSourceFileFilter"/>
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDmdConfigurationType"/>
         <programRunner implementation="io.github.intellij.dlanguage.run.DmdBuildRunner"/>
@@ -277,9 +272,6 @@
         <!-- Show a widget in the status bar to indicate whether DCD Server is running or not -->
         <statusBarWidgetFactory order="first" implementation="io.github.intellij.dlanguage.dcd.server.DCDServerStatusBarWidgetFactory" />
 
-        <postStartupActivity
-            implementation="io.github.intellij.dlanguage.project.DubListenerComponent"/>
-
         <moduleService
             serviceImplementation="io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer"/>
     </extensions>
@@ -302,10 +294,6 @@
                 text="Restart DCD Server"
                 description="Restarts the DCD server"
                 icon="AllIcons.Actions.Restart">
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
-        </action>
-        <action id="io.github.intellij.dlanguage.ProcessDLibs" class="io.github.intellij.dlanguage.actions.ProcessDLibs"
-                text="Process D Libraries" description="Processes the D Libraries">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
     </actions>
