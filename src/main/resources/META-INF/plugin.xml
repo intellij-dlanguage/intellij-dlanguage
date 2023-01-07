@@ -159,7 +159,7 @@
         <!-- Tab in IntelliJ -> Preferences -->
 
         <!-- References/navigation -->
-        <psi.referenceContributor implementation="io.github.intellij.dlanguage.psi.references.DReferenceContributor"/>
+        <psi.referenceContributor language="D" implementation="io.github.intellij.dlanguage.psi.references.DReferenceContributor"/>
         <lang.findUsagesProvider language="D"
                                  implementationClass="io.github.intellij.dlanguage.codeinsight.DFindUsagesProvider"/>
 
@@ -186,7 +186,7 @@
                                  implementationClass="io.github.intellij.dlanguage.template.DlangExpressionSurroundDescriptor"/>-->
 
         <!-- Live Templates -->
-        <defaultLiveTemplatesProvider implementation="io.github.intellij.dlanguage.template.DlangLiveTemplatesProvider"/>
+        <defaultLiveTemplates file="/dlang/ide/liveTemplates/D"/>
 
         <liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContext"/>
         <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Statement"/>-->
