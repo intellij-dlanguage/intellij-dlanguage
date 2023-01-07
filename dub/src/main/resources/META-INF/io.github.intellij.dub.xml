@@ -1,0 +1,59 @@
+<idea-plugin>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Tool Windows are the bits generally displayed on right hand side of Intellij (eg: Ant,Maven,Gradle)-->
+        <toolWindow id="DubToolBar" anchor="right" icon="/icons/dub-ball.png"
+                    factoryClass="io.github.intellij.dub.toolwindow.DubToolWindow" />
+        <localInspection language="JSON"
+                         displayName="Invalid dependency version"
+                         groupPath="D"
+                         groupName="Dub packages"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="io.github.intellij.dub.packageConfig.inspections.PackageVersionValidationInspection"/>
+
+        <consoleFilterProvider implementation="io.github.intellij.dub.run.DubConsoleFilterProvider"/>
+        <analyzeStacktraceFilter implementation="io.github.intellij.dub.run.DubBuildSourceFileFilter"/>
+
+        <externalAnnotator language="D"
+                           implementationClass="io.github.intellij.dub.highlighting.annotation.DubSyntaxAnnotator"/>
+
+        <programRunner implementation="io.github.intellij.dub.run.DubBuildRunner"/>
+
+        <postStartupActivity
+            implementation="io.github.intellij.dub.project.DubListenerComponent"/>
+
+        <!--<externalSystemManager id="DubManager" implementation="net.masterthought.dlanguage.dub.DubManager"/>-->
+        <!--<externalSystemConfigLocator implementation="io.github.intellij.dub.ConfigLocator"/>-->
+        <!--<externalProjectDataService implementation=""/>-->
+        <!--<externalSystemViewContributor implementation=""/>-->
+        <!--<externalProjectStructureCustomizer implementation=""/>-->
+        <!--<externalSystemNotificationExtension implementation=""/>-->
+        <!--<externalSystemTaskNotificationListener implementation=""/>-->
+        <!--<externalSystemExecutionConsoleManager implementation=""/>-->
+    </extensions>
+
+    <extensions defaultExtensionNs="JavaScript">
+        <JsonSchema.ProviderFactory implementation="io.github.intellij.dub.packageConfig.DubJsonSchemaProviderFactory"/>
+    </extensions>
+
+    <actions>
+        <!-- Actions for Dub -->
+        <action id="dub.build.action" class="io.github.intellij.dub.actions.DubBuildAction"
+                text="_Run Dub"
+                description="Run Dub using selected options"
+                icon="AllIcons.Actions.Execute">
+        </action>
+
+        <action id="dub.settings.action" class="io.github.intellij.dub.actions.ConfigureDToolsAction"
+                text="_Configure D Tools"
+                icon="AllIcons.General.GearPlain">
+        </action>
+
+        <action id="io.github.intellij.dlanguage.ProcessDLibs" class="io.github.intellij.dub.actions.ProcessDLibs"
+                text="Process D Libraries" description="Processes the D Libraries">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+
+</idea-plugin>

@@ -161,7 +161,7 @@ class DlangProjectGenerator : DirectoryProjectGeneratorBase<DlangProjectSettings
 
 class DlangProjectSettings {
     var sdk: Sdk? = null
-    var dubInit = false
+    var dubInit = false  // TODO move this in dub and make dub add something to the build window instead
 }
 
 /**

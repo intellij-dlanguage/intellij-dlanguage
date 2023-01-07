@@ -64,7 +64,6 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
         }
 
         return new State(
-            new CompileCheck().checkFileSyntax(file),
             new DScanner().checkFileSyntax(file)
         );
     }
@@ -78,7 +77,6 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
      */
     @Override
     public void apply(@NotNull final PsiFile file, final State state, @NotNull final AnnotationHolder holder) {
-        createAnnotations(file, state.getSyntaxProblems(), holder);
         createAnnotations(file, state.getdScannerProblems(), holder);
     }
 
@@ -94,16 +92,10 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
     }
 
     public static class State {
-        private final DProblem[] syntaxProblems;
         private final DProblem[] dScannerProblems;
 
-        public State(final DProblem[] syntaxProblems, final DProblem[] dScannerProblems) {
-            this.syntaxProblems = syntaxProblems;
+        public State(final DProblem[] dScannerProblems) {
             this.dScannerProblems = dScannerProblems;
-        }
-
-        public DProblem[] getSyntaxProblems() {
-            return syntaxProblems;
         }
 
         public DProblem[] getdScannerProblems() {

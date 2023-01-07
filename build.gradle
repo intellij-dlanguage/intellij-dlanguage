@@ -281,6 +281,7 @@ dependencies {
     implementation project(':errorreporting')
     implementation project(':debugger')
     implementation project(':sdlang')
+    runtimeOnly project(':dub')
 
     implementation 'com.google.code.gson:gson:2.9.+' // used by dub parser
 

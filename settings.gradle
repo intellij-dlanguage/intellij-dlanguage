@@ -9,8 +9,9 @@ pluginManagement {
 
 rootProject.name = 'DLanguage'
 
+include 'plugin'
 include 'utils'
 include 'errorreporting'
 include 'debugger'
 include 'sdlang'
-
+include 'dub'

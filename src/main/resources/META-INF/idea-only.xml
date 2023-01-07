@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!--<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">-->
 <idea-plugin>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -7,12 +5,6 @@
 
         <moduleBuilder id="DLangModuleBuilder"
                        builderClass="io.github.intellij.dlanguage.module.DlangModuleBuilder"/>
-        <moduleBuilder id="DLangDubModuleBuilder"
-                       builderClass="io.github.intellij.dlanguage.module.DlangDubModuleBuilder"/>
-
-        <projectImportProvider implementation="io.github.intellij.dlanguage.project.DubProjectImportProvider"/>
-        <projectImportBuilder implementation="io.github.intellij.dlanguage.project.DubProjectImportBuilder"/>
-        <projectOpenProcessor id="DubProjectOpenProcessor" implementation="io.github.intellij.dlanguage.project.DubProjectOpenProcessor"/>
 
         <!-- Project Tree View -->
         <treeStructureProvider implementation="io.github.intellij.dlanguage.projectview.DTreeStructureProvider"/>

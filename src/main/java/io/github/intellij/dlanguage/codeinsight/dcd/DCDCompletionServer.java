@@ -19,6 +19,7 @@ import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.OrderRootType;
+import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -29,10 +30,11 @@ import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.settings.ToolSettings;
 import io.github.intellij.dlanguage.DlangSdkType;
-import io.github.intellij.dlanguage.project.DubConfigurationParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -165,23 +167,16 @@ public final class DCDCompletionServer implements ToolChangeListener, Disposable
             parametersList.add("-I", PathUtil.toSystemDependentName(src));
         });
 
-        // try to auto add dub dependencies
-        final DubConfigurationParser dubParser = new DubConfigurationParser(module.getProject(),
-            ToolKey.DUB_KEY.getPath(), false);
-
-        if (dubParser.canUseDub()) {
-            dubParser.getDubProject().ifPresent(dubProject -> dubProject.getPackages().forEach(pkg -> {
-                final List<String> sourcesDirs = pkg.getSourcesDirs();
-
-                LOG.debug("adding source for ", pkg.getName());
-
-                for(final String srcDir : sourcesDirs) {
-                    parametersList.add("-I", PathUtil.toSystemDependentName(pkg.getPath() + srcDir));
-                }
-            }));
-        } else {
-            LOG.info("not possible to run 'dub describe'");
-        }
+        Arrays.stream(LibraryTablesRegistrar.getInstance().getLibraryTable(module.getProject()).getLibraries())
+            .forEach(library -> {
+                Arrays.stream(library.getRootProvider().getUrls(OrderRootType.CLASSES)).forEach(
+                    url -> {
+                        try {
+                            parametersList.add("-I", new URL(url).getPath());
+                        } catch (MalformedURLException ignored) {
+                        }
+                    });
+            });
 
         return commandLine;
     }

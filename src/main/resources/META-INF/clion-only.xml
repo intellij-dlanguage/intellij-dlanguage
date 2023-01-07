@@ -1,12 +1,7 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!--<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">-->
 <idea-plugin>
 
     <extensions defaultExtensionNs="com.intellij">
         <directoryProjectGenerator implementation="io.github.intellij.dlanguage.project.DlangProjectGenerator"/>
-
-        <projectOpenProcessor id="DubProjectOpenProcessor"
-                              implementation="io.github.intellij.dlanguage.project.CLionDubProjectOpenProcessor" order="first"/>
     </extensions>
 
 </idea-plugin>
