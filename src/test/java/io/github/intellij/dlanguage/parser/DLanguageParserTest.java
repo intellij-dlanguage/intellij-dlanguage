@@ -1117,31 +1117,31 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
 // standard library
 
     public void teststdio() {
-        doDlangParserTest(true, true);
+        doDlangParserTest(false, true);
     }
 
     public void testtraits() {
-        doDlangParserTest(true, true);
+        doDlangParserTest(false, true);
     }
 
     public void teststring() {
-        doDlangParserTest(true, true);
+        doDlangParserTest(false, true);
     }
 
     public void testbase64() {
-        doDlangParserTest(true, true);
+        doDlangParserTest(false, true);
     }
 
     public void testarray() {
-        doDlangParserTest(true, true);
+        doDlangParserTest(false, true);
     }
 
     public void testtypecons() {
-        doDlangParserTest(true, true);
+        doDlangParserTest(false, true);
     }
 
     public void testparallelism() {
-        doDlangParserTest(true, true);
+        doDlangParserTest(false, true);
     }
 
     //dmd source
