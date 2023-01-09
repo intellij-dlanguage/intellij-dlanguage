@@ -38,14 +38,10 @@ class EnumArrayLiteralsInClassDeclarationVisitor(val holder: ProblemsHolder) : D
     fun checkForEnumLiterals(o: DNamedElement) {
         for (decl in PsiTreeUtil.findChildrenOfType(o, AutoDeclarationPart::class.java)) {
             if (decl.isEnum) {
-                if (decl.initializer == null)
-                    continue
-                if (decl.initializer?.nonVoidInitializer == null)
-                    continue
-                if (decl.initializer?.nonVoidInitializer?.arrayInitializer == null)
+                if (decl.initializer?.nonVoidInitializer?.arrayLiteral?.arrayInitializer == null)
                     continue
                 holder.registerProblem(decl, "This enum may lead to unnecessary allocation at run-time. Use \"static immutable instead\"", MakeStaticImmutable(decl))
-                // TODO when type deduction beomes a thing use that instead of checking initializers
+                // TODO when type deduction becomes a thing use that instead of checking initializers
             }
         }
     }

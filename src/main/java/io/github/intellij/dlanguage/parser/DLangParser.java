@@ -887,18 +887,12 @@ class DLangParser {
      * Parses an ArrayInitializer.
      * <p>
      * $(GRAMMAR $(RULEDEF arrayInitializer):
-     *   $(LITERAL '[') $(LITERAL ']')
-     * | $(LITERAL '[') $(RULE arrayMemberInitialization) ($(LITERAL ',') $(RULE arrayMemberInitialization)?)* $(LITERAL ']')
+     * ($(RULE arrayMemberInitialization) ($(LITERAL ',') $(RULE arrayMemberInitialization)?)*)?
      * ;)
      */
     boolean parseArrayInitializer() {
 //        Marker m = enter_section_(builder);
         final Marker arrayInit = enter_section_modified(builder);
-        final Token open = expect(tok("["));
-        if (open == null) {
-            cleanup(arrayInit, ARRAY_INITIALIZER);
-            return false;
-        }
         while (moreTokens()) {
             if (currentIs(tok("]")))
                 break;
@@ -911,11 +905,6 @@ class DLangParser {
             else
                 break;
         }
-        final Token close = expect(tok("]"));
-        if (close == null) {
-            cleanup(arrayInit, ARRAY_INITIALIZER);
-            return false;
-        }
         exit_section_modified(builder, arrayInit, ARRAY_INITIALIZER, true);
         return true;
     }
@@ -924,24 +913,24 @@ class DLangParser {
      * Parses an ArrayLiteral.
      * <p>
      * $(GRAMMAR $(RULEDEF arrayLiteral):
-     * $(LITERAL '[') $(RULE argumentList)? $(LITERAL ']')
+     * $(LITERAL '[') $(RULE ArrayMemberInitiolizations)? $(LITERAL ']')
      * ;)
      */
     boolean parseArrayLiteral() {
         final Marker m = enter_section_modified(builder);
 //			Runnable cleanup =() ->  exit_section_modified(builder,m,DlangTypes.ArrayLiteral,false);
-        if (!tokenCheck("[")) {
+        final Token open = expect(tok("["));
+        if (open == null) {
             cleanup(m, ARRAY_LITERAL);
             return false;
         }
-        if (!currentIs(tok("]"))) {
-            if (!parseArgumentList().first) {
-                cleanup(m, ARRAY_LITERAL);
-                return false;
-            }
-        }
-        if (!tokenCheck("]")) {
+        if (!parseArrayInitializer()) {
             cleanup(m, ARRAY_LITERAL);
+            return false;
+        }
+        final Token close = expect(tok("]"));
+        if (close == null) {
+            cleanup(m, ARRAY_INITIALIZER);
             return false;
         }
         exit_section_modified(builder, m, ARRAY_LITERAL, true);
@@ -5740,17 +5729,12 @@ class DLangParser {
      * Parses a NewAnonClassExpression
      * <p>
      * $(GRAMMAR $(RULEDEF newAnonClassExpression):
-     * $(LITERAL 'new') $(RULE arguments)? $(LITERAL 'class') $(RULE arguments)? $(RULE baseClassList)? $(RULE structBody)
+     * $(LITERAL 'new') $(LITERAL 'class') $(RULE arguments)? $(RULE baseClassList)? $(RULE structBody)
      * ;)
      */
     boolean parseNewAnonClassExpression() {
         final Marker m = enter_section_modified(builder);
         expect(tok("new"));
-        if (currentIs(tok("(")))
-            if (!parseArguments()) {
-                cleanup(m, NEW_ANON_CLASS_EXPRESSION);
-                return false;
-            }
         expect(tok("class"));
         if (currentIs(tok("(")))
             if (!parseArguments()) {
@@ -5779,13 +5763,8 @@ class DLangParser {
      * ;)
      */
     boolean parseNewExpression() {
-        // Parse ambiguity.
-        // auto a = new int[10];
-        //              ^^^^^^^
-        // auto a = new int[10];
-        //              ^^^****
         final Marker m = enter_section_modified(builder);
-        if (peekIsOneOf(tok("class"), tok("("))) {
+        if (peekIs(tok("class"))) {
             if (!parseNewAnonClassExpression()) {
                 cleanup(m, NEW_EXPRESSION);
                 return false;
@@ -5818,7 +5797,7 @@ class DLangParser {
      * <p>
      * $(GRAMMAR $(RULEDEF nonVoidInitializer):
      *   $(RULE assignExpression)
-     * | $(RULE arrayInitializer)
+     * | $(RULE arrayLiteral)
      * | $(RULE structInitializer)
      * ;)
      */
@@ -5868,7 +5847,7 @@ class DLangParser {
                 || b.type.equals(tok("]"))
                 || b.type.equals(tok("}"))
                 || b.type.equals(tok(";")))) {
-                if (!parseArrayInitializer()) {
+                if (!parseArrayLiteral()) {
                     cleanup(m, NON_VOID_INITIALIZER);
                     return false;
                 }
@@ -8003,7 +7982,7 @@ class DLangParser {
     }
 
     /**
-     * Parses a TernaryExpression
+     * Parses a TernaryExpression (called ConditionalExpression in specs)
      * <p>
      * $(GRAMMAR $(RULEDEF ternaryExpression):
      * $(RULE orOrExpression) ($(LITERAL '?') $(RULE expression) $(LITERAL ':') $(RULE ternaryExpression))?
