@@ -75,9 +75,9 @@ static this() {
     types_children["AnonymousEnumMember"] = [];
     types_children["ArgumentList"] = ["AssignExpression*", "OP_COMMA*"];
     types_children["Arguments"] = ["ArgumentList","OP_PAR_RIGHT", "OP_PAR_LEFT"];
-    types_children["ArrayInitializer"] = ["OP_COMMA*", "ArrayMemberInitialization*", "OP_BRACKET_RIGHT", "OP_BRACKET_LEFT"];
-    types_children["ArrayLiteral"] = ["ArgumentList", "OP_BRACKET_RIGHT", "OP_BRACKET_LEFT"];
-    types_children["ArrayMemberInitialization"] = [ "AssignExpression", "OP_COLON","NonVoidInitializer", "OP_BRACES_LEFT"];
+    types_children["ArrayInitializer"] = ["OP_COMMA*", "ArrayMemberInitialization*"];
+    types_children["ArrayLiteral"] = ["ArrayInitializer", "OP_BRACKET_RIGHT", "OP_BRACKET_LEFT"];
+    types_children["ArrayMemberInitialization"] = ["AssignExpression", "OP_COLON", "NonVoidInitializer", "OP_BRACES_LEFT"];
     types_children["AsmAddExp"] = ["AsmAddExp", "AsmMulExp",  "OP_MINUS", "OP_PLUS"];
     types_children["AsmAndExp"] = ["AsmAndExp", "AsmEqualExp", "OP_AND"];
     types_children["AsmBrExp"] = ["AsmExp", "AsmUnaExp", "AsmBrExp", "OP_BRACKET_RIGHT", "OP_BRACKET_LEFT"];
@@ -186,9 +186,9 @@ static this() {
     types_children["MulExpression"] = ["MulExpression","PowExpression","OP_MOD","OP_DIV","OP_ASTERISK"];
     stub_children ["NamedImportBind"] = ["Identifier",  "OP_EQ"];
     types_children["NamespaceList"] = ["OP_COMMA",  "TernaryExpression*"];
-    types_children["NewAnonClassExpression"] = ["KW_NEW","KW_CLASS","Arguments*","BaseClassList", "StructBody"];
+    types_children["NewAnonClassExpression"] = ["KW_NEW","KW_CLASS","Arguments","BaseClassList", "StructBody"];
     types_children["NewExpression"] = ["KW_NEW","NewAnonClassExpression","Type", "AssignExpression", "Arguments","OP_BRACKET_LEFT","OP_BRACKET_RIGHT"];
-    types_children["NonVoidInitializer"] = ["AssignExpression","ArrayInitializer","StructInitializer","FunctionBody"];
+    types_children["NonVoidInitializer"] = ["AssignExpression", "ArrayLiteral", "StructInitializer"];
     types_children["Operands"] = ["OP_COMMA","Operands","AsmExp"];
     types_children["OrExpression"] = ["OrExpression", "XorExpression", "OP_OR"];
     types_children["OrOrExpression"] = ["AndAndExpression", "OrOrExpression", "OP_BOOL_OR"];

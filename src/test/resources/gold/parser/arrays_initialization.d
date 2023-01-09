@@ -7,4 +7,14 @@ int value[Color.max + 1] =
     Color.green:2,
     Color.red  :5 ];
 
+private void failure()
+{
+    static struct A {
+        int a, b, c;
+    }
 
+    A [2][2] tests = [
+        [ {1, 2, 3}, {}],
+        [ {1}, ]
+    ];
+}
