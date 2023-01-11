@@ -18,11 +18,6 @@ public class DTokenSets {
     public static final TokenSet DOCS = TokenSet.orSet(LINE_DOCS, BLOCK_DOCS);
 
     public static final TokenSet STRING_LITERALS = TokenSet.create(DlangTypes.DOUBLE_QUOTED_STRING,
-        DlangTypes.KW_CHAR,
-        DlangTypes.KW_DCHAR,
-        DlangTypes.KW_WCHAR,
-//            DlangTypes.STRING_LITERAL,
-//            DlangTypes.STRING_LITERALS,
         DlangTypes.CHARACTER_LITERAL,
         DlangTypes.DELIMITED_STRING,
         DlangTypes.WYSIWYG_STRING,

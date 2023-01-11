@@ -28,6 +28,7 @@ import com.intellij.psi.tree.TokenSet.orSet
 import com.intellij.ui.EditorNotificationPanel
 import io.github.intellij.dlanguage.index.DModuleIndex.getFilesByModuleName
 import io.github.intellij.dlanguage.parser.ParserWrapper
+import io.github.intellij.dlanguage.psi.DTokenSets.STRING_LITERALS
 import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
@@ -226,10 +227,10 @@ class DLangParserDefinition : ParserDefinition {
 
     override fun createFile(viewProvider: FileViewProvider): PsiFile = DlangFile(viewProvider)
 
-    override fun spaceExistanceTypeBetweenTokens(left: ASTNode?, right: ASTNode?): ParserDefinition.SpaceRequirements = ParserDefinition.SpaceRequirements.MAY
+    override fun spaceExistenceTypeBetweenTokens(left: ASTNode?, right: ASTNode?): ParserDefinition.SpaceRequirements = ParserDefinition.SpaceRequirements.MAY
 
     @NotNull
-    override fun getStringLiteralElements(): TokenSet = TokenSet.EMPTY
+    override fun getStringLiteralElements(): TokenSet = STRING_LITERALS
 
     override fun getFileNodeType(): DFileStubElementType = DFileStubElementType.INSTANCE
 
