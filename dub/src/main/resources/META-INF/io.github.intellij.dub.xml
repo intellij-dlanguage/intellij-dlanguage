@@ -1,5 +1,7 @@
 <idea-plugin>
 
+    <depends optional="true" config-file="dub-idea-only.xml">com.intellij.modules.java</depends>
+    <depends optional="true" config-file="dub-clion-only.xml">com.intellij.modules.cidr.lang</depends>
     <extensions defaultExtensionNs="com.intellij">
         <!-- Tool Windows are the bits generally displayed on right hand side of Intellij (eg: Ant,Maven,Gradle)-->
         <toolWindow id="DubToolBar" anchor="right" icon="/icons/dub-ball.png"
