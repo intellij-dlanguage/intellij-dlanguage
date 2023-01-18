@@ -1,6 +1,7 @@
 package io.github.intellij.dub.toolwindow
 
 import com.intellij.execution.RunnerAndConfigurationSettings
+import com.intellij.execution.configurations.ConfigurationType
 import com.intellij.execution.impl.RunManagerImpl
 import com.intellij.icons.AllIcons
 import com.intellij.ide.projectView.ViewSettings
@@ -32,6 +33,7 @@ import io.github.intellij.dlanguage.messagebus.Topics
 import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dub.project.DubConfigurationParser
 import io.github.intellij.dlanguage.run.DlangRunDubConfiguration
+import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType
 import io.github.intellij.dlanguage.settings.*
 import io.github.intellij.dub.project.DubPackage
 import java.awt.Color
@@ -88,7 +90,7 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
 
         // then for every sub module would need to add:
         DlangModuleType.findModules(project).forEach {
-            val dubModule = DefaultMutableTreeNode(it.name) // ModuleNode()
+            val dubModule = DefaultMutableTreeNode(it.name) // ModuleNode(it, null)
             dubModule.userObject = ProjectViewModuleNode(project, it, ViewSettings.DEFAULT)
 
 //            ModuleRootManager.getInstance(it)
@@ -102,10 +104,12 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
             ModuleRootManager.getInstance(it)
                 .orderEntries()
                 .forEach { lib ->
-                    val libNode = DefaultMutableTreeNode(lib.presentableName)
-                    libNode.userObject = lib
+                    // the order entry (lib) could be a ModuleOrderEntryBridge, LibraryOrderEntryBridge,
+                    // SdkOrderEntryBridge, InheritedSdkOrderEntryBridge, or a ModuleSourceOrderEntryBridge.
+                    //val libNode = DefaultMutableTreeNode(lib.presentableName)
+                    //libNode.userObject = lib // setting the userObject messes up the UI
                     //PackageViewProjectNode(project, ViewSettings.DEFAULT)
-                    dubModule.add(libNode)
+                    dubModule.add(DefaultMutableTreeNode(lib.presentableName))
                     lib.isValid
                 }
 
@@ -118,11 +122,20 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
 
         val runManager = RunManagerImpl.getInstanceImpl(project)
 
+        val runDubConfigurationType = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunDubConfigurationType::class.java)
+
         runManager
-            .findConfigurationByTypeAndName(DlangRunDubConfiguration::class.java.simpleName, "Run DUB")?.let {
-                //dubTasks.add(DefaultMutableTreeNode(it.name))
-                dubTasks.add(RunnerAndConfigurationSettingsNode(it)) // todo: work out how to right-click on this and run it
+            .getConfigurationsList(runDubConfigurationType)
+            .forEach { runConfig ->
+                runManager.getSettings(runConfig)?.let { rcSettings->
+                    dubTasks.add(RunnerAndConfigurationSettingsNode(rcSettings))
+                }
             }
+        //runManager
+        //    .findConfigurationByTypeAndName(DlangRunDubConfiguration::class.java.simpleName, "Run DUB")?.let {
+        //        //dubTasks.add(DefaultMutableTreeNode(it.name))
+        //        dubTasks.add(RunnerAndConfigurationSettingsNode(it)) // todo: work out how to right-click on this and run it
+        //    }
 
         root.add(dubTasks)
 
