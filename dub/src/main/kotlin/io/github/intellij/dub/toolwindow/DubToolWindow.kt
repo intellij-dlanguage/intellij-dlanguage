@@ -44,7 +44,9 @@ class DubToolWindow : ToolWindowFactory {
     override fun isApplicable(project: Project): Boolean {
         log.debug("DUB Tool Window Condition: value(${project.name})")
 
-        return Arrays.stream<VirtualFile>(project.guessProjectDir()?.children)
+        val files = project.guessProjectDir()?.children ?: return false
+
+        return Arrays.stream(files)
             .filter { f -> !f.isDirectory }
             .anyMatch { f -> "dub.json".equals(f.name, ignoreCase = true) || "dub.sdl".equals(f.name, ignoreCase = true) }
     }
