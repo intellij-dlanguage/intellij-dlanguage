@@ -12,7 +12,9 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.LibraryOrSdkOrderEntry
 import com.intellij.openapi.roots.ModuleRootManager
+import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.roots.ui.configuration.ProjectSettingsService
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.openapi.vfs.VirtualFile
@@ -88,6 +90,24 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
         val root = DefaultMutableTreeNode(project.name) // ProjectNode()
 //        val root = ProjectViewProjectNode(project, ViewSettings.DEFAULT)
 
+        // display the project roots (SDK)
+        ProjectRootManager.getInstance(project).orderEntries()
+            .forEach { oe ->
+                when(oe) {
+                    is LibraryOrSdkOrderEntry -> {
+                        root.add(DefaultMutableTreeNode(oe.presentableName))
+                    }
+                }
+                return@forEach true
+            }
+
+        // There don't seem to be any dub dependencies available this way (probably should be)
+        //ProjectRootManager.getInstance(project).orderEntries()
+        //    .forEachLibrary {
+        //        root.add(DefaultMutableTreeNode(it.presentableName))
+        //        return@forEachLibrary true
+        //    }
+
         // then for every sub module would need to add:
         DlangModuleType.findModules(project).forEach {
             val dubModule = DefaultMutableTreeNode(it.name) // ModuleNode(it, null)
@@ -102,15 +122,31 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
 //                }
 
             ModuleRootManager.getInstance(it)
-                .orderEntries()
-                .forEach { lib ->
-                    // the order entry (lib) could be a ModuleOrderEntryBridge, LibraryOrderEntryBridge,
+                .orderEntries() // order entries includes theSDK and module source
+                //.forEachLibrary { lib ->
+                //    val libNode = DefaultMutableTreeNode(lib.presentableName)
+                //    libNode.userObject = lib
+                //    dubModule.add(libNode)
+                //    return@forEachLibrary true
+                //}
+                .forEach { oe ->
+                    //when(oe) {
+                    //    is LibraryOrSdkOrderEntry -> {
+                    //        dubModule.add(DefaultMutableTreeNode((oe as LibraryOrSdkOrderEntry).presentableName))
+                    //    }
+                    //    is LibraryOrderEntry -> {
+                    //        dubModule.add(DefaultMutableTreeNode((oe as LibraryOrderEntry).libraryName))
+                    //    }
+                    //    else -> dubModule.add(DefaultMutableTreeNode(oe.presentableName))
+                    //}
+
+                    // the order entry (oe) could be a ModuleOrderEntryBridge, LibraryOrderEntryBridge,
                     // SdkOrderEntryBridge, InheritedSdkOrderEntryBridge, or a ModuleSourceOrderEntryBridge.
-                    //val libNode = DefaultMutableTreeNode(lib.presentableName)
-                    //libNode.userObject = lib // setting the userObject messes up the UI
+                    //val libNode = DefaultMutableTreeNode(oe.presentableName)
+                    //libNode.userObject = oe // setting the userObject messes up the UI
                     //PackageViewProjectNode(project, ViewSettings.DEFAULT)
-                    dubModule.add(DefaultMutableTreeNode(lib.presentableName))
-                    lib.isValid
+                    dubModule.add(DefaultMutableTreeNode(oe.presentableName))
+                    oe.isValid
                 }
 
             root.add(dubModule)
@@ -118,28 +154,22 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
 
         // Find Run Configurations for DUB and show them in the Tool Window:
         val dubTasks = DefaultMutableTreeNode("Run Configurations") // should this be: ExternalSystemTasksTree
-        //dubTasks.userObject = DefaultMutableTreeNode()
 
-        val runManager = RunManagerImpl.getInstanceImpl(project)
-
-        val runDubConfigurationType = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunDubConfigurationType::class.java)
-
-        runManager
-            .getConfigurationsList(runDubConfigurationType)
-            .forEach { runConfig ->
-                runManager.getSettings(runConfig)?.let { rcSettings->
-                    dubTasks.add(RunnerAndConfigurationSettingsNode(rcSettings))
+        // List all the dub based run configurations that are configured for the current project
+        // todo: work out how to right-click on this and run it (perhaps in the DubTreeRenderer)
+        RunManagerImpl.getInstanceImpl(project)
+            .allSettings
+            .forEach {
+                when (it.configuration) {
+                    is DlangRunDubConfiguration -> dubTasks.add(RunnerAndConfigurationSettingsNode(it))
                 }
             }
-        //runManager
-        //    .findConfigurationByTypeAndName(DlangRunDubConfiguration::class.java.simpleName, "Run DUB")?.let {
-        //        //dubTasks.add(DefaultMutableTreeNode(it.name))
-        //        dubTasks.add(RunnerAndConfigurationSettingsNode(it)) // todo: work out how to right-click on this and run it
-        //    }
 
         root.add(dubTasks)
 
-        // Finally list the project dependencies. todo: Show transient dependencies under the dependency that brought them in
+        // Finally list the project dependencies.
+        // todo: Show transient dependencies under the dependency that brought them in.
+        // todo: Show dub dependencies via standard Intellij mechanism (Order Entries) rather than reading dub output again
         ToolKey.DUB_KEY.path?.let {
             val dubConfig = DubConfigurationParser(project, it, false)
 
