@@ -1,6 +1,7 @@
 package io.github.intellij.dub.run
 
 import com.intellij.execution.ExecutionException
+import com.intellij.execution.ExecutionManager
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.RunProfile
 import com.intellij.execution.configurations.RunProfileState
@@ -52,7 +53,8 @@ class DubBuildRunner : GenericProgramRunner<DubBuildRunner.DubBuildSettings>() {
             }
             return RunUtil.startDebugger(this, state, environment, project, executor, executableFilePath)
         }
-        return super.doExecute(state, environment)
+        val result = state.execute(environment.executor, this) ?: return null
+        return RunContentDescriptor(result.executionConsole, result.processHandler, result.executionConsole.component, environment.runProfile.name)
     }
 
     class DubBuildSettings : RunnerSettings {
