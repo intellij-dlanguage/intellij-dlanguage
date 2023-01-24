@@ -30,7 +30,8 @@ class DubBuildAction : DubAction("_Run Dub", "", AllIcons.Actions.Execute) {
             var runDubSettings = runManager.findConfigurationByName(configName)
 
             if (runDubSettings == null) {
-                val runDubConfigurationType = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunDubConfigurationType::class.java)
+                val runDubConfigurationType = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(
+                    DlangRunDubConfigurationType::class.java)
                 val factory = runDubConfigurationType.configurationFactories[0]
                 runDubSettings = runManager.createConfiguration(configName, factory)
 
@@ -46,7 +47,7 @@ class DubBuildAction : DubAction("_Run Dub", "", AllIcons.Actions.Execute) {
                         .find { module -> module.name == projectName }
                         ?.let { config.setModule(it) }
 
-                runManager.addConfiguration(runDubSettings, false)
+                runManager.addConfiguration(runDubSettings)
             }
 
             runManager.selectedConfiguration = runDubSettings
@@ -55,7 +56,8 @@ class DubBuildAction : DubAction("_Run Dub", "", AllIcons.Actions.Execute) {
             val dubBuildRunner = ProgramRunner.PROGRAM_RUNNER_EP.findExtensionOrFail(
                 DubBuildRunner::class.java)
             val env = ExecutionEnvironment(DefaultRunExecutor(), dubBuildRunner, runDubSettings, it)
-            dubBuildRunner.execute(env) { LOG.info("DubBuildRunner started") }
+            env.setCallback { LOG.info("DubBuildRunner started") }
+            dubBuildRunner.execute(env)
         }
 
     }

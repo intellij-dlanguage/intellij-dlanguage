@@ -1,7 +1,6 @@
 package io.github.intellij.dub.toolwindow
 
 import com.intellij.execution.RunnerAndConfigurationSettings
-import com.intellij.execution.configurations.ConfigurationType
 import com.intellij.execution.impl.RunManagerImpl
 import com.intellij.icons.AllIcons
 import com.intellij.ide.projectView.ViewSettings
