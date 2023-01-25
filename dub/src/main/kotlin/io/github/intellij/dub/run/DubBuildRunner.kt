@@ -14,7 +14,6 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.InvalidDataException
 import com.intellij.openapi.util.WriteExternalException
-import io.github.intellij.dlanguage.run.DlangRunDubConfiguration
 import io.github.intellij.dlanguage.run.RunUtil
 import io.github.intellij.dlanguage.settings.ToolKey
 import io.github.intellij.dub.project.DubConfigurationParser

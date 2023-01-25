@@ -20,7 +20,12 @@
         <externalAnnotator language="D"
                            implementationClass="io.github.intellij.dub.highlighting.annotation.DubSyntaxAnnotator"/>
 
+        <runConfigurationProducer implementation="io.github.intellij.dub.run.DlangRunDubConfigurationProducer"/>
+
+        <configurationType implementation="io.github.intellij.dub.run.DlangRunDubConfigurationType"/>
+
         <programRunner implementation="io.github.intellij.dub.run.DubBuildRunner"/>
+        <programRunner implementation="io.github.intellij.dub.run.RunAppRunner"/>
 
         <postStartupActivity
             implementation="io.github.intellij.dub.project.DubListenerComponent"/>

@@ -28,7 +28,7 @@ import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.text.StringUtil
 import io.github.intellij.dlanguage.DlangBundle.message
 import io.github.intellij.dlanguage.module.DlangModuleBuilder
-import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType
+import io.github.intellij.dub.run.DlangRunDubConfigurationType
 import io.github.intellij.dlanguage.settings.ToolKey
 import org.jdom.JDOMException
 import org.jetbrains.annotations.NonNls

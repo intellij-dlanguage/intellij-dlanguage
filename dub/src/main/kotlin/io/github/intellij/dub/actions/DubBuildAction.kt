@@ -9,8 +9,8 @@ import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.ModuleManager
-import io.github.intellij.dlanguage.run.DlangRunDubConfiguration
-import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType
+import io.github.intellij.dub.run.DlangRunDubConfiguration
+import io.github.intellij.dub.run.DlangRunDubConfigurationType
 import io.github.intellij.dub.run.DubBuildRunner
 
 /**
@@ -30,7 +30,8 @@ class DubBuildAction : DubAction("_Run Dub", "", AllIcons.Actions.Execute) {
             var runDubSettings = runManager.findConfigurationByName(configName)
 
             if (runDubSettings == null) {
-                val runDubConfigurationType = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(DlangRunDubConfigurationType::class.java)
+                val runDubConfigurationType = ConfigurationType.CONFIGURATION_TYPE_EP.findExtensionOrFail(
+                    DlangRunDubConfigurationType::class.java)
                 val factory = runDubConfigurationType.configurationFactories[0]
                 runDubSettings = runManager.createConfiguration(configName, factory)
 

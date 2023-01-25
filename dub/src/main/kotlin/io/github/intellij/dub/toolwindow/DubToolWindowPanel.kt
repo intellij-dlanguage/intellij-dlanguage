@@ -1,7 +1,6 @@
 package io.github.intellij.dub.toolwindow
 
 import com.intellij.execution.RunnerAndConfigurationSettings
-import com.intellij.execution.configurations.ConfigurationType
 import com.intellij.execution.impl.RunManagerImpl
 import com.intellij.icons.AllIcons
 import com.intellij.ide.projectView.ViewSettings
@@ -34,8 +33,7 @@ import io.github.intellij.dlanguage.messagebus.ToolChangeListener
 import io.github.intellij.dlanguage.messagebus.Topics
 import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dub.project.DubConfigurationParser
-import io.github.intellij.dlanguage.run.DlangRunDubConfiguration
-import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType
+import io.github.intellij.dub.run.DlangRunDubConfiguration
 import io.github.intellij.dlanguage.settings.*
 import io.github.intellij.dub.project.DubPackage
 import java.awt.Color
