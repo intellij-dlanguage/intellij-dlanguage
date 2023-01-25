@@ -9,8 +9,8 @@ import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.ModuleManager
-import io.github.intellij.dlanguage.run.DlangRunDubConfiguration
-import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType
+import io.github.intellij.dub.run.DlangRunDubConfiguration
+import io.github.intellij.dub.run.DlangRunDubConfigurationType
 import io.github.intellij.dub.run.DubBuildRunner
 
 /**

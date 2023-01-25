@@ -100,7 +100,6 @@
         <!-- D Language support -->
         <sdkType implementation="io.github.intellij.dlanguage.DlangSdkType"/>
         <projectSdkSetupValidator implementation="io.github.intellij.dlanguage.DLangProjectDmdSetupValidator"/>
-        <runConfigurationProducer implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationProducer"/>
 
         <!-- Line Marker Providers -->
         <runLineMarkerContributor language="D"
@@ -110,13 +109,11 @@
         <moduleType id="DLANGUAGE_MODULE" implementationClass="io.github.intellij.dlanguage.module.DlangModuleType"/>
 
 
-        <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationType"/>
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDmdConfigurationType"/>
         <programRunner implementation="io.github.intellij.dlanguage.run.DmdBuildRunner"/>
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunAppConfigurationType"/>
-        <programRunner implementation="io.github.intellij.dlanguage.run.RunAppRunner"/>
 
 
         <moduleConfigurationEditorProvider

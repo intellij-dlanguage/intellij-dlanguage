@@ -20,10 +20,26 @@
         <externalAnnotator language="D"
                            implementationClass="io.github.intellij.dub.highlighting.annotation.DubSyntaxAnnotator"/>
 
+        <runConfigurationProducer implementation="io.github.intellij.dub.run.DlangRunDubConfigurationProducer"/>
+
+        <configurationType implementation="io.github.intellij.dub.run.DlangRunDubConfigurationType"/>
+
         <programRunner implementation="io.github.intellij.dub.run.DubBuildRunner"/>
+        <programRunner implementation="io.github.intellij.dub.run.RunAppRunner"/>
 
         <postStartupActivity
             implementation="io.github.intellij.dub.project.DubListenerComponent"/>
+
+        <notificationGroup id="DUB run configuration"
+                           displayType="BALLOON"/>
+        <notificationGroup id="DubNotification"
+                           displayType="BALLOON"/>
+        <notificationGroup id="Dub"
+                           displayType="BALLOON"/>
+        <notificationGroup id="Dub Import"
+                           displayType="BALLOON"/>
+        <notificationGroup id="Process D Libs"
+                           displayType="BALLOON"/>
 
         <!--<externalSystemManager id="DubManager" implementation="net.masterthought.dlanguage.dub.DubManager"/>-->
         <!--<externalSystemConfigLocator implementation="io.github.intellij.dub.ConfigLocator"/>-->

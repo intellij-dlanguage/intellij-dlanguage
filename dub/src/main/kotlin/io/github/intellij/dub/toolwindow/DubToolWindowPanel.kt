@@ -33,8 +33,7 @@ import io.github.intellij.dlanguage.messagebus.ToolChangeListener
 import io.github.intellij.dlanguage.messagebus.Topics
 import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dub.project.DubConfigurationParser
-import io.github.intellij.dlanguage.run.DlangRunDubConfiguration
-import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType
+import io.github.intellij.dub.run.DlangRunDubConfiguration
 import io.github.intellij.dlanguage.settings.*
 import io.github.intellij.dub.project.DubPackage
 import java.awt.Color
