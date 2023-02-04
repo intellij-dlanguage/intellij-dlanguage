@@ -242,6 +242,12 @@
                          groupKey="d.inspections.groupname"
                          shortName="DeleteStatementsAreDeprecated"/>
         <localInspection bundle="i18n" enabledByDefault="true"
+                         implementationClass="io.github.intellij.dlanguage.inspections.DeprecatedPhobosImport"
+                         language="D" level="WARNING"
+                         key="d.inspections.symbol.deprecatedphobosimport.displayname"
+                         groupKey="d.inspections.groupname"
+                         shortName="DeprecatedPhobosImport"/>
+        <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.FunctionShouldBeConst"
                          language="D" level="WARNING"
                          key="d.inspections.symbol.functionshouldbeconst.displayname"
