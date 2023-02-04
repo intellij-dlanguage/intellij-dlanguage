@@ -14,7 +14,7 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 The primary focus for the project is to support Intellij IDEA (both IC and IU) with some work being done to try and support CLion. It may work on other IDEs such as AppCode, Android Studio, PyCharm, etc but this is not tested by the dev team.
 
-We are currently targeting *Intellij 2022.1 and above*.
+We are currently targeting *Intellij 2022.3 and above*.
 
 For a list of older releases and their supported IDE versions see our [Compatibility Matrix](https://github.com/intellij-dlanguage/intellij-dlanguage/wiki/Compatibility-Matrix).
 
