@@ -1,22 +1,16 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.grammarkit.tasks.*
-import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
 
 plugins {
     id 'org.gradle.idea'
     id 'java'
-    id 'org.jetbrains.intellij' version '1.10.1'
-    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
+    id 'org.jetbrains.intellij' version '1.12.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
 //    id 'net.saliman.cobertura' version '4.0.0'
 //    id 'com.github.kt3k.coveralls' version '2.10.2'
-    id 'org.jetbrains.grammarkit' version '2021.2.2'
+    id 'org.jetbrains.grammarkit' version '2021.2.2' // '2022.3' should be available but didn't resolve for some reason
 }
 
 
@@ -55,8 +49,8 @@ allprojects {
     targetCompatibility = javaVersion
 
     tasks.withType(JavaCompile).configureEach {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
         options.encoding = 'UTF-8'
         options.compilerArgs << "-Xlint:deprecation"
     }
@@ -64,68 +58,68 @@ allprojects {
     tasks.withType(KotlinCompile).configureEach {
         kotlinOptions {
             suppressWarnings = true
-            apiVersion = "1.6"
-            languageVersion = "1.6"
+            apiVersion = "1.7"
+            languageVersion = "1.7"
             jvmTarget = javaVersion
             freeCompilerArgs = [ '-Xjvm-default=enable' ]
         }
     }
 
-    tasks.withType(Test) {
-        // workaround for test cases not found https://youtrack.jetbrains.com/issue/IDEA-278926
-        scanForTestClasses false
-        include '**/**/*Test.class'
-
-        // Uncomment when testing if you want to have expected data written (to easily update lexer/parser tests)
-        //systemProperties['idea.tests.overwrite.data'] = "true"
-
-        jvmArgs = [
-            '--illegal-access=warn',
-            '--add-opens=java.base/java.lang=ALL-UNNAMED',
-            '--add-opens=java.base/java.io=ALL-UNNAMED',
-            '--add-opens=java.desktop/sun.awt=ALL-UNNAMED',
-            '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
-            '--add-opens=java.desktop/java.awt.event=ALL-UNNAMED',
-            '--add-opens=java.desktop/javax.swing=ALL-UNNAMED'
-        ]
-
-        testLogging {
-            exceptionFormat = 'full'
-            beforeSuite { suite ->
-                if (!suite.parent) { // will match the outermost suite
-                    logger.lifecycle ' ----------- Building Tests -----------'
-                } else if (suite.className != null) {
-                    logger.lifecycle "${suite.className}:"
-                }
-            }
-
-            afterTest { descriptor, result ->
-                switch (result.resultType) {
-                    case 'SUCCESS':
-                    case 'PASSED':
-                        logger.info(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "√":"✔", descriptor.name)
-                        break
-                    case TestResult.ResultType.SKIPPED.name():
-                        logger.warn(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "!":"⛔", descriptor.name)
-                        break
-                    case TestResult.ResultType.FAILURE.name():
-                        logger.error(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "×":"✘", descriptor.name)
-                        break
-                    default:
-                        logger.lifecycle(" ? {} {}", descriptor.name, result.resultType)
-                }
-            }
-
-            afterSuite { desc, result ->
-                if (!desc.parent) { // will match the outermost suite
-                    def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} passed, ${result.failedTestCount} failed, ${result.skippedTestCount} skipped)"
-                    def startItem = '|  ', endItem = '  |'
-                    def repeatLength = startItem.length() + output.length() + endItem.length()
-                    println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength) + '\n')
-                }
-            }
-        }
-    }
+//    tasks.withType(Test) {
+//        // workaround for test cases not found https://youtrack.jetbrains.com/issue/IDEA-278926
+//        scanForTestClasses false
+//        include '**/**/*Test.class'
+//
+//        // Uncomment when testing if you want to have expected data written (to easily update lexer/parser tests)
+//        //systemProperties['idea.tests.overwrite.data'] = "true"
+//
+//        jvmArgs = [
+//            '--illegal-access=warn',
+//            '--add-opens=java.base/java.lang=ALL-UNNAMED',
+//            '--add-opens=java.base/java.io=ALL-UNNAMED',
+//            '--add-opens=java.desktop/sun.awt=ALL-UNNAMED',
+//            '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
+//            '--add-opens=java.desktop/java.awt.event=ALL-UNNAMED',
+//            '--add-opens=java.desktop/javax.swing=ALL-UNNAMED'
+//        ]
+//
+//        testLogging {
+//            exceptionFormat = 'full'
+//            beforeSuite { suite ->
+//                if (!suite.parent) { // will match the outermost suite
+//                    logger.lifecycle ' ----------- Building Tests -----------'
+//                } else if (suite.className != null) {
+//                    logger.lifecycle "${suite.className}:"
+//                }
+//            }
+//
+//            afterTest { descriptor, result ->
+//                switch (result.resultType) {
+//                    case 'SUCCESS':
+//                    case 'PASSED':
+//                        logger.info(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "√":"✔", descriptor.name)
+//                        break
+//                    case TestResult.ResultType.SKIPPED.name():
+//                        logger.warn(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "!":"⛔", descriptor.name)
+//                        break
+//                    case TestResult.ResultType.FAILURE.name():
+//                        logger.error(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "×":"✘", descriptor.name)
+//                        break
+//                    default:
+//                        logger.lifecycle(" ? {} {}", descriptor.name, result.resultType)
+//                }
+//            }
+//
+//            afterSuite { desc, result ->
+//                if (!desc.parent) { // will match the outermost suite
+//                    def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} passed, ${result.failedTestCount} failed, ${result.skippedTestCount} skipped)"
+//                    def startItem = '|  ', endItem = '  |'
+//                    def repeatLength = startItem.length() + output.length() + endItem.length()
+//                    println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength) + '\n')
+//                }
+//            }
+//        }
+//    }
 
 }
 

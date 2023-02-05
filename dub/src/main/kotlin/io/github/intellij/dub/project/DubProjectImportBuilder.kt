@@ -72,7 +72,7 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
         modulesProvider: ModulesProvider,
         modifiableArtifactModel: ModifiableArtifactModel
     ): List<Module> {
-        val model = modifiableModuleModel ?: ModuleManager.getInstance(project).modifiableModel
+        val model = modifiableModuleModel ?: ModuleManager.getInstance(project).getModifiableModel()
         val modules: MutableList<Module> = ArrayList()
         ApplicationManager.getApplication().runWriteAction {
             commitSdk(project)

@@ -1,7 +1,6 @@
 package io.github.intellij.dub.project
 
 import com.intellij.ide.GeneralSettings
-import com.intellij.ide.impl.OpenProjectTask
 import com.intellij.ide.impl.ProjectUtil
 import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.openapi.application.WriteAction
@@ -20,7 +19,6 @@ import io.github.intellij.dlanguage.DlangBundle.message
 import io.github.intellij.dlanguage.DlangSdkType
 import io.github.intellij.dlanguage.module.DlangModuleBuilder
 import io.github.intellij.dlanguage.settings.ToolKey
-import io.github.intellij.dub.project.DubProjectImportBuilder
 import java.util.*
 import javax.swing.Icon
 
@@ -35,13 +33,11 @@ import javax.swing.Icon
  * Intellij IDEs. Alternatively this could be a base class with both an IDEA specific version and a CLion one.
  */
 class DubProjectOpenProcessor : ProjectOpenProcessor() {
-    override fun getName(): String {
-        return NAME
-    }
+    override val name: String
+        get() = CLionDubProjectOpenProcessor.NAME
 
-    override fun getIcon(): Icon {
-        return DLanguage.Icons.FILE
-    }
+    override val icon: Icon
+        get() = DLanguage.Icons.FILE
 
     override fun canOpenProject(file: VirtualFile): Boolean {
         if (file.isDirectory) {
@@ -62,7 +58,7 @@ class DubProjectOpenProcessor : ProjectOpenProcessor() {
         forceOpenInNewFrame: Boolean
     ): Project? {
         if (projectToClose != null && !forceOpenInNewFrame) {
-            val exitCode = ProjectUtil.confirmOpenNewProject(false)
+            val exitCode = ProjectUtil.confirmOpenOrAttachProject()
             if (exitCode == GeneralSettings.OPEN_PROJECT_SAME_WINDOW) {
                 if (!ProjectManagerEx.getInstanceEx().closeAndDispose(projectToClose)) {
                     return null
@@ -73,8 +69,9 @@ class DubProjectOpenProcessor : ProjectOpenProcessor() {
             }
         }
         val baseDir = if (virtualFile.isDirectory) virtualFile else virtualFile.parent
-        val project = ProjectManagerEx.getInstanceEx()
-            .newProject(baseDir.toNioPath(), OpenProjectTask.build().withProjectName(baseDir.name))
+
+        val project = ProjectUtil.openOrCreateProject(baseDir.name, baseDir.toNioPath())
+
         if (project != null) {
             WriteAction.run<RuntimeException> {
                 val sdk = DlangSdkType.findOrCreateSdk()
@@ -83,7 +80,7 @@ class DubProjectOpenProcessor : ProjectOpenProcessor() {
                 builder.moduleJdk = sdk
                 builder.commit(project)
             }
-            ProjectManagerEx.getInstanceEx().openProject(project)
+            ProjectUtil.focusProjectWindow(project, true) //ProjectManager.getInstance().reloadProject(project)
         }
         return project
     }
