@@ -14,39 +14,39 @@ import io.github.intellij.dlanguage.module.DlangModuleType
 import javax.swing.*
 
 class DlangRunDubConfigurationEditor : SettingsEditor<DlangRunDubConfiguration>() {
-    private val myMainPanel: JTabbedPane? = null
-    private val panel1: JPanel? = null
-    private val tabGeneral: JPanel? = null
+    private lateinit var myMainPanel: JTabbedPane
+    private lateinit var panel1: JPanel
+    private lateinit var tabGeneral: JPanel
 
     //General tab
-    private val comboModules: ModulesComboBox? = null
-    private val comboGeneralDubOptions: JComboBox<*>? = null
+    private lateinit var comboModules: ModulesComboBox
+    private lateinit var comboGeneralDubOptions: JComboBox<*>
 
     // Common
-    private val cbRdmd: JCheckBox? = null
-    private val cbForce: JCheckBox? = null
-    private val cbNoDeps: JCheckBox? = null
-    private val cbForceRemove: JCheckBox? = null
-    private val cbCombined: JCheckBox? = null
-    private val cbParallel: JCheckBox? = null
-    private val tfBuild: JTextField? = null
-    private val tfConfig: JTextField? = null
-    private val tfArch: JTextField? = null
-    private val tfDebug: JTextField? = null
-    private val tfCompiler: JTextField? = null
-    private val tfBuildMode: JComboBox<*>? = null
-    private val cbVerbose: JCheckBox? = null
-    private val cbQuiet: JCheckBox? = null
+    private lateinit var cbRdmd: JCheckBox
+    private lateinit var cbForce: JCheckBox
+    private lateinit var cbNoDeps: JCheckBox
+    private lateinit var cbForceRemove: JCheckBox
+    private lateinit var cbCombined: JCheckBox
+    private lateinit var cbParallel: JCheckBox
+    private lateinit var tfBuild: JTextField
+    private lateinit var tfConfig: JTextField
+    private lateinit var tfArch: JTextField
+    private lateinit var tfDebug: JTextField
+    private lateinit var tfCompiler: JTextField
+    private lateinit var tfBuildMode: JComboBox<*>
+    private lateinit var cbVerbose: JCheckBox
+    private lateinit var cbQuiet: JCheckBox
 
     // Run
-    private val cbTempBuild: JCheckBox? = null
+    private lateinit var cbTempBuild: JCheckBox
 
     // Test
-    private val tfMainFile: JTextField? = null
-    private val cbCoverage: JCheckBox? = null
-    private val pathWorkingDir: TextFieldWithBrowseButton? = null
-    private val textParameters: RawCommandLineEditor? = null
-    private val envVariables: EnvironmentVariablesComponent? = null
+    private lateinit var tfMainFile: JTextField
+    private lateinit var cbCoverage: JCheckBox
+    private lateinit var pathWorkingDir: TextFieldWithBrowseButton
+    private lateinit var textParameters: RawCommandLineEditor
+    private lateinit var envVariables: EnvironmentVariablesComponent
 
     /**
      * Update editor UI with data of DLangRunDubConfiguration.
