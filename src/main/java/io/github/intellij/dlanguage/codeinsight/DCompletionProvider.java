@@ -33,9 +33,9 @@ final class DCompletionProvider extends CompletionProvider<CompletionParameters>
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
         final PsiFile file = parameters.getOriginalFile();
 
+        final Module module = ModuleUtilCore.findModuleForPsiElement(file);
+        assert module != null;
         final CompletableFuture<List<Completion>> completionsFuture = CompletableFuture.runAsync(() -> {
-            final Module module = ModuleUtilCore.findModuleForPsiElement(file);
-            assert module != null;
             final DCDCompletionServer dcdCompletionServer = module.getService(DCDCompletionServer.class);
             try {
                 dcdCompletionServer.exec();
