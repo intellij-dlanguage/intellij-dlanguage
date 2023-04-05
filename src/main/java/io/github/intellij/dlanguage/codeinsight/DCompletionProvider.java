@@ -32,6 +32,7 @@ final class DCompletionProvider extends CompletionProvider<CompletionParameters>
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
         final PsiFile file = parameters.getOriginalFile();
+        final String fileText = file.getText();
 
         final CompletableFuture<List<Completion>> completionsFuture = CompletableFuture.runAsync(() -> {
             final Module module = ModuleUtilCore.findModuleForPsiElement(file);
@@ -48,7 +49,7 @@ final class DCompletionProvider extends CompletionProvider<CompletionParameters>
                 .runReadAction((Computable<Integer>) () -> parameters.getEditor().getCaretModel().getOffset());
 
             try {
-                return DCDCompletionClient.autoComplete(position, file, file.getText());
+                return DCDCompletionClient.autoComplete(position, file, fileText);
             } catch (DCDCompletionClient.DCDError e) {
                 log.warn(String.format("There was a problem using dcd-client on file %s at position %s",
                     file.getVirtualFile().getName(),

@@ -204,7 +204,11 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
                 val projectLibraryModel = projectLibraryTable.modifiableModel
 
                 //val uniqueLibName = LibraryEditingUtil.suggestNewLibraryName(projectLibraryModel, libraryName) // not needed as we remove clashes
-                val library = projectLibraryModel.createLibrary(libraryName, DlangLibraryType.DLANG_LIBRARY) // todo: use the ProjectModelExternalSource arg
+
+                var library = projectLibraryModel.getLibraryByName(libraryName)
+                if (library != null)
+                    projectLibraryModel.removeLibrary(library);
+                library = projectLibraryModel.createLibrary(libraryName, DlangLibraryType.DLANG_LIBRARY) // todo: use the ProjectModelExternalSource arg
 
                 val libraryModel = library.modifiableModel
 
