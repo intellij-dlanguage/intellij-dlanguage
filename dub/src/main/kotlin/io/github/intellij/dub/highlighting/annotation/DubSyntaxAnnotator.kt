@@ -28,14 +28,10 @@ class DubSyntaxAnnotator : ExternalAnnotator<PsiFile, DubSyntaxAnnotator.State>(
         val application = ApplicationManager.getApplication()
 
         if (fileDocumentManager.unsavedDocuments.isNotEmpty()) {
-            try {
-                application.invokeAndWait(
-                    { fileDocumentManager.saveAllDocuments() },
-                    application.defaultModalityState
-                )
-            } catch (e: ProcessCanceledException) {
-                LOG.warn("problem saving files", e)
-            }
+            application.invokeAndWait(
+                { fileDocumentManager.saveAllDocuments() },
+                application.defaultModalityState
+            )
         }
 
         return State(
