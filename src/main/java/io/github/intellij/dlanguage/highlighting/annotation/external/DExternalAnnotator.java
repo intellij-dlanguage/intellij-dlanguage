@@ -53,14 +53,10 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
         final Application application = ApplicationManager.getApplication();
 
         if (fileDocumentManager.getUnsavedDocuments().length > 0) {
-            try {
-                application.invokeAndWait(
-                    fileDocumentManager::saveAllDocuments,
-                    application.getDefaultModalityState()
-                );
-            } catch (final ProcessCanceledException e) {
-                LOG.warn("problem saving files", e);
-            }
+            application.invokeAndWait(
+                fileDocumentManager::saveAllDocuments,
+                application.getDefaultModalityState()
+            );
         }
 
         return new State(
