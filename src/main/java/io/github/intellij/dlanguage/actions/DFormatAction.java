@@ -10,6 +10,7 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.diagnostic.Logger;
@@ -44,7 +45,7 @@ public class DFormatAction extends AnAction implements DumbAware {
     @Override
     public void update(final AnActionEvent e) {
         final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        if(psiFile != null) {
+        if (psiFile != null) {
             e.getPresentation().setEnabled(DlangFile.class.isAssignableFrom(psiFile.getClass()));
         }
     }
@@ -61,98 +62,100 @@ public class DFormatAction extends AnAction implements DumbAware {
         final VirtualFile virtualFile = psiFile.getVirtualFile();
         if (virtualFile == null) return;
 
-        //final String groupId = e.getPresentation().getText();
-        try {
-            final GeneralCommandLine commandLine = new GeneralCommandLine();
-            final String dfmtPath = ToolKey.DFORMAT_KEY.getPath();
-            final String dfmtFlags = ToolKey.DFORMAT_KEY.getFlags();
-            if (dfmtPath == null || dfmtPath.isEmpty()) {
+        ApplicationManager.getApplication().invokeLaterOnWriteThread(() -> {
+            //final String groupId = e.getPresentation().getText();
+            try {
+                final GeneralCommandLine commandLine = new GeneralCommandLine();
+                final String dfmtPath = ToolKey.DFORMAT_KEY.getPath();
+                final String dfmtFlags = ToolKey.DFORMAT_KEY.getFlags();
+                if (dfmtPath == null || dfmtPath.isEmpty()) {
 
-                showNotification(NOTIFICATION_TITLE,
-                    "DFormat executable path is empty",
-                    NotificationType.WARNING,
-                    new DToolsNotificationAction("Configure"),
-                    project);
-                return;
-            }
-
-            if(!Paths.get(dfmtPath).toFile().canExecute()) {
-                showNotification(NOTIFICATION_TITLE,
-                    "DFormat executable path is not valid",
-                    NotificationType.WARNING,
-                    new DToolsNotificationAction("Configure"),
-                    project);
-
-                return;
-            }
-
-            commandLine.setExePath(dfmtPath);
-            commandLine.getParametersList().addParametersString(dfmtFlags);
-
-            final VirtualFile backingFile = psiFile.getVirtualFile();
-            if (backingFile == null) return;
-            final String backingFilePath = backingFile.getCanonicalPath();
-            if (backingFilePath == null) return;
-            commandLine.addParameter(backingFilePath);
-            // Set the work dir so dfmt can pick up the user config, if it exists.
-            commandLine.setWorkDirectory(backingFile.getParent().getCanonicalPath());
-
-            ApplicationManager.getApplication().saveAll();
-
-            final String commandLineString = commandLine.getCommandLineString();
-            final OSProcessHandler handler = new OSProcessHandler(commandLine.createProcess(), commandLineString);
-            handler.addProcessListener(new CapturingProcessAdapter() {
-                @Override
-                public void processTerminated(@NotNull final ProcessEvent event) {
-                    @NotNull final List<String> errors = getOutput().getStderrLines();
-
-                    if (!errors.isEmpty()) {
-                        final String[] parts = errors.get(0).split("\\[\\w+]:\\s");
-                        final String output = parts.length == 2 ? parts[1] : errors.get(0);
-                        showNotification("DFormat error.", output, NotificationType.ERROR, null, project);
-                        return;
-                    }
-
-                    final String text = getOutput().getStdout();
-                    ApplicationManager.getApplication().invokeLater(() -> {
-                        try {
-                            @Nullable final Document document = PsiDocumentManager.getInstance(project).getDocument(psiFile);
-                            if (document == null) {
-                                return;
-                            }
-                            CommandProcessor.getInstance()
-                                .executeCommand(
-                                    project,
-                                    () -> ApplicationManager
-                                        .getApplication()
-                                        .runWriteAction(() -> document.setText(text)),
-                                    NOTIFICATION_TITLE,
-                                    "",
-                                    document
-                                );
-
-                            showNotification(NOTIFICATION_TITLE,
-                                psiFile.getName() + " formatted with DFormat.",
-                                NotificationType.INFORMATION, null, project);
-
-                        } catch (final Exception e) {
-                            showNotification("Formatting " + psiFile.getName() + "  with DFormat failed.",
-                                ExceptionUtil.getUserStackTrace(e, LOG),
-                                NotificationType.ERROR, null, project);
-
-                            //LOG.error(e);
-                        }
-                    });
+                    showNotification(NOTIFICATION_TITLE,
+                        "DFormat executable path is empty",
+                        NotificationType.WARNING,
+                        new DToolsNotificationAction("Configure"),
+                        project);
+                    return;
                 }
-            });
-            handler.startNotify();
-        } catch (final Exception ex) {
-            showNotification("Formatting " + psiFile.getName() + " with DFormat failed",
-                ExceptionUtil.getUserStackTrace(ex, LOG),
-                NotificationType.ERROR, null, project);
 
-            LOG.error(ex);
-        }
+                if (!Paths.get(dfmtPath).toFile().canExecute()) {
+                    showNotification(NOTIFICATION_TITLE,
+                        "DFormat executable path is not valid",
+                        NotificationType.WARNING,
+                        new DToolsNotificationAction("Configure"),
+                        project);
+
+                    return;
+                }
+
+                commandLine.setExePath(dfmtPath);
+                commandLine.getParametersList().addParametersString(dfmtFlags);
+
+                final VirtualFile backingFile = psiFile.getVirtualFile();
+                if (backingFile == null) return;
+                final String backingFilePath = backingFile.getCanonicalPath();
+                if (backingFilePath == null) return;
+                commandLine.addParameter(backingFilePath);
+                // Set the work dir so dfmt can pick up the user config, if it exists.
+                commandLine.setWorkDirectory(backingFile.getParent().getCanonicalPath());
+
+                ApplicationManager.getApplication().saveAll();
+
+                final String commandLineString = commandLine.getCommandLineString();
+                final OSProcessHandler handler = new OSProcessHandler(commandLine.createProcess(), commandLineString);
+                handler.addProcessListener(new CapturingProcessAdapter() {
+                    @Override
+                    public void processTerminated(@NotNull final ProcessEvent event) {
+                        @NotNull final List<String> errors = getOutput().getStderrLines();
+
+                        if (!errors.isEmpty()) {
+                            final String[] parts = errors.get(0).split("\\[\\w+]:\\s");
+                            final String output = parts.length == 2 ? parts[1] : errors.get(0);
+                            showNotification("DFormat error.", output, NotificationType.ERROR, null, project);
+                            return;
+                        }
+
+                        final String text = getOutput().getStdout();
+                        ApplicationManager.getApplication().invokeLater(() -> {
+                            try {
+                                @Nullable final Document document = PsiDocumentManager.getInstance(project).getDocument(psiFile);
+                                if (document == null) {
+                                    return;
+                                }
+                                CommandProcessor.getInstance()
+                                    .executeCommand(
+                                        project,
+                                        () -> ApplicationManager
+                                            .getApplication()
+                                            .runWriteAction(() -> document.setText(text)),
+                                        NOTIFICATION_TITLE,
+                                        "",
+                                        document
+                                    );
+
+                                showNotification(NOTIFICATION_TITLE,
+                                    psiFile.getName() + " formatted with DFormat.",
+                                    NotificationType.INFORMATION, null, project);
+
+                            } catch (final Exception e) {
+                                showNotification("Formatting " + psiFile.getName() + "  with DFormat failed.",
+                                    ExceptionUtil.getUserStackTrace(e, LOG),
+                                    NotificationType.ERROR, null, project);
+
+                                //LOG.error(e);
+                            }
+                        });
+                    }
+                });
+                handler.startNotify();
+            } catch (final Exception ex) {
+                showNotification("Formatting " + psiFile.getName() + " with DFormat failed",
+                    ExceptionUtil.getUserStackTrace(ex, LOG),
+                    NotificationType.ERROR, null, project);
+
+                LOG.error(ex);
+            }
+        });
     }
 
     private void showNotification(@NotNull final String title,

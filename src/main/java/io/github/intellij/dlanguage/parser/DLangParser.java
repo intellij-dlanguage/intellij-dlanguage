@@ -4084,21 +4084,21 @@ class DLangParser {
      * Parses a ForeachType
      * <p>
      * $(GRAMMAR $(RULEDEF foreachType):
-     * ($(LITERAL 'ref') | $(LITERAL 'alias') | $(LITERAL 'enum') | $(RULE typeConstructor))* $(RULE type)? $(LITERAL Identifier)
+     * ($(LITERAL 'scope') | $(LITERAL 'ref') | $(LITERAL 'alias') | $(LITERAL 'enum') | $(RULE typeConstructor))* $(RULE type)? $(LITERAL Identifier)
      * ;)
      */
     boolean parseForeachType() {
         final Marker m = enter_section_modified(builder);
         while (moreTokens()) {
-            if (currentIs(tok("ref"))) {
+            if (currentIs(tok("scope"))) {
                 advance();
-            }
-            else if (currentIs(tok("alias"))) {
+            } else if (currentIs(tok("ref"))) {
+                advance();
+            } else if (currentIs(tok("alias"))) {
                 advance();
             } else if (currentIs(tok("enum"))) {
                 advance();
-            }
-            else if (!tok("").equals(parseTypeConstructor(false))) {
+            } else if (!tok("").equals(parseTypeConstructor(false))) {
                 //trace ("\033[01;36mType constructor");
             } else {
                 break;
