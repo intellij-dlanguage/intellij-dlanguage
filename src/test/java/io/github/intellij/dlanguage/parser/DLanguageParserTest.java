@@ -481,6 +481,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void teststatements_foreach_scoped_params() {
+        doDlangParserTest(true, true);
+    }
+
     public void teststatements_foreach_reverse() {
         doDlangParserTest(true, true);
     }
