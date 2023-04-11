@@ -293,7 +293,7 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
         }
     }
 
-    class AddAction : DumbAwareAction("Add", "", IconUtil.getAddIcon()) {
+    class AddAction : DumbAwareAction("Add", "", IconUtil.addIcon) {
         override fun actionPerformed(e: AnActionEvent) {
             TODO("add a dub.json file")
         }

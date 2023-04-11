@@ -50,7 +50,7 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
 
         val project = ProjectLocator.getInstance().guessProjectForFile(file)
         project?: return WidgetState.HIDDEN
-        val module = ModuleUtil.findModuleForFile(file,myProject);
+        val module = ModuleUtil.findModuleForFile(file, myProject);
         module?: return WidgetState.HIDDEN
         val dcdServer: DCDCompletionServer = module.getService(DCDCompletionServer::class.java)
 
@@ -87,7 +87,7 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
 
     override fun createInstance(project: Project): StatusBarWidget = DCDServerStatusBarWidget(project)
 
-    override fun createPopup(context: DataContext): ListPopup? {
+    override fun createPopup(context: DataContext): ListPopup {
         val group = DefaultActionGroup.createPopupGroupWithEmptyText()
 
         group.add(ActionManager.getInstance().getAction(RestartDCD.ID))
@@ -95,13 +95,13 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
         // group.add(ActionManager.getInstance().getAction(DisableDCD.ID))
 
         return JBPopupFactory.getInstance()
-            .createActionGroupPopup("DCD Actions", group, context!!, JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, true)
+            .createActionGroupPopup("DCD Actions", group, context, JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, true)
     }
 
     override fun dispose() {
         this.future?.cancel(true)
         this.future = null
 
-        super.dispose()
+        super<CustomStatusBarWidget>.dispose()
     }
 }

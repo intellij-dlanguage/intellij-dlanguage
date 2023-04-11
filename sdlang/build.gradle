@@ -47,7 +47,7 @@ sourceSets {
 
 tasks.register('generateSyntaxLexer', GenerateLexerTask) {
     // source flex file
-    source.set("src/main/kotlin/io/github/intellij/dlanguage/sdlang/lexer/SDLangLexer.flex")
+    sourceFile.set(file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/lexer/SDLangLexer.flex"))
 
     // target directory for lexer
     targetDir.set("gen/io/github/intellij/dlanguage/sdlang/lexer")
@@ -57,7 +57,7 @@ tasks.register('generateSyntaxLexer', GenerateLexerTask) {
 }
 
 tasks.register('generateSyntaxParser', GenerateParserTask) {
-    source.set("src/main/kotlin/io/github/intellij/dlanguage/sdlang/parser/SDLangParser.bnf")
+    sourceFile.set(file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/parser/SDLangParser.bnf"))
     targetRoot.set("gen")
     pathToParser.set("io/github/intellij/dlanguage/sdlang/parser/SDLangParser.java")
     pathToPsiRoot.set("io/github/intellij/dlanguage/sdlang/psi")
