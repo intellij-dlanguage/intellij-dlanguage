@@ -58,15 +58,14 @@ class DRunMainLineMarkerTest : DLightPlatformCodeInsightFixtureTestCase("codeins
         """, true)
     }
 
-    // TODO enable when support of noreturn will be added
-    /*@Test
+    @Test
     fun `test should find basic noreturn return`() {
         doTest("""
             module test;
 
             noreturn main() { while (true) ;}
         """, true)
-    } */
+    }
 
     @Test
     fun `test should not find runable method`() {
