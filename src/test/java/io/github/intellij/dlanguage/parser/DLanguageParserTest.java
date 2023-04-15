@@ -517,6 +517,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void teststatements_if() {
+        doDlangParserTest(true, true);
+    }
+
     public void teststatements_while() {
         doDlangParserTest(true, true);
     }

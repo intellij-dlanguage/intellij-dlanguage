@@ -4720,6 +4720,7 @@ class DLangParser {
      *
      * $(RULEDEF ifCondition):
      *   $(LITERAL 'auto') $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
+     *   $(LITERAL 'scope') $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
      * | $(RULE typeConstructors) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
      * | $(RULE type) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
      * | $(RULE expression)
@@ -8113,7 +8114,7 @@ class DLangParser {
             return new Pair<>(false, m);
         }
         final Token.IdType i = current().type;
-        if (i.equals(tok("const")) || i.equals(tok("immutable")) || i.equals(tok("inout")) || i.equals(tok("shared"))) {
+        if (isTypeCtor(i)) {
             if (!peekIs(tok("(")))
                 if (parseTypeConstructors() == null) {
                     cleanup(m, TYPE);
@@ -8185,12 +8186,14 @@ class DLangParser {
         } else if (i.equals(tok("super")) || i.equals(tok("this"))) {
             // note: super can be removed but `this` can be an alias to an instance.
             advance();
-            if (tokenCheck(".")) {
-                advance();
-                if (!parseTypeIdentifierPart()) {
-                    cleanup(m, TYPE_2);
-                    return false;
-                }
+            if (!tokenCheck(".")) {
+               cleanup(m, TYPE_2);
+               return false;
+            }
+            advance();
+            if (!parseTypeIdentifierPart()) {
+                cleanup(m, TYPE_2);
+                return false;
             }
         } else if (i.equals(tok("__traits"))) {
             if (!parseTraitsExpression()) {
