@@ -27,8 +27,8 @@ class DubExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
             return false
         val funcDecl = element.parent.parent as DlangFunctionDeclaration
         // check return type
-        if (!(funcDecl.isAuto || /*funcDecl.isNoreturn ||*/ // TODO enable when support of noreturn will be added
-            listOf("void", "int").contains((element.parent.parent as DlangFunctionDeclaration).type?.type_2?.text)))
+        if (!(funcDecl.isAuto ||
+            listOf("void", "int", "noreturn").contains((element.parent.parent as DlangFunctionDeclaration).type?.type_2?.text)))
             return false
         if (funcDecl.parameters == null)
             return false
