@@ -1,0 +1,7 @@
+DDOC_COMMENT_START ('/**')
+DDOC_WHITESPACE ('\n ')
+DDOC_COMMENT_LEADING_ASTERISKS ('*')
+DDOC_WHITESPACE (' ')
+DDOC_COMMENT_DATA ('This is a simple doc comment with only leading asterisk')
+DDOC_WHITESPACE ('\n ')
+DDOC_COMMENT_END ('*/')

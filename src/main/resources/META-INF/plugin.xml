@@ -79,6 +79,7 @@
         <notificationGroup id="DLANG_POPUP" displayType="BALLOON" isLogByDefault="true" bundle="i18n" />
 
         <lang.parserDefinition language="D" implementationClass="io.github.intellij.dlanguage.DLangParserDefinition"/>
+        <lang.parserDefinition language="DDoc" implementationClass="io.github.intellij.dlanguage.features.documentation.DDocParserDefinition"/>
 
         <lang.syntaxHighlighterFactory language="D" implementationClass="io.github.intellij.dlanguage.highlighting.DHighlighterFactory"/>
         <highlightUsagesHandlerFactory implementation="io.github.intellij.dlanguage.highlighting.exitpoint.DHighlightExitPointsHandlerFactory"/>
