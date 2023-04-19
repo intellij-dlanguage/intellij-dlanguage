@@ -202,6 +202,7 @@ typealias TraitsExpression = io.github.intellij.dlanguage.psi.DLanguageTraitsExp
 typealias TryStatement = io.github.intellij.dlanguage.psi.DLanguageTryStatement
 typealias Type = io.github.intellij.dlanguage.psi.DLanguageType
 typealias Type_2 = io.github.intellij.dlanguage.psi.DLanguageType_2
+typealias TypeIdentifierPart = io.github.intellij.dlanguage.psi.DLanguageTypeIdentifierPart
 typealias TypeSpecialization = io.github.intellij.dlanguage.psi.DLanguageTypeSpecialization
 typealias TypeSuffix = io.github.intellij.dlanguage.psi.DLanguageTypeSuffix
 typealias TypeidExpression = io.github.intellij.dlanguage.psi.DLanguageTypeidExpression

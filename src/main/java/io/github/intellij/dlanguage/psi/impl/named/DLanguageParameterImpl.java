@@ -52,6 +52,67 @@ public class DLanguageParameterImpl extends
         return findChildByType(DlangTypes.OP_EQ);
     }
 
+    @Nullable
+    @Override
+    public PsiElement getKW_IMMUTABLE() {
+        return findChildByType(DlangTypes.KW_IMMUTABLE);
+    }
+    @Nullable
+    @Override
+    public PsiElement getKW_SHARED() {
+        return findChildByType(DlangTypes.KW_SHARED);
+    }
+    @Nullable
+    @Override
+    public PsiElement getKW_FINAL() {
+        return findChildByType(DlangTypes.KW_FINAL);
+    }
+    @Nullable
+    @Override
+    public PsiElement getKW_CONST() {
+        return findChildByType(DlangTypes.KW_CONST);
+    }
+    @Nullable
+    @Override
+    public PsiElement getKW_INOUT() {
+        return findChildByType(DlangTypes.KW_INOUT);
+    }
+    @Nullable
+    @Override
+    public PsiElement getKW_IN() {
+        return findChildByType(DlangTypes.KW_IN);
+    }
+    @Nullable
+    @Override
+    public PsiElement getKW_LAZY() {
+        return findChildByType(DlangTypes.KW_LAZY);
+    }
+    @Nullable
+    @Override
+    public PsiElement getKW_OUT() {
+        return findChildByType(DlangTypes.KW_OUT);
+    }
+    @Nullable
+    @Override
+    public PsiElement getKW_REF() {
+        return findChildByType(DlangTypes.KW_REF);
+    }
+    @Nullable
+    @Override
+    public PsiElement getKW_SCOPE() {
+        return findChildByType(DlangTypes.KW_SCOPE);
+    }
+    @Nullable
+    @Override
+    public PsiElement getKW_AUTO() {
+        return findChildByType(DlangTypes.KW_AUTO);
+    }
+    @Nullable
+    @Override
+    public PsiElement getKW_RETURN() {
+        return findChildByType(DlangTypes.KW_RETURN);
+    }
+
     @Override
     @Nullable
     public DlangIdentifier getIdentifier() {
