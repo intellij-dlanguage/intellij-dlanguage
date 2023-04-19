@@ -1041,7 +1041,8 @@ D Language File
                                               DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                                                 PsiElement(DlangTokenType.!)('!')
                                                 DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                                                  PsiElement(DlangTokenType.int)('int')
+                                                  DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                                                    PsiElement(DlangTokenType.int)('int')
                                     DLanguageArgumentsImpl(ARGUMENTS)
                                       PsiElement(DlangTokenType.()('(')
                                       PsiElement(DlangTokenType.))(')')
@@ -1186,7 +1187,8 @@ D Language File
                               DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                                 PsiElement(DlangTokenType.!)('!')
                                 DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
-                                  PsiElement(DlangTokenType.int)('int')
+                                  DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                                    PsiElement(DlangTokenType.int)('int')
                     DECLARATOR
                       IDENTIFIER
                         PsiElement(DlangTokenType.ID)('s')
