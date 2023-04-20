@@ -1,0 +1,10 @@
+D Language File
+  PsiElement(DDOC_COMMENT_START)('/**')
+  PsiElement(DDOC_WHITESPACE)('\n ')
+  PsiElement(DDOC_COMMENT_LEADING_ASTERISKS)('*')
+  PsiElement(DDOC_WHITESPACE)(' ')
+  DDocSummarySectionImpl(DDOC_SUMMARY_SECTION)
+    DlangDocPsiElementImpl(DDOC_SECTION_CONTENT)
+      PsiElement(DDOC_COMMENT_DATA)('This is a simple doc comment with only leading asterisk')
+      PsiElement(DDOC_WHITESPACE)('\n ')
+  PsiElement(DDOC_COMMENT_END)('*/')

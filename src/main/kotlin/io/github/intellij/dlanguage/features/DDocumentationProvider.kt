@@ -2,16 +2,14 @@ package io.github.intellij.dlanguage.features
 
 import com.intellij.lang.documentation.AbstractDocumentationProvider
 import com.intellij.lang.documentation.DocumentationMarkup
-import com.intellij.lang.documentation.DocumentationProvider
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
+import io.github.intellij.dlanguage.features.documentation.DDocGenerator
 import io.github.intellij.dlanguage.features.documentation.psi.DlangDocComment
-import io.github.intellij.dlanguage.psi.DLanguageDeclaration
 import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
-import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport
 import io.github.intellij.dlanguage.psi.references.DReference
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
@@ -57,7 +55,6 @@ class DDocumentationProvider : AbstractDocumentationProvider() {
         return emptyList()
     }
 
-    @Suppress("UnstableApiUsage")
     override fun collectDocComments(file: PsiFile, sink: Consumer<in PsiDocCommentBase>) {
         if (file !is DlangFile) return
         for (element in SyntaxTraverser.psiTraverser(file)) {
@@ -67,12 +64,10 @@ class DDocumentationProvider : AbstractDocumentationProvider() {
         }
     }
 
-    @Suppress("UnstableApiUsage")
     override fun generateRenderedDoc(comment: PsiDocCommentBase): String? {
         if (comment !is DlangDocComment)
             return super.generateRenderedDoc(comment)
-        // TODO generate HTML doc using parsed comment
-        return comment.text
+        return DDocGenerator().generateDocRendered(comment)
     }
 
     /**
@@ -90,7 +85,7 @@ class DDocumentationProvider : AbstractDocumentationProvider() {
      * SECTION_SEPARATOR + "&lt;p&gt;" + section content + SECTION_END +
      * ... +
      * SECTIONS_END
-    </pre> *
+     * </pre>
      *
      * To show different content on mouse hover in editor, [.generateHoverDoc] should be implemented.
      *

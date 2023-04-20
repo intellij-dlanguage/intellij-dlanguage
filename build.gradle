@@ -245,6 +245,17 @@ tasks.register('generateSyntaxLexer', GenerateLexerTask) {
     targetClass.set('DlangLexer')
 }
 
+tasks.register('generateDocSyntaxLexer', GenerateLexerTask) {
+    // source flex file
+    sourceFile.set(file('src/main/kotlin/io/github/intellij/dlanguage/features/documentation/DDocLexer.flex'))
+
+    // target directory for lexer
+    targetDir.set('gen/io/github/intellij/dlanguage/features/documentation')
+
+    // target classname, target file will be targetDir/targetClass.java
+    targetClass.set('_DDocLexer')
+}
+
 tasks.register('copyGenScript', Copy) {
     from 'src/main/resources/types_regen_script.d'
     into 'gen/io/github/intellij/dlanguage/psi/'
@@ -258,11 +269,13 @@ tasks.register('generatePsi', Exec) {
 
 tasks.withType(JavaCompile).configureEach {
     it.dependsOn(generateSyntaxLexer)
+    it.dependsOn(generateDocSyntaxLexer)
     it.dependsOn(generatePsi)
 }
 
 tasks.withType(KotlinCompile).configureEach {
     it.dependsOn(generateSyntaxLexer)
+    it.dependsOn(generateDocSyntaxLexer)
     it.dependsOn(generatePsi)
 }
 
