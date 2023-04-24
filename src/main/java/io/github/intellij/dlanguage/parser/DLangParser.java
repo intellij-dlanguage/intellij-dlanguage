@@ -2114,6 +2114,7 @@ class DLangParser {
      * ;)
      */
     private Token.IdType parseBuiltinType() {
+        assert isBasicType(current().type);
         final Marker marker = enter_section_(builder);
         final Token.IdType type = advance().type;
         exit_section_(builder, marker, BUILTIN_TYPE, true);
@@ -7831,8 +7832,10 @@ class DLangParser {
             return false;
         }
         final Token.IdType i = current().type;
-        if (i.equals(tok("this")) || i.equals(tok("identifier")) || isBasicType(i) || isLiteral(i)) {
+        if (i.equals(tok("this")) || i.equals(tok("identifier")) || isLiteral(i)) {
             advance();
+        } else if (isBasicType(i)) {
+            parseBuiltinType();
         } else {
             error("Invalid template argument. (Try enclosing in parenthesis?)");
             exit_section_modified(builder, m, TEMPLATE_SINGLE_ARGUMENT, true);

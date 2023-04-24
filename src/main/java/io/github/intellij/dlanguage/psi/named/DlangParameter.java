@@ -37,5 +37,28 @@ public interface DlangParameter extends PsiElement, DNamedElement,
 
     @Nullable
     PsiElement getOP_EQ();
-
+    @Nullable
+    PsiElement getKW_IMMUTABLE();
+    @Nullable
+    PsiElement getKW_SHARED();
+    @Nullable
+    PsiElement getKW_FINAL();
+    @Nullable
+    PsiElement getKW_CONST();
+    @Nullable
+    PsiElement getKW_INOUT();
+    @Nullable
+    PsiElement getKW_IN();
+    @Nullable
+    PsiElement getKW_LAZY();
+    @Nullable
+    PsiElement getKW_OUT();
+    @Nullable
+    PsiElement getKW_REF();
+    @Nullable
+    PsiElement getKW_SCOPE();
+    @Nullable
+    PsiElement getKW_AUTO();
+    @Nullable
+    PsiElement getKW_RETURN();
 }

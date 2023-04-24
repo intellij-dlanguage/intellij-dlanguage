@@ -243,7 +243,9 @@ static this() {
     stub_children["TemplateParameter"] = ["TemplateAliasParameter","TemplateTupleParameter","TemplateTypeParameter","TemplateThisParameter","TemplateValueParameter"];
     types_children["TemplateParameterList"] = ["TemplateParameter*","OP_COMMA*"];
     types_children["TemplateParameters"] = ["TemplateParameterList","OP_PAR_RIGHT","OP_PAR_LEFT"];
-    types_children["TemplateSingleArgument"] = ["Identifier","Type",/*todo builtin Types*/"KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW___DATE__","KW___EOF__","KW___FILE__","KW___FILE_FULL_PATH__","KW___FUNCTION__","KW___GSHARED","KW___LINE__","KW___MODULE__","KW___PARAMETERS","KW___PRETTY_FUNCTION__","KW___TIME__","KW___TIMESTAMP__","KW___TRAITS","KW___VECTOR","KW___VENDOR__","KW___VERSION__","INTEGER_LITERAL","FLOAT_LITERAL","DOUBLE_QUOTED_STRING","CHARACTER_LITERAL"];
+    types_children["TemplateSingleArgument"] = ["Identifier","BuiltinType","KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW_NULL",
+                                                "KW___DATE__","KW___EOF__","KW___FILE__","KW___FILE_FULL_PATH__","KW___FUNCTION__","KW___GSHARED","KW___LINE__","KW___MODULE__","KW___PARAMETERS","KW___PRETTY_FUNCTION__","KW___TIME__","KW___TIMESTAMP__","KW___TRAITS","KW___VECTOR","KW___VENDOR__","KW___VERSION__",
+                                                "INTEGER_LITERAL","FLOAT_LITERAL","DOUBLE_QUOTED_STRING","CHARACTER_LITERAL"];
     types_children["TemplateThisParameter"] = ["KW_THIS","TemplateTypeParameter"];
     types_children["TemplateTupleParameter"] = ["Identifier","OP_TRIPLEDOT"];
     types_children["TemplateTypeParameter"] = ["Identifier","Type*","OP_COLON","OP_EQ"];
@@ -254,7 +256,7 @@ static this() {
     types_children["TraitsExpression"] = ["KW___TRAITS","TemplateArgumentList","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["TryStatement"] = ["KW_TRY","DeclarationOrStatement","Catches","Finally"];
     types_children["Type"] = ["Attribute","Type_2","TypeSuffix*"];
-    types_children["Type_2"] = ["TypeofExpression","TypeConstructor","TraitsExpression","MixinExpression","Vector","BuiltinType","IdentifierOrTemplateChain","TypeIdentifierPart","OP_DOT","OP_PAR_RIGHT","OP_PAR_LEFT"]; /*todo builtin Types*/
+    types_children["Type_2"] = ["Type","TypeofExpression","TypeConstructor","TraitsExpression","MixinExpression","Vector","BuiltinType","IdentifierOrTemplateChain","TypeIdentifierPart","OP_DOT","OP_PAR_RIGHT","OP_PAR_LEFT","KW_SUPER","KW_THIS","KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED"];
     types_children["TypeConstructor"] = ["KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED","KW_SCOPE"];
     types_children["TypeConstructors"] = ["TypeConstructor*"];
     types_children["TypeIdentifierPart"] = ["OP_DOT", "IdentifierOrTemplateInstance", "OP_BRACKET_LEFT", "OP_BRACKET_RIGHT", "AssignExpression", "OP_DDOT", "TypeIdentifierPart"];

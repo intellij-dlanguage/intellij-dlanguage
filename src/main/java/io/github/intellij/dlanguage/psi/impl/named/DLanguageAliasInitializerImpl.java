@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.psi.impl.named;
 
 import static io.github.intellij.dlanguage.psi.DlangTypes.OP_COMMA;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_EQ;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -52,7 +53,7 @@ public class DLanguageAliasInitializerImpl extends
     @Nullable
     @Override
     public PsiElement getOP_EQ() {
-        return findChildByType(OP_COMMA);
+        return findChildByType(OP_EQ);
     }
 
     @NotNull
