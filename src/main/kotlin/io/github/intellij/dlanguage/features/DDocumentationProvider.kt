@@ -1,18 +1,17 @@
 package io.github.intellij.dlanguage.features
 
 import com.intellij.lang.documentation.AbstractDocumentationProvider
-import com.intellij.lang.documentation.DocumentationMarkup
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.features.documentation.DDocGenerator
+import io.github.intellij.dlanguage.features.documentation.DSignatureDocGenerator
 import io.github.intellij.dlanguage.features.documentation.psi.DlangDocComment
 import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport
-import io.github.intellij.dlanguage.psi.references.DReference
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
+import io.github.intellij.dlanguage.utils.MixinTemplateDeclaration
+import io.github.intellij.dlanguage.utils.TemplateDeclaration
 import java.util.function.Consumer
 
 /**
@@ -96,34 +95,17 @@ class DDocumentationProvider : AbstractDocumentationProvider() {
      * for the given element
      */
     override fun generateDoc(element: PsiElement?, originalElement: PsiElement?): String? {
-        // todo: check out JavaDocumentationProvider for some ideas. Depending on the PsiElement being passed in
-        // we should probably generate the documentation in different formats
-        if (element is DNamedElement && element.getParent() is DNamedElement) {
-            try {
-                var a = DAttributesFinder(element)
-                a.recurseUp()
-                if (element.getReference() != null) {
-                    val resolveResults = (element.getReference() as DReference?)!!.multiResolve(true)
-                    val attributesFinders: MutableSet<DAttributesFinder> = HashSet(resolveResults.size)
-                    if (resolveResults.size > 1) {
-                        for (resolveResult in resolveResults) {
-                            val dAttributesFinder = DAttributesFinder(resolveResult.element!!)
-                            dAttributesFinder.recurseUp()
-                            attributesFinders.add(dAttributesFinder)
-                        }
-                        a = if (attributesFinders.size == 1) {
-                            attributesFinders.toTypedArray()[0]
-                        } else return "Unable to resolve symbol to one declaration"
-                    }
-                }
-                return if (element == originalElement && element.getReference() != null) {
-                    "Unable to resolve symbol to one declaration"
-                } else buildDocumentationString(a)
-            } catch (e: Exception) {
-                LOG.error("Could not generate documentation", e)
-            }
+        if (element is DNamedElement) {
+            val builder = StringBuilder()
+            var declarationElement = element.parent
+            if (declarationElement is TemplateDeclaration && declarationElement.parent is MixinTemplateDeclaration)
+                declarationElement = declarationElement.parent
+            DSignatureDocGenerator().appendDeclarationHeader(builder, declarationElement, element)
+            val doc = DDocGenerator().generateDoc(element)
+            builder.append(doc)
+            return builder.toString().ifBlank { null }
         }
-        return null
+        return super.generateDoc(element, originalElement)
     }
 
     override fun getDocumentationElementForLookupItem(
@@ -142,57 +124,4 @@ class DDocumentationProvider : AbstractDocumentationProvider() {
         return null
     }
 
-    /*
-    * This method builds up the html text that will be used for tooltip content in the IDE while hovering over variables and
-    * function names.
-    *
-    * Use the html markup as specified in DocumentationMarkup
-    */
-    private fun buildDocumentationString(a: DAttributesFinder): String {
-        val sb = StringBuilder()
-        sb.append(DocumentationMarkup.DEFINITION_START)
-        if (!a.isLocal()) {
-            if (a.isPrivate()) {
-                sb.append("private")
-            } else if (a.isPublic()) {
-                sb.append("public")
-            } else if (a.isProtected()) {
-                sb.append("protected")
-            }
-            sb.append(" ")
-        }
-        sb.append("symbol").append(" ")
-
-        //sb.append(CONTENT_START);
-        if (a.isProperty()) {
-            sb.append(DocumentationMarkup.GRAYED_START).append("property").append(DocumentationMarkup.GRAYED_END)
-                .append(" ")
-        }
-        if (a.isStatic()) {
-            sb.append(DocumentationMarkup.GRAYED_START).append("static").append(DocumentationMarkup.GRAYED_END)
-                .append(" ")
-        }
-        if (a.isExtern()) {
-            sb.append(DocumentationMarkup.GRAYED_START).append("extern").append(DocumentationMarkup.GRAYED_END)
-                .append(" ")
-        }
-        if (a.isNoGC()) {
-            sb.append(DocumentationMarkup.GRAYED_START).append("nogc").append(DocumentationMarkup.GRAYED_END)
-                .append(" ")
-        }
-        if (a.isLocal()) {
-            sb.append(DocumentationMarkup.GRAYED_START).append("local").append(DocumentationMarkup.GRAYED_END)
-                .append(" ")
-        }
-
-        //sb.append(CONTENT_END);
-        sb.append(DocumentationMarkup.DEFINITION_END)
-        return sb.toString()
-    }
-
-    companion object {
-        private val LOG = Logger.getInstance(
-            DDocumentationProvider::class.java
-        )
-    }
 }

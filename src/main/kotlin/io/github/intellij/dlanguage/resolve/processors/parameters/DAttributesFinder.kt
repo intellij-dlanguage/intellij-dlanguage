@@ -272,7 +272,7 @@ class DAttributesFinder {
                 if (!execute(point)) {
                     return
                 }
-                if (point.prevSibling == null) {
+                if (point is DlangFile || point.prevSibling == null) {
                     break
                 }
                 point = point.prevSibling

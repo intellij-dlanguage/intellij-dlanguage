@@ -47,10 +47,9 @@ class DCommenter : CodeDocumentationAwareCommenter {
     }
 
     override fun isDocumentationComment(element: PsiComment): Boolean {
-        return false
-//        return element.getTokenType() == DElementTypes.DOCCOMMENT_LINE ||
-//                element.getTokenType() == DElementTypes.DOCCOMMENT_MULTI ||
-//                element.getTokenType() == DElementTypes.DOCCOMMENT_NESTED;
+        return element.tokenType == DlangTypes.LINE_DOC ||
+                element.tokenType == DlangTypes.LINE_DOC ||
+                element.tokenType == DlangTypes.NESTING_BLOCK_DOC
     }
 
     override fun getDocumentationCommentTokenType(): IElementType? {
