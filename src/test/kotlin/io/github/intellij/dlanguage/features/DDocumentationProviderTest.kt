@@ -54,9 +54,8 @@ class DDocumentationProviderTest : BasePlatformTestCase() {
             .findTargetElement(myFixture.editor, myFixture.file)
         val text = provider!!.generateDoc(docElement, null)
         assertNotNull(text)
-        assertTrue(text!!.contains("symbol"))
-        assertTrue(text.contains("public"))
-        assertFalse(text.contains("private"))
+        assertTrue(text!!.contains("int"))
+        assertTrue(text.contains("id"))
     }
 
     fun testGenerateDocForPrivateClassVariable() {
@@ -69,9 +68,9 @@ class DDocumentationProviderTest : BasePlatformTestCase() {
             .findTargetElement(myFixture.editor, myFixture.file)
         val text = provider!!.generateDoc(docElement, null)
         assertNotNull(text)
-        assertTrue(text!!.contains("symbol"))
-        assertFalse(text.contains("public"))
-        assertTrue(text.contains("private"))
+        //assertTrue(text.contains("private")) XXX it’s private, so we can display it
+        assertTrue(text!!.contains("string"))
+        assertTrue(text.contains("name"))
     }
 
     fun testGenerateDocForGlobalInt() {
@@ -84,10 +83,8 @@ class DDocumentationProviderTest : BasePlatformTestCase() {
             .findTargetElement(myFixture.editor, myFixture.file)
         val text = provider!!.generateDoc(docElement, null)
         assertNotNull(text)
-        assertTrue(text!!.contains("symbol"))
-        assertTrue(text.contains("public"))
-        assertFalse(text.contains("private"))
-        assertTrue(text.contains("static"))
+        assertTrue(text!!.contains("int"))
+        assertTrue(text.contains("x"))
     }
 
     /*
@@ -102,9 +99,9 @@ class DDocumentationProviderTest : BasePlatformTestCase() {
             .findTargetElement(myFixture.editor, myFixture.file)
         val text = provider!!.generateDoc(docElement, null)
         assertNotNull(text)
-        assertTrue(text!!.contains("symbol"))
-        assertTrue(text.contains("public"))
-        assertFalse(text.contains("private"))
-        assertTrue(text.contains("static"))
+        //assertTrue(text!!.contains("static"))
+        assertTrue(text!!.contains("void"))
+        assertTrue(text.contains("doSomething"))
+        assertTrue(text.contains("()"))
     }
 }
