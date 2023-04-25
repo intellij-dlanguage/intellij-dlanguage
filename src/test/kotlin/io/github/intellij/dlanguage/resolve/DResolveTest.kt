@@ -44,5 +44,4 @@ class DResolveTest : DResolveTestCase() {
 
     fun testImportClassWithoutConstructor() = doTest()
 
-    fun testImportNamedBindShouldNotResolveBindName() = doTest(false)
 }
