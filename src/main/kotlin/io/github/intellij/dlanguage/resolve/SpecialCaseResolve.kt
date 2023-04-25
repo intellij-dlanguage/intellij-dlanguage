@@ -115,6 +115,8 @@ object SpecialCaseResolve {
         for (publicImport in DPublicImportIndex.recursivelyGetAllPublicImports(import)) {
             res.addAll(DTopLevelDeclarationIndex.getTopLevelSymbols(scope, publicImport.importedModuleName, project))
         }
+        // A constructor and destructor cannot be imported, so ignore them
+        res.removeIf { it is Constructor || it is Destructor }
         return res
     }
 
