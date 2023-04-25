@@ -44,4 +44,6 @@ class DResolveTest : DResolveTestCase() {
 
     fun testImportClassWithoutConstructor() = doTest()
 
+    fun testImportUsageOfRenamedImport() = doTest()
+
 }
