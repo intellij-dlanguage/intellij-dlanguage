@@ -1,4 +1,4 @@
-package io.github.intellij.dlanguage.resolve;
+package io.github.intellij.dlanguage.resolve
 
 /**
  * Test class for resolving references.  To add a new test, add a method to this class following the conventions below.
@@ -7,71 +7,38 @@ package io.github.intellij.dlanguage.resolve;
  * - In your files, insert "<ref>" right before the element you want to resolve.
  * - Insert "<resolved>" right before the element you wish for the reference to resolve to.
  */
-public class DResolveTest extends DResolveTestCase {
+class DResolveTest : DResolveTestCase() {
 
-    public void testClassUsageToClassDefinition() {
-        doTest();
-    }
+    fun testClassUsageToClassDefinition() = doTest()
 
-    public void testPrimaryExpressionToFunctionDefinition() {
-        doTest();
-    }
-
-//    public void testOverloadedParameterCount() {
-//        doTest();
-//    }
+    fun testPrimaryExpressionToFunctionDefinition() = doTest()
 
     //test dos not pass for reasons not clear to me. The feature in question does work though. todo
-    public void testClassConstructorToConstructorDefinition() {
-        doTest();
-    }
+//    fun testOverloadedParameterCount() = doTest()
 
-    public void testPublicImports() {
-        doTest();
-    }
+    fun testClassConstructorToConstructorDefinition() = doTest()
 
-    public void testTemplateUsageToTemplateDeclaration() {
-        doTest();
-    }
+    fun testPublicImports() = doTest()
 
-    public void testGlobalVariableUsageToVariableDeclaration() {
-        doTest();
-    }
+    fun testTemplateUsageToTemplateDeclaration() = doTest()
 
-    public void testAliasUsageToAliasDeclaration() {
-        doTest();
-    }
+    fun testGlobalVariableUsageToVariableDeclaration() = doTest()
 
-    public void testScopedImportsFail() {
-        doTest(false);
-    }
+    fun testAliasUsageToAliasDeclaration() = doTest()
 
-    public void testScopedImportsPass() {
-        doTest();
-    }
+    fun testScopedImportsFail() = doTest(false)
 
-    public void testScopedImportsMembers() {
-        doTest();
-    }
+    fun testScopedImportsPass() = doTest()
 
-    public void testImportBindResolve() {
-        doTest();
-    }
+    fun testScopedImportsMembers() = doTest()
 
-    public void testImportWithSpacesAndComments() {
-        doTest();
-    }
+    fun testImportBindResolve() = doTest()
 
-    public void testImportFromPackage() {
-        doTest();
-    }
+    fun testImportWithSpacesAndComments() = doTest()
 
-    public void testImportNamedBindResolve() {
-        doTest();
-    }
+    fun testImportFromPackage() = doTest()
 
-    public void testImportNamedBindShouldNotResolveBindName() {
-        doTest(false);
-    }
+    fun testImportNamedBindResolve() = doTest()
+
+    fun testImportNamedBindShouldNotResolveBindName() = doTest(false)
 }
-

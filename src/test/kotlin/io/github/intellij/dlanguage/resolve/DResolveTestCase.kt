@@ -1,117 +1,98 @@
-package io.github.intellij.dlanguage.resolve;
+package io.github.intellij.dlanguage.resolve
 
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.CharsetToolkit;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference;
-import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
-import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangConstructor;
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.openapi.util.io.FileUtil
+import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.vfs.CharsetToolkit
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiReference
+import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
+import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
+import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration
+import io.github.intellij.dlanguage.psi.named.DlangConstructor
+import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier
+import java.io.File
 
-import java.io.File;
+abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("resolve", "resolve") {
+    private var referencedElement: PsiReference? = null
+    private var resolvedElement: PsiElement? = null
+    override fun getTestDataPath(): String = this.javaClass.classLoader.getResource("gold/resolve/$testDirectoryName")!!.path!!
 
-public abstract class DResolveTestCase extends DLightPlatformCodeInsightFixtureTestCase {
-    private PsiReference referencedElement;
-    private PsiElement resolvedElement;
+    private val testDataFiles: Array<File>
+        get() = File(testDataPath).listFiles()!!
 
-    public DResolveTestCase() {
-        super("resolve", "resolve");
-    }
-
-    @Override
-    protected @NotNull String getTestDataPath() {
-        return this.getClass().getClassLoader().getResource("gold/resolve/" + getTestDirectoryName()).getPath();
-    }
-
-    private File[] getTestDataFiles() {
-        return new File(getTestDataPath()).listFiles();
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        for (final File file : getTestDataFiles()) {
-            String text = FileUtil.loadFile(file, CharsetToolkit.UTF8);
-            text = StringUtil.convertLineSeparators(text);
-            final int referencedOffset = text.indexOf("<ref>");
-            text = text.replace("<ref>", "");
-            final int resolvedOffset = text.indexOf("<resolved>");
-            text = text.replace("<resolved>", "");
-            final PsiFile psiFile = myFixture.configureByText(file.getName(), text);
+    @Throws(Exception::class)
+    override fun setUp() {
+        super.setUp()
+        for (file in testDataFiles) {
+            var text = FileUtil.loadFile(file, CharsetToolkit.UTF8)
+            text = StringUtil.convertLineSeparators(text)
+            val referencedOffset = text.indexOf("<ref>")
+            text = text.replace("<ref>", "")
+            val resolvedOffset = text.indexOf("<resolved>")
+            text = text.replace("<resolved>", "")
+            val psiFile = myFixture.configureByText(file.name, text)
             if (referencedOffset != -1) {
-                referencedElement = psiFile.findReferenceAt(referencedOffset);
+                referencedElement = psiFile.findReferenceAt(referencedOffset)
             }
             if (resolvedOffset != -1) {
-                final PsiReference ref = psiFile.findReferenceAt(resolvedOffset);
+                val ref = psiFile.findReferenceAt(resolvedOffset)
                 if (ref == null) {
-                    fail("Reference was null in " + file.getName());
+                    fail("Reference was null in " + file.name)
                 }
-                resolvedElement = ref.getElement();
-                ensureNotNull(file);
+                resolvedElement = ref!!.element
+                ensureNotNull(file)
                 // container elements like DEFINITION_FUNCTION need to be looked up by .getElement().getParent()
-                if (resolvedElement instanceof DlangIdentifier) {
-                    resolvedElement = ref.getElement().getParent();
+                if (resolvedElement is DlangIdentifier) {
+                    resolvedElement = ref.element.parent
                 }
                 //if we're resolving something within a class don't resolve the class
-                if (ref instanceof PsiMultiReference && resolvedElement instanceof DLanguageClassDeclaration) {
-                    for (final PsiReference psiReference : ((PsiMultiReference) ref).getReferences()) {
-                        if (!(psiReference.getElement() instanceof DLanguageClassDeclaration)) {
-                            resolvedElement = psiReference.getElement();
+                if (ref is PsiMultiReference && resolvedElement is DLanguageClassDeclaration) {
+                    for (psiReference in ref.references) {
+                        if (psiReference.element !is DLanguageClassDeclaration) {
+                            resolvedElement = psiReference.element
                         }
                     }
-
                 }
-                ensureNotNull(file);
+                ensureNotNull(file)
             }
         }
     }
 
-    private void ensureNotNull(final File file) {
+    private fun ensureNotNull(file: File) {
         if (resolvedElement == null) {
-            fail("Reference returned null element in " + file.getName());
+            fail("Reference returned null element in " + file.name)
         }
     }
 
-    protected void doTest() {
-        doTest(true);
-    }
-
-    protected void doTest(final boolean succeed) {
+    protected fun doTest(succeed: Boolean = true) {
         if (succeed && referencedElement == null) {
-            fail("Could not find reference at caret.");
+            fail("Could not find reference at caret.")
         }
         if (succeed && resolvedElement == null) {
-            fail("Could not find resolved element.");
+            fail("Could not find resolved element.")
         }
         if (succeed) {
-            final PsiElement element = referencedElement.resolve();
+            val element = referencedElement!!.resolve()
             //function,class,constructor
             /*if (resolvedElement instanceof DlangInterfaceOrClass ) {
                 assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
-            }*//* else if (resolvedElement instanceof DLanguageConstructor) {
+            }*/
+            /* else if (resolvedElement instanceof DLanguageConstructor) {
                 assertTrue(referencedElement.resolve() instanceof DLanguageConstructor);
-            }*/ /*else*/
-            if (resolvedElement instanceof DlangConstructor) {
-                assertEquals("Could not resolve expected reference.", resolvedElement, element);
-            } else if (super.getTestName(true).equals("scopedImportsMembers")) {
-                assertNotNull("Could not resolve expected reference.", element);
-
+            }*/
+            /*else*/if (resolvedElement is DlangConstructor) {
+                assertEquals("Could not resolve expected reference.", resolvedElement, element)
+            } else if (super.getTestName(true) == "scopedImportsMembers") {
+                assertNotNull("Could not resolve expected reference.", element)
                 assertEquals("Could not resolve expected reference.", "struct_member",
-                    ((DlangFunctionDeclaration) element.getParent()).getName());
+                        (element!!.parent as DlangFunctionDeclaration).name)
             } else {
-                assertNotNull("Could not resolve expected reference.", element);
-
-                assertEquals("Could not resolve expected reference.", resolvedElement, element.getParent());
+                assertNotNull("Could not resolve expected reference.", element)
+                assertEquals("Could not resolve expected reference.", resolvedElement, element!!.parent)
             }
         } else {
-            assertFalse("Resolved unexpected reference.", resolvedElement.equals(referencedElement.resolve()));
+            assertFalse("Resolved unexpected reference.", resolvedElement == referencedElement!!.resolve())
         }
     }
 }
-
