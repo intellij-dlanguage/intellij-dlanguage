@@ -12,6 +12,9 @@ import io.github.intellij.dlanguage.DlangFileType
 import io.github.intellij.dlanguage.psi.DlangFile
 import java.util.*
 
+/**
+ * This index keep a track of all modules names and allow to find the corresponding file.
+ */
 class DModuleIndex : ScalarIndexExtension<String>() {
     override fun getName(): ID<String, Void> = D_MODULE_INDEX
 
