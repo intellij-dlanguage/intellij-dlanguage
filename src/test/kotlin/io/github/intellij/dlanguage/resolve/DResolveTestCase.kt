@@ -3,14 +3,18 @@ package io.github.intellij.dlanguage.resolve
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.CharsetToolkit
+import com.intellij.openapi.vfs.VirtualFileFilter
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
+import com.intellij.psi.impl.PsiManagerEx
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
 import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration
+import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.named.DlangConstructor
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier
+import org.intellij.lang.annotations.Language
 import java.io.File
 
 abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("resolve", "resolve") {
@@ -24,6 +28,9 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
     @Throws(Exception::class)
     override fun setUp() {
         super.setUp()
+    }
+
+    private fun prepareFilesFindReferences() {
         for (file in testDataFiles) {
             var text = FileUtil.loadFile(file, CharsetToolkit.UTF8)
             text = StringUtil.convertLineSeparators(text)
@@ -66,6 +73,7 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
     }
 
     protected fun doTest(succeed: Boolean = true) {
+        prepareFilesFindReferences()
         if (succeed && referencedElement == null) {
             fail("Could not find reference at caret.")
         }
@@ -94,5 +102,32 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         } else {
             assertFalse("Resolved unexpected reference.", resolvedElement == referencedElement!!.resolve())
         }
+    }
+
+    protected fun doTestStubOnlyResolve(
+        @Language("D") mainFileContent: String,
+        resolvedFileName: String?
+    ) {
+        val referenceIndicator = "/*<ref>*/"
+        var mainFileText = StringUtil.convertLineSeparators(mainFileContent)
+        val referencedOffset = mainFileText.indexOf(referenceIndicator)
+        assertTrue("Test is not properly configured, need $referenceIndicator to be defined", referencedOffset > 0)
+        mainFileText = mainFileText.replace(referenceIndicator, "")
+        val psiMainFile = myFixture.configureByText("main.d", mainFileText)
+        referencedElement = psiMainFile.findReferenceAt(referencedOffset)
+        val element = referencedElement!!.resolve()
+        if (resolvedFileName != null) {
+            assertNotNull("Referenced not resolved", element)
+            assertInstanceOf(element!!, DlangFile::class.java)
+            assertEquals((element as DlangFile).name, resolvedFileName)
+        } else {
+            assertNull(element)
+        }
+
+        checkAstNotLoaded { file -> file.path.endsWith("main.d")}
+    }
+
+     private fun checkAstNotLoaded(fileFilter: VirtualFileFilter) {
+        PsiManagerEx.getInstanceEx(project).setAssertOnFileLoadingFilter(fileFilter, testRootDisposable)
     }
 }
