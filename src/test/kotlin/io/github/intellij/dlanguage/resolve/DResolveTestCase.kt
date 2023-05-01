@@ -1,13 +1,17 @@
 package io.github.intellij.dlanguage.resolve
 
+import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.CharsetToolkit
+import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFileFilter
+import com.intellij.openapi.vfs.writeText
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.PsiManagerEx
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
+import com.intellij.testFramework.utils.vfs.createFile
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
 import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration
 import io.github.intellij.dlanguage.psi.DlangFile
@@ -43,37 +47,40 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
                 referencedElement = psiFile.findReferenceAt(referencedOffset)
             }
             if (resolvedOffset != -1) {
-                val ref = psiFile.findReferenceAt(resolvedOffset)
-                if (ref == null) {
-                    fail("Reference was null in " + file.name)
-                }
-                resolvedElement = ref!!.element
-                ensureNotNull(file)
-                // container elements like DEFINITION_FUNCTION need to be looked up by .getElement().getParent()
-                if (resolvedElement is DlangIdentifier) {
-                    resolvedElement = ref.element.parent
-                }
-                //if we're resolving something within a class don't resolve the class
-                if (ref is PsiMultiReference && resolvedElement is DLanguageClassDeclaration) {
-                    for (psiReference in ref.references) {
-                        if (psiReference.element !is DLanguageClassDeclaration) {
-                            resolvedElement = psiReference.element
-                        }
-                    }
-                }
-                ensureNotNull(file)
+                findResolvedInFile(psiFile, resolvedOffset)
             }
         }
     }
 
-    private fun ensureNotNull(file: File) {
+    private fun findResolvedInFile(psiFile: PsiElement, resolvedOffset: Int) {
+        val ref = psiFile.findReferenceAt(resolvedOffset)
+        if (ref == null) {
+            fail("Reference was null in " + psiFile.containingFile.name)
+        }
+        resolvedElement = ref!!.element
+        ensureResolvedNotNull(psiFile.containingFile.name)
+        // container elements like DEFINITION_FUNCTION need to be looked up by .getElement().getParent()
+        if (resolvedElement is DlangIdentifier) {
+            resolvedElement = ref.element.parent
+        }
+        //if we're resolving something within a class don't resolve the class
+        if (ref is PsiMultiReference && resolvedElement is DLanguageClassDeclaration) {
+            for (psiReference in ref.references) {
+                if (psiReference.element !is DLanguageClassDeclaration) {
+                    resolvedElement = psiReference.element
+                }
+            }
+        }
+        ensureResolvedNotNull(psiFile.containingFile.name)
+    }
+
+    private fun ensureResolvedNotNull(fileName: String) {
         if (resolvedElement == null) {
-            fail("Reference returned null element in " + file.name)
+            fail("Reference returned null element in $fileName")
         }
     }
 
-    protected fun doTest(succeed: Boolean = true) {
-        prepareFilesFindReferences()
+    private fun doCheck(succeed: Boolean) {
         if (succeed && referencedElement == null) {
             fail("Could not find reference at caret.")
         }
@@ -102,6 +109,25 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         } else {
             assertFalse("Resolved unexpected reference.", resolvedElement == referencedElement!!.resolve())
         }
+    }
+
+    protected fun doTest(succeed: Boolean = true) {
+        prepareFilesFindReferences()
+        doCheck(succeed)
+    }
+
+    protected fun doCheckByText2(mainFileContent: String, file2: String) {
+        val referenceIndicator = "/*<ref>*/"
+        val resolvedIndicator = "/*<resolved>*/"
+        val referencedOffset = mainFileContent.indexOf(referenceIndicator)
+        val mainFileText = mainFileContent.replace(referenceIndicator, "")
+        val resolvedOffset = file2.indexOf(resolvedIndicator)
+        val file2Text = file2.replace(resolvedIndicator, "")
+        val psiFile2 = myFixture.configureByText("file2.d", file2Text)
+        val psiFile = myFixture.configureByText("main.d", mainFileText)
+        referencedElement = psiFile.findReferenceAt(referencedOffset)
+        findResolvedInFile(psiFile2, resolvedOffset)
+        doCheck(true)
     }
 
     protected fun doTestStubOnlyResolve(
