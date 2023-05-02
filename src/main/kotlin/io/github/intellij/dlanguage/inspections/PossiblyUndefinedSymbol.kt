@@ -53,8 +53,9 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                         holder.registerProblem(identifier.parent, "Unresolved import", ProblemHighlightType.ERROR)
                     }
                     // else it’s a package. Packages may not reflect a real folder, it’s fine
-                }
-                else if (objectDotDContents.contains(identifier.name))
+                } else if (identifier.parent is SingleImport) {
+                    // Its new name of a renamed import, it’s a new identifier fine
+                } else if (objectDotDContents.contains(identifier.name))
                     holder.registerProblem(identifier, "Possibly undefined symbol - SDK not setup", SetupSDK(identifier.containingFile))
                 else if (identifier.parent is VersionCondition) {
                     // If version identifier is not defined, this mean that the version is not enabled
