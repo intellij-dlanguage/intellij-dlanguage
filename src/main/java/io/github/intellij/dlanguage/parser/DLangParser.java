@@ -1598,7 +1598,7 @@ class DLangParser {
      * Parses an AssertArguments
      *
      * $(GRAMMAR $(RULEDEF assertArguments):
-     *     $(RULE assignExpression) ($(LITERAL ',') $(RULE assignExpression))? $(LITERAL ',')?
+     *     $(RULE assignExpression) ($(LITERAL ',') ($(RULE assignExpression))* $(LITERAL ',')?
      *     ;)
      */
     public boolean parseAssertArguments() {
@@ -1614,12 +1614,14 @@ class DLangParser {
             exit_section_modified(builder, m, ASSERT_ARGUMENTS, true);
             return true;
         }
-        if (!parseAssignExpression()) {
-            cleanup(m, ASSERT_ARGUMENTS);
-            return false;
-        }
-        if (currentIs(tok(","))) {
-            advance();
+        while (!currentIs(tok(")"))) {
+            if (!parseAssignExpression()) {
+                cleanup(m, ASSERT_ARGUMENTS);
+                return false;
+            }
+            if (currentIs(tok(","))) {
+                advance();
+            }
         }
         exit_section_modified(builder, m, ASSERT_ARGUMENTS, true);
         return true;
