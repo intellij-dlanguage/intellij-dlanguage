@@ -103,8 +103,10 @@ public class DScanner implements DlangLinter {
                                 .ifPresent(problems::add);
                         } else if(ProcessOutputTypes.STDERR.equals(outputType)) {
                             LOG.warn(event.getText());
-                            final Notification notification = new Notification("DScanner Error", "DScanner Error", event.getText(), NotificationType.ERROR);
-                            Notifications.Bus.notify(notification, file.getProject());
+                            if (event.getText().contains("[error]")) {
+                                final Notification notification = new Notification("DScanner Error", "DScanner Error", event.getText(), NotificationType.ERROR);
+                                Notifications.Bus.notify(notification, file.getProject());
+                            }
                         }
                     }
                 });
