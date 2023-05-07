@@ -20,6 +20,7 @@ import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
@@ -127,25 +128,27 @@ public class DScanner implements DlangLinter {
     }
 
     private List<String> getCompilerSourcePaths(final PsiFile file) {
-        @Nullable final Module module = ProjectRootManager.getInstance(file.getProject())
-                                                            .getFileIndex()
-                                                            .getModuleForFile(file.getVirtualFile());
+        return ApplicationManager.getApplication().runReadAction((Computable<List<String>>) () -> {
+            @Nullable final Module module = ProjectRootManager.getInstance(file.getProject())
+                .getFileIndex()
+                .getModuleForFile(file.getVirtualFile());
 
-        final ArrayList<String> compilerSourcePaths = new ArrayList<>();
+            final ArrayList<String> compilerSourcePaths = new ArrayList<>();
 
-        if(module != null && !module.isDisposed()) {
-            @Nullable final Sdk sdk = ModuleRootManager.getInstance(module).getSdk();
+            if(module != null && !module.isDisposed()) {
+                @Nullable final Sdk sdk = ModuleRootManager.getInstance(module).getSdk();
 
-            if (sdk != null && (sdk.getSdkType() instanceof DlangSdkType)) {
-                for (VirtualFile f: sdk.getSdkModificator().getRoots(OrderRootType.SOURCES)) {
-                    if (f.exists() && f.isDirectory()) {
-                        compilerSourcePaths.add(f.getPath());
+                if (sdk != null && (sdk.getSdkType() instanceof DlangSdkType)) {
+                    for (VirtualFile f: sdk.getSdkModificator().getRoots(OrderRootType.SOURCES)) {
+                        if (f.exists() && f.isDirectory()) {
+                            compilerSourcePaths.add(f.getPath());
+                        }
                     }
                 }
             }
-        }
 
-        return compilerSourcePaths;
+            return compilerSourcePaths;
+        });
     }
 
     // Example output from DScanner:
