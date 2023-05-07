@@ -17,9 +17,9 @@ import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,6 +66,11 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
         return PsiTreeUtil.getChildOfType(this, DLanguageIdentifierChain.class);
     }
 
+    @Override
+    public boolean hasImportBinds() {
+        return !getApplicableImportBinds().isEmpty() || !getApplicableNamedImportBinds().isEmpty();
+    }
+
     @NotNull
     @Override
     public Set<String> getApplicableImportBinds() {
@@ -82,7 +87,7 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
         if (importBindings != null) {
             final Set<String> set = new HashSet<>();
             for (final DLanguageImportBind importBind : importBindings.getImportBinds()) {
-                if (importBind.getIdentifier() != null) {
+                if (importBind.getIdentifier() != null && importBind.getNamedImportBind() == null) {
                     final @NotNull String name = importBind.getIdentifier().getName();
                     set.add(name);
                 }
@@ -90,6 +95,33 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
             return set;
         }
         return Collections.emptySet();
+    }
+
+    @NotNull
+    @Override
+    public Map<String, String> getApplicableNamedImportBinds() {
+        DlangSingleImportStub greenStub = getGreenStub();
+        if (greenStub != null) {
+            try {
+                return greenStub.getApplicableNamedImportBinds();
+            } catch (final NullPointerException e) {
+                Logger.getInstance(DlangSingleImportImpl.class).error(e);
+            }
+        }
+        final DLanguageImportBindings importBindings = ((DLanguageImportDeclaration) getParent())
+            .getImportBindings();
+        if (importBindings != null) {
+            final Map<String, String> map = new HashMap<>();
+            for (final DLanguageImportBind importBind : importBindings.getImportBinds()) {
+                if (importBind.getIdentifier() != null && importBind.getNamedImportBind() != null && importBind.getNamedImportBind().getIdentifier() != null) {
+                    final @NotNull String name = importBind.getNamedImportBind().getIdentifier().getName();
+                    final @NotNull String bind = importBind.getIdentifier().getName();
+                    map.put(name, bind);
+                }
+            }
+            return map;
+        }
+        return Collections.emptyMap();
     }
 
     @NotNull

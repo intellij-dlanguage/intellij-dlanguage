@@ -4,6 +4,7 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.stubs.NamedStubBase
+import com.jetbrains.rd.util.first
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.resolve.processors.DResolveProcessor
 import io.github.intellij.dlanguage.stubs.index.DMembersIndex
@@ -21,11 +22,18 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
         return true
     }
 
-    val project = start.project
-    val log: Logger = Logger.getInstance(this::class.java)
-    val name = start.name
+    private val project = start.project
+    private val log: Logger = Logger.getInstance(this::class.java)
+    private val name = start.name
 
     override val result = mutableSetOf<DNamedElement>()
+
+//    private val importsDoneKey = Key.create<MutableSet<SingleImport>>("currentlyProcessedImports")
+
+    /**
+     * Contains the already known (processed) imports (to prevent looping)
+     */
+    private val currentlyAlreadyDone: MutableSet<SingleImport> = mutableSetOf()
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         var toContinue = true
@@ -50,10 +58,6 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
         return toContinue
     }
 
-//    val importsDoneKey = Key.create<MutableSet<SingleImport>>("currentlyProcessedImports")
-
-    val currentlyAlreadyDone: MutableSet<SingleImport> = mutableSetOf()
-
     /**
      * Returns false if results are found, true if more searching is needed b/c nothing was found
      */
@@ -62,22 +66,40 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
             return true
         if (import.importedModuleName == "")
             throw IllegalArgumentException()
+
         val startSize = result.size
         val imports = DPublicImportIndex.recursivelyGetAllPublicImports(import)
-        if (import.applicableImportBinds.size == 0) {
-            result.addAll(DTopLevelDeclarationIndex.getTopLevelSymbols(start.name, import.importedModuleName, project))
-        } else {
+        if (import.hasImportBinds()) {
             //todo this can be done better:
             val bindDecls = import.applicableImportBinds.flatMap { DTopLevelDeclarationIndex.getTopLevelSymbols(it, import.importedModuleName, project) }
-            if (bindDecls.filter { it.name == start.name }.isNotEmpty()) {
-                result.addAll(bindDecls.filter { it.name == start.name })
+            val matchingBindDeclarations = bindDecls.filter { it.name == start.name }
+            if (matchingBindDeclarations.isNotEmpty()) {
+                result.addAll(matchingBindDeclarations)
                 return false
             }
-            val bindDeclsMembers = import.applicableImportBinds.flatMap { DMembersIndex.getMemberSymbols(it, import.importedModuleName, project) }
-            if (bindDeclsMembers.filter { it.name == start.name }.isNotEmpty()) {
-                result.addAll(bindDeclsMembers.filter { it.name == start.name })
+            val memberDecls = import.applicableImportBinds.flatMap { DMembersIndex.getMemberSymbols(it, import.importedModuleName, project) }
+            val matchingMemberDeclarations = memberDecls.filter { it.name == start.name }
+            if (matchingMemberDeclarations.isNotEmpty()) {
+                result.addAll(matchingMemberDeclarations)
                 return false
             }
+
+            // named import binds
+            val matchingNamedBindDeclaration = import.applicableNamedImportBinds.filter { it.key == start.name }
+            // Check for size == 1 to because otherwise there is a semantic error (duplicate symbol) which is not allowed
+            if (matchingNamedBindDeclaration.size == 1) {
+                val symbolName = matchingNamedBindDeclaration.first().value
+                val namedBindDecls = DTopLevelDeclarationIndex.getTopLevelSymbols(symbolName, import.importedModuleName, project)
+                val namedBindDeclsMembers = DMembersIndex.getMemberSymbols(symbolName, import.importedModuleName, project)
+                result.addAll(namedBindDeclsMembers)
+                result.addAll(namedBindDecls)
+                if (namedBindDecls.isNotEmpty() || namedBindDeclsMembers.isNotEmpty())
+                    return false
+            }
+        }
+
+        if (!((isRenamedImport(import) && inSelectiveBind(import)) || (!isRenamedImport(import) && import.hasImportBinds()))) {
+            result.addAll(DTopLevelDeclarationIndex.getTopLevelSymbols(start.name, import.importedModuleName, project))
         }
         currentlyAlreadyDone.add(import)//needs to be before for imports loop in case of an infinite import loop
         for (recursivelyImported in imports) {
@@ -86,12 +108,13 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
         return result.size == startSize
     }
 
-    private fun getMembersOfBind(resolveResult: DNamedElement) {
-        for (member: NamedStubBase<*> in (resolveResult as io.github.intellij.dlanguage.psi.interfaces.HasMembers<*>).members) {
-            if (member.name == start.name) {
-                result.add((member.psi as DNamedElement))
-            }
-        }
+    private fun isRenamedImport(import: SingleImport): Boolean {
+        return import.identifier != null
+    }
+
+    private fun inSelectiveBind(import: SingleImport): Boolean {
+        return import.applicableImportBinds.any { it == start.name } ||
+            import.applicableNamedImportBinds.any {it.key == start.name }
     }
 
 }
