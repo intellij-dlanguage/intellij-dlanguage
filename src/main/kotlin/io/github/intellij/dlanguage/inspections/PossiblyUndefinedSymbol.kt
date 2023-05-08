@@ -15,9 +15,7 @@ import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.psi.impl.named.DlangIdentifierImpl
 import io.github.intellij.dlanguage.resolve.DResolveUtil
-import io.github.intellij.dlanguage.utils.Identifier
-import io.github.intellij.dlanguage.utils.ModuleDeclaration
-import io.github.intellij.dlanguage.utils.VersionCondition
+import io.github.intellij.dlanguage.utils.*
 
 
 /**
@@ -50,12 +48,20 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 //                holder.registerProblem(identifier, "Possibly undefined symbol")
 //            }
             if (DResolveUtil.getInstance(identifier.project).findDefinitionNode(identifier, false).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
-
-                if (objectDotDContents.contains(identifier.name))
+                if (identifier.parent is IdentifierChain && identifier.parent.parent is SingleImport) {
+                    if ((identifier.parent as IdentifierChain).identifiers.last() == identifier) {
+                        holder.registerProblem(identifier.parent, "Unresolved import", ProblemHighlightType.ERROR)
+                    }
+                    // else it’s a package. Packages may not reflect a real folder, it’s fine
+                } else if (identifier.parent is SingleImport) {
+                    // Its new name of a renamed import, it’s a new identifier fine
+                } else if (objectDotDContents.contains(identifier.name))
                     holder.registerProblem(identifier, "Possibly undefined symbol - SDK not setup", SetupSDK(identifier.containingFile))
-                else if (identifier.parent is VersionCondition)
-                    holder.registerProblem(identifier, "Possibly undefined symbol", ProblemHighlightType.WEAK_WARNING)
-                else
+                else if (identifier.parent is VersionCondition) {
+                    // If version identifier is not defined, this mean that the version is not enabled
+                } else if (identifier.parent is DebugCondition) {
+                    // If version identifier is not defined, this mean that the debug is not enabled
+                } else
                     holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix
             }
             val end = System.currentTimeMillis()

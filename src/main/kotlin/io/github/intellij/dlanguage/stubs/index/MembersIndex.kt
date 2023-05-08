@@ -4,7 +4,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.*
 import io.github.intellij.dlanguage.index.DModuleIndex
-import io.github.intellij.dlanguage.index.DModuleIndex.getFilesByModuleName
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.stubs.*
 import io.github.intellij.dlanguage.stubs.interfaces.DlangUnittestStub
@@ -39,7 +38,7 @@ class DMembersIndex : StringStubIndexExtension<DNamedElement>() {
 
         fun getMemberSymbols(name: String, module: String, project: Project): Set<DNamedElement> {
             val elements = mutableSetOf<DNamedElement>()
-            for (file in getFilesByModuleName(project, module, GlobalSearchScope.allScope(project))) {
+            for (file in DModuleIndex.getFilesByModuleName(project, module, GlobalSearchScope.allScope(project))) {
                 elements.addAll(StubIndex.getElements(KEY, name, project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))//todp assert that this should only be called once
             }
             return elements

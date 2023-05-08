@@ -26,7 +26,7 @@ import com.intellij.psi.tree.TokenSet
 import com.intellij.psi.tree.TokenSet.create
 import com.intellij.psi.tree.TokenSet.orSet
 import com.intellij.ui.EditorNotificationPanel
-import io.github.intellij.dlanguage.index.DModuleIndex.getFilesByModuleName
+import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.parser.ParserWrapper
 import io.github.intellij.dlanguage.psi.DTokenSets.STRING_LITERALS
 import io.github.intellij.dlanguage.psi.DlangFile
@@ -140,7 +140,7 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
         val resolveFilesComputable = Computable {
             val scope = allScope(project)
             expectedModules.filter {
-                getFilesByModuleName(project, it, scope).isEmpty()
+                DModuleIndex.getFilesByModuleName(project, it, scope).isEmpty()
             }
         }
         return DumbService.getInstance(project).runReadActionInSmartMode(resolveFilesComputable)

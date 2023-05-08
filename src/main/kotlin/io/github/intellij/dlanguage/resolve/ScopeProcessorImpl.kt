@@ -22,19 +22,13 @@ object ScopeProcessorImpl {
 
     /**
      * takes the elements declared in the given psi and passes them to the scope processor via the execute method. The scope processor will return false if it has found what it is "looking for". Note that certain declarations processors will not process child block statement/aggregate bodies since those have their own processor.
-     * Some of the process declarations methods may return early while others will search throught the entire scope
-
+     * Some of the process declarations methods may return early while others will search through the entire scope
      * @param element
-     * *
      * @param processor
-     * *
      * @param state
-     * *
      * @param lastParent todo make use of this to determine if scope statements/decldefs contained inside a element should be processed or not.
-     * *
      * @param place
-     * *
-     * @return true is should continue
+     * @return true if it should continue, false if it should stop
      */
     @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: StructBody,

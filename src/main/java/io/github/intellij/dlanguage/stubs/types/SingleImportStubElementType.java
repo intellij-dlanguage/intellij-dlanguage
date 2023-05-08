@@ -11,7 +11,9 @@ import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,8 +38,12 @@ public class SingleImportStubElementType extends DNamedStubElementType<DlangSing
         for (final String bind : psi.getApplicableImportBinds()) {
             binds.add(StringRef.fromString(bind));
         }
+        final Map<StringRef, StringRef> namedBinds = new HashMap<>();
+        psi.getApplicableNamedImportBinds().forEach((bindName, bind) -> namedBinds.put(StringRef.fromString(bindName), StringRef.fromString(bind)));
         return new DlangSingleImportStub(parentStub, this, psi.getName(),
-            psi.getApplicableImportBinds().size(), binds, psi.getImportedModuleName(),
+            psi.getApplicableImportBinds().size(), binds,
+            psi.getApplicableNamedImportBinds().size(), namedBinds,
+            psi.getImportedModuleName(),
             psi.getIdentifier() != null,
             psi.getIdentifier() != null ? psi.getIdentifier().getName() : "",
             psi.getAttributes());
@@ -49,6 +55,11 @@ public class SingleImportStubElementType extends DNamedStubElementType<DlangSing
         dataStream.writeInt(stub.numBinds());
         for (final String s : stub.getBinds()) {
             dataStream.writeName(s);
+        }
+        dataStream.writeInt(stub.numNamedBinds());
+        for (var entry : stub.getNamedBinds().entrySet()) {
+            dataStream.writeName(entry.getKey());
+            dataStream.writeName(entry.getValue());
         }
         dataStream.writeName(stub.getName());
         dataStream.writeBoolean(stub.hasName());
@@ -67,12 +78,17 @@ public class SingleImportStubElementType extends DNamedStubElementType<DlangSing
         for (int i = 0; i < numBinds; i++) {
             binds.add(dataStream.readName());
         }
+        final int numNamedBinds = dataStream.readInt();
+        final Map<StringRef, StringRef> namedBinds = new HashMap<>();
+        for (int i = 0; i < numNamedBinds; i++) {
+            namedBinds.put(dataStream.readName(), dataStream.readName());
+        }
         final StringRef importName = dataStream.readName();
         final boolean hasName = dataStream.readBoolean();
         final StringRef importedModule = dataStream.readName();
         final DAttributes attributes = DAttributes.Companion.read(dataStream);
-        return new DlangSingleImportStub(parentStub, this, name, numBinds, binds, importName,
-            hasName, importedModule, attributes);
+        return new DlangSingleImportStub(parentStub, this, name, numBinds, binds, numNamedBinds, namedBinds,
+            importName, hasName, importedModule, attributes);
     }
 
     @Override

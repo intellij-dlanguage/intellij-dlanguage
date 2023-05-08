@@ -8,6 +8,7 @@ import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Set;
 
 
@@ -21,8 +22,13 @@ public interface DlangSingleImport extends PsiElement, DNamedElement, StubBasedP
     @Nullable
     DLanguageIdentifierChain getIdentifierChain();
 
+    boolean hasImportBinds();
+
     @NotNull
     Set<String> getApplicableImportBinds();
+
+    @NotNull
+    Map<String, String> getApplicableNamedImportBinds();
 
     @NotNull
     String getImportedModuleName();
