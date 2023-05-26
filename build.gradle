@@ -6,8 +6,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id 'org.gradle.idea'
     id 'java'
-    id 'org.jetbrains.intellij' version '1.13.3'
-    id 'org.jetbrains.kotlin.jvm' version '1.8.21'
+    id 'org.jetbrains.intellij' version '1.10.1' // cannot update to '1.13.3' as it breaks verifyPlugin
+    id 'org.jetbrains.kotlin.jvm' version '1.8.20'
 //    id 'net.saliman.cobertura' version '4.0.0'
 //    id 'com.github.kt3k.coveralls' version '2.10.2'
     id 'org.jetbrains.grammarkit' version '2022.3.1'
@@ -59,7 +59,7 @@ allprojects {
 //        kotlinOptions {
 //            suppressWarnings = true
 //            apiVersion = "1.7"
-//            languageVersion = "1.8"
+//            languageVersion = "1.7"
 //            jvmTarget = javaVersion
 //            freeCompilerArgs = [ '-Xjvm-default=enable' ]
 //        }
@@ -127,7 +127,6 @@ apply plugin: 'org.jetbrains.intellij'
 intellij {
     pluginName = 'intellij-dlanguage'
     version = ideaVersion
-    instrumentCode = false
     //type = 'CL' // maybe helpful to change this when trying other IDE. can be 'IC', 'IU', 'JPS', or 'CL'
     updateSinceUntilBuild = false
     plugins = [ 'org.intellij.intelliLang', 'com.intellij.java', 'com.intellij.java.ide', 'com.intellij.copyright' ] // IDEA only (plugin was previously 'java')
