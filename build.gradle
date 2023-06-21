@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id 'org.gradle.idea'
     id 'java'
-    id 'org.jetbrains.intellij' version '1.14.1'
+    id 'org.jetbrains.intellij' version '1.10.1' // cannot update to '1.13.3' as it breaks verifyPlugin
     id 'org.jetbrains.kotlin.jvm' version '1.8.21'
 //    id 'net.saliman.cobertura' version '4.0.0'
 //    id 'com.github.kt3k.coveralls' version '2.10.2'
