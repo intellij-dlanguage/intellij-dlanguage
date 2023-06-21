@@ -6,8 +6,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id 'org.gradle.idea'
     id 'java'
-    id 'org.jetbrains.intellij' version '1.10.1' // cannot update to '1.13.3' as it breaks verifyPlugin
-    id 'org.jetbrains.kotlin.jvm' version '1.8.20'
+    id 'org.jetbrains.intellij' version '1.14.1'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.21'
 //    id 'net.saliman.cobertura' version '4.0.0'
 //    id 'com.github.kt3k.coveralls' version '2.10.2'
     id 'org.jetbrains.grammarkit' version '2022.3.1'
@@ -293,12 +293,12 @@ dependencies {
     implementation project(':sdlang')
     runtimeOnly project(':dub')
 
-    implementation 'com.google.code.gson:gson:2.9.+' // used by dub parser
+    implementation 'com.google.code.gson:gson:2.10.+' // used by dub parser
 
     testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0+'
 
     testImplementation 'junit:junit:4.13+'
-    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8+'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.9+'
 }
 
 apply plugin: 'idea'
