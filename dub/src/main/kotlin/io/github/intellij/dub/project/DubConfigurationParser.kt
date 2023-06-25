@@ -12,6 +12,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import io.github.intellij.dub.project.DubConfigurationParser
 import io.github.intellij.dub.tools.DescribeParser
@@ -36,7 +37,8 @@ import javax.swing.tree.TreeNode
 class DubConfigurationParser @JvmOverloads constructor(
     private val project: Project,
     private val dubBinaryPath: String,
-    private val silentMode: Boolean = false
+    private val silentMode: Boolean = false,
+    private val moduleDir: String = ""
 ) {
     private val parser: DescribeParser
     /**
@@ -120,8 +122,10 @@ class DubConfigurationParser @JvmOverloads constructor(
     fun canUseDub(): Boolean {
         // For wsl, dub command can have any file name not only dub/dub.exe
         val dubPathValid = StringUtil.isNotEmpty(dubBinaryPath)
-        val baseDir = project.guessProjectDir()
-            ?: return false // can't use dub without knowing base path
+        val baseDir = if (moduleDir.isEmpty()) project.guessProjectDir() else LocalFileSystem.getInstance().findFileByPath(moduleDir)
+        if (baseDir == null || !baseDir.exists())
+            return false
+
         baseDir.refresh(true, true)
         return dubPathValid && Arrays.stream(baseDir.children)
             .filter { f: VirtualFile -> !f.isDirectory }
@@ -176,8 +180,8 @@ class DubConfigurationParser @JvmOverloads constructor(
     }
 
     private fun parseDubConfiguration(silentMode: Boolean): Optional<DubProject> {
-        val projectDir = project.guessProjectDir()
-        if (projectDir == null || StringUtil.isEmptyOrSpaces(dubBinaryPath)) {
+        val projectDir = if (moduleDir.isEmpty()) project.guessProjectDir() else LocalFileSystem.getInstance().findFileByPath(moduleDir)
+        if (projectDir == null || !projectDir.exists() || StringUtil.isEmptyOrSpaces(dubBinaryPath)) {
             return Optional.empty()
         }
         if (!Files.isExecutable(

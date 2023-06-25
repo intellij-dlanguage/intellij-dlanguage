@@ -20,6 +20,7 @@ import com.intellij.packaging.artifacts.ModifiableArtifactModel
 import com.intellij.projectImport.ProjectImportBuilder
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangSdkType
+import io.github.intellij.dlanguage.settings.ToolKey
 import io.github.intellij.dlanguage.utils.DToolsNotificationAction
 import io.github.intellij.dub.module.DlangDubModuleBuilder
 import io.github.intellij.dub.project.DubConfigFileListener.Companion.getDubFileFromModule
@@ -102,21 +103,25 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
         moduleModel: ModifiableModuleModel
     ): List<Module> {
         val moduleList: MutableList<Module> = ArrayList()
-        if (StringUtil.isEmpty(getParameters().dubBinary)) {
+        if (ToolKey.DUB_KEY.path.isNullOrEmpty()) {
             Notifications.Bus.notify(
                 Notification(
                     "Dub Import", "Dub Import",
-                    "DUB executable path is empty<br/><a href='configureDLanguageTools'>Configure</a>",
+                    "DUB executable path is empty",
                     NotificationType.WARNING
                 )
                     .addAction(DToolsNotificationAction("Configure")),
                 project
             )
+            // prevent a crash, inform callers that we can't actually call dub
+            // not ideal, should really be handled elsewhere
+            throw ConfigurationException("Missing dub, cannot import")
         }
         val dubConfigurationParser = DubConfigurationParser(
             project,
-            getParameters().dubBinary!!,
-            false
+            ToolKey.DUB_KEY.path!!,
+            false,
+            this.getFileToImport()
         )
         val dubProject = dubConfigurationParser.dubProject
         dubProject.ifPresent { (_, pkg): DubProject ->
