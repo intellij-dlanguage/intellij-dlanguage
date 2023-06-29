@@ -14,7 +14,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 import com.intellij.openapi.util.InvalidDataException
-import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.packaging.artifacts.ModifiableArtifactModel
 import com.intellij.projectImport.ProjectImportBuilder
@@ -70,8 +69,8 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
     override fun commit(
         project: Project,
         modifiableModuleModel: ModifiableModuleModel?,
-        modulesProvider: ModulesProvider,
-        modifiableArtifactModel: ModifiableArtifactModel
+        modulesProvider: ModulesProvider?,
+        modifiableArtifactModel: ModifiableArtifactModel?
     ): List<Module> {
         val model = modifiableModuleModel ?: ModuleManager.getInstance(project).getModifiableModel()
         val modules: MutableList<Module> = ArrayList()
