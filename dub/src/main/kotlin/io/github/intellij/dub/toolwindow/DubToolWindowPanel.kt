@@ -268,7 +268,9 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
         group.addSeparator()
         group.add(ConfigureDToolsAction())
 
-        val actionToolBar = ActionManager.getInstance().createActionToolbar("DubToolWindow", group, true)
+        val actionToolBar = ActionManager.getInstance().createActionToolbar("DubToolWindow", group, true) // Please call toolbar.setTargetComponent() explicitly. (https://github.com/intellij-dlanguage/intellij-dlanguage/issues/874)
+        actionToolBar.targetComponent = this@DubToolWindowPanel
+
         return com.intellij.util.ui.JBUI.Panels.simplePanel(actionToolBar.component)
     }
 
