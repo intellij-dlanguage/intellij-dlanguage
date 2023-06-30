@@ -14,7 +14,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.LibraryOrSdkOrderEntry
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.roots.ProjectRootManager
-import com.intellij.openapi.roots.ui.configuration.ProjectSettingsService
+import com.intellij.openapi.roots.ui.configuration.SdkPopupFactory
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindow
@@ -25,6 +25,7 @@ import com.intellij.ui.SimpleTextAttributes
 import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.IconUtil
 import io.github.intellij.dlanguage.DLanguage
+import io.github.intellij.dlanguage.DlangSdkType
 import io.github.intellij.dub.actions.ConfigureDToolsAction
 import io.github.intellij.dub.actions.DubBuildAction
 import io.github.intellij.dub.actions.ProcessDLibs
@@ -287,11 +288,18 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
         override fun actionPerformed(e: AnActionEvent) {
             val project = e.project ?: return
 
-            val sdk = ProjectSettingsService.getInstance(project).chooseAndSetSdk() ?: return
-
-            ProcessDLibs().actionPerformed(e) // should this be ProcessDLibs().update(e)
-
-            this.callback?.invoke()
+            // was previously calling deprecated ProjectSettingsService#chooseAndSetSdk method.
+            // Now using SdkPopupFactory instead
+            SdkPopupFactory.newBuilder()
+                .withProject(project)
+                .withSdkTypeFilter { it == DlangSdkType.getInstance() }
+                .updateProjectSdkFromSelection()
+                .onSdkSelected {
+                    ProcessDLibs().actionPerformed(e) // should this be ProcessDLibs().update(e)
+                    this.callback?.invoke()
+                }
+                .buildPopup()
+                .showPopup(e)
         }
     }
 
