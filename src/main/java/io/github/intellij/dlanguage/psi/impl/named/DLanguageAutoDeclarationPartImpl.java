@@ -30,7 +30,8 @@ public class DLanguageAutoDeclarationPartImpl extends
         super(node);
     }
 
-    public void accept(@NotNull final DlangVisitor visitor) {visitor.visitDNamedElement(this);
+    public void accept(@NotNull final DlangVisitor visitor) {
+        visitor.visitDNamedElement(this);
         visitor.visitAutoDeclarationPart(this);
     }
 
@@ -46,7 +47,7 @@ public class DLanguageAutoDeclarationPartImpl extends
     }
 
     @Override
-    @NotNull
+    @Nullable
     public DLanguageInitializer getInitializer() {
         return PsiTreeUtil.getChildOfType(this, DLanguageInitializer.class);
     }
