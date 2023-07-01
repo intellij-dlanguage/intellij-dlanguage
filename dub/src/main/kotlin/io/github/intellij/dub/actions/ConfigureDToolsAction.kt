@@ -1,6 +1,7 @@
 package io.github.intellij.dub.actions
 
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.options.ShowSettingsUtil
@@ -27,4 +28,7 @@ class ConfigureDToolsAction : DubAction("Configure D Tools", null, AllIcons.Gene
         }
     }
 
+    override fun getActionUpdateThread(): ActionUpdateThread {
+        return ActionUpdateThread.EDT;
+    }
 }

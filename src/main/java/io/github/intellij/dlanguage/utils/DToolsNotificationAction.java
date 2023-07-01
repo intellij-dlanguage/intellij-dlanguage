@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.utils;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.options.ShowSettingsUtil;
@@ -22,4 +23,8 @@ public class DToolsNotificationAction extends AnAction implements DumbAware {
         ShowSettingsUtil.getInstance().showSettingsDialog(e.getProject(), DLanguageToolsConfigurable.D_TOOLS_ID);
     }
 
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
+    }
 }
