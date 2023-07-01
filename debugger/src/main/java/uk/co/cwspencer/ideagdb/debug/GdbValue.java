@@ -71,7 +71,7 @@ public class GdbValue extends XValue {
     @Override
     public void computePresentation(@NotNull final XValueNode node, @NotNull XValuePlace place) {
         final String goType = GdbUtil.getGoObjectType(m_variableObject.type);
-        final Boolean hasChildren = m_variableObject.numChildren != null && m_variableObject.numChildren > 0;
+        final boolean hasChildren = m_variableObject.numChildren != null && m_variableObject.numChildren > 0;
 
         if (goType.equals("string")) {
             handleGoString(node);
@@ -163,7 +163,7 @@ public class GdbValue extends XValue {
 
     private void onGoGdbStringReady(@NotNull final XValueNode node, GdbEvent event) {
         String value;
-        Boolean isTrueString = false;
+        boolean isTrueString = false;
         if (event instanceof GdbErrorEvent) {
             value = ((GdbErrorEvent) event).message;
         } else if (!(event instanceof GdbVariableObjects)) {
@@ -196,7 +196,7 @@ public class GdbValue extends XValue {
 
             node.setPresentation(getGdbVarIcon(), "string (" + value.length() + ")", value, false);
         } else {
-            Boolean hasChildren = m_variableObject.numChildren != null && m_variableObject.numChildren > 0;
+            boolean hasChildren = m_variableObject.numChildren != null && m_variableObject.numChildren > 0;
             node.setPresentation(getGdbVarIcon(), "unknown", m_variableObject.value, hasChildren);
         }
     }

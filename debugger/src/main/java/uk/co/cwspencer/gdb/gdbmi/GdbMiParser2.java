@@ -814,7 +814,7 @@ public class GdbMiParser2 {
             return subRes;
         }
 
-        Integer matchGroup = 0;
+        int matchGroup = 0;
 
         // number="1"
         GdbMiResult numVal = new GdbMiResult("number");
@@ -925,7 +925,7 @@ public class GdbMiParser2 {
             return subRes;
         }
 
-        Integer matchGroup = 0;
+        int matchGroup = 0;
 
         // number="1"
         GdbMiResult numVal = new GdbMiResult("number");
