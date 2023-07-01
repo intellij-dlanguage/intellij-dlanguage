@@ -89,30 +89,34 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
          */
         @JvmStatic
         fun processDLibs(project: Project, module: Module, mostlySilentMode: Boolean, buildBefore: Boolean) {
-            ApplicationManager.getApplication().runWriteAction {
-                // remove all existing libs from module (removing from module doesn't remove from project):
-                removeAllLibrariesFromModule(module)
 
-                removeAllLibrariesFromProject(project)
+            // warning, we may not be on the EDT, but we actually do need to be here!
+            ApplicationManager.getApplication().invokeAndWait {
+                ApplicationManager.getApplication().runWriteAction {
+                    // remove all existing libs from module (removing from module doesn't remove from project):
+                    removeAllLibrariesFromModule(module)
 
-                // todo: perhaps we can use the custom library tables. Need to find out how they work
-                // val libs = LibraryTablesRegistrar.getInstance().customLibraryTables
-                // LibraryTablesRegistrar.getInstance().customLibraryTables.clear()
+                    removeAllLibrariesFromProject(project)
 
-                // used to use the removeDLibs method
-                // removeDLibs(module, project); // this is not necessary since intellij filters out duplicate libraries.
-            }
+                    // todo: perhaps we can use the custom library tables. Need to find out how they work
+                    // val libs = LibraryTablesRegistrar.getInstance().customLibraryTables
+                    // LibraryTablesRegistrar.getInstance().customLibraryTables.clear()
 
-            ApplicationManager.getApplication().invokeAndWait({
-                val task = object : Task.Backgroundable(project,
-                    "Updating Dub Libraries") {
-                    override fun run(indicator: ProgressIndicator) {
-                        processDLibsImpl(project, module, mostlySilentMode, buildBefore)
-                    }
+                    // used to use the removeDLibs method
+                    // removeDLibs(module, project); // this is not necessary since intellij filters out duplicate libraries.
                 }
-                ProgressManager.getInstance()
-                    .runProcessWithProgressAsynchronously(task, BackgroundableProcessIndicator(task))
-            }, ModalityState.current())
+
+                run {
+                    val task = object : Task.Backgroundable(project,
+                        "Updating Dub Libraries") {
+                        override fun run(indicator: ProgressIndicator) {
+                            processDLibsImpl(project, module, mostlySilentMode, buildBefore)
+                        }
+                    }
+                    ProgressManager.getInstance()
+                        .runProcessWithProgressAsynchronously(task, BackgroundableProcessIndicator(task))
+                }
+            }
         }
 
         private fun processDLibsImpl(project: Project, module: Module,
@@ -171,9 +175,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             val project = AnAction.getEventProject(e) ?: return false
             ToolKey.DUB_KEY.path?.isNotBlank() ?: return false
             val virtualRoot = project.guessProjectDir() ?: return false
-            return virtualRoot.findChild("dub.json")?.exists() ?:
-                            virtualRoot.findChild("dub.sdl")?.exists() ?:
-                            false
+            return virtualRoot.findChild("dub.json")?.exists() ?: virtualRoot.findChild("dub.sdl")?.exists() ?: false
         }
 
         private fun showModuleChoicePopup(e: AnActionEvent, project: Project, modules: Collection<Module>) {
@@ -240,8 +242,8 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
         // todo: This method needs breaking down. Also, a dub package can have multiple source directories
         private fun getSourcesVirtualFile(dubPackage: DubPackage): VirtualFile? {
             // for now I'm putting this hideous kludge in which makes it work they way it always has
-            val srcDir = if(dubPackage.sourcesDirs.isNotEmpty()) {
-                if(dubPackage.sourcesDirs.size > 1) {
+            val srcDir = if (dubPackage.sourcesDirs.isNotEmpty()) {
+                if (dubPackage.sourcesDirs.size > 1) {
                     LOG.warn("it's likely that we're not processing ${dubPackage.name} correctly. ${dubPackage.sourcesDirs.size} source folders found")
                 }
                 dubPackage.sourcesDirs[0]
@@ -321,7 +323,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
 
             LOG.debug("Clearing libraries from module '${module.name}'")
 
-            if(module.isDisposed) {
+            if (module.isDisposed) {
                 LOG.warn("Module '${module.name}' is already disposed")
                 return
             } else {
