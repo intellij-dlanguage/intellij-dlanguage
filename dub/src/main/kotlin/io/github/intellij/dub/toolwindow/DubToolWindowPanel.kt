@@ -20,6 +20,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.packageDependencies.ui.PackageDependenciesNode
 import com.intellij.ui.ColoredTreeCellRenderer
+import com.intellij.ui.JBColor
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.SimpleTextAttributes
 import com.intellij.ui.treeStructure.Tree
@@ -247,7 +248,7 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
                         append("${dependency.name} ${dependency.version}",
                                 SimpleTextAttributes(
                                     SimpleTextAttributes.STYLE_ITALIC,
-                                    Color.GRAY
+                                    JBColor.GRAY
                                 )
                         )
                     }

@@ -21,6 +21,7 @@ import com.intellij.platform.DirectoryProjectGenerator
 import com.intellij.platform.DirectoryProjectGeneratorBase
 import com.intellij.platform.GeneratorPeerImpl
 import com.intellij.platform.ProjectGeneratorPeer
+import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBPanel
 import com.intellij.util.ui.components.BorderLayoutPanel
 import io.github.intellij.dlanguage.DLanguage
@@ -72,7 +73,7 @@ class DlangProjectGenerator : DirectoryProjectGeneratorBase<DlangProjectSettings
 
         dmdPanel.border = BorderFactory.createCompoundBorder(
             BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true),
+                BorderFactory.createLineBorder(JBColor.LIGHT_GRAY, 1, true),
                 "D compiler"
             ),
             BorderFactory.createEmptyBorder(10, 0, 20, 0)
