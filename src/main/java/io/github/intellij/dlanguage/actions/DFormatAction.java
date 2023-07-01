@@ -8,6 +8,7 @@ import com.intellij.execution.process.*;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
@@ -147,6 +148,11 @@ public class DFormatAction extends DumbAwareAction {
         // This will allow .editorconfig to be searched for and be found in relation to the file.
         commandLine.setWorkDirectory(virtualFile.getParent().getCanonicalPath());
         return commandLine;
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 
     private void notifyOfInformation(@NotNull String errorMessage, @NotNull Project project) {

@@ -374,6 +374,10 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
         override fun setSelected(e: AnActionEvent, state: Boolean) {
             // todo
         }
+
+        override fun getActionUpdateThread(): ActionUpdateThread {
+            return ActionUpdateThread.BGT;
+        }
     }
 
 }

@@ -8,6 +8,7 @@ import com.intellij.execution.process.ProcessEvent
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
@@ -70,6 +71,10 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
     */
     override fun update(e: AnActionEvent) {
         e.presentation.isEnabled = canRunDub(e)
+    }
+
+    override fun getActionUpdateThread(): ActionUpdateThread {
+        return ActionUpdateThread.EDT;
     }
 
     companion object {
