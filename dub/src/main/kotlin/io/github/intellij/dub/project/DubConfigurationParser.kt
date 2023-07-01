@@ -254,7 +254,7 @@ class DubConfigurationParser @JvmOverloads constructor(
                 val message = String.format("%s exited with %s:\n%s", dubCommand, exitCode, errors[0])
                 LOG.warn(message)
                 if (!silentMode) {
-                    SwingUtilities.invokeLater { Messages.showErrorDialog(project, message, "Dub Import") }
+                    ApplicationManager.getApplication().invokeLater({ Messages.showErrorDialog(project, message, "Dub Import") })
                 }
             }
         } catch (e: com.intellij.execution.ExecutionException) {
