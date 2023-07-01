@@ -6,8 +6,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiUtilCore
 import io.github.intellij.dlanguage.DLanguage
 
-open class DlangContext protected constructor() : TemplateContextType("D", "D Language") {
-
+open class DlangContext protected constructor() : TemplateContextType("D Language") {
     override fun isInContext(context: TemplateActionContext): Boolean {
         return PsiUtilCore.getLanguageAtOffset(context.file, context.startOffset).isKindOf(DLanguage)
     }
