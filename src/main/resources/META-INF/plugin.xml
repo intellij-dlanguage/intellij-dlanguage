@@ -192,7 +192,7 @@
         <!-- Live Templates -->
         <defaultLiveTemplates file="/dlang/ide/liveTemplates/D"/>
 
-        <liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContext"/>
+        <liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContext" contextId="D"/>
         <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Statement"/>-->
         <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Item"/>-->
         <!--<liveTemplateContext implementation="io.github.intellij.dlanguage.template.DlangContextType$Struct"/>-->
