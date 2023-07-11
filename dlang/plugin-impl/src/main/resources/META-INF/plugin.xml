@@ -95,8 +95,10 @@
                                  implementationClass="io.github.intellij.dlanguage.refactoring.DRefactoringSupportProvider"/>
 
 
-        <!-- D Language support -->
-        <sdkType implementation="io.github.intellij.dlanguage.DlangSdkType"/>
+        <!-- D Language supports all 3 D compilers (GDC is only on Unix) -->
+        <sdkType implementation="io.github.intellij.dlanguage.sdk.DlangDmdSdkType" id="DMD"/>
+        <sdkType implementation="io.github.intellij.dlanguage.sdk.DlangGdcSdkType" id="GDC" order="after DMD" os="unix" />
+        <sdkType implementation="io.github.intellij.dlanguage.sdk.DlangLdcSdkType" id="LDC" order="after GDC"/>
         <projectSdkSetupValidator implementation="io.github.intellij.dlanguage.DLangProjectDmdSetupValidator"/>
 
         <!-- Line Marker Providers -->

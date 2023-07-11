@@ -26,8 +26,10 @@ import com.intellij.ui.components.JBPanel
 import com.intellij.util.ui.components.BorderLayoutPanel
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangBundle.message
-import io.github.intellij.dlanguage.DlangSdkType
 import io.github.intellij.dlanguage.project.ui.DubInitCheckBox
+import io.github.intellij.dlanguage.sdk.DlangDmdSdkType
+import io.github.intellij.dlanguage.sdk.DlangGdcSdkType
+import io.github.intellij.dlanguage.sdk.DlangLdcSdkType
 import java.awt.Color
 import java.util.function.Predicate
 import javax.swing.BorderFactory
@@ -79,11 +81,13 @@ class DlangProjectGenerator : DirectoryProjectGeneratorBase<DlangProjectSettings
             BorderFactory.createEmptyBorder(10, 0, 20, 0)
         )
 
+        val dlangSdkTypes = arrayOf(DlangDmdSdkType.SDK_TYPE_ID, DlangGdcSdkType.SDK_TYPE_ID, DlangLdcSdkType.SDK_TYPE_ID)
+
         val sdkComboBox = SdkComboBox(
             SdkComboBoxModel.createSdkComboBoxModel(
                 ProjectManager.getInstance().defaultProject,
                 ProjectSdksModel(), // cannot use ProjectStructureConfigurable as it's not in CLion, so cannot do ProjectStructureConfigurable.getInstance(ProjectManager.getInstance().defaultProject).projectJdksModel,
-                Predicate { sdkTypeId -> DlangSdkType.SDK_TYPE_ID == sdkTypeId.name } //Condition { sdk: SdkTypeId -> sdk is DlangSdkType },
+                Predicate { sdkTypeId -> dlangSdkTypes.contains(sdkTypeId.name) } // Condition { sdk: SdkTypeId -> sdk is DlangSdkType },
                 //null,
                 //null
             )

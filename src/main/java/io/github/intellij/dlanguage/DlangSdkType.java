@@ -6,24 +6,23 @@ import com.intellij.execution.process.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.projectRoots.*;
+import com.intellij.openapi.projectRoots.impl.DependentSdkType;
 import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil;
 import com.intellij.openapi.roots.OrderRootType;
-import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import io.github.intellij.dlanguage.library.LibFileRootType;
+import io.github.intellij.dlanguage.sdk.SetupStatus;
 import java.io.IOException;
 import java.nio.file.Files;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.io.File;
 import java.nio.charset.Charset;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -34,12 +33,19 @@ import java.util.regex.Pattern;
 /**
  * Responsible for the mechanics when pressing "+" in the SDK configuration, as well as the project
  * SDK configuration.
+ *
+ * This class was initially the only SdkType for the plugin but is now just providing common
+ * functionality for the x3 variations of D compilers.
+ *
+ * @see io.github.intellij.dlanguage.sdk.DlangDmdSdkType
+ * @see io.github.intellij.dlanguage.sdk.DlangGdcSdkType
+ * @see io.github.intellij.dlanguage.sdk.DlangLdcSdkType
  */
-public class DlangSdkType extends SdkType {
+public abstract class DlangSdkType extends DependentSdkType {
 
     private static final Logger LOG = Logger.getInstance(DlangSdkType.class);
 
-    public static final String SDK_TYPE_ID = "DMD2 SDK";
+    private static final String SDK_TYPE_ID = "DMD2 SDK";
     private static final String SDK_NAME = "DMD v2 SDK";
 
     @NotNull
@@ -51,6 +57,7 @@ public class DlangSdkType extends SdkType {
     @NotNull
     private static final File[] DEFAULT_DRUNTIME_PATHS;
 
+    // todo: move this code to DlangDmdSdkType
     static {
         if (SystemInfo.isWindows) {
             // This covers the default paths used by the Windows installer and therefore
@@ -124,18 +131,12 @@ public class DlangSdkType extends SdkType {
         return SdkType.findInstance(DlangSdkType.class);
     }
 
-    public DlangSdkType() {
-        super(SDK_TYPE_ID);
-    }
-
-    @NotNull
-    @Override
-    public Icon getIcon() {
-        return DLanguage.Icons.FILE;
+    public DlangSdkType(final String id) {
+        super(id);
     }
 
     @Nullable
-    @Override
+    @Override // todo: move dmd specific code to DlangDmdSdkType
     public String suggestHomePath() {
         File found = null;
         for (final File f : DEFAULT_DMD_PATHS) {
@@ -149,42 +150,6 @@ public class DlangSdkType extends SdkType {
             }
         }
         return found == null ? null : found.getAbsolutePath();
-    }
-
-    /**
-     * When user set up DMD SDK path this method checks if specified path contains DMD compiler executable.
-     *
-     * This method determines if it can run the dmd executable based on a home path that's passed in. So in the case
-     * that the sdk home is "C:\D\dmd2\" then this method would return true if "C:\D\dmd2\windows\bin\dmd.exe" exists
-     * and is executable.
-     *
-     * @param sdkHome path to the root directory of a dmd installation
-     * @return true if the sdk home contains a executable dmd compiler
-     */
-    @Override
-    public boolean isValidSdkHome(final String sdkHome) {
-        final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
-
-        File dmdBinary = new File(sdkHome, executableName);
-
-        if (dmdBinary.exists() && dmdBinary.canExecute()) {
-            this.dmdBinary = dmdBinary;
-            return true;
-        }
-
-        if (SystemInfo.isWindows) {
-            final File dmdHome = new File(sdkHome);
-            if (dmdHome.exists() && dmdHome.isDirectory()) {
-                dmdBinary = Paths.get(sdkHome, "windows", "bin", executableName)
-                    .toFile(); // C:\D\dmd2\windows\bin\dmd.exe
-            }
-        }
-
-        if (dmdBinary.exists() && dmdBinary.canExecute()) {
-            this.dmdBinary = dmdBinary;
-            return true;
-        }
-        return false;
     }
 
     @NotNull
@@ -234,84 +199,6 @@ public class DlangSdkType extends SdkType {
 //        });
 //    }
 
-    static class SetupStatus {
-        private boolean runtime;
-        private boolean phobos;
-        private boolean documentation;
-
-        SetupStatus(final boolean runtime, final boolean phobos, final boolean documentation) {
-            this.runtime = runtime;
-            this.phobos = phobos;
-            this.documentation = documentation;
-        }
-
-        boolean getRuntimeStatus() {
-            return runtime;
-        }
-
-        boolean getPhobosStatus() {
-            return phobos;
-        }
-
-        boolean getDocumentationStatus() {
-            return documentation;
-        }
-
-        public void setRuntime(final boolean runtime) {
-            this.runtime = runtime;
-        }
-
-        public void setPhobos(final boolean phobos) {
-            this.phobos = phobos;
-        }
-
-        public void setDocumentation(final boolean documentation) {
-            this.documentation = documentation;
-        }
-    }
-
-    /**
-     * Windows has docs in 'C:\D\dmd2\html\d' and sources in ['C:\D\dmd2\src\phobos',
-     * 'C:\D\dmd2\src\druntime\import'] OSX has docs in ??? and sources in
-     * ['/Library/D/dmd/src/phobos', '/Library/D/dmd/src/druntime/import'] Linux has docs in
-     * '/usr/share/dmd/html/d' and sources in ['/usr/include/dmd/phobos',
-     * '/usr/include/dmd/druntime/import']
-     *
-     * @param sdk The DMD installation
-     */
-    @Override
-    public void setupSdkPaths(@NotNull final Sdk sdk) {
-        final SdkModificator sdkModificator = sdk.getSdkModificator();
-
-        SetupStatus status = new SetupStatus(false, false, false);
-
-        if (SystemInfo.isWindows) {
-            status = setupSDKPathsFromWindowsConfigFile(sdk,sdkModificator);
-        }
-
-        // documentation paths (todo: find out why using 'OrderRootType.DOCUMENTATION' didn't work)
-        if (!status.getDocumentationStatus()) {
-            setupDocumentationPath(sdk, sdkModificator, status);
-        }
-
-        // add phobos to sources root
-        if (!status.getPhobosStatus()) {
-            setupPhobosPaths(sdkModificator, status);
-        }
-
-        // add druntime to sources root
-        if (!status.getRuntimeStatus()) {
-            setupRuntimePaths(sdkModificator, status);
-        }
-
-        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-            @Override
-            public void run() {
-                sdkModificator.commitChanges();
-            }
-        });
-    }
-
     private Optional<VirtualFile> firstVirtualFileFrom(File[] files) {
         for (File f: files) {
             if (f.isDirectory()) {
@@ -322,7 +209,8 @@ public class DlangSdkType extends SdkType {
         return Optional.empty();
     }
 
-    private void setupRuntimePaths(final SdkModificator sdkModificator, final SetupStatus status) {
+    // todo: move to DlangDmdSdkType.kt
+    protected void setupRuntimePaths(final SdkModificator sdkModificator, final SetupStatus status) {
         Optional<VirtualFile> druntimeSource = firstVirtualFileFrom(DEFAULT_DRUNTIME_PATHS);
         if (druntimeSource.isPresent()) {
             sdkModificator.addRoot(druntimeSource.get(), OrderRootType.SOURCES);
@@ -333,7 +221,8 @@ public class DlangSdkType extends SdkType {
         }
     }
 
-    private void setupPhobosPaths(final SdkModificator sdkModificator, final SetupStatus status) {
+    // todo: move to DlangDmdSdkType.kt
+    protected void setupPhobosPaths(final SdkModificator sdkModificator, final SetupStatus status) {
         final Optional<VirtualFile> phobosSource = firstVirtualFileFrom(DEFAULT_PHOBOS_PATHS);
         if (phobosSource.isPresent()) {
             sdkModificator.addRoot(phobosSource.get(), OrderRootType.SOURCES);
@@ -344,7 +233,8 @@ public class DlangSdkType extends SdkType {
         }
     }
 
-    private void setupDocumentationPath(@NotNull final Sdk sdk, final SdkModificator sdkModificator, final SetupStatus status) {
+    // todo: move to DlangDmdSdkType.kt
+    protected void setupDocumentationPath(@NotNull final Sdk sdk, final SdkModificator sdkModificator, final SetupStatus status) {
 //        final File docDir = DEFAULT_DOCUMENTATION_PATH;//Paths.get(getDmdPath(sdk), "html", "d").toFile();
 //        final VirtualFile docs = docDir != null && docDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(docDir.getAbsolutePath()) : null;
 //        if (docs != null) {
@@ -361,8 +251,8 @@ public class DlangSdkType extends SdkType {
 
     }
 
-    @NotNull
-    private SetupStatus setupSDKPathsFromWindowsConfigFile(final Sdk sdk, final SdkModificator sdkModificator) {
+    @NotNull // todo: probably needs moving to DlangDmdSdkType.kt
+    protected SetupStatus setupSDKPathsFromWindowsConfigFile(final Sdk sdk, final SdkModificator sdkModificator) {
         final GeneralCommandLine cmd = new GeneralCommandLine(getDmdPath(sdk));
 
         try {
@@ -459,12 +349,6 @@ public class DlangSdkType extends SdkType {
                                             @NotNull final SdkModel sdkModel,
                                             @NotNull final SdkModificator sdkModificator) {
         return null; // it's ok to return null but would be good to see what we could do with this
-    }
-
-    @NotNull
-    @Override
-    public String getPresentableName() {
-        return DlangBundle.INSTANCE.message("compilers.dmd.presentableName");
     }
 
     @Override
