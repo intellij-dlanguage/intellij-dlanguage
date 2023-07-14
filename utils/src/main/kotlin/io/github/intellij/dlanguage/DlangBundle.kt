@@ -24,7 +24,7 @@ object DlangBundle {
     fun message(@PropertyKey(resourceBundle = BUNDLE_ID) key: String, vararg params: Any): String {
         log.trace(String.format("Getting message: %s, %s", key, params))
 
-        return AbstractBundle.message(getBundle(), key, params)
+        return AbstractBundle.message(getBundle(), key, *params)
     }
 
     private fun getBundle(): ResourceBundle {

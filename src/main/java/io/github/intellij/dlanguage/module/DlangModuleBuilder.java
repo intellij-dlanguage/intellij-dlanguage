@@ -17,6 +17,7 @@ import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
+import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.openapi.projectRoots.SdkTypeId;
 import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModifiableRootModel;
@@ -28,6 +29,7 @@ import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.run.DlangRunAppConfigurationType;
 import io.github.intellij.dlanguage.run.DlangRunDmdConfigurationType;
+import io.github.intellij.dlanguage.sdk.DlangDmdSdkType;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -185,7 +187,7 @@ public class DlangModuleBuilder extends ModuleBuilder {
 
     @Override
     public boolean isSuitableSdkType(final SdkTypeId sdkType) {
-        return sdkType == DlangSdkType.getInstance();
+        return DlangSdkType.class.isAssignableFrom(sdkType.getClass());
     }
 
     @Override
@@ -201,7 +203,9 @@ public class DlangModuleBuilder extends ModuleBuilder {
         //  instead of the following code there would simply be one line, something like: return new DlangCompilerWizardStep(context, this);
 
         final DlangModuleBuilder moduleBuilder = this;
-        return new ProjectJdkForModuleStep(context, DlangSdkType.getInstance()) {
+
+        // todo: do something better to pick which compiler type is going to be used: DMD, LDC, or GDC
+        return new ProjectJdkForModuleStep(context, SdkType.findInstance(DlangDmdSdkType.class)) {
             public void updateDataModel() {
                 super.updateDataModel();
                 moduleBuilder.setModuleJdk(getJdk());
