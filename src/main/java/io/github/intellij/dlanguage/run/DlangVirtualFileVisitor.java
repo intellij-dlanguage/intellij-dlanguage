@@ -1,14 +1,23 @@
 package io.github.intellij.dlanguage.run;
 
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
+import com.intellij.openapi.projectRoots.Sdk;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileVisitor;
+import io.github.intellij.dlanguage.DlangSdkType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DlangVirtualFileVisitor extends VirtualFileVisitor {
+public class DlangVirtualFileVisitor extends VirtualFileVisitor<Void> {
+
+    private static final Logger log = Logger.getInstance(DlangVirtualFileVisitor.class);
 
     private final List<String> dLangSources;
     private final VirtualFile[] excludedRoots;
@@ -28,6 +37,18 @@ public class DlangVirtualFileVisitor extends VirtualFileVisitor {
     }
 
     private boolean isExcluded(final VirtualFile srcFile) {
+        @Nullable final Project project = ProjectUtil.guessProjectForFile(srcFile);
+        if(project != null) {
+            final ProjectRootManager rootManager = ProjectRootManager.getInstance(project);
+            @Nullable final Sdk sdk = rootManager.getProjectSdk();
+
+            boolean notDlangSdk = !(sdk != null && (sdk.getSdkType() instanceof DlangSdkType));
+
+            if(notDlangSdk) {
+                log.debug(String.format("Visited file '%s' but excluding as project sdk is not a D lang SDK", srcFile.getName()));
+            }
+        }
+
         if(this.excludedRoots != null) {
             for (final VirtualFile excludeDir : excludedRoots) {
                 if (VfsUtilCore.isAncestor(excludeDir, srcFile, false)) {
