@@ -34,7 +34,7 @@ open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "",
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         for (template in Template.values()) {
             with(template) {
-                builder.addKind(readableName.capitalize(), icon, id)
+                builder.addKind(readableName.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }, icon, id)
             }
         }
 
@@ -115,7 +115,7 @@ open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "",
             ?: defaultSourceRoot
     }
 
-    inner class ClassNameValidator : InputValidatorEx {
+    internal class ClassNameValidator : InputValidatorEx {
         private val VALID_MODULE_NAME_REGEX = Pattern.compile("[A-Za-z_][0-z_.]*")
         override fun getErrorText(inputString: String): String? {
             if (inputString.isEmpty()) {
