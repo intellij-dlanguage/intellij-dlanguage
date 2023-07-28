@@ -20,8 +20,8 @@ class DubSyntaxAnnotator : ExternalAnnotator<PsiFile, DubSyntaxAnnotator.State>(
 
     override fun collectInformation(file: PsiFile): PsiFile = file
 
-    override fun doAnnotate(collectedInfo: PsiFile): State {
-        // Force all files to save to ensure annotations are in sync with the file system.
+    override fun doAnnotate(collectedInfo: PsiFile?): State? {
+        collectedInfo?:return null
 
         // Force all files to save to ensure annotations are in sync with the file system.
         val fileDocumentManager = FileDocumentManager.getInstance()
