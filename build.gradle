@@ -73,7 +73,8 @@ allprojects {
 //        // Uncomment when testing if you want to have expected data written (to easily update lexer/parser tests)
 //        //systemProperties['idea.tests.overwrite.data'] = "true"
 //
-//        jvmArgs = [
+        jvmArgs = [
+            '-Djava.awt.headless=true' // avoid "Must be precomputed" error, because IDE is not started (LoadingState.APP_STARTED.isOccurred is false)
 //            '--illegal-access=warn',
 //            '--add-opens=java.base/java.lang=ALL-UNNAMED',
 //            '--add-opens=java.base/java.io=ALL-UNNAMED',
@@ -81,7 +82,7 @@ allprojects {
 //            '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
 //            '--add-opens=java.desktop/java.awt.event=ALL-UNNAMED',
 //            '--add-opens=java.desktop/javax.swing=ALL-UNNAMED'
-//        ]
+        ]
 //
 //        testLogging {
 //            exceptionFormat = 'full'

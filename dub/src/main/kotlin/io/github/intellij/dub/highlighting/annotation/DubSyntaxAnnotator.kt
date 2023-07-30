@@ -20,7 +20,7 @@ class DubSyntaxAnnotator : ExternalAnnotator<PsiFile, DubSyntaxAnnotator.State>(
 
     override fun collectInformation(file: PsiFile): PsiFile = file
 
-    override fun doAnnotate(collectedInfo: PsiFile): State {
+    override fun doAnnotate(collectedInfo: PsiFile?): State? {
         // Force all files to save to ensure annotations are in sync with the file system.
 
         // Force all files to save to ensure annotations are in sync with the file system.
@@ -34,8 +34,10 @@ class DubSyntaxAnnotator : ExternalAnnotator<PsiFile, DubSyntaxAnnotator.State>(
             )
         }
 
-        return State(
-            CompileCheck().checkFileSyntax(collectedInfo)
-        )
+        collectedInfo?.let {
+            return State(CompileCheck().checkFileSyntax(it))
+        }
+
+        return null
     }
 }

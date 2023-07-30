@@ -82,7 +82,7 @@ public abstract class DLanguageParserTestBase extends ParsingTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         final VirtualFile m = new MockVirtualFile(true, myFullDataPath);
-        myProject.setBaseDir(m);
+        getProject().setBaseDir(m);
     }
 
 }
