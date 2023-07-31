@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id 'org.gradle.idea'
     id 'java'
-    id 'org.jetbrains.intellij' version '1.10.1' // cannot update to '1.13.3' as it breaks verifyPlugin
+    id 'org.jetbrains.intellij' version '1.10.1' // cannot update to '1.15.0' as it breaks verifyPlugin
     id 'org.jetbrains.kotlin.jvm' version '1.8.22'
 //    id 'net.saliman.cobertura' version '4.0.0'
 //    id 'com.github.kt3k.coveralls' version '2.10.2'
@@ -289,6 +289,11 @@ dependencies {
     //compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //compileOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
+    // todo: When updating the gradle intellij plugin we'll most likely need to set
+    // some project dependencies with the 'instrumentedJar' configuration
+    // see:
+    //  https://github.com/JetBrains/gradle-intellij-plugin/issues/1412 
+    //  https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#multi-module-project
     implementation project(':utils')
     implementation project(':errorreporting')
     implementation project(':debugger')
