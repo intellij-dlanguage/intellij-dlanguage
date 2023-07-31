@@ -114,16 +114,16 @@ class DlangDubModuleBuilder :
     }
 
     /*
-     * By default dub init will create a directory named "source" so this method presumptuously
+     * By default, dub init will create a directory named "source" so this method presumptuously
      * returns "{WORKING_DIR}/source" as the source path. This could result in errors if dub
      * where to start creating files using an alternative directory name.
      */
-    override fun getSourcePaths(): List<String> {
-        if (sourcePaths == null || sourcePaths!!.isEmpty()) {
+    override fun getSourcePaths(): List<String>? {
+        if (sourcePaths.isNullOrEmpty()) {
             val path: @NonNls String = contentEntryPath + File.separator + "source"
-            sourcePaths = Arrays.asList(path) // may need to add additional source paths later
+            sourcePaths = arrayListOf(path) // may need to add additional source paths later
         }
-        return sourcePaths!!
+        return sourcePaths
     }
 
     fun addSourcePath(sourcePathInfo: String) {

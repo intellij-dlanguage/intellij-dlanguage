@@ -48,6 +48,7 @@ public class DlangModuleBuilder extends ModuleBuilder {
     private final String myPresentableName;
     private final String myDescription;
 
+    @Nullable
     private List<String> sourcePaths;
 
     public DlangModuleBuilder() {
@@ -163,15 +164,15 @@ public class DlangModuleBuilder extends ModuleBuilder {
         LOG.debug("Dlang project root configured");
     }
 
-    /* By default sources are located in {WORKING_DIR}/source folder. */
-    @NotNull
+    /* By default, sources are located in {WORKING_DIR}/source folder. */
+    @Nullable
     public List<String> getSourcePaths() {
-        if (sourcePaths == null) {
+        if (sourcePaths == null || sourcePaths.isEmpty()) {
             @NonNls final String path = getContentEntryPath() + File.separator + "source";
 
-            createSourceDirIfNotExists(path);
-
-            sourcePaths = Collections.singletonList(path);
+            if(createSourceDirIfNotExists(path)) {
+                sourcePaths = Collections.singletonList(path);
+            }
         }
         return sourcePaths;
     }
@@ -202,14 +203,18 @@ public class DlangModuleBuilder extends ModuleBuilder {
         };
     }
 
-    private void createSourceDirIfNotExists(@NonNls final String path) {
+    private boolean createSourceDirIfNotExists(@NonNls final String path) {
         final File sourceDir = new File(path);
 
-        if(!sourceDir.exists()) {
-            if(sourceDir.mkdirs()) {
+        if(sourceDir.exists()) {
+            return true;
+        } else {
+            if(FileUtil.createDirectory(sourceDir)) {
                 LOG.info("Create source folder: " + path);
+                return true;
             } else {
                 LOG.warn("Failed to create source folder: " + path);
+                return false;
             }
         }
     }
