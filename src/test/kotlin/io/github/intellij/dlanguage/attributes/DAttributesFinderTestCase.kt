@@ -19,7 +19,7 @@ abstract class DAttributesFinderTestCase : DLightPlatformCodeInsightFixtureTestC
     }
 
     private fun getTestDataFiles(): Array<File> {
-        return File(testDataPath).listFiles()
+        return File(testDataPath).listFiles()!!
     }
 
     override fun setUp() {

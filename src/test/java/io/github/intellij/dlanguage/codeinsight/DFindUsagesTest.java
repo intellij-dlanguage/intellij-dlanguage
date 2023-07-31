@@ -1,6 +1,8 @@
 package io.github.intellij.dlanguage.codeinsight;
 
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase;
+import org.jetbrains.annotations.NotNull;
+import org.junit.Test;
 
 public class DFindUsagesTest extends DLightPlatformCodeInsightFixtureTestCase {
     public DFindUsagesTest() {
@@ -8,15 +10,17 @@ public class DFindUsagesTest extends DLightPlatformCodeInsightFixtureTestCase {
     }
 
     @Override
-    protected String getTestDataPath() {
+    protected @NotNull String getTestDataPath() {
         return this.getClass().getClassLoader().getResource("gold/codeinsight").getPath();
     }
 
+    @Test
     public void testFunctionUsagesInSingleFile() {
         doTest(1);
     }
-//    public void testFunctionUsagesInMultipleFiles00001() { doTestModule(3, "FunctionUsagesInSingleFile00001.hs");}
-//    public void testFunctionUsagesInSingleFile00002()    { doTestModule(2); }
+
+//    @Test public void testFunctionUsagesInMultipleFiles00001() { doTestModule(3, "FunctionUsagesInSingleFile00001.hs");}
+//    @Test public void testFunctionUsagesInSingleFile00002()    { doTestModule(2); }
 
     private void doTest(final int expectedResult, final String... extraFiles) {
         final String[] files = new String[1 + extraFiles.length];

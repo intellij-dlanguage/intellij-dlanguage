@@ -5,6 +5,7 @@ import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.writeText
 import com.intellij.testFramework.utils.vfs.createFile
+import org.junit.Test
 
 /**
  * Check that imports modules declaration are correctly resolved
@@ -13,7 +14,6 @@ import com.intellij.testFramework.utils.vfs.createFile
  * should (can be null if no resolved expected)
  */
 class DImportsModulesResolveTest : DResolveTestCase() {
-
 
     override fun getTestDataPath(): String = ""
 
@@ -32,6 +32,7 @@ class DImportsModulesResolveTest : DResolveTestCase() {
         }
     }
 
+    @Test
     fun testImportModuleInSubFolderWithoutModuleDeclaration() {
         // Module name without "module ..." declaration is just the file name (without extension) whatever is his location
         doTestStubOnlyResolve(
@@ -49,6 +50,7 @@ class DImportsModulesResolveTest : DResolveTestCase() {
         )
     }
 
+    @Test
     fun testImportModuleInSubFolderWithModuleDeclaration() {
         runWriteAction {
             resolvedFile.writeText("module foo.resolved;")
@@ -61,8 +63,9 @@ class DImportsModulesResolveTest : DResolveTestCase() {
         )
     }
 
+    @Test
     fun testImportModuleInSubFolderWithCustomModuleDeclaration() {
-        // When the module name does not follows the folder architecture, it should still works
+        // When the module name does not follow the folder architecture, it should still work
         runWriteAction {
             resolvedFile.writeText("module bar.test;")
         }
@@ -87,6 +90,7 @@ class DImportsModulesResolveTest : DResolveTestCase() {
         )
     }
 
+    @Test
     fun testImportPackageModuleWithoutModuleDeclaration() {
         val fooDir = myFixture.findFileInTempDir("foo")
         runWriteAction {
@@ -101,6 +105,7 @@ class DImportsModulesResolveTest : DResolveTestCase() {
         )
     }
 
+    @Test
     fun testImportPackageModuleWithModuleDeclaration() {
         val fooDir = myFixture.findFileInTempDir("foo")
         runWriteAction {
@@ -116,6 +121,7 @@ class DImportsModulesResolveTest : DResolveTestCase() {
         )
     }
 
+    @Test
     fun testImportPackageModuleWithCustomModuleDeclaration() {
         // One strange behavior with package.d file is that they by definition are accessible through the package they are in
         // But if you override the module name with whatever else, both names are valid. You can import your file through both names.

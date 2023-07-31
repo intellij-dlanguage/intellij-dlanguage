@@ -66,10 +66,6 @@ allprojects {
 //    }
 
     tasks.withType(Test).configureEach {
-        // workaround for test cases not found https://youtrack.jetbrains.com/issue/IDEA-278926
-        scanForTestClasses false
-        include '**/**/*Test.class'
-
 //        // Uncomment when testing if you want to have expected data written (to easily update lexer/parser tests)
 //        //systemProperties['idea.tests.overwrite.data'] = "true"
 //

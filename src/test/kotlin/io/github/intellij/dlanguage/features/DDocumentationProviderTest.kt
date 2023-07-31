@@ -1,9 +1,10 @@
 package io.github.intellij.dlanguage.features
 
 import com.intellij.codeInsight.documentation.DocumentationManager
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
+import org.junit.Test
 
-class DDocumentationProviderTest : BasePlatformTestCase() {
+class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
 
     private var provider: DDocumentationProvider? = null
 
@@ -17,6 +18,7 @@ class DDocumentationProviderTest : BasePlatformTestCase() {
         return this.javaClass.classLoader.getResource("gold/documentation")!!.path
     }
 
+    @Test
     fun testGetUrlForHandlesSingleImport() {
         myFixture.configureByText("example.d", "import std.typecons;")
 
@@ -27,6 +29,7 @@ class DDocumentationProviderTest : BasePlatformTestCase() {
         assertEquals("https://dlang.org/phobos/std_typecons.html", result[0])
     }
 
+    @Test
     fun testGetUrlForHandlesNullAndNonImportStatement() {
         myFixture.configureByText("example.d", "class User { int id; string name;}")
 
@@ -39,11 +42,13 @@ class DDocumentationProviderTest : BasePlatformTestCase() {
         assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(elementAndContext.first, elementAndContext.second))
     }
 
+    @Test
     fun testGenerateDocHandlesNull() {
         val text = provider!!.generateDoc(null, null)
         assertNull("Should return null rather than throwing exception", text)
     }
 
+    @Test
     fun testGenerateDocForPublicClassVariable() {
         myFixture.configureByText("example.d", "class User { int id; string name;}")
 
@@ -58,6 +63,7 @@ class DDocumentationProviderTest : BasePlatformTestCase() {
         assertTrue(text.contains("id"))
     }
 
+    @Test
     fun testGenerateDocForPrivateClassVariable() {
         myFixture.configureByText("example.d", "class User { int id; private string name;}")
 
@@ -73,6 +79,7 @@ class DDocumentationProviderTest : BasePlatformTestCase() {
         assertTrue(text.contains("name"))
     }
 
+    @Test
     fun testGenerateDocForGlobalInt() {
         myFixture.configureByText("int.d", "int x = 0;")
 
@@ -90,6 +97,7 @@ class DDocumentationProviderTest : BasePlatformTestCase() {
     /*
      * Run a test that uses the "gold/documentation/example.d" file
      */
+    @Test
     fun testGenerateDocForFileBasedExample() {
         myFixture.configureByFile("example.d")
 

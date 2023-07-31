@@ -7,7 +7,6 @@ import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
 import junit.framework.TestCase
 import org.junit.Test
 
-
 class DRunMainLineMarkerTest : DLightPlatformCodeInsightFixtureTestCase("codeinsight/linemarker", "codeinsight/linemarker") {
 
     fun doTest(fileContent: String, shouldFind: Boolean) {

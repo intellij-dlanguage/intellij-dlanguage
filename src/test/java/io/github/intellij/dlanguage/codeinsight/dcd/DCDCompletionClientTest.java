@@ -7,6 +7,7 @@ import io.github.intellij.dlanguage.LightDlangTestCase;
 import io.github.intellij.dlanguage.codeinsight.dcd.completions.Completion;
 import io.github.intellij.dlanguage.psi.DlangFile;
 import io.github.intellij.dlanguage.settings.ToolKey;
+import org.junit.Test;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class DCDCompletionClientTest extends LightDlangTestCase {
         super.setUp();
     }
 
+    @Test
     public void testBuildDcdCommand() {
         final DlangFile sourceFile = super.lightDlangPsiFile("app.d", "");
         PropertiesComponent.getInstance().setValue(ToolKey.DCD_CLIENT_KEY.getFlagsKey(), null);
@@ -31,6 +33,7 @@ public class DCDCompletionClientTest extends LightDlangTestCase {
         assertEquals("dcd-client -c 33", commandLine.getCommandLineString());
     }
 
+    @Test
     public void testBuildDcdCommandWithDcdParams() {
         final DlangFile sourceFile = super.lightDlangPsiFile("app.d", "");
         PropertiesComponent.getInstance().setValue(ToolKey.DCD_CLIENT_KEY.getFlagsKey(), "one,\\test directory\\fileTwo");
@@ -44,12 +47,14 @@ public class DCDCompletionClientTest extends LightDlangTestCase {
         assertEquals("dcd-client -c 0 -I one -I \"\\test directory\\fileTwo\"", commandLine.getCommandLineString());
     }
 
+    @Test
     public void testProcessDcdOutput_EmptyString() {
         final List<Completion> completions = DCDCompletionClient.processDcdOutput("");
         assertNotNull(completions);
         assertEquals(0, completions.size());
     }
 
+    @Test
     public void testProcessDcdOutput_Example1() {
         final String output = "identifiers\n" +
             "parts\tv\n" +
@@ -76,6 +81,7 @@ public class DCDCompletionClientTest extends LightDlangTestCase {
         );
     }
 
+    @Test
     public void testProcessDcdOutput_Example2() {
         final String output = "identifiers\n" +
             "alignof\tk\n" +
@@ -92,6 +98,7 @@ public class DCDCompletionClientTest extends LightDlangTestCase {
         assertEquals(9, completions.size());
     }
 
+    @Test
     public void testProcessDcdOutput_Example3() {
         final String output = "identifiers\n" +
             "SBUF_AUTOEXTEND\te\n" +

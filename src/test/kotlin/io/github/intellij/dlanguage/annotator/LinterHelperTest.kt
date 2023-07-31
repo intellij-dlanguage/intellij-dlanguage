@@ -2,10 +2,12 @@ package io.github.intellij.dlanguage.annotator
 
 import io.github.intellij.dlanguage.LightDlangTestCase
 import io.github.intellij.dlanguage.highlighting.annotation.external.LinterHelper
+import org.junit.Test
 
 class LinterHelperTest : LightDlangTestCase() {
 
-    fun testValidRangeShouldHighlightSemicolon() {
+    @Test
+    fun `test Valid Range Should Highlight Semicolon`() {
         val dlangFile = virtualDlangPsiFile("myapp.d", "module ;")
 
         val range = LinterHelper.calculateTextRange(dlangFile, 1, 8)
@@ -14,7 +16,8 @@ class LinterHelperTest : LightDlangTestCase() {
         assertEquals(7, range.startOffset)
     }
 
-    fun testValidRangeHighlightOutOfFile() {
+    @Test
+    fun `test Valid Range Highlight Out Of File`() {
         val dlangFile = virtualDlangPsiFile("myapp.d", "module ;")
 
         val range = LinterHelper.calculateTextRange(dlangFile, 2, 12)

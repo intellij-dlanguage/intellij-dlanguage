@@ -1,5 +1,7 @@
 package io.github.intellij.dlanguage.resolve
 
+import org.junit.Test
+
 /**
  * Test class for resolving references.  To add a new test, add a method to this class following the conventions below.
  * - If your test is named `testThing` then you should create a `Thing` directory under `gold/resolve`.
@@ -9,41 +11,58 @@ package io.github.intellij.dlanguage.resolve
  */
 class DResolveTest : DResolveTestCase() {
 
+    @Test
     fun testClassUsageToClassDefinition() = doTest()
 
+    @Test
     fun testPrimaryExpressionToFunctionDefinition() = doTest()
 
     //test dos not pass for reasons not clear to me. The feature in question does work though. todo
-//    fun testOverloadedParameterCount() = doTest()
+//    @Test fun testOverloadedParameterCount() = doTest()
 
+    @Test
     fun testClassConstructorToConstructorDefinition() = doTest()
 
+    @Test
     fun testPublicImports() = doTest()
 
+    @Test
     fun testTemplateUsageToTemplateDeclaration() = doTest()
 
+    @Test
     fun testGlobalVariableUsageToVariableDeclaration() = doTest()
 
+    @Test
     fun testAliasUsageToAliasDeclaration() = doTest()
 
+    @Test
     fun testScopedImportsFail() = doTest(false)
 
+    @Test
     fun testScopedImportsPass() = doTest()
 
+    @Test
     fun testScopedImportsMembers() = doTest()
 
+    @Test
     fun testImportBindResolve() = doTest()
 
+    @Test
     fun testImportWithSpacesAndComments() = doTest()
 
+    @Test
     fun testImportFromPackage() = doTest()
 
+    @Test
     fun testImportNamedBindResolve() = doTest()
 
+    @Test
     fun testImportClassWithConstructor() = doTest()
 
+    @Test
     fun testImportClassWithoutConstructor() = doTest()
 
+    @Test
     fun testImportUsageOfRenamedImport() = doTest()
 
 }

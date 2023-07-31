@@ -4,7 +4,7 @@ import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiNamedElement
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
 import io.github.intellij.dlanguage.DlangFileType
 import io.github.intellij.dlanguage.psi.impl.DElementFactory
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
@@ -14,7 +14,7 @@ import org.junit.Test
  * @author Samael Bate (singingbush)
  * created on 20/02/2022
  */
-class DReferenceTest : BasePlatformTestCase() {
+class DReferenceTest : LightPlatformCodeInsightFixture4TestCase() {
 
     // todo: finish writing this test
     @Test

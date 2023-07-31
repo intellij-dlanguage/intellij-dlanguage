@@ -1,10 +1,11 @@
 package io.github.intellij.dlanguage.formatting
 
 import com.intellij.testFramework.PsiTestUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
 import org.intellij.lang.annotations.Language
+import org.junit.Test
 
-class DAutoIndentTest : BasePlatformTestCase() {
+class DAutoIndentTest : LightPlatformCodeInsightFixture4TestCase() {
 
     private fun sanitizeText(text: String): String {
         return text.replace("/*caret*/", "<caret>").trimIndent()
@@ -21,6 +22,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
         myFixture.checkResult(sanitizeText(after))
     }
 
+    @Test
     fun testStruct() = doTestByText("""
         struct A {/*caret*/}
     """.trimIndent(), """
@@ -30,6 +32,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
+    @Test
     fun testClass() = doTestByText("""
         class A {/*caret*/}
     """.trimIndent(), """
@@ -40,6 +43,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     )
 
     // https://github.com/intellij-dlanguage/intellij-dlanguage/issues/776
+    @Test
     fun testEnum() = doTestByText("""
         enum A {/*caret*/}
     """.trimIndent(), """
@@ -49,6 +53,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
+    @Test
     fun testFunction() = doTestByText("""
         void main() {/*caret*/}
     """.trimIndent(), """
@@ -58,6 +63,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
+    @Test
     fun testIf() = doTestByText("""
         void main() {
             if (true) {/*caret*/}
@@ -71,6 +77,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
+    @Test
     fun testWhile() = doTestByText("""
         void main() {
             while (true) {/*caret*/}
@@ -84,6 +91,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
+    @Test
     fun testFor() = doTestByText("""
         void main() {
             for (int i = 0; i < 10; i++) {/*caret*/}
@@ -97,6 +105,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
+    @Test
     fun testSwitch() = doTestByText("""
         void main() {
             int i;
@@ -113,7 +122,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     )
 
     // TODO fix them
-    /*fun testSwitchCase() = doTestByText("""
+    /*@Test fun testSwitchCase() = doTestByText("""
         void main() {
             int i;
             switch (i) {
@@ -131,7 +140,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
-    fun testSwitchRangeCase() = doTestByText("""
+    @Test fun testSwitchRangeCase() = doTestByText("""
         void main() {
             int i;
             switch (i) {
@@ -149,7 +158,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
-    fun testSwitchDefault() = doTestByText("""
+    @Test fun testSwitchDefault() = doTestByText("""
         void main() {
             int i;
             switch (i) {
@@ -168,6 +177,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     )*/
 
     // https://github.com/intellij-dlanguage/intellij-dlanguage/issues/780
+    @Test
     fun testFunctionCallChaining() = doTestByText("""
         void main() {
             Person person = new Person();
@@ -184,6 +194,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
+    @Test
     fun testVersion() = doTestByText("""
         version (A) {/*caret*/}
     """.trimIndent(), """
@@ -193,6 +204,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
+    @Test
     fun testUnittest() = doTestByText("""
         unittest {/*caret*/}
     """.trimIndent(), """
@@ -202,6 +214,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
+    @Test
     fun testUnittestInVersion() = doTestByText("""
         version (A) {
             unittest {/*caret*/}
@@ -215,6 +228,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
     """.trimIndent()
     )
 
+    @Test
     fun testSingleLineDoc() = doTestByText("""
         /// this is a line/*caret*/
         void main() {}
@@ -225,6 +239,7 @@ class DAutoIndentTest : BasePlatformTestCase() {
 
     """.trimIndent())
 
+    @Test
     fun testMultiLineDoc() = doTestByText("""
         /**
         this is a line
@@ -238,6 +253,8 @@ class DAutoIndentTest : BasePlatformTestCase() {
         void main() {}
 
     """.trimIndent())
+
+    @Test
     fun testNestedLineDoc() = doTestByText("""
         /++
         this is a line

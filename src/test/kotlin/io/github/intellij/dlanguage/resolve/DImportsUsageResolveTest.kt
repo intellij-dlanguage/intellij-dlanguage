@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.resolve
 
 import org.intellij.lang.annotations.Language
+import org.junit.Test
 
 class DImportsUsageResolveTest : DResolveTestCase() {
 
@@ -20,6 +21,7 @@ class DImportsUsageResolveTest : DResolveTestCase() {
 
     private fun doCheckByText(@Language("D") main: String) = doCheckByText2(main, content)
 
+    @Test
     fun testSelectiveImportUseNotImportedMethod() {
         doCheckByText(
             """
@@ -31,6 +33,7 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             """)
     }
 
+    @Test
     fun testStaticImport() {
         doCheckByText(
             """
@@ -42,6 +45,7 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             """)
     }
 
+    @Test
     fun testRenamedImport() {
         doCheckByText(
             """
@@ -53,6 +57,7 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             """)
     }
 
+    @Test
     fun testImportNamedBinding() {
         doCheckByText(
             """
@@ -64,6 +69,7 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             """)
     }
 
+    @Test
     fun testSelectiveAndRenamedImport() {
         doCheckByText(
             """
@@ -75,6 +81,7 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             """)
     }
 
+    @Test
     fun testSelectiveAndRenamedImport2() {
         doCheckByText(
             """

@@ -1,9 +1,10 @@
 package io.github.intellij.dlanguage.highlighting.exitpoint
 
 import com.intellij.codeInsight.highlighting.HighlightUsagesHandler
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
+import org.junit.Test
 
-class DHighlightExitPointsHandlerFactoryTest : BasePlatformTestCase() {
+class DHighlightExitPointsHandlerFactoryTest : LightPlatformCodeInsightFixture4TestCase() {
 
     override fun getTestDataPath(): String = this.javaClass.classLoader.getResource("gold/highlighting/exitpoints")!!.path
 
@@ -15,7 +16,10 @@ class DHighlightExitPointsHandlerFactoryTest : BasePlatformTestCase() {
         assertSameElements(actual, usages.toList())
     }
 
+    @Test
     fun testAllReturns() = doTest("all_returns.d", "return 1;", "return 2;")
+    @Test
     fun testReturnsAndThrows() = doTest("returns_and_throws.d", "return 1;", "return 2;", "throw new Error(\"Oh no!\")")
+    @Test
     fun testFunctionLiterals() = doTest("function_literals.d", "return 6;", "return 7;", "throw new Error(\"Unknown\")")
 }

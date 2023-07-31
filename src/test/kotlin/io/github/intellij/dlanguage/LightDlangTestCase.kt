@@ -8,7 +8,7 @@ import com.intellij.openapi.roots.OrderRootType
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.SingleRootFileViewProvider
-import com.intellij.testFramework.LightPlatformTestCase
+import com.intellij.testFramework.LightPlatform4TestCase
 import com.intellij.testFramework.LightVirtualFile
 import io.github.intellij.dlanguage.psi.DlangFile
 import com.intellij.testFramework.VfsTestUtil
@@ -17,7 +17,7 @@ import com.intellij.util.containers.MultiMap
 /**
  * Provides a base for unit testing that requires in-memory D source files
  */
-abstract class LightDlangTestCase : LightPlatformTestCase() {
+abstract class LightDlangTestCase : LightPlatform4TestCase() {
 
     companion object {
         class MockDir(val dirName: String) : LightVirtualFile(dirName) {

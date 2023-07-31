@@ -6,6 +6,7 @@ import com.intellij.openapi.projectRoots.impl.UnknownSdkType;
 import com.intellij.openapi.roots.*;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.LightDlangTestCase;
+import org.junit.Test;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -29,6 +30,7 @@ public class DlangModuleBuilderTest extends LightDlangTestCase {
         super.tearDown();
     }
 
+    @Test
     public void testSetupRootModel() throws ConfigurationException {
         final ModifiableRootModel rootModel = mock(ModifiableRootModel.class);
 
@@ -40,6 +42,7 @@ public class DlangModuleBuilderTest extends LightDlangTestCase {
         verify(rootModel, times(1)).inheritSdk();
     }
 
+    @Test
     public void testGetSourcePaths() {
         final List<String> sourcePaths = this.moduleBuilder.getSourcePaths();
 
@@ -48,6 +51,7 @@ public class DlangModuleBuilderTest extends LightDlangTestCase {
         assertEquals(Paths.get("null", "source").toString(), sourcePaths.get(0)); // todo: 'null/source' should probably not be the result
     }
 
+    @Test
     public void testIsSuitableSdkType() {
         assertTrue(this.moduleBuilder.isSuitableSdkType(DlangSdkType.getInstance()));
 

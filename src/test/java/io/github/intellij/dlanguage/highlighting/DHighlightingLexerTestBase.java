@@ -1,6 +1,5 @@
 package io.github.intellij.dlanguage.highlighting;
 
-import com.intellij.lexer.FlexAdapter;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.io.FileUtil;

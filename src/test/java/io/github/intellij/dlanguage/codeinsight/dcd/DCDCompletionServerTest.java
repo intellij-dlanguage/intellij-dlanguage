@@ -3,6 +3,7 @@ package io.github.intellij.dlanguage.codeinsight.dcd;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.util.PathUtil;
 import io.github.intellij.dlanguage.LightDlangTestCase;
+import org.junit.Test;
 
 public class DCDCompletionServerTest extends LightDlangTestCase {
 
@@ -14,6 +15,7 @@ public class DCDCompletionServerTest extends LightDlangTestCase {
         this.dcd = new DCDCompletionServer(this.getModule());
     }
 
+    @Test
     public void testBuildDcdCommand() {
         final GeneralCommandLine cmd = this.dcd.buildDcdCommand("dcd-server");
 

@@ -1,11 +1,12 @@
 package io.github.intellij.dlanguage.run
 
 import com.intellij.openapi.util.SystemInfo
-import junit.framework.TestCase
-import io.github.intellij.dlanguage.run.exception.NoSourcesException
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 import io.github.intellij.dlanguage.LightDlangTestCase
+import io.github.intellij.dlanguage.run.exception.NoSourcesException
+import junit.framework.TestCase
+import org.junit.Test
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import java.io.File
 
 /**
@@ -26,6 +27,7 @@ class DlangDmdConfigToArgsConverterTest : LightDlangTestCase() {
         this.outputFileArg = "-of" + File(project.basePath, "$outputFile").absolutePath
     }
 
+    @Test
     @Throws(Exception::class)
     fun `test Get DMD Parameters Should output valid args by default`() {
         addFileToModuleSource("myapp.d")
@@ -38,6 +40,7 @@ class DlangDmdConfigToArgsConverterTest : LightDlangTestCase() {
         TestCase.assertEquals(mutableListOf(outputDirArg, outputFileArg, "/src/myapp.d", "/src/othersource.di"), dmdParameters)
     }
 
+    @Test
     @Throws(Exception::class)
     fun `test Get DMD Parameters building a library`() {
         addFileToModuleSource("myapp.d")
@@ -50,6 +53,7 @@ class DlangDmdConfigToArgsConverterTest : LightDlangTestCase() {
         TestCase.assertEquals(mutableListOf("-lib", outputDirArg, outputFileArg.removeSuffix(".exe").plus(".lib"), "/src/myapp.d"), dmdParameters)
     }
 
+    @Test
     @Throws(Exception::class)
     fun `test Get DMD Parameters Should set additional args correctly`() {
         addFileToModuleSource("myapp.d")
@@ -65,6 +69,7 @@ class DlangDmdConfigToArgsConverterTest : LightDlangTestCase() {
         TestCase.assertEquals(mutableListOf("-debug", "-unittest", "-cov", "-v", outputDirArg, outputFileArg, "/src/myapp.d"), dmdParameters)
     }
 
+    @Test
     @Throws(Exception::class)
     fun `test Get DMD Parameters Should throw NoSourcesException when no D src files found`() {
         val config = mock(DlangRunDmdConfiguration::class.java)

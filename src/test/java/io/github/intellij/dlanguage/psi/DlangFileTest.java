@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.psi;
 
 import io.github.intellij.dlanguage.LightDlangTestCase;
+import org.junit.Test;
 
 /**
  * @author Samael Bate (singingbush)
@@ -10,8 +11,9 @@ public class DlangFileTest extends LightDlangTestCase {
 
     /**
      * D module names are, by default, the file name with the path and extension stripped off.
-     * https://dlang.org/spec/module.html
+     * <a href="https://dlang.org/spec/module.html">module</a>
      */
+    @Test
     public void testGetModuleName_shouldBeFilenameWithoutExtension() {
         final DlangFile dlangFile = virtualDlangPsiFile("myapp.d", "// no module defined in source");
 
@@ -23,8 +25,9 @@ public class DlangFileTest extends LightDlangTestCase {
 
     /**
      * D module names are, by default, the file name with the path and extension stripped off.
-     * https://dlang.org/spec/module.html
+     * <a href="https://dlang.org/spec/module.html">module</a>
      */
+    @Test
     public void testGetModuleName_shouldBeFilenameWithoutExtension_IncludingPath() {
         final DlangFile dlangFile = virtualDlangPsiFile("awesome/app.d", "// no module defined in source");
 
@@ -36,8 +39,9 @@ public class DlangFileTest extends LightDlangTestCase {
 
     /**
      * D module names are, by default, the file name with the path and extension stripped off.
-     * https://dlang.org/spec/module.html
+     * <a href="https://dlang.org/spec/module.html">module</a>
      */
+    @Test
     public void testGetModuleName_HonoursTheNameDefinedInSource() {
         final DlangFile dlangFile = virtualDlangPsiFile("myapp.d", "module realname;");
 
@@ -49,8 +53,9 @@ public class DlangFileTest extends LightDlangTestCase {
 
     /**
      * D module names are, by default, the file name with the path and extension stripped off.
-     * https://dlang.org/spec/module.html
+     * <a href="https://dlang.org/spec/module.html">module</a>
      */
+    @Test
     public void testGetModuleName_HonoursTheNameDefinedInSource_Multipart() {
         final DlangFile dlangFile = virtualDlangPsiFile("myapp.d", "module my.app.realname;");
 
@@ -61,8 +66,9 @@ public class DlangFileTest extends LightDlangTestCase {
     }
 
     /**
-     * https://dlang.org/spec/module.html
+     * <a href="https://dlang.org/spec/module.html">module</a>
      */
+    @Test
     public void testGetModuleName_ReturnsProperModuleName_stdio() {
         final DlangFile dlangFile = virtualDlangPsiFile(
             "c/stdio.d",
@@ -79,6 +85,7 @@ public class DlangFileTest extends LightDlangTestCase {
     }
 
     // https://dlang.org/spec/module.html
+    @Test
     public void testGetModuleName_ReturnsProperModuleName_foo_bar() {
         final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "module foo_bar;");
 
@@ -89,6 +96,7 @@ public class DlangFileTest extends LightDlangTestCase {
     }
 
     // https://dlang.org/spec/module.html
+    @Test
     public void testGetModuleName_ReturnsProperModuleName_deprecated_foo() {
         final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "deprecated module foo;");
 
@@ -99,6 +107,7 @@ public class DlangFileTest extends LightDlangTestCase {
     }
 
     // https://dlang.org/spec/module.html
+    @Test
     public void testGetModuleName_ReturnsProperModuleName_deprecated_foo_with_message() {
         final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "deprecated(\"Please use foo2 instead.\") module foo;");
 
@@ -113,8 +122,9 @@ public class DlangFileTest extends LightDlangTestCase {
      * The file names for packages and modules should be composed only of
      * ASCII lower case letters, digits, and underscores, and should not be a Keyword.
      *
-     * https://dlang.org/spec/module.html
+     * <a href="https://dlang.org/spec/module.html">module</a>
      */
+    @Test
     public void testGetModuleName_HandlesInvalidModuleName() {
         final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "");
 
