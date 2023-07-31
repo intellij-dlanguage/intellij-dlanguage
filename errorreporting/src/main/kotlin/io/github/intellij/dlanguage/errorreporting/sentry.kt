@@ -17,15 +17,15 @@ import com.intellij.util.Consumer
 import io.sentry.*
 import java.awt.Component
 
-/**
- * @author Samael (singingbush)
- */
 class SentryErrorHandler : ErrorReportSubmitter() {
 
-    private val log: Logger = Logger.getInstance(javaClass)
+    private companion object {
+        const val SENTRY_DSN = "https://f948f2ace2c0452a88d3ff2bd6abd4be@sentry.io/1806295"
+        private val log: Logger = Logger.getInstance(SentryErrorHandler::class.java)
+    }
 
     /*
-     * @return text that is used on the Error Reporter's submit button, e.g. "Report to JetBrains".
+     * @return text that is used on the Error Reporters submit button, e.g. "Report to JetBrains".
      */
     override fun getReportActionText(): String = "Report to D Language Plugin Development Team"
 
@@ -41,22 +41,25 @@ class SentryErrorHandler : ErrorReportSubmitter() {
         consumer: Consumer<in SubmittedReportInfo>
     ): Boolean {
         Sentry.init { options ->
-            options.dsn = "https://f948f2ace2c0452a88d3ff2bd6abd4be@sentry.io/1806295"
+            options.dsn = SENTRY_DSN
             options.isAttachStacktrace = true
             options.isAttachServerName = false
 
             options.setTag("OS Name", SystemInfo.OS_NAME)
             options.setTag("Java version", SystemInfo.JAVA_VERSION)
             options.setTag("Java vendor", SystemInfo.JAVA_VENDOR)
-            options.setTag("IDE Name", ApplicationNamesInfo.getInstance().productName)
-            options.setTag("IDE Full Name", ApplicationNamesInfo.getInstance().fullProductNameWithEdition)
-            options.setTag("IDE Version", ApplicationInfo.getInstance().fullVersion)
-            options.setTag("IDE Build", ApplicationInfo.getInstance().build.asString())
-            options.setTag("Is EAP", "${(ApplicationInfo.getInstance() as ApplicationInfoEx).isEAP}")
 
-            if (super.getPluginDescriptor() != null) {
-                val plugin = PluginManagerCore.getPlugin(super.getPluginDescriptor().pluginId)
-                if (plugin != null) {
+            val appNames = ApplicationNamesInfo.getInstance()
+            options.setTag("IDE Name", appNames.productName)
+            options.setTag("IDE Full Name", appNames.fullProductNameWithEdition)
+
+            val appInfo = ApplicationInfo.getInstance()
+            options.setTag("IDE Version", appInfo.fullVersion)
+            options.setTag("IDE Build", appInfo.build.asString())
+            options.setTag("Is EAP", "${(appInfo as ApplicationInfoEx).isEAP}")
+
+            super.getPluginDescriptor()?.let {
+                PluginManagerCore.getPlugin(it.pluginId)?.let { plugin ->
                     options.setTag("Plugin", plugin.name)
                     options.setTag("Version", plugin.version)
                 }
@@ -66,7 +69,7 @@ class SentryErrorHandler : ErrorReportSubmitter() {
             // which may be needed if cannot submit errors when on a proxy
         }
 
-        events?.forEach { e ->
+        events.forEach { e ->
             val error = if (IdeaReportingEvent::class.java.isAssignableFrom(e.javaClass)) (e as IdeaReportingEvent).data.throwable else e.throwable
 
             val sentryEvent = SentryEvent(error)
@@ -83,7 +86,7 @@ class SentryErrorHandler : ErrorReportSubmitter() {
                 .getApplication()
                 .invokeLater { Sentry.captureEvent(sentryEvent) }
 
-            log.debug("The error has been submitted to Sentry.io")
+            log.debug("An error report has been submitted to Sentry.io for the D language plugin")
         }
 
         return true // return true to indicate that a process has begun to send data async
