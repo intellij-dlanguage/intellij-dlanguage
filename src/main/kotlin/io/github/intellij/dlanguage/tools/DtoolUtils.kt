@@ -11,12 +11,12 @@ class DtoolUtils {
     companion object {
 
         // This list of D Tool versions will need to be manually maintained until we have a web service in place
-        const val DMD_LATEST: String = "2.104.2"
+        const val DMD_LATEST: String = "2.105.0"
         const val LDC_LATEST: String = "1.33.0"
 
         const val SERVE_D_LATEST: String = "0.7.4"
 
-        const val DUB_LATEST: String = "1.33.0"
+        const val DUB_LATEST: String = "1.34.0"
         const val DSCANNER_LATEST: String = "v0.15.2" // v0.5.0-rc1
         const val DCD_LATEST: String = "v0.15.2" // v0.9.10, OR v0.9.10-alpha.0
         const val DFORMAT_LATEST: String = "v0.15.1"
