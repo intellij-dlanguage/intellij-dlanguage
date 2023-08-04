@@ -152,13 +152,11 @@ intellij {
             '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
             '--add-opens=java.desktop/java.awt.peer=ALL-UNNAMED',
             '--add-opens=java.desktop/java.awt.event=ALL-UNNAMED',
-            '--add-opens=java.desktop/java.awt.X11=ALL-UNNAMED', // Linux only
             '--add-opens=java.desktop/javax.swing=ALL-UNNAMED',
             '--add-opens=java.desktop/javax.swing.text.html=ALL-UNNAMED',
             '--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED',
             '--add-opens=java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED', // Linux only
             '--add-opens=java.desktop/com.apple.eawt.event=ALL-UNNAMED',  // Mac OSX only
-            '--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED'
         ]
         enabled = false // workaround for https://youtrack.jetbrains.com/issue/KT-42837
     }
@@ -180,13 +178,11 @@ intellij {
             '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
             '--add-opens=java.desktop/java.awt.peer=ALL-UNNAMED',
             '--add-opens=java.desktop/java.awt.event=ALL-UNNAMED',
-            '--add-opens=java.desktop/java.awt.X11=ALL-UNNAMED', // Linux only
             '--add-opens=java.desktop/javax.swing=ALL-UNNAMED',
             '--add-opens=java.desktop/javax.swing.text.html=ALL-UNNAMED',
             '--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED',
             '--add-opens=java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED', // Linux only
             '--add-opens=java.desktop/com.apple.eawt.event=ALL-UNNAMED',  // Mac OSX only
-            '--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED'
         ]
         systemProperties['idea.debug.mode'] = 'true'
         // The package names have to be prefixed with a #
@@ -288,7 +284,7 @@ dependencies {
     // todo: When updating the gradle intellij plugin we'll most likely need to set
     // some project dependencies with the 'instrumentedJar' configuration
     // see:
-    //  https://github.com/JetBrains/gradle-intellij-plugin/issues/1412 
+    //  https://github.com/JetBrains/gradle-intellij-plugin/issues/1412
     //  https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#multi-module-project
     implementation project(':utils')
     implementation project(':errorreporting')
