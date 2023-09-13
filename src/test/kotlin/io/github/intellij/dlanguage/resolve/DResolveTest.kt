@@ -65,4 +65,13 @@ class DResolveTest : DResolveTestCase() {
     @Test
     fun testImportUsageOfRenamedImport() = doTest()
 
+    @Test
+    fun testScopeOperatorDotXResolveGlobal() = doTest()
+
+    // TODO should work but resolve state is not currently powerful enough to handle this case
+    //@Test
+    //fun testScopeOperatorDotXResolveGlobalWithImport() = doTest()
+
+    @Test
+    fun testScopeOperatorXResolveLocal() = doTest()
 }

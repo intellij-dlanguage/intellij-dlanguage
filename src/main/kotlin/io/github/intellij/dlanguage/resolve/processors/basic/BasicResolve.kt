@@ -10,6 +10,8 @@ import io.github.intellij.dlanguage.attributes.DNameScopeProcessor
 import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.utils.Identifier
+import io.github.intellij.dlanguage.utils.IdentifierOrTemplateInstance
+import io.github.intellij.dlanguage.utils.PrimaryExpression
 
 
 /**

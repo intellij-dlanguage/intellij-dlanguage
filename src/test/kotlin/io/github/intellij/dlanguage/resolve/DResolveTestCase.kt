@@ -38,10 +38,21 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         for (file in testDataFiles) {
             var text = FileUtil.loadFile(file, CharsetToolkit.UTF8)
             text = StringUtil.convertLineSeparators(text)
-            val referencedOffset = text.indexOf("<ref>")
-            text = text.replace("<ref>", "")
-            val resolvedOffset = text.indexOf("<resolved>")
-            text = text.replace("<resolved>", "")
+            val refIndexBefore = text.indexOf("<ref>")
+            val resolvedIndexBefore = text.indexOf("<resolved>")
+            val referencedOffset: Int
+            val resolvedOffset: Int
+            if (refIndexBefore >= 0 && resolvedIndexBefore >= 0 && refIndexBefore < resolvedIndexBefore) {
+                referencedOffset = text.indexOf("<ref>")
+                text = text.replace("<ref>", "")
+                resolvedOffset = text.indexOf("<resolved>")
+                text = text.replace("<resolved>", "")
+            } else {
+                resolvedOffset = text.indexOf("<resolved>")
+                text = text.replace("<resolved>", "")
+                referencedOffset = text.indexOf("<ref>")
+                text = text.replace("<ref>", "")
+            }
             val psiFile = myFixture.configureByText(file.name, text)
             if (referencedOffset != -1) {
                 referencedElement = psiFile.findReferenceAt(referencedOffset)
