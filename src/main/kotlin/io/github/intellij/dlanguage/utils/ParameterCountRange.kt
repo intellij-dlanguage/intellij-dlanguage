@@ -1,4 +1,4 @@
-package io.github.intellij.dlanguage.resolve
+package io.github.intellij.dlanguage.utils
 
 /**
  * Created by francis on 7/22/2017.
