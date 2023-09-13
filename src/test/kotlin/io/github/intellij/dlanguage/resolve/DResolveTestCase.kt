@@ -53,7 +53,11 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
     }
 
     private fun findResolvedInFile(psiFile: PsiElement, resolvedOffset: Int) {
-        val ref = psiFile.findReferenceAt(resolvedOffset)
+        var element = psiFile.findElementAt(resolvedOffset)
+        while (element!!.reference == null || element.reference is DlangIdentifier) {
+            element = element.parent
+        }
+        val ref = element.reference
         if (ref == null) {
             fail("Reference was null in " + psiFile.containingFile.name)
         }
