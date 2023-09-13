@@ -11,7 +11,6 @@ import io.github.intellij.dlanguage.psi.DLanguageDeclaration
 import io.github.intellij.dlanguage.psi.DLanguageParameters
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport
-import io.github.intellij.dlanguage.resolve.ParameterCountRange
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
 
 
