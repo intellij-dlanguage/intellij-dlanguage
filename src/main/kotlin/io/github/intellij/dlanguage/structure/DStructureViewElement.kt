@@ -14,8 +14,7 @@ import io.github.intellij.dlanguage.utils.*
 import java.util.*
 import javax.swing.Icon
 
-class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
-    Navigatable by (element as NavigatablePsiElement)
+class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
 {
     private fun variableDeclarationAttributes(element: VariableDeclaration): String? {
         val allowedAttributes = arrayOf("const", "enum", "immutable")
@@ -145,6 +144,14 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement,
 
         return treeElements.toTypedArray()
     }
+
+    override fun navigate(requestFocus: Boolean) {
+        (element as? Navigatable)?.navigate(requestFocus)
+    }
+
+    override fun canNavigate(): Boolean = (element is Navigatable) && element.canNavigate()
+
+    override fun canNavigateToSource(): Boolean = (element is Navigatable) && element.canNavigateToSource()
 
     private fun findContentNode(psi: PsiElement?): List<PsiElement?> = when (psi) {
         is Declaration -> {
