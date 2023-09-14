@@ -52,14 +52,14 @@ class DResolveUtil private constructor(val project: Project) {
             return SpecialCaseResolve.findDefinitionNode(e)
         }
 
-        var basicResolveResult = BasicResolve.getInstance(project, profile).findDefinitionNode(e)
-        if(resolvingConstructor(e) == null){
-            basicResolveResult = basicResolveResult.filter { it !is Constructor }.toSet()
-        } else {
-            val constructorsOnly = basicResolveResult.filter { it is Constructor }.toSet()
-            if (constructorsOnly.isNotEmpty())
-                return constructorsOnly
+        if (resolvingConstructor(e) != null) {
+            val basicResolveResult = BasicResolve.getInstance(project, profile).findDefinitionNode(e)
+            return basicResolveResult.filter { it is Constructor }.toSet()
         }
+
+        var basicResolveResult = BasicResolve.getInstance(project, profile).findDefinitionNode(e)
+        basicResolveResult = basicResolveResult.filter { it !is Constructor }.toSet()
+
         if (basicResolveResult.isEmpty())
             return SpecialCaseResolve.tryPackageResolve(e)
         return basicResolveResult
