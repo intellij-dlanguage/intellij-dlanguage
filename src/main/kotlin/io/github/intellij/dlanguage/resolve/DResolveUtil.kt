@@ -3,6 +3,7 @@ package io.github.intellij.dlanguage.resolve
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
+import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
@@ -56,7 +57,12 @@ class DResolveUtil private constructor(val project: Project) {
 
         if (resolvingConstructor(e) != null) {
             val basicResolveResult = BasicResolve.getInstance(project, profile).findDefinitionNode(e)
-            return basicResolveResult.filter { it is Constructor }.toSet()
+            val potential = basicResolveResult.filter { it is Constructor }.toSet()
+            if (potential.isNotEmpty()) {
+                return potential
+            }
+            // No constructor found, so point to the class/struct itself
+            return basicResolveResult.filter { it is ClassDeclaration || it is StructDeclaration}.toSet()
         }
 
         if (isModuleScopeOperator(e)) {
