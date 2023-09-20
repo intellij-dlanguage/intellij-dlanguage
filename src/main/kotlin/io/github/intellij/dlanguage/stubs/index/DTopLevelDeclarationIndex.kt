@@ -18,11 +18,11 @@ class DTopLevelDeclarationIndex : StringStubIndexExtension<DNamedElement>() {
     }
 
     companion object {
-        val KEY: StubIndexKey<String, DNamedElement> = StubIndexKey.createIndexKey<String, DNamedElement>("d.globally.accessible.name")
-        val VERSION = 7
+        val KEY: StubIndexKey<String, DNamedElement> = StubIndexKey.createIndexKey("d.globally.accessible.name")
+        val VERSION = 8
         fun <S : NamedStubBase<T>, T : DNamedElement> indexTopLevelDeclarations(stub: S, sink: IndexSink, name: String) {
-            if (stub !is DlangIdentifierStub && topLevelDeclaration<S, T>(stub)) {
-                sink.occurrence(DTopLevelDeclarationIndex.KEY, name)
+            if (stub !is DlangIdentifierStub && topLevelDeclaration(stub)) {
+                sink.occurrence(KEY, name)
             }
         }
 

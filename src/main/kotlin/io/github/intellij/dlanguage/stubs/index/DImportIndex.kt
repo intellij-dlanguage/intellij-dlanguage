@@ -26,7 +26,7 @@ class DPublicImportIndex : StringStubIndexExtension<SingleImport>() {
 
     companion object {
         private val KEY: StubIndexKey<String, SingleImport> = StubIndexKey.createIndexKey("d.globally.accessible.import.public")
-        private const val VERSION = 3
+        private const val VERSION = 4
 
         fun <S : NamedStubBase<T>, T : DNamedElement> indexPublicImports(stub: S, sink: IndexSink) {
             if (stub is DlangSingleImportStub && topLevelDeclaration(stub)) {

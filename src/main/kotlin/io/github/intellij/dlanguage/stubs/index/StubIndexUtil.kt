@@ -31,6 +31,9 @@ fun <S : NamedStubBase<T>, T : DNamedElement> topLevelDeclaration(stub: S): Bool
         if (stubParent is DlangConstructorStub || stubParent is DlangSharedStaticConstructorStub || stubParent is DlangStaticConstructorStub || stubParent is DlangDestructorStub || stubParent is DlangSharedStaticDestructorStub || stubParent is DlangStaticDestructorStub) {
             return false
         }
+        if (stubParent is DlangStructDeclarationStub || stubParent is DlangInterfaceOrClassStub) {
+            return false
+        }
         if (stubParent is DlangUnittestStub) {
             return false
         }
