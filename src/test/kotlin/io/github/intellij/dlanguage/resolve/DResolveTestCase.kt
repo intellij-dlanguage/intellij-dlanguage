@@ -131,7 +131,7 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         doCheck(succeed)
     }
 
-    protected fun doCheckByText2(mainFileContent: String, file2: String) {
+    protected fun doCheckByText2(mainFileContent: String, file2: String, succeed: Boolean = true) {
         val referenceIndicator = "/*<ref>*/"
         val resolvedIndicator = "/*<resolved>*/"
         val referencedOffset = mainFileContent.indexOf(referenceIndicator)
@@ -142,7 +142,7 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         val psiFile = myFixture.configureByText("main.d", mainFileText)
         referencedElement = psiFile.findReferenceAt(referencedOffset)
         findResolvedInFile(psiFile2, resolvedOffset)
-        doCheck(true)
+        doCheck(succeed)
     }
 
     protected fun doTestStubOnlyResolve(

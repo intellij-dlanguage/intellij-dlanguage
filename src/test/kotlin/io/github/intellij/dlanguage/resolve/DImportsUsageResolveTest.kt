@@ -93,4 +93,25 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             """)
     }
 
+    @Test
+    fun testSelectiveImportShouldNotFindNestedObject() {
+        doCheckByText2(
+            """
+                import resolve.to.include: B;
+
+                void main() {
+                    A./*<ref>*/B variable;
+                }
+            """,
+            """
+                module resolve.to.include;
+                struct A {
+                    struct /*<resolved>*/B {}
+                    void foo{}
+                }
+
+            """,
+            false)
+    }
+
 }
