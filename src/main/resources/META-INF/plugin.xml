@@ -156,6 +156,8 @@
 
         <!-- plugin settings are now in: Settings -> Languages &amp; Frameworks -> D Tools -->
         <projectConfigurable groupId="language" order="first"
+                             id="D Tools"
+                             displayName="D Tools"
                              instance="io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable"/>
 
         <search.optionContributor implementation="io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable$SearchableDlangTools" />
