@@ -62,7 +62,13 @@ class DResolveUtil private constructor(val project: Project) {
                 return potential
             }
             // No constructor found, so point to the class/struct itself
-            return basicResolveResult.filter { it is ClassDeclaration || it is StructDeclaration}.toSet()
+            val result = basicResolveResult.filter { it is InterfaceOrClass || it is StructDeclaration}.toSet()
+            if (result.size != 1 || result.first().parent !is ClassDeclaration) {
+                return result
+            }
+            // If it was a class definition, search for his constructors if any
+            val constructors = (result.first() as InterfaceOrClass).structBody?.declarations?.mapNotNull { it.constructor }
+            return if (constructors?.isNotEmpty() == true) constructors.toSet() else result
         }
 
         if (isModuleScopeOperator(e)) {

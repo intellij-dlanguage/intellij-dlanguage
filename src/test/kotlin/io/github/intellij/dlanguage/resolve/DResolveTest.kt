@@ -74,4 +74,7 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testScopeOperatorXResolveLocal() = doTest()
+
+    @Test
+    fun testConstructorCallShouldResolveConstructorWithClassDeclarationInTheSameFile() = doTest()
 }
