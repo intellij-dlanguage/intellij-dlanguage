@@ -3,7 +3,6 @@ package io.github.intellij.dlanguage.resolve
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
-import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
@@ -55,7 +54,7 @@ class DResolveUtil private constructor(val project: Project) {
             return SpecialCaseResolve.findDefinitionNode(e)
         }
 
-        if (resolvingConstructor(e) != null) {
+        if (resolvingConstructorCall(e)) {
             val basicResolveResult = BasicResolve.getInstance(project, profile).findDefinitionNode(e)
             val potential = basicResolveResult.filter { it is Constructor }.toSet()
             if (potential.isNotEmpty()) {
@@ -84,8 +83,9 @@ class DResolveUtil private constructor(val project: Project) {
     }
 
 
-    fun resolvingConstructor(e: PsiElement): NewExpression? {
-        return DPsiUtil.getParent(e, setOf(NEW_EXPRESSION), setOf(BLOCK_STATEMENT, STRUCT_BODY, DECLARATION)) as NewExpression?
+    fun resolvingConstructorCall(e: PsiElement): Boolean {
+        return e.parent is IdentifierOrTemplateInstance && e.parent.parent is TypeIdentifierPart
+            && DPsiUtil.getParent(e, setOf(NEW_EXPRESSION), setOf(BLOCK_STATEMENT, STRUCT_BODY, DECLARATION)) is NewExpression
     }
 
     fun isModuleScopeOperator(e: PsiElement): Boolean {

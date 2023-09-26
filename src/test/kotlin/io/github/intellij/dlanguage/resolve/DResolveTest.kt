@@ -77,4 +77,7 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testConstructorCallShouldResolveConstructorWithClassDeclarationInTheSameFile() = doTest()
+
+    @Test
+    fun testConstructorCallResolveParameters() = doTest()
 }
