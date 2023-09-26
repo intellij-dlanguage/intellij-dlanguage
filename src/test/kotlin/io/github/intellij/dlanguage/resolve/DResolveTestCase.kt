@@ -55,7 +55,7 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
             }
             val psiFile = myFixture.configureByText(file.name, text)
             if (referencedOffset != -1) {
-                referencedElement = psiFile.findReferenceAt(referencedOffset)
+                referencedElement = psiFile.findElementAt(referencedOffset)!!.parent.reference!!
             }
             if (resolvedOffset != -1) {
                 findResolvedInFile(psiFile, resolvedOffset)
@@ -122,7 +122,11 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
                 assertEquals("Could not resolve expected reference.", resolvedElement, element!!.parent)
             }
         } else {
-            assertFalse("Resolved unexpected reference.", resolvedElement == referencedElement!!.resolve())
+            if (resolvedElement == null) {
+                assertNull("The reference should not resolve to anything but a reference was found", referencedElement!!.resolve())
+            } else {
+                assertFalse("Resolved unexpected reference.", resolvedElement == referencedElement!!.resolve())
+            }
         }
     }
 
