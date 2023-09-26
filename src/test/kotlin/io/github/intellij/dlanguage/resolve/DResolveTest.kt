@@ -80,4 +80,15 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testConstructorCallResolveParameters() = doTest()
+
+    @Test
+    fun testAnonymousEnumUsage() = doTest()
+
+    // TODO should work but resolve state is not currently powerful enough to handle this case
+    //      it needs to handle the chain resolve (A.B)
+    //@Test
+    //fun testEnumUsageWithEnumTypePrefix() = doTest()
+
+    @Test
+    fun testEnumUsageWithoutEnumTypePrefixShouldNotResolve() = doTest(false)
 }

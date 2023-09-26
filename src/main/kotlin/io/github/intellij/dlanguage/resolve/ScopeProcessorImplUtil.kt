@@ -47,7 +47,7 @@ object ScopeProcessorImplUtil {
 
         }
         if (def.enumDeclaration != null) {
-            if (def.enumDeclaration?.enumBody?.enumMembers != null) {
+            if (def.enumDeclaration!!.identifier == null && def.enumDeclaration!!.enumBody?.enumMembers != null) {
                 for (enumMember in def.enumDeclaration!!.enumBody!!.enumMembers) {
                     if (!processor.execute(enumMember, state)) {
                         toContinue = false
