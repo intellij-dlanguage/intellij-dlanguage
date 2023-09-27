@@ -29,11 +29,11 @@ class DubBuildSourceFileFilter(val project: Project) : Filter {
     }
 
     override fun applyFilter(line: String, entireLength: Int): Filter.Result? {
-        if(line.matches(D_SOURCE_PATH_FORMAT)) {
-            // then it's fairly certain we can get a hyperlink to the source file and possibly the line number
-            val groups = line.lineSequence()
-                .flatMap { D_SOURCE_PATH_FORMAT.find(it)?.groupValues ?: emptyList() }
-                .drop(1) // the first one will be entire string
+        val found = line.lineSequence()
+            .flatMap { D_SOURCE_PATH_FORMAT.find(it)?.groupValues ?: emptyList() }
+        if (found.toList().isNotEmpty()) {
+            // then it's certain we can get a hyperlink to the source file and possibly the line number
+            val groups = found.drop(1) // the first one will be entire string
                 .toList()
 
             val file = LocalFileSystem
