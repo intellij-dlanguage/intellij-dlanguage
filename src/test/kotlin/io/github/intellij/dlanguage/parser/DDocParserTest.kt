@@ -21,4 +21,5 @@ class DDocParserTest : ParsingTestCase("ddoc" + File.separator + "parser", "d", 
     fun testMarkdownHeading() = doTest(true, true)
     fun testQuotes() = doTest(true, true)
     fun testFull() = doTest(true, true)
+    fun testWrongImageDetection() = doTest(true, true)
 }

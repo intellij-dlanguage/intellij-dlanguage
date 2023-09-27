@@ -317,7 +317,7 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
         parseLinkContent()
     }
 
-    private fun parseLinkContent() {
+    private fun parseLinkContent(): Boolean {
         val linkMarker = builder.mark()
         val marker1 = builder.mark()
         builder.advanceLexer()
@@ -333,7 +333,7 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
             marker1.drop()
             linkMarker.drop()
             builder.advanceLexer()
-            return
+            return false
         }
         builder.advanceLexer()
         when (builder.tokenType) {
@@ -351,12 +351,12 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
                 if (builder.tokenType != DDOC_RIGHT_BRACKET) {
                     markerReference.rollbackTo()
                     linkMarker.done(DDOC_LINK)
-                    return
+                    return true
                 }
                 builder.advanceLexer()
                 markerReference.done(DDOC_LINK_REFERENCE_TO)
                 linkMarker.done(DDOC_LINK)
-                return
+                return true
             }
             DDOC_LEFT_PARENTHESES -> {
                 val markerRawUrl = builder.mark()
@@ -367,7 +367,7 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
                 if (builder.tokenType != DDOC_RIGHT_PARENTHESES) {
                     markerRawUrl.rollbackTo()
                     linkMarker.done(DDOC_LINK)
-                    return
+                    return true
                 }
                 builder.advanceLexer()
                 markerRawUrl.done(DDOC_LINK_INLINE_REFERENCE_TEXT)
@@ -379,20 +379,21 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
                     builder.advanceLexer()
                 }
                 linkMarker.done(DDOC_LINK_DECLARATION)
-                return
+                return true
             }
             else -> {
                 linkMarker.done(DDOC_LINK)
-                return
+                return true
             }
         }
+        return true
     }
 
     private fun parseImage() {
         val marker = builder.mark()
         builder.advanceLexer()
-        parseLinkContent()
-        if (builder.latestDoneMarker?.tokenType == DDOC_LINK) {
+        val wasLink = parseLinkContent()
+        if (wasLink) {
             marker.done(DDOC_IMAGE)
         } else {
             marker.drop()
