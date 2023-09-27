@@ -18,7 +18,7 @@ jobs:
     - name: Set up JDK ${{ matrix.jdk }}
       uses: actions/setup-java@v3
       with:
-        distribution: zulu
+        distribution: temurin
         java-version: ${{ matrix.jdk }}
     - name: Install D compiler
       uses: dlang-community/setup-dlang@v1
