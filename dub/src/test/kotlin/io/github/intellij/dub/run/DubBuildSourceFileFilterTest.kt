@@ -116,4 +116,15 @@ class DubBuildSourceFileFilterTest : LightPlatformTestCase() {
 
         TestCase.assertNull("shouldn't apply filter if no source found", result)
     }
+
+    @Throws(Exception::class)
+    fun `test filtering dub output with som file path inside`() {
+        val line = "Starting process 'command 'rdmd''. Working directory: /path/to/intellij/intellij-dlanguage/gen/io/github/intellij/dlanguage/psi Command: rdmd types_regen_script.d\n"
+
+        val filter = DubBuildSourceFileFilter(project)
+
+        val result = filter.applyFilter(line, line.length)
+
+        TestCase.assertNull("shouldn't apply filter if no source found", result)
+    }
 }
