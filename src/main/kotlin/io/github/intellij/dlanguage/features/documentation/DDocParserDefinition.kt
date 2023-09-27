@@ -20,6 +20,7 @@ import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_EXAMPLES_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_HISTORY_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LICENSE_SECTION
+import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_DECLARATION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_MACROS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_NAMED_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_PARAMS_SECTION
@@ -65,6 +66,8 @@ class DDocParserDefinition : ParserDefinition {
             DDOC_COPYRIGHT_SECTION -> DDocNamedSectionImpl(node)
             DDOC_PARAMS_SECTION -> DDocParamsSectionImpl(node)
             DDOC_MACROS_SECTION -> DDocMacroSectionImpl(node)
+
+            DDOC_LINK_DECLARATION -> DDocLinkDeclarationImpl(node)
             else -> return DlangDocPsiElementImpl(node)
         }
     }

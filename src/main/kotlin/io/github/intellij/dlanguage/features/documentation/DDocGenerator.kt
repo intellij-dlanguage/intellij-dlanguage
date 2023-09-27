@@ -73,7 +73,8 @@ class DDocGenerator {
     fun generateDocRendered(comment: DlangDocComment): String {
         renderedDoc = true
         val builder = StringBuilder()
-        appendContentSections(builder, comment.sections())
+        val linksDeclarations = PsiTreeUtil.findChildrenOfType(comment, DDocLinkDeclarationImpl::class.java)
+        appendContentSections(builder, comment.sections(), linksDeclarations)
         return builder.toString()
     }
 
@@ -81,7 +82,8 @@ class DDocGenerator {
         val sectionsBuilder = StringBuilder()
         // TODO actually choose which section to add (example copyright to display only for module)
         for (el in elements) {
-            appendContentSections(sectionsBuilder, el.sections())
+            val linksDeclarations = PsiTreeUtil.findChildrenOfType(el, DDocLinkDeclarationImpl::class.java)
+            appendContentSections(sectionsBuilder, el.sections(), linksDeclarations)
         }
 
         if (sectionsBuilder.isBlank())
@@ -91,7 +93,7 @@ class DDocGenerator {
         builder.append(DocumentationMarkup.CONTENT_END)
     }
 
-    private fun appendContentSections(builder: StringBuilder, sections: Array<PsiElement>) {
+    private fun appendContentSections(builder: StringBuilder, sections: Array<PsiElement>, linksDeclarations: Collection<DDocLinkDeclarationImpl>) {
         var startedSection = false
         for (section in sections) {
             when (section) {
@@ -101,14 +103,14 @@ class DDocGenerator {
                         builder.append(DocumentationMarkup.SECTIONS_END)
                     }
                     builder.append("<p>")
-                    builder.append(buildContent(section.getContent()!!))
+                    builder.append(buildContent(section.getContent()!!, linksDeclarations))
                     builder.append("</p>")
                 }
 
                 is DDocDescriptionSectionImpl -> {
                     for (anonymousSection in section.getSections()) {
                         builder.append("<p>")
-                        builder.append(buildContent(anonymousSection.getContent()!!))
+                        builder.append(buildContent(anonymousSection.getContent()!!, linksDeclarations))
                         builder.append("</p>")
                     }
                 }
@@ -121,7 +123,7 @@ class DDocGenerator {
                     builder.append(DocumentationMarkup.SECTION_HEADER_START)
                     builder.append(section.getTitle()!!.text)
                     builder.append(DocumentationMarkup.SECTION_SEPARATOR)
-                    builder.append(buildContent(section.getContent()!!))
+                    builder.append(buildContent(section.getContent()!!, linksDeclarations))
                     builder.append(DocumentationMarkup.SECTION_END)
                     builder.append("</tr>")
                 }
@@ -129,7 +131,7 @@ class DDocGenerator {
         }
     }
 
-    private fun buildContent(section: PsiElement): String {
+    private fun buildContent(section: PsiElement, linksDeclarations: Collection<DDocLinkDeclarationImpl>): String {
         val builder = StringBuilder()
 
         val childs = (section as? DlangDocPsiElement)?.getDescriptionElements()?: section.children
@@ -138,7 +140,7 @@ class DDocGenerator {
                 continue
             when (element.elementType) {
                 DDOC_WHITESPACE -> builder.append(" ")
-                DDOC_ANONYMOUS_SECTION -> builder.append(buildContent(element))
+                DDOC_ANONYMOUS_SECTION -> builder.append(buildContent(element, linksDeclarations))
                 DDOC_COMMENT_DATA -> builder.append(element.text)
                 DDOC_COLON -> builder.append(element.text)
                 DDOC_MACRO_CALL -> builder.append(element.text) // TODO interpret macro (substitute by the value)
@@ -148,7 +150,7 @@ class DDocGenerator {
                     builder.append("<h")
                     builder.append(level)
                     builder.append(">")
-                    builder.append(buildContent(element))
+                    builder.append(buildContent(element, linksDeclarations))
                     builder.append("</h")
                     builder.append(level)
                     builder.append(">")
@@ -174,16 +176,16 @@ class DDocGenerator {
                 }
                 DDOC_QUOTE -> {
                     builder.append("<blockquote>")
-                    builder.append(buildContent(element))
+                    builder.append(buildContent(element, linksDeclarations))
                     builder.append("</blockquote>")
                 }
                 DDOC_QUOTE_CHAR -> continue // not displayed, already handled in DDOC_QUOTE
                 DDOC_LINK -> {
-                    builder.append(buildLinkContent(element as DlangDocPsiElement, false))
+                    builder.append(buildLinkContent(element as DlangDocPsiElement, false, linksDeclarations))
                 }
                 DDOC_IMAGE -> {
                     val linkContent = (element as DlangDocPsiElement).firstChild.nextSibling as DlangDocPsiElement
-                    builder.append(buildLinkContent(linkContent, true))
+                    builder.append(buildLinkContent(linkContent, true, linksDeclarations))
                 }
                 DDOC_LINK_DECLARATION -> continue // its content is replaced in DDOC_LINKs
                 else -> builder.append(element.text)
@@ -192,15 +194,16 @@ class DDocGenerator {
         return builder.toString()
     }
 
-    private fun buildLinkContent(element: DlangDocPsiElement, isImage: Boolean = false): String {
+    private fun buildLinkContent(element: DlangDocPsiElement, isImage: Boolean = false, linksDeclarations: Collection<DDocLinkDeclarationImpl>): String {
         val builder = StringBuilder()
         var text: String? = null
+        var referenceTo: String? = null
         var reference: String? = null
         var quote: String? = null
         for (children in element.getDescriptionElements()) {
             when (children.elementType) {
                 DDOC_LINK_TEXT -> text = children.text.substring(1, children.text.length - 1) // text without [ ]
-                DDOC_LINK_REFERENCE_TO -> reference = children.text.substring(1, children.text.length - 1) // text without [ ]
+                DDOC_LINK_REFERENCE_TO -> referenceTo = children.text
                 DDOC_LINK_INLINE_REFERENCE_TEXT -> {
                     reference = children.text.substring(1, children.text.length - 1)  // text without ( )
                     val quoteIdx = reference.indexOf('\'')
@@ -223,20 +226,42 @@ class DDocGenerator {
             builder.append("</img>")
         }
         else {
-            // TODO resolve reference and point to it (take care of reference empty case: [Ref][])
-            builder.append("<a href=\"")
-            builder.append(reference)
-            builder.append("\"")
-            if (quote != null) {
-                builder.append(" title=\"")
-                builder.append(quote)
-                builder.append("\"")
+            if (referenceTo != null) {
+                val target = linksDeclarations.find { it.firstChild.text == referenceTo}
+                var referenceToText = ""
+                for (e in element.getDescriptionElements()) {
+                    referenceToText += e.text
+                }
+                if (target == null) {
+                    // TODO handle reference to code elements
+                    builder.append(referenceToText)
+                } else {
+                    val referencePointer = target.text.substringAfter(":").trim().split(" ", limit = 1)
+                    reference = referencePointer.first()
+                    if (text == null) {
+                        text = referenceTo.substring(1, referenceTo.length - 1) // text without [ ]
+                    }
+                    addLink(builder, reference, text, quote)
+                }
+            } else {
+                addLink(builder, reference, text, quote)
             }
-            builder.append(">")
-            builder.append(text ?: reference)
-            builder.append("</a>")
         }
         return builder.toString()
+    }
+
+    private fun addLink(builder: StringBuilder, reference: String?, text: String?, quote: String?) {
+        builder.append("<a href=\"")
+        builder.append(reference)
+        builder.append("\"")
+        if (quote != null) {
+            builder.append(" title=\"")
+            builder.append(quote)
+            builder.append("\"")
+        }
+        builder.append(">")
+        builder.append(text ?: reference)
+        builder.append("</a>")
     }
 
     private fun buildEmbeddedCodeContent(element: DlangDocPsiElement): String {

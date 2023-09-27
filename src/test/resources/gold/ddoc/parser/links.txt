@@ -86,7 +86,7 @@ D Language File
     PsiElement(DDOC_WHITESPACE)(' ')
     DDocAnonymousSectionImpl(DDOC_ANONYMOUS_SECTION)
       DlangDocPsiElementImpl(DDOC_SECTION_CONTENT)
-        DlangDocPsiElementImpl(DDOC_LINK_DECLARATION)
+        DDocLinkDeclarationImpl(DDOC_LINK_DECLARATION)
           DlangDocPsiElementImpl(DDOC_LINK_NAME)
             PsiElement(DDOC_LEFT_BRACKET)('[')
             PsiElement(DDOC_COMMENT_DATA)('ref')
