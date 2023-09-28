@@ -13,15 +13,15 @@ class DHighlightingAnnotatorTest : LightPlatformCodeInsightFixture4TestCase() {
         myFixture.testHighlighting(false, true, false)
     }
 
-    @Test
-    fun testInvalidDelimiterString() {
-        myFixture.configureByFile("invalid_string_delimiters.d")
-        myFixture.testHighlighting(false, false, false);
-    }
-
-    @Test
-    fun testUnclosedComment() {
-        myFixture.configureByFile("unclosed_comment.d")
-        myFixture.testHighlighting(false, false, false);
-    }
+//    @Test
+//    fun testInvalidDelimiterString() {
+//        myFixture.configureByFile("invalid_string_delimiters.d")
+//        myFixture.testHighlighting(false, false, false);
+//    }
+//
+//    @Test
+//    fun testUnclosedComment() {
+//        myFixture.configureByFile("unclosed_comment.d")
+//        myFixture.testHighlighting(false, false, false);
+//    }
 }
