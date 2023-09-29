@@ -4,29 +4,7 @@ package io.github.intellij.dlanguage.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import io.github.intellij.dlanguage.psi.impl.*;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageAliasInitializerImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageAutoDeclarationPartImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageCatchImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageConstructorImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageDeclaratorImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageEnumMemberImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageEponymousTemplateDeclarationImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageForeachTypeImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageFunctionDeclarationImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageIfConditionImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageLabeledStatementImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DlangModuleDeclarationImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageNamedImportBindImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageParameterImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateParameterImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DlangVersionSpecificationImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DlangEnumDeclarationImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DlangIdentifierImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DlangInterfaceOrClassImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DlangStructDeclarationImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DlangTemplateDeclarationImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DlangUnionDeclarationImpl;
+import io.github.intellij.dlanguage.psi.impl.named.*;
 import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Mixin;
@@ -278,7 +256,7 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitDeclaratorIdentifierList(@NotNull final DLanguageDeclaratorIdentifierListImpl o) {
+    public void visitDeclaratorIdentifier(@NotNull final DlangDeclaratorIdentifierImpl o) {
         visitPsiElement(o);
     }
 

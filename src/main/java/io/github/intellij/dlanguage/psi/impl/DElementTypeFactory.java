@@ -31,6 +31,8 @@ public class DElementTypeFactory {
                 return new ModuleDeclarationStubElementType(name);
             case "DECLARATOR":
                 return new DeclaratorStubElementType(name);
+            case "DECLARATOR_IDENTIFIER":
+                return new DeclaratorIdentifierStubElementType(name);
             case "LABELED_STATEMENT":
                 return new LabeledStatementStubElementType(name);
             case "SHARED_STATIC_CONSTRUCTOR":

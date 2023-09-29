@@ -37,6 +37,7 @@ public interface DlangTypes {
     IElementType ENUM_MEMBER = DElementTypeFactory.factory("ENUM_MEMBER");
     IElementType NAMED_IMPORT_BIND = DElementTypeFactory.factory("NAMED_IMPORT_BIND");
     IElementType VERSION_SPECIFICATION = DElementTypeFactory.factory("VERSION_SPECIFICATION");
+    IElementType DECLARATOR_IDENTIFIER = DElementTypeFactory.factory("DECLARATOR_IDENTIFIER");
 
     DlangElementType ALIAS_ASSIGN = new DlangElementType("ALIAS_ASSIGN");
     DlangElementType ALIAS_DECLARATION = new DlangElementType("ALIAS_DECLARATION");
@@ -97,7 +98,6 @@ public interface DlangTypes {
     DlangElementType DECLARATION = new DlangElementType("DECLARATION");
     DlangElementType DECLARATION_OR_STATEMENT = new DlangElementType("DECLARATION_OR_STATEMENT");
     DlangElementType DECLARATIONS_AND_STATEMENTS = new DlangElementType("DECLARATIONS_AND_STATEMENTS");
-    DlangElementType DECLARATOR_IDENTIFIER_LIST = new DlangElementType("DECLARATOR_IDENTIFIER_LIST");
     DlangElementType DEFAULT_STATEMENT = new DlangElementType("DEFAULT_STATEMENT");
     DlangElementType DELETE_EXPRESSION = new DlangElementType("DELETE_EXPRESSION");
     DlangElementType DEPRECATED = new DlangElementType("DEPRECATED");
@@ -625,8 +625,8 @@ public interface DlangTypes {
                 return new DLanguageGotoStatementImpl(node);
             } else if (type == IDENTIFIER_CHAIN) {
                 return new DLanguageIdentifierChainImpl(node);
-            } else if (type == DECLARATOR_IDENTIFIER_LIST) {
-                return new DLanguageDeclaratorIdentifierListImpl(node);
+            } else if (type == DECLARATOR_IDENTIFIER) {
+                return new DlangDeclaratorIdentifierImpl(node);
             } else if (type == IDENTIFIER_OR_TEMPLATE_CHAIN) {
                 return new DLanguageIdentifierOrTemplateChainImpl(node);
             } else if (type == IDENTIFIER_OR_TEMPLATE_INSTANCE) {

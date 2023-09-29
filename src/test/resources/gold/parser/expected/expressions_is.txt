@@ -6,7 +6,7 @@ D Language File
         DLanguageType_2Impl(TYPE_2)
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.int)('int')
-      DLanguageDeclaratorIdentifierListImpl(DECLARATOR_IDENTIFIER_LIST)
+      DECLARATOR_IDENTIFIER
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('func')
       DLanguageParametersImpl(PARAMETERS)

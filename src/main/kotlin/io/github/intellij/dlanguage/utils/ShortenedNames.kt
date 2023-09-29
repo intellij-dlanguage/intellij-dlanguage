@@ -1,6 +1,5 @@
 package io.github.intellij.dlanguage.utils
 
-import io.github.intellij.dlanguage.psi.DLanguageDeclaratorIdentifierList
 import io.github.intellij.dlanguage.psi.DLanguageThrowExpression
 import io.github.intellij.dlanguage.psi.named.*
 
@@ -91,6 +90,7 @@ typealias Declaration = io.github.intellij.dlanguage.psi.DLanguageDeclaration
 typealias DeclarationOrStatement = io.github.intellij.dlanguage.psi.DLanguageDeclarationOrStatement
 typealias DeclarationsAndStatements = io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements
 typealias Declarator = DlangDeclarator
+typealias DeclaratorIdentifier = io.github.intellij.dlanguage.psi.named.DlangDeclaratorIdentifier
 typealias DefaultStatement = io.github.intellij.dlanguage.psi.DLanguageDefaultStatement
 typealias DeleteExpression = io.github.intellij.dlanguage.psi.DLanguageDeleteExpression
 typealias Deprecated = io.github.intellij.dlanguage.psi.DLanguageDeprecated
@@ -114,7 +114,6 @@ typealias FunctionDeclaration = DlangFunctionDeclaration
 typealias FunctionLiteralExpression = io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 typealias GotoStatement = io.github.intellij.dlanguage.psi.DLanguageGotoStatement
 typealias IdentifierChain = io.github.intellij.dlanguage.psi.DLanguageIdentifierChain
-typealias IdentifierList = DLanguageDeclaratorIdentifierList
 typealias IdentifierOrTemplateChain = io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateChain
 typealias IdentifierOrTemplateInstance = io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateInstance
 typealias IdentityExpression = io.github.intellij.dlanguage.psi.DLanguageIdentityExpression

@@ -17,8 +17,14 @@ object ScopeProcessorImplUtil {
                            lastParent: PsiElement?,
                            place: PsiElement): Boolean {
         var toContinue = true
-        if (def.aliasDeclaration?.aliasInitializers != null) {
+        if (def.aliasDeclaration?.aliasInitializers?.isNotEmpty() == true) {
             for (varDeclaration in def.aliasDeclaration?.aliasInitializers!!) {
+                toContinue = processor.execute(varDeclaration, state)
+            }
+            return toContinue
+        }
+        if (def.aliasDeclaration?.declaratorIdentifiers?.isNotEmpty() == true) {
+            for (varDeclaration in def.aliasDeclaration?.declaratorIdentifiers!!) {
                 toContinue = processor.execute(varDeclaration, state)
             }
             return toContinue
