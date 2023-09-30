@@ -132,7 +132,7 @@ class DResolveUtil private constructor(val project: Project) {
             if (parent.identifier == e)
                 return true
         if (parent is PragmaExpression && pragmaIdentifiers.contains(name)) return true
-        if (parent is IdentifierList && parent.parent is AliasDeclaration) return true
+        if (parent is DeclaratorIdentifier && parent.parent is AliasDeclaration) return true
         if (parent is AliasInitializer) return true
         if (parent is AsmInstruction || parent.parent is AsmPrimaryExp) return true
         return false

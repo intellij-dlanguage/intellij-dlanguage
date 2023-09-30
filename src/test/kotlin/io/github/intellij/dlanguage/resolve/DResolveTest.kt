@@ -36,6 +36,12 @@ class DResolveTest : DResolveTestCase() {
     fun testAliasUsageToAliasDeclaration() = doTest()
 
     @Test
+    fun testAliasUsageToAliasDeclarationSecondAliasForm() = doTest()
+
+    @Test
+    fun testAliasUsageToAliasDeclarationSecondAliasFormWithImport() = doTest()
+
+    @Test
     fun testScopedImportsFail() = doTest(false)
 
     @Test

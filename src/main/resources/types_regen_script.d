@@ -24,6 +24,7 @@ string[] named_children = [
     "Catch",
     "Constructor",
     "Declarator",
+    "DeclaratorIdentifier",
     "Destructor",
     "EnumDeclaration",
     "EnumMember",
@@ -66,7 +67,7 @@ string[string] renameMap;
 static this() {
     types_children["AddExpression"] = ["AddExpression", "MulExpression","OP_TILDA", "OP_PLUS" , "OP_MINUS"]; //todo insert from MulExpression
     types_children["AliasAssign"] = ["Type","OP_EQ"];
-    types_children["AliasDeclaration"] = ["DeclaratorIdentifierList","OP_COMMA","StorageClass*","KW_ALIAS", "Type", "OP_SCOLON", "AliasInitializer*"];
+    types_children["AliasDeclaration"] = ["DeclaratorIdentifier*","OP_COMMA","StorageClass*","KW_ALIAS", "Type", "OP_SCOLON", "AliasInitializer*"];
     types_children["AliasThisDeclaration"] = ["KW_ALIAS", "Identifier", "KW_THIS", "OP_SCOLON"];
     types_children["AlignAttribute"] = ["KW_ALIGN", "AssignExpression", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
     types_children["AndAndExpression"] = ["AndAndExpression", "OrExpression", "OP_BOOL_AND"];
@@ -125,7 +126,6 @@ static this() {
     types_children["Declaration"] = ["AliasThisDeclaration","AliasDeclaration","ClassDeclaration","ConditionalDeclaration"/*,"Postblit"*/,"Constructor","Destructor","AnonymousEnumDeclaration","EponymousTemplateDeclaration","EnumDeclaration","ImportDeclaration","InterfaceDeclaration","MixinTemplateDeclaration","MixinDeclaration","PragmaDeclaration",  "SharedStaticConstructor", "SharedStaticDestructor","StaticConstructor","StaticDestructor","StaticAssertDeclaration","StructDeclaration","TemplateDeclaration","UnionDeclaration","Invariant","Unittest","VersionSpecification","DebugSpecification","Attribute*","Declaration*","OP_BRACES_RIGHT","OP_BRACES_LEFT","FunctionDeclaration","VariableDeclaration","AttributeDeclaration"];
     types_children["DeclarationOrStatement"] = ["Statement","Declaration"];
     types_children["DeclarationsAndStatements"] = ["DeclarationOrStatement*"];
-    types_children["DeclaratorIdentifierList"] = ["Identifier*","OP_COMMA*"];
     types_children["DefaultStatement"] = ["KW_DEFAULT","OP_COLON","DeclarationsAndStatements"];
     types_children["DeleteExpression"] = ["KW_DELETE","UnaryExpression"];
     types_children["DeleteStatement"] = ["KW_DELETE"];

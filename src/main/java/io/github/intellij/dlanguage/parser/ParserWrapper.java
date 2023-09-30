@@ -189,7 +189,7 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseDeclarationOrStatement();
         } else if (type == DlangTypes.DECLARATIONS_AND_STATEMENTS) {
             result = false;
-        } else if (type == DlangTypes.DECLARATOR_IDENTIFIER_LIST) {
+        } else if (type == DlangTypes.DECLARATOR_IDENTIFIER) {
             result = parser.parseDeclaratorIdentifierList();
         } else if (type == DlangTypes.DEFAULT_STATEMENT) {
             result = parser.parseDefaultStatement();

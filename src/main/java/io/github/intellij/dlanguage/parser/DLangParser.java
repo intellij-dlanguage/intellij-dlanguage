@@ -274,7 +274,7 @@ class DLangParser {
             case "Declarator":
                 return DECLARATOR;
             case "DeclaratorIdentifierList":
-                return DECLARATOR_IDENTIFIER_LIST;
+                return DECLARATOR_IDENTIFIER;
             case "DefaultStatement":
                 return DEFAULT_STATEMENT;
             case "Destructor":
@@ -3326,19 +3326,21 @@ class DLangParser {
      *     ;)
      */
     boolean parseDeclaratorIdentifierList() {
-        Marker m = enter_section_modified(builder);
         while (moreTokens()) {
+            Marker m = enter_section_modified(builder);
             final Token ident = expect(tok("identifier"));
             if (ident == null) {
-                cleanup(m, DECLARATOR_IDENTIFIER_LIST);
+                cleanup(m, DECLARATOR_IDENTIFIER);
                 return false;
             }
             if (currentIs(tok(","))) {
                 advance();
-            } else
+            } else {
+                exit_section_modified(builder, m, DECLARATOR_IDENTIFIER, true);
                 break;
+            }
+            exit_section_modified(builder, m, DECLARATOR_IDENTIFIER, true);
         }
-        exit_section_modified(builder, m, DECLARATOR_IDENTIFIER_LIST, true);
         return true;
     }
 
