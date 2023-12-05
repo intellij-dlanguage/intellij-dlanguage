@@ -43,8 +43,7 @@ public abstract class DlangSdkType extends DependentSdkType {
 
     protected static final Logger LOG = Logger.getInstance(DlangSdkType.class);
 
-    private final String compilerBinaryFilename;
-    private final String[] defaultBinaryPaths;
+    protected final String compilerBinaryFilename;
 
     @Deprecated // todo: may need to remove this. it'll return any of the three D compiler types
     public static DlangSdkType getInstance() {
@@ -57,10 +56,9 @@ public abstract class DlangSdkType extends DependentSdkType {
         throw new IllegalArgumentException("Cannot find any implementation of DlangSdkType");
     }
 
-    public DlangSdkType(final String id, final String compilerBinaryFilename, final String[] defaultBinaryPaths) {
+    public DlangSdkType(final String id, final String compilerBinaryFilename) {
         super(id);
         this.compilerBinaryFilename = compilerBinaryFilename;
-        this.defaultBinaryPaths = defaultBinaryPaths;
     }
 
     /**
@@ -83,22 +81,6 @@ public abstract class DlangSdkType extends DependentSdkType {
     @Override
     public @NotNull @NlsContexts.Label String getHomeFieldLabel() {
         return DlangBundle.INSTANCE.message("dlang.dependant.sdk.configure.type.home.path", getPresentableName());
-    }
-
-    /**
-     * Attempts to locate the relevant D compiler on the users system based on known install locations
-     * @return the parent directory of the D compiler binary
-     */
-    @Nullable
-    @Override
-    public String suggestHomePath() {
-        @Nullable final File f = Arrays.stream(defaultBinaryPaths)
-            .map(path -> Paths.get(path, compilerBinaryFilename).toFile())
-            .filter(file -> file.exists() && file.canExecute())
-            .findFirst()
-            .orElse(null);
-
-        return f != null ? f.getParentFile().getAbsolutePath() : null;
     }
 
     @NotNull

@@ -8,42 +8,45 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangBundle
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.swing.Icon
 
-class DlangLdcSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, ldcBinaryFilename, defaultBinaryPaths) {
+class DlangLdcSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, LDC_BINARY_NAME) {
     companion object {
         const val SDK_TYPE_ID = "LDC"
         const val SDK_NAME = "LDC SDK"
-        val ldcBinaryFilename = if(SystemInfo.isWindows) "ldc2.exe" else "ldc2"
-        val defaultBinaryPaths = if(SystemInfo.isWindows) {
-            // todo: work out LDC paths for Windows
-            // C:\Program Files\LDC x.xx\bin
-            // C:\LDC\ldc2-x.xx.x-windows-multilib\bin
-            emptyArray<String>()
-        } else if(SystemInfo.isMac) {
-            arrayOf(
-                "/usr/local/bin", // dmg install from downloads.dlang.org
-                "/opt/homebrew", // installed via Homebrew (when using newer ARM based Mac)
-                "/usr/local/opt", // installed via Homebrew (prior to ARM)
-                "/opt/local/bin" // installed via MacPorts
-            )
-        } else {
-            // the order of these locations is based on the order of how they typically appear in a users $PATH
-            arrayOf(
-                "/usr/local/bin",
-                "/usr/bin", // Fedora and Arch Linux use this path
-                "/snap/bin" // snapcraft.io
-            )
-        }
-        val ldcIcon = DLanguage.Icons.LDC
-        val versionRegexPattern = Pattern.compile("LDC.*\\((?<version>[\\d.]+)\\).*")
+        const val LDC_BINARY_NAME = "ldc2"
     }
+
+//    val defaultBinaryPaths = if(SystemInfo.isWindows) {
+//        // todo: work out LDC paths for Windows
+//        // C:\Program Files\LDC x.xx\bin
+//        // C:\LDC\ldc2-x.xx.x-windows-multilib\bin
+//        emptyArray<String>()
+//    } else if(SystemInfo.isMac) {
+//        arrayOf(
+//            "/usr/local/bin", // dmg install from downloads.dlang.org
+//            "/opt/homebrew", // installed via Homebrew (when using newer ARM based Mac)
+//            "/usr/local/opt", // installed via Homebrew (prior to ARM)
+//            "/opt/local/bin" // installed via MacPorts
+//        )
+//    } else {
+//        // the order of these locations is based on the order of how they typically appear in a users $PATH
+//        arrayOf(
+//            "/usr/local/bin",
+//            "/usr/bin", // Fedora and Arch Linux use this path
+//            "/snap/bin" // snapcraft.io
+//        )
+//    }
+    val defaultPhobosAndDruntimePaths = arrayOf(
+        // todo: get more clever with this path, perhaps just parse ldc2.conf (also paths on other distros)
+        "/usr/lib/ldc/x86_64-redhat-linux-gnu/include/d", // Fedora (ldc package in distro repo)
+    )
+
+    val versionRegexPattern = Pattern.compile("LDC.*\\((?<version>[\\d.]+)\\).*")
 
     override fun getCompilerConfigFilename(): String = "ldc2.conf"
 
@@ -59,18 +62,31 @@ class DlangLdcSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, ldcBinaryFi
                 val virtualFile = LocalFileSystem.getInstance().findFileByIoFile(it)
                 if (virtualFile != null) {
                     sdkModificator.addRoot(virtualFile, OrderRootType.SOURCES)
+                    status.runtime = true
                     status.phobos = true
                 } else {
+                    status.runtime = false
                     status.phobos = false
                 }
             }
-        }// todo: Handle non-windows
+        } else if (SystemInfo.isLinux) {
+            val compilerSources = firstVirtualFileFrom(defaultPhobosAndDruntimePaths)
+            if (compilerSources.isPresent) {
+                LOG.info("Attaching both Druntime & Phobos sources for LDC")
+                sdkModificator.addRoot(compilerSources.get(), OrderRootType.SOURCES)
+                status.runtime = true
+                status.phobos = true // both druntime & phobos are in same path
+            } else {
+                status.runtime = false
+                status.phobos = false
+            }
+        } // todo: handle Mac
     }
 
     // on Windows expect Phobos to be in "C:\Program Files\LDC x.xx\import" or "C:\tools\ldc2-1.32.2-windows-multilib\import\"
     override fun attachPhobosSources(sdkModificator: SdkModificator, status: SetupStatus) {
-        // don't need to attach anything if druntime has been found as phobos is in same directory (on Windows at least)
-        status.phobos = status.runtime
+        // NOOP: don't need to attach anything if druntime has been found as phobos is in same directory.
+        // See attachDruntimeSources() which is attaching both Druntime and Phobos
     }
 
     /**
@@ -93,7 +109,7 @@ class DlangLdcSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, ldcBinaryFi
         return null
     }
 
-    override fun getIcon(): Icon = ldcIcon
+    override fun getIcon(): Icon = DLanguage.Icons.LDC
 
     override fun getPresentableName(): String = DlangBundle.message("compilers.ldc.presentableName")
 
@@ -108,18 +124,18 @@ class DlangLdcSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, ldcBinaryFi
     // or for chocolatey based install:
     //  -   "C:\ProgramData\chocolatey\bin"
     // On Linux it should be "/usr/bin" or "/usr/local/bin"
-    override fun suggestHomePath(): String? {
-        return if(SystemInfo.isUnix) {
-            return if (Files.isExecutable(Path.of("/usr/bin", ldcBinaryFilename))) "/usr/bin"
-            else if (Files.isExecutable(Path.of("/usr/local/bin", ldcBinaryFilename))) "/usr/local/bin"
-            else null
-        }
-            else if(SystemInfo.isWindows) File("C:\\Program Files")
-                .walk(FileWalkDirection.TOP_DOWN)
-                .maxDepth(3)
-                .firstOrNull { it.name == ldcBinaryFilename }?.parent
-            else null
-    }
+//    override fun suggestHomePath(): String? {
+//        return if(SystemInfo.isUnix) {
+//            return if (Files.isExecutable(Path.of("/usr/bin", LDC_BINARY_NAME))) "/usr/bin"
+//            else if (Files.isExecutable(Path.of("/usr/local/bin", LDC_BINARY_NAME))) "/usr/local/bin"
+//            else null
+//        }
+//            else if(SystemInfo.isWindows) File("C:\\Program Files")
+//                .walk(FileWalkDirection.TOP_DOWN)
+//                .maxDepth(3)
+//                .firstOrNull { it.name == "${LDC_BINARY_NAME}.exe" }?.parent
+//            else null
+//    }
 
     override fun isValidSdkHome(sdkHome: String): Boolean {
         val binaryPath = getBinaryFile(sdkHome)

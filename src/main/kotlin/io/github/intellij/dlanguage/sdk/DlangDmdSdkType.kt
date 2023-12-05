@@ -22,76 +22,78 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.swing.Icon
 
-class DlangDmdSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, dmdBinaryFilename, defaultBinaryPaths) {
+class DlangDmdSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, DMD_BINARY_NAME) {
     companion object {
         const val SDK_TYPE_ID = "DMD"
         const val SDK_NAME = "DMD v2 SDK"
-        val dmdBinaryFilename = if(SystemInfo.isWindows) "dmd.exe" else "dmd"
-        val defaultBinaryPaths = if(SystemInfo.isWindows) {
-            arrayOf(
-                "C:/D/dmd2/windows/bin64", // default to the 64-bit compiler
-                "C:/D/dmd2/windows/bin"
-            )
-        } else if(SystemInfo.isMac) {
-            arrayOf(
-                "/usr/local/bin", // dmg install from downloads.dlang.org
-                "/opt/homebrew", // installed via Homebrew (when using newer ARM based Mac)
-                "/usr/local/opt", // installed via Homebrew (prior to ARM)
-                "/opt/local/bin" // installed via MacPorts
-            )
-        } else {
-            // the order of these locations is based on the order of how they typically appear in a users $PATH
-            arrayOf(
-                "/usr/local/bin", // Ubuntu package is installed here
-                "/usr/bin", // Fedora (official .rpm) and Arch Linux use this path
-                "/snap/bin" // snapcraft.io (/snap/bin/dmd is a symlink to /snap/dmd/current/bin/dmd)
-            )
-        }
-
-        val defaultPhobosPaths = if(SystemInfo.isWindows) {
-            arrayOf("C:/D/dmd2/src/phobos")
-        } else if(SystemInfo.isMac) {
-            arrayOf("/Library/D/dmd/src/phobos") // installed via Homebrew
-        } else {
-            arrayOf(
-                "/usr/include/dmd/phobos", // Fedora (official .rpm)
-                "/usr/local/include/dmd/phobos", // Ubuntu (should it be src/phobos?)
-                "/usr/include/dlang/dmd", // Arch Linux uses non-standard directory structure (see: #457 and #743)
-                "/snap/dmd/current/import/phobos" // snapcraft.io
-            )
-        }
-
-        val defaultDruntimePaths = if (SystemInfo.isWindows) {
-            arrayOf("C:/D/dmd2/src/druntime/import")
-        } else if(SystemInfo.isMac) {
-            arrayOf("/Library/D/dmd/src/druntime/import") // installed via Homebrew
-        } else {
-            arrayOf(
-                "/usr/include/dmd/druntime/import", // Fedora (official .rpm)
-                "/usr/local/include/dmd/druntime/import", // Ubuntu (should it be src/druntime/import?)
-                "/usr/include/dlang/dmd", // Arch Linux uses non-standard directory structure (see: #457 and #743)
-                "/snap/dmd/current/import/druntime" // snapcraft.io
-            )
-        }
-
-        val dmdIcon = DLanguage.Icons.DMD
-        val versionRegexPattern = Pattern.compile("DMD.*\\sv(?<version>[\\d.]+)")
+        const val DMD_BINARY_NAME = "dmd"
     }
+
+//    val defaultBinaryPaths = if(SystemInfo.isWindows) {
+//        arrayOf(
+//            "C:/D/dmd2/windows/bin64", // default to the 64-bit compiler
+//            "C:/D/dmd2/windows/bin"
+//        )
+//    } else if(SystemInfo.isMac) {
+//        arrayOf(
+//            "/usr/local/bin", // dmg install from downloads.dlang.org
+//            "/opt/homebrew", // installed via Homebrew (when using newer ARM based Mac)
+//            "/usr/local/opt", // installed via Homebrew (prior to ARM)
+//            "/opt/local/bin" // installed via MacPorts
+//        )
+//    } else {
+//        // the order of these locations is based on the order of how they typically appear in a users $PATH
+//        arrayOf(
+//            "/usr/local/bin", // Ubuntu package is installed here
+//            "/usr/bin", // Fedora (official .rpm) and Arch Linux use this path
+//            "/snap/bin" // snapcraft.io (/snap/bin/dmd is a symlink to /snap/dmd/current/bin/dmd)
+//        )
+//    }
+
+    val defaultPhobosPaths = if(SystemInfo.isWindows) {
+        arrayOf("C:/D/dmd2/src/phobos")
+    } else if(SystemInfo.isMac) {
+        arrayOf("/Library/D/dmd/src/phobos") // installed via Homebrew
+    } else {
+        arrayOf(
+            "/usr/include/dmd/phobos", // Fedora (official .rpm)
+            "/usr/local/include/dmd/phobos", // Ubuntu (should it be src/phobos?)
+            "/usr/include/dlang/dmd", // Arch Linux uses non-standard directory structure (see: #457 and #743)
+            "/snap/dmd/current/import/phobos" // snapcraft.io
+        )
+    }
+
+    val defaultDruntimePaths = if (SystemInfo.isWindows) {
+        arrayOf("C:/D/dmd2/src/druntime/import")
+    } else if(SystemInfo.isMac) {
+        arrayOf("/Library/D/dmd/src/druntime/import") // installed via Homebrew
+    } else {
+        arrayOf(
+            "/usr/include/dmd/druntime/import", // Fedora (official .rpm)
+            "/usr/local/include/dmd/druntime/import", // Ubuntu (should it be src/druntime/import?)
+            "/usr/include/dlang/dmd", // Arch Linux uses non-standard directory structure (see: #457 and #743)
+            "/snap/dmd/current/import/druntime" // snapcraft.io
+        )
+    }
+
+    val versionRegexPattern = Pattern.compile("DMD.*\\sv(?<version>[\\d.]+)")
 
     override fun getCompilerConfigFilename(): String = if(SystemInfo.isWindows) "sc.ini" else "dmd.conf"
     override fun attachDruntimeSources(sdkModificator: SdkModificator, status: SetupStatus) {
         val phobosSource = firstVirtualFileFrom(defaultDruntimePaths)
         if (phobosSource.isPresent) {
+            LOG.info("Attaching Druntime sources for DMD")
             sdkModificator.addRoot(phobosSource.get(), OrderRootType.SOURCES)
-            status.phobos = true
+            status.runtime = true
         } else {
-            status.phobos = false
+            status.runtime = false
         }
     }
 
     override fun attachPhobosSources(sdkModificator: SdkModificator, status: SetupStatus) {
         val phobosSource = firstVirtualFileFrom(defaultPhobosPaths)
         if (phobosSource.isPresent) {
+            LOG.info("Attaching Phobos sources for DMD")
             sdkModificator.addRoot(phobosSource.get(), OrderRootType.SOURCES)
             status.phobos = true
         } else {
@@ -120,11 +122,11 @@ class DlangDmdSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, dmdBinaryFi
                 .map { line -> line.replace("Config file: ", "").trim() }
                 .firstOrNull()
         }
-        LOG.debug("Unable to locate {0} by invoking {1}", compilerConfigFilename, dmdBinaryFilename)
+        // LOG.debug("Unable to locate {0} by invoking {1}", compilerConfigFilename, dmdBinaryFilename)
         return null
     }
 
-    override fun getIcon(): Icon = dmdIcon
+    override fun getIcon(): Icon = DLanguage.Icons.DMD
 
     override fun getPresentableName(): String = DlangBundle.message("compilers.dmd.presentableName")
 
