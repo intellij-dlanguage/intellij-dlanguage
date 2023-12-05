@@ -2,6 +2,7 @@ package io.github.intellij.dlanguage.sdk
 
 import com.intellij.openapi.projectRoots.Sdk
 import com.intellij.openapi.projectRoots.SdkModificator
+import com.intellij.openapi.roots.OrderRootType
 import com.intellij.openapi.util.SystemInfo
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangBundle
@@ -10,45 +11,42 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.swing.Icon
 
-class DlangGdcSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, gdcBinaryFilename, defaultBinaryPaths) {
+class DlangGdcSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, GDC_BINARY_NAME) {
     companion object {
         const val SDK_TYPE_ID = "GDC"
         const val SDK_NAME = "GDC SDK"
-        val gdcBinaryFilename = if(SystemInfo.isWindows) "gdc.exe" else "gdc"
-        // GDC isn't supported on Windows
-        val defaultBinaryPaths = if(SystemInfo.isMac) {
-            arrayOf(
-                "/usr/local/bin", // dmg install from downloads.dlang.org
-                "/opt/homebrew", // installed via Homebrew (when using newer ARM based Mac)
-                "/usr/local/opt", // installed via Homebrew (prior to ARM)
-                "/opt/local/bin" // installed via MacPorts
-            )
-        } else {
-            // the order of these locations is based on the order of how they typically appear in a users $PATH
-            arrayOf(
-                "/usr/local/bin",
-                "/usr/bin", // Fedora and Arch Linux use this path
-                "/snap/bin" // snapcraft.io
-            )
-        }
-        val gdcIcon = DLanguage.Icons.GDC
-        val versionRegexPattern = Pattern.compile("gdc\\s\\(GCC\\)\\s(?<version>[\\d.]+)\\s.*")
+        const val GDC_BINARY_NAME = "gdc"
     }
+
+    val defaultPhobosAndDruntimePaths = arrayOf(
+        // todo: get more clever with this path and take into account the platform arch (also paths on other distros)
+        "/usr/lib/gcc/x86_64-redhat-linux/13/include/d", // Fedora (gcc-gdc package in distro repo)
+    )
+
+    val versionRegexPattern = Pattern.compile("gdc\\s\\(GCC\\)\\s(?<version>[\\d.]+)\\s.*")
 
     override fun getCompilerConfigFilename(): String? = null // not supported by GDC
     override fun attachDruntimeSources(sdkModificator: SdkModificator, status: SetupStatus) {
-        // todo: How to handle this for GDC???
-        LOG.info("Not attaching Druntime sources for GDC as this has not been implemented yet")
+        val compilerSources = firstVirtualFileFrom(defaultPhobosAndDruntimePaths)
+        if (compilerSources.isPresent) {
+            LOG.info("Attaching both Druntime & Phobos sources for GDC")
+            sdkModificator.addRoot(compilerSources.get(), OrderRootType.SOURCES)
+            status.runtime = true
+            status.phobos = true // both druntime & phobos are in same path
+        } else {
+            status.runtime = false
+            status.phobos = false
+        }
     }
 
     override fun attachPhobosSources(sdkModificator: SdkModificator, status: SetupStatus) {
-        // todo: How to handle this for GDC???
-        LOG.info("Not attaching Phobos sources for GDC as this has not been implemented yet")
+        // NOOP: don't need to attach anything if druntime has been found as phobos is in same directory.
+        // See attachDruntimeSources() which is attaching both Druntime and Phobos
     }
 
     override fun locateCompilerConfig(sdk: Sdk): String? = null // not supported by GDC
 
-    override fun getIcon(): Icon = gdcIcon
+    override fun getIcon(): Icon = DLanguage.Icons.GDC
 
     override fun getPresentableName(): String = DlangBundle.message("compilers.gdc.presentableName")
 
