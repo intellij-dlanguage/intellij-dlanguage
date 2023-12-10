@@ -66,8 +66,7 @@ class CLionDubProjectOpenProcessor : ProjectOpenProcessor() {
             WriteAction.run<RuntimeException> {
                 val sdk = DlangSdkType.findOrCreateSdk()
                 ProjectRootManager.getInstance(project).projectSdk = sdk
-                val builder = DlangModuleBuilder()
-                builder.moduleJdk = sdk
+                val builder = DlangModuleBuilder(sdk)
                 builder.commit(project)
             }
             ProjectUtil.focusProjectWindow(project, true) //ProjectManager.getInstance().reloadProject(project)

@@ -16,6 +16,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkTypeId;
 import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModifiableRootModel;
@@ -53,6 +54,11 @@ public class DlangModuleBuilder extends ModuleBuilder {
 
     public DlangModuleBuilder() {
         this("DLangDmdApp", DlangBundle.INSTANCE.message("module.title"), DlangBundle.INSTANCE.message("module.description"));
+    }
+
+    public DlangModuleBuilder(@Nullable final Sdk sdk) {
+        this();
+        this.setModuleJdk(sdk);
     }
 
     protected DlangModuleBuilder(final String builderId,

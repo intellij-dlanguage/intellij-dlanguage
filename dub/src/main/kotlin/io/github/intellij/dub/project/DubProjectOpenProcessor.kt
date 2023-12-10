@@ -3,6 +3,7 @@ package io.github.intellij.dub.project
 import com.intellij.ide.GeneralSettings
 import com.intellij.ide.impl.ProjectUtil
 import com.intellij.ide.util.projectWizard.WizardContext
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
@@ -12,14 +13,13 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.projectImport.ProjectImportBuilder
-import com.intellij.projectImport.ProjectOpenProcessor
+import com.intellij.projectImport.ProjectOpenProcessorBase
 import com.intellij.util.ArrayUtil
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangBundle.message
 import io.github.intellij.dlanguage.DlangSdkType
 import io.github.intellij.dlanguage.module.DlangModuleBuilder
 import io.github.intellij.dlanguage.settings.ToolKey
-import java.util.*
 import javax.swing.Icon
 
 /**
@@ -32,24 +32,24 @@ import javax.swing.Icon
  * This should be revisited so that there is a single ProjectOpenProcessor (this one), which works in all
  * Intellij IDEs. Alternatively this could be a base class with both an IDEA specific version and a CLion one.
  */
-class DubProjectOpenProcessor : ProjectOpenProcessor() {
+class DubProjectOpenProcessor : ProjectOpenProcessorBase<DubProjectImportBuilder>() {
     override val name: String
-        get() = CLionDubProjectOpenProcessor.NAME
+        get() = NAME
 
     override val icon: Icon
         get() = DLanguage.Icons.FILE
 
-    override fun canOpenProject(file: VirtualFile): Boolean {
-        if (file.isDirectory) {
-            val children = file.children
-            if (children != null) {
-                return Arrays.stream(children)
-                    .anyMatch { child: VirtualFile -> ArrayUtil.contains(child.name, *SUPPORTED_FILES) }
-            }
-        } else {
-            return ArrayUtil.contains(file.name, *SUPPORTED_FILES)
-        }
-        return false
+    // from ProjectOpenProcessorBase<DubProjectImportBuilder>
+    override val supportedExtensions: Array<String>
+        get() = arrayOf("json", "sdl")
+
+    override fun canOpenProject(file: VirtualFile): Boolean = if (file.isDirectory)
+            file.children?.any { isProjectFile(it) } ?: false
+        else
+            isProjectFile(file)
+
+    override fun isProjectFile(file: VirtualFile): Boolean {
+        return ArrayUtil.contains(file.name, *SUPPORTED_FILES)
     }
 
     override fun doOpenProject(
@@ -57,6 +57,8 @@ class DubProjectOpenProcessor : ProjectOpenProcessor() {
         projectToClose: Project?,
         forceOpenInNewFrame: Boolean
     ): Project? {
+        LOG.debug("Opening dub project")
+
         if (projectToClose != null && !forceOpenInNewFrame) {
             val exitCode = ProjectUtil.confirmOpenOrAttachProject()
             if (exitCode == GeneralSettings.OPEN_PROJECT_SAME_WINDOW) {
@@ -73,25 +75,32 @@ class DubProjectOpenProcessor : ProjectOpenProcessor() {
         val project = ProjectUtil.openOrCreateProject(baseDir.name, baseDir.toNioPath())
 
         if (project != null) {
+            // Disposer.register(ApplicationManager.getApplication(), project)
+
             WriteAction.run<RuntimeException> {
                 val sdk = DlangSdkType.findOrCreateSdk()
                 ProjectRootManager.getInstance(project).projectSdk = sdk
-                val builder = DlangModuleBuilder()
-                builder.moduleJdk = sdk
-                builder.commit(project)
+                val builder = DlangModuleBuilder(sdk)
+
+                ApplicationManager.getApplication().invokeLater {
+                    builder.commit(project) // Cannot run in write action, also could get "Module already exists" exception
+                    ProjectUtil.focusProjectWindow(project, false)
+                }
+                // todo: need to find out if this is the better approach:
+                // ApplicationUtil.invokeLaterSomewhere(
+                //     EdtReplacementThread.EDT,
+                //     ModalityState.defaultModalityState()
+                // ) {
+                //     builder.commit(project)
+                //     ProjectUtil.focusProjectWindow(project, true)
+                // }
             }
-            ProjectUtil.focusProjectWindow(project, true) //ProjectManager.getInstance().reloadProject(project)
         }
         return project
     }
 
-    //    @NotNull
-    //    @Override
-    //    protected DubProjectImportBuilder doGetBuilder() {
-    //        return ProjectImportBuilder.EXTENSIONS_POINT_NAME.findExtensionOrFail(DubProjectImportBuilder.class);
-    //    }
-    //@Override
-    fun doQuickImport(file: VirtualFile, context: WizardContext): Boolean {
+    // Need to override when extending ProjectOpenProcessorBase<DubProjectImportBuilder>
+    override fun doQuickImport(file: VirtualFile, context: WizardContext): Boolean {
         val builder: DubProjectImportBuilder =
             ProjectImportBuilder.EXTENSIONS_POINT_NAME.findExtensionOrFail(
                 DubProjectImportBuilder::class.java
