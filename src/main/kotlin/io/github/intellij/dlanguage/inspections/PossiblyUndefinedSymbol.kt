@@ -56,13 +56,17 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                 } else if (identifier.parent is SingleImport) {
                     // Its new name of a renamed import, it’s a new identifier fine
                 } else if (objectDotDContents.contains(identifier.name))
-                    holder.registerProblem(identifier, "Possibly undefined symbol - SDK not setup", SetupSDK(identifier.containingFile))
+                    holder.registerProblem(
+                        identifier,
+                        "Possibly undefined symbol - SDK not setup", // todo: add internationalization string to message bundle
+                        SetupSdkQuickFix(identifier.containingFile)
+                    )
                 else if (identifier.parent is VersionCondition) {
                     // If version identifier is not defined, this mean that the version is not enabled
                 } else if (identifier.parent is DebugCondition) {
                     // If version identifier is not defined, this mean that the debug is not enabled
                 } else
-                    holder.registerProblem(identifier, "Possibly undefined symbol")//todo add quick fix
+                    holder.registerProblem(identifier, "Possibly undefined symbol") // todo: add quick fix
             }
             val end = System.currentTimeMillis()
             if (end - start > 50) {
@@ -84,10 +88,9 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 //}
 
 
-class SetupSDK(file: PsiFile) : LocalQuickFixOnPsiElement(file),HighPriorityAction{
-    override fun getText(): String {
-        return "Setup SDK"//todo
-    }
+// todo: move this Quickfix to its own class file
+class SetupSdkQuickFix(file: PsiFile) : LocalQuickFixOnPsiElement(file), HighPriorityAction {
+    override fun getText(): String = "Setup SDK" // todo: needs internationalization
 
     override fun invoke(project: Project, file: PsiFile, startElement: PsiElement, endElement: PsiElement) {
 //        val projectJdk = ProjectSettingsService.getInstance(project).chooseAndSetSdk() ?: return
@@ -99,9 +102,7 @@ class SetupSDK(file: PsiFile) : LocalQuickFixOnPsiElement(file),HighPriorityActi
         }
     }
 
-    override fun getFamilyName(): String {
-        return "DLang"//todo needs internationalization
-    }
+    override fun getFamilyName(): String = "DLang" // todo: needs internationalization
 
     override fun startInWriteAction(): Boolean = false
 

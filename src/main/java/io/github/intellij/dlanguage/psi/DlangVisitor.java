@@ -252,24 +252,40 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitDeclarator(@NotNull final DLanguageDeclaratorImpl o) {
-        visitPsiElement(o);
+    /**
+     * @param declarator an implementation of DlangDeclarator
+     */
+    public void visitDeclarator(@NotNull final DLanguageDeclaratorImpl declarator) {
+        visitPsiElement(declarator);
     }
 
-    public void visitDeclaratorIdentifier(@NotNull final DlangDeclaratorIdentifierImpl o) {
-        visitPsiElement(o);
+    /**
+    * @param declaratorIdentifierList an implementation of DlangDeclaratorIdentifierList
+    * This was removed in PR #903 but the removal caused build errors.
+    */
+    public void visitDeclaratorIdentifierList(@NotNull final DLanguageDeclaratorIdentifierListImpl declaratorIdentifierList) {
+        visitPsiElement(declaratorIdentifierList);
     }
 
-    public void visitDefaultStatement(@NotNull final DLanguageDefaultStatementImpl o) {
-        visitPsiElement(o);
+    /**
+     *
+     * @param declaratorIdentifier an implementation of DlangDeclaratorIdentifier
+     * @since 1.32.3 (committed Sep 2023)
+     */
+    public void visitDeclaratorIdentifier(@NotNull final DlangDeclaratorIdentifierImpl declaratorIdentifier) {
+        visitPsiElement(declaratorIdentifier);
     }
 
-    public void visitDeleteExpression(@NotNull final DLanguageDeleteExpressionImpl o) {
-        visitPsiElement(o);
+    public void visitDefaultStatement(@NotNull final DLanguageDefaultStatementImpl defaultStatement) {
+        visitPsiElement(defaultStatement);
     }
 
-    public void visitDeleteStatement(@NotNull final DLanguageDeleteStatementImpl o) {
-        visitPsiElement(o);
+    public void visitDeleteExpression(@NotNull final DLanguageDeleteExpressionImpl deleteExpression) {
+        visitPsiElement(deleteExpression);
+    }
+
+    public void visitDeleteStatement(@NotNull final DLanguageDeleteStatementImpl deleteStatement) {
+        visitPsiElement(deleteStatement);
     }
 
     public void visitDeprecated(@NotNull final DLanguageDeprecatedImpl o) {

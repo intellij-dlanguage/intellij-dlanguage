@@ -10,8 +10,6 @@ import io.github.intellij.dlanguage.attributes.DNameScopeProcessor
 import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.utils.Identifier
-import io.github.intellij.dlanguage.utils.IdentifierOrTemplateInstance
-import io.github.intellij.dlanguage.utils.PrimaryExpression
 
 
 /**
@@ -20,14 +18,14 @@ import io.github.intellij.dlanguage.utils.PrimaryExpression
 class BasicResolve private constructor(val project: Project, val profile: Boolean = false) {
 
     companion object {
+        val log: Logger = Logger.getInstance(this::class.java)
+
         private val basicResolves: MutableMap<Project, BasicResolve> = mutableMapOf()
-        //
+
         fun getInstance(project: Project, profile: Boolean = false): BasicResolve {
-            return basicResolves.getOrPut(project, { BasicResolve(project, profile) })
+            return basicResolves.getOrPut(project) { BasicResolve(project, profile) }
         }
     }
-
-    val log: Logger = Logger.getInstance(this::class.java)
 
     val `object`: DlangFile?
         get() = DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet().firstOrNull()?.containingFile as DlangFile?
