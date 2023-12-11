@@ -30,5 +30,5 @@ intellij {
 }
 
 dependencies {
-    implementation 'io.sentry:sentry:6.27.+'
+    implementation 'io.sentry:sentry:7+'
 }

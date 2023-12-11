@@ -84,9 +84,10 @@ class SentryErrorHandler : ErrorReportSubmitter() {
 
             ApplicationManager
                 .getApplication()
-                .invokeLater { Sentry.captureEvent(sentryEvent) }
-
-            log.debug("An error report has been submitted to Sentry.io for the D language plugin")
+                .invokeLater {
+                    val sentryEventId = Sentry.captureEvent(sentryEvent)
+                    log.info("An error report has been submitted to Sentry.io for the D language plugin. Ref: $sentryEventId")
+                }
         }
 
         return true // return true to indicate that a process has begun to send data async
