@@ -9,7 +9,7 @@ import com.intellij.refactoring.suggested.startOffset
 import io.github.intellij.dlanguage.utils.PrimaryExpression
 import io.github.intellij.dlanguage.utils.getCorrespondingClosingDelimiter
 import io.github.intellij.dlanguage.utils.getOpeningDelimiter
-import org.apache.commons.lang.StringUtils
+import org.apache.commons.lang3.StringUtils
 
 /**
  * Handle all errors in String and characters literals. It annotates the errors on invalid literal.

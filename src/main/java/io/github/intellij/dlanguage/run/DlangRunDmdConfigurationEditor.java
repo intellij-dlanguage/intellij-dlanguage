@@ -5,7 +5,6 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.module.Module;
@@ -13,6 +12,7 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -20,7 +20,6 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.module.DlangModuleType;
 import io.github.intellij.dlanguage.run.exception.NoSourcesException;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -322,7 +321,7 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
         }
         try {
             final java.util.List<String> args = DlangDmdConfigToArgsConverter.getDmdParameters(config, module);
-            textArgsPane.setText(StringUtils.join(args, "\n"));
+            textArgsPane.setText(StringUtil.join(args, "\n"));
         } catch (final NoSourcesException e) {
             LOG.warn("Cannot correctly populate textArgsPane in DMD config page: " + e.getMessage());
             textArgsPane.setText(e.getMessage());

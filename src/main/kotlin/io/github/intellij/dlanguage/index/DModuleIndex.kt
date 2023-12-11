@@ -1,11 +1,8 @@
 package io.github.intellij.dlanguage.index
 
-import com.intellij.openapi.module.ModuleUtil
-import com.intellij.openapi.progress.ModalTaskOwner.project
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.containers.ContainerUtil
@@ -21,6 +18,7 @@ import java.util.*
  * This index keep a track of all modules names and allow to find the corresponding file.
  */
 class DModuleIndex : ScalarIndexExtension<String>() {
+
     override fun getName(): ID<String, Void> = D_MODULE_INDEX
 
     override fun getIndexer(): DataIndexer<String, Void, FileContent> = INDEXER
@@ -77,22 +75,18 @@ class DModuleIndex : ScalarIndexExtension<String>() {
         private val KEY_DESCRIPTOR = EnumeratorStringDescriptor()
         private val INDEXER = MyDataIndexer()
 
+        @Deprecated("Only Logger and constant should be in the companion object!")
         fun getFilesByModuleName(project: Project,
                                  moduleName: String,
                                  searchScope: GlobalSearchScope): List<DlangFile> {
             val psiManager = PsiManager.getInstance(project)
-            val virtualFiles = getVirtualFilesByModuleName(moduleName, searchScope)
-            return ContainerUtil.mapNotNull(virtualFiles) {
-                virtualFile: VirtualFile? ->
+
+            val virtualFiles = FileBasedIndex.getInstance().getContainingFiles(D_MODULE_INDEX, moduleName, searchScope)
+
+            return ContainerUtil.mapNotNull(virtualFiles) { virtualFile: VirtualFile? ->
                 val psiFile = psiManager.findFile(virtualFile!!)
                 if (psiFile is DlangFile) psiFile else null
             }
         }
-
-        fun getVirtualFilesByModuleName(moduleName: String,
-                                        searchScope: GlobalSearchScope): Collection<VirtualFile> {
-            return FileBasedIndex.getInstance().getContainingFiles(D_MODULE_INDEX, moduleName, searchScope)
-        }
-
     }
 }
