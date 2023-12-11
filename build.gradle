@@ -1,6 +1,8 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.grammarkit.tasks.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 
 plugins {
@@ -55,15 +57,15 @@ allprojects {
         options.compilerArgs << "-Xlint:deprecation"
     }
 
-//    tasks.withType(KotlinCompile).configureEach {
-//        kotlinOptions {
-//            //suppressWarnings = true
-//            apiVersion = "1.8"
-//            languageVersion = "1.8"
-//            jvmTarget = javaVersion
-//            freeCompilerArgs = [ '-Xjvm-default=enable' ]
-//        }
-//    }
+    tasks.withType(KotlinCompile).configureEach {
+        compilerOptions {
+            apiVersion = KotlinVersion.KOTLIN_1_7
+            languageVersion = KotlinVersion.KOTLIN_1_8
+            jvmTarget = JvmTarget.JVM_17
+            // noJdk = true
+            // suppressWarnings.set(true)
+        }
+    }
 
     tasks.withType(Test).configureEach {
 //        // Uncomment when testing if you want to have expected data written (to easily update lexer/parser tests)
