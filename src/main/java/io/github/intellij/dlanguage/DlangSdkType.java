@@ -116,7 +116,7 @@ public abstract class DlangSdkType extends DependentSdkType {
     @Nullable
     @Override
     public String getDefaultDocumentationUrl(@NotNull Sdk sdk) {
-        return "https://dlang.org/";
+        return "https://dlang.org/phobos/index.html"; // there is also "https://dlang.org/spec/spec.html"
     }
 
     @Nullable
@@ -134,13 +134,12 @@ public abstract class DlangSdkType extends DependentSdkType {
 //    public void showCustomCreateUI(@NotNull SdkModel sdkModel,
 //                                   @NotNull JComponent parentComponent,
 //                                   @Nullable Sdk selectedSdk,
-//                                   @NotNull Consumer<Sdk> sdkCreatedCallback) {
+//                                   @NotNull Consumer<? super Sdk> sdkCreatedCallback) {
 //        LOG.info("attempt to display custom UI for creating D sdk");
 //
 //        SdkConfigurationUtil.selectSdkHome(this, home -> {
-//            final String newSdkName = SdkConfigurationUtil.createUniqueSdkName(this, home, Arrays.asList(sdkModel.getSdks()));
-//
-//            final Sdk sdk = DlangSdkType.findOrCreateSdk();
+//            //final String newSdkName = SdkConfigurationUtil.createUniqueSdkName(this, home, Arrays.asList(sdkModel.getSdks()));
+//            //final Sdk sdk = DlangSdkType.findOrCreateSdk();
 //            //final Sdk sdk = new io.github.intellij.dlanguage.settings.DlangCompiler(newSdkName, home, "???");
 //
 //            sdkCreatedCallback.consume(sdk);
@@ -204,8 +203,7 @@ public abstract class DlangSdkType extends DependentSdkType {
     }
 
     @Override
-    public void saveAdditionalData(@NotNull final SdkAdditionalData sdkAdditionalData,
-        @NotNull final Element element) {
+    public void saveAdditionalData(@NotNull final SdkAdditionalData sdkAdditionalData, @NotNull final Element element) {
         //pass
     }
 
@@ -214,9 +212,9 @@ public abstract class DlangSdkType extends DependentSdkType {
         return true;
     }
 
-    @Override
+    @Override // called when creating the UI for 'Project Structure > SDKs'
     public boolean isRootTypeApplicable(@NotNull final OrderRootType type) {
-        return type != LibFileRootType.getInstance() && super.isRootTypeApplicable(type);
+        return OrderRootType.SOURCES == type || LibFileRootType.getInstance() == type; // for D compilers we only configure Phobos & Druntime sources (potentially may get documentation working as well)
     }
 
     /*
