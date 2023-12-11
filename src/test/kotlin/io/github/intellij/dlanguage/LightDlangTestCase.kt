@@ -1,9 +1,9 @@
 package io.github.intellij.dlanguage
 
 import com.intellij.mock.MockPsiManager
+import com.intellij.openapi.projectRoots.ProjectJdkTable
 import com.intellij.openapi.projectRoots.Sdk
 import com.intellij.openapi.projectRoots.SdkType
-import com.intellij.openapi.projectRoots.impl.MockSdk
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.roots.OrderRootType
 import com.intellij.openapi.vfs.VfsUtil
@@ -31,11 +31,16 @@ abstract class LightDlangTestCase : LightPlatform4TestCase() {
 
     // this method will be called prior to the test being run and MockSdk is read only
     override fun getProjectJDK(): Sdk {
-        val roots = MultiMap<OrderRootType, VirtualFile>(2)
-        roots.putValue(OrderRootType.SOURCES, MockDir("phobos"))
-        roots.putValue(OrderRootType.SOURCES, MockDir("druntime"))
+        //val roots = MultiMap<OrderRootType, VirtualFile>(2)
+        //roots.putValue(OrderRootType.SOURCES, MockDir("phobos"))
+        //roots.putValue(OrderRootType.SOURCES, MockDir("druntime"))
 
-        return MockSdk("dmd", "", "2", roots) { SdkType.findInstance(DlangDmdSdkType::class.java) }
+        val sdk = ProjectJdkTable.getInstance().createSdk("dmd", DlangDmdSdkType())
+        sdk.sdkModificator.addRoot(MockDir("phobos"), OrderRootType.SOURCES)
+        sdk.sdkModificator.addRoot(MockDir("druntime"), OrderRootType.SOURCES)
+        sdk.sdkModificator.commitChanges()
+        return sdk
+        //return JavaSdkImpl ("dmd", "", "2", roots) { SdkType.findInstance(DlangDmdSdkType::class.java) }
     }
 
     fun getProjectBase(): VirtualFile = VfsUtil.findFileByIoFile(File(project.basePath!!), true)!!
