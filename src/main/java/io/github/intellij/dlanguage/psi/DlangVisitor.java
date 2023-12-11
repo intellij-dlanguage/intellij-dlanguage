@@ -260,14 +260,6 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     /**
-    * @param declaratorIdentifierList an implementation of DlangDeclaratorIdentifierList
-    * This was removed in PR #903 but the removal caused build errors.
-    */
-    public void visitDeclaratorIdentifierList(@NotNull final DLanguageDeclaratorIdentifierListImpl declaratorIdentifierList) {
-        visitPsiElement(declaratorIdentifierList);
-    }
-
-    /**
      *
      * @param declaratorIdentifier an implementation of DlangDeclaratorIdentifier
      * @since 1.32.3 (committed Sep 2023)
