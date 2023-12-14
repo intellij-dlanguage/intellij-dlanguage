@@ -50,9 +50,9 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
 
         val project = ProjectLocator.getInstance().guessProjectForFile(file)
         project?: return WidgetState.HIDDEN
-        val module = ModuleUtil.findModuleForFile(file, myProject);
+        val module = ModuleUtil.findModuleForFile(file, this.project)
         module?: return WidgetState.HIDDEN
-        val dcdServer: DCDCompletionServer = module.getService(DCDCompletionServer::class.java)
+        val dcdServer: DCDCompletionServer? = module.getService(DCDCompletionServer::class.java)
 
         val state: WidgetState = when(dcdServer) {
             null -> WidgetState.HIDDEN
@@ -79,11 +79,12 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
     /*
     * todo: Register to topics such as DCD_SERVER_TOOL_CHANGE and take appropriate action
     */
-    override fun registerCustomListeners() {
+//    @Deprecated("Use registerCustomListeners(MessageBusConnection)")
+//    override fun registerCustomListeners() {
 //        val connection = ApplicationManager.getApplication().messageBus.connect(this)
 //
 //        connection.subscribe(DCD_SERVER_TOOL_CHANGE)
-    }
+//    }
 
     override fun createInstance(project: Project): StatusBarWidget = DCDServerStatusBarWidget(project)
 

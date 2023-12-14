@@ -236,7 +236,7 @@ private fun PsiElement.getOffsetInLine(doc: Document): Int {
     val blockLine = doc.getLineNumber(textRange.startOffset)
     return leftLeaves
         .takeWhile { doc.getLineNumber(it.textRange.endOffset) == blockLine }
-        .sumBy { el -> el.text.lastIndexOf('\n').let { el.text.length - Integer.max(it + 1, 0) } }
+        .sumOf { el -> el.text.lastIndexOf('\n').let { el.text.length - Integer.max(it + 1, 0) } }
 }
 
 private fun DLanguageBlockStatement.isSingleLine(doc: Document, maxLength: Int): Boolean {

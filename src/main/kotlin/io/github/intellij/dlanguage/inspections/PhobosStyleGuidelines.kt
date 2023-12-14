@@ -2,6 +2,7 @@ package io.github.intellij.dlanguage.inspections
 
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
@@ -37,11 +38,11 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
     }
 
     override fun visitDeclarator(o: DLanguageDeclaratorImpl) {
-        checkName("Variable", o.name.decapitalize(), o.nameIdentifier!!, varFunNameRegex)
+        checkName("Variable", StringUtil.decapitalize(o.name), o.nameIdentifier!!, varFunNameRegex)
     }
 
     override fun visitFunctionDeclaration(o: DLanguageFunctionDeclarationImpl) {
-        checkName("Function", o.name.decapitalize(), o.nameIdentifier!!, varFunNameRegex)
+        checkName("Function", StringUtil.decapitalize(o.name), o.nameIdentifier!!, varFunNameRegex)
     }
 
     override fun visitInterfaceOrClass(o: DlangInterfaceOrClassImpl) {

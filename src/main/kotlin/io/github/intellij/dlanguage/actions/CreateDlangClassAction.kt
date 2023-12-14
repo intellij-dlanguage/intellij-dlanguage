@@ -15,6 +15,7 @@ import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.ui.InputValidatorEx
+import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
@@ -34,7 +35,7 @@ open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "",
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         for (template in Template.values()) {
             with(template) {
-                builder.addKind(readableName.capitalize(), icon, id)
+                builder.addKind(StringUtil.capitalize(readableName), icon, id)
             }
         }
 

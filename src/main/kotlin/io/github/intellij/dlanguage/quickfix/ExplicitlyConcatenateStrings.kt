@@ -1,6 +1,5 @@
 package io.github.intellij.dlanguage.quickfix
 
-import com.intellij.codeInspection.LocalQuickFixBase
 import com.intellij.codeInspection.LocalQuickFixOnPsiElement
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.application.ApplicationManager

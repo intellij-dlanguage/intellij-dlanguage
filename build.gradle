@@ -62,8 +62,7 @@ allprojects {
             apiVersion = KotlinVersion.KOTLIN_1_7
             languageVersion = KotlinVersion.KOTLIN_1_8
             jvmTarget = JvmTarget.JVM_17
-            // noJdk = true
-            // suppressWarnings.set(true)
+            // allWarningsAsErrors = true
         }
     }
 
