@@ -88,6 +88,21 @@ class DubBuildSourceFileFilterTest : LightPlatformTestCase() {
         )
     }
 
+    /*
+    * This test was added due to error report on Sentry.io
+    * User got an IndexOutOfBoundsException for dub output that isn't expected
+    */
+    @Throws(Exception::class)
+    fun `test can handle unexpected input (issue #914)`() {
+        val line = "00:53:21.770 2> -break-insert -f C:/my/project/source/app.d:7"
+
+        val filter = DubBuildSourceFileFilter(project)
+
+        assertNoThrowable{filter.applyFilter(line, line.length)}
+
+        TestCase.assertNull(filter.applyFilter(line, line.length))
+    }
+
     @Throws(Exception::class)
     fun `test filtering dub output for linker error (issue #625)`() {
         val line = "source/app.d:21 _D3std9exception__T7bailOutHTC9ExceptionZQwFNaNfAyamMAxaZNn [0x10c0aa25a]"
@@ -118,7 +133,7 @@ class DubBuildSourceFileFilterTest : LightPlatformTestCase() {
     }
 
     @Throws(Exception::class)
-    fun `test filtering dub output with som file path inside`() {
+    fun `test filtering dub output with some file path inside`() {
         val line = "Starting process 'command 'rdmd''. Working directory: /path/to/intellij/intellij-dlanguage/gen/io/github/intellij/dlanguage/psi Command: rdmd types_regen_script.d\n"
 
         val filter = DubBuildSourceFileFilter(project)

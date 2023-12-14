@@ -36,6 +36,12 @@ class DubBuildSourceFileFilter(val project: Project) : Filter {
             val groups = found.drop(1) // the first one will be entire string
                 .toList()
 
+            if (groups.isEmpty()) {
+                // This shouldn't really happen but there have been IndexOutOfBoundsException errors in sentry occasionally
+                // so best to be defensive
+                return null
+            }
+
             val file = LocalFileSystem
                 .getInstance()
                 .findFileByPath(project.basePath.plus("/").plus(groups[0].replace("\\", "/")))
