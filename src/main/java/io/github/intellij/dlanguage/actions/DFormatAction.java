@@ -54,13 +54,18 @@ public class DFormatAction extends DumbAwareAction {
     }
 
     @Override
-    public void actionPerformed(final AnActionEvent event) {
+    public void actionPerformed(@NotNull final AnActionEvent event) {
         final PsiFile psiFile = event.getData(CommonDataKeys.PSI_FILE);
         final VirtualFile virtualFile = event.getRequiredData(CommonDataKeys.VIRTUAL_FILE);
         final Project project = getEventProject(event);
 
         if (project == null || !(psiFile instanceof DlangFile))
             return;
+
+        if (!virtualFile.isValid()) {
+            // if the virtual file is no longer valid (eg: it's been deleted or changed) then there's no point continuing
+            return;
+        }
 
         // if we tell the editor to save the file, we can avoid reading in its contents and all the thread stuff that goes with it.
         Document document = FileDocumentManager.getInstance().getDocument(virtualFile);
