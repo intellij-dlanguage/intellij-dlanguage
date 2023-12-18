@@ -127,10 +127,11 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
         log.debug("The project SDK is a D compiler")
 
         val moduleSdkType: DlangSdkType? = ModuleUtil.findModuleForFile(file, project)?.let {
-            ModuleRootManager.getInstance(it).sdk as? DlangSdkType
+            // SDK will be ProjectJdkImpl but the type should be one of the supported D compilers
+            ModuleRootManager.getInstance(it).sdk?.sdkType as? DlangSdkType
         }
         if (moduleSdkType != null) {
-            log.debug("The SDK for the module is a D compiler")
+            log.debug("The SDK for the module is a D compiler: ${moduleSdkType.name}")
         } else {
             log.warn("The SDK for the module is not DlangSdkType")
         }
