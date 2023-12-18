@@ -6,9 +6,17 @@
 
     <description><![CDATA[
      <img src="https://avatars3.githubusercontent.com/u/565913?v=3&s=60" alt="" />
-     <p>Support for the <a href="https://dlang.org/">D Language</a>.</p>
-     <p>Also adds support for using the <a href="https://code.dlang.org/">dub</a> build tool.</p>
-     <p>Project available on <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/">Github</a>.</p>
+     <p>Support for dlang (the <a href="https://dlang.org/">D Programming Language</a>).</p>
+     <ul>
+       <li>Integrates with the <a href="https://dub.pm/">dub</a> build tool</li>
+       <li>Adds support for SDLang (<a href="https://sdlang.org/">Simple Declarative Language</a>)</li>
+       <li>Supports auto-completion via <a href="https://github.com/dlang-community/DCD/">DCD</a> (D Completion Daemon)</li>
+       <li>Supports code analysis via <a href="https://github.com/dlang-community/D-Scanner/">D-Scanner</a></li>
+       <li>Supports formatting via <a href="https://github.com/dlang-community/dfmt/">dfmt</a></li>
+       <li>Supports D-Unit Test Runner</li>
+       <li>Adds debugger support via GDB</li>
+     </ul>
+     <p>Get involved with the project on <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/">GitHub</a>.</p>
     ]]></description>
 
     <change-notes><![CDATA[
