@@ -10,6 +10,7 @@ import com.intellij.execution.process.ProcessOutputType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.ProjectUtil;
+import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -72,9 +73,11 @@ public final class DCDCompletionClient {
         }
 
         final GeneralCommandLine dcdClientCommand = buildDcdCommand(dcdPath, position, file);
+        // Protect reading the file's text with the read lock
+        final String fileText = ApplicationManager.getApplication().runReadAction((Computable<String>) () -> file.getText());
 
         try {
-            return runCommandLine(dcdClientCommand, file.getText()).get(2L, TimeUnit.SECONDS);
+            return runCommandLine(dcdClientCommand, fileText).get(2L, TimeUnit.SECONDS);
         } catch (InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
             throw new DCDError(e);
         }
