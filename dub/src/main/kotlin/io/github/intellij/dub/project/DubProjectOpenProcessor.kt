@@ -6,6 +6,7 @@ import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ex.ProjectManagerEx
 import com.intellij.openapi.roots.ProjectRootManager
@@ -77,6 +78,13 @@ class DubProjectOpenProcessor : ProjectOpenProcessorBase<DubProjectImportBuilder
         if (project != null) {
             // Run on EDT for with the ability to take a write action lock
             ApplicationManager.getApplication().invokeLater {
+                var mm = ModuleManager.getInstance(project)
+                mm.modules.forEach{
+                    // I couldn't figure out where project was gaining the additional module(s)
+                    // so we'll just dispose it and it'll be fine and things should work ok without it
+                    mm.disposeModule(it)
+                }
+
                 val sdk = DlangSdkType.findOrCreateSdk()
                 val builder = DlangModuleBuilder(sdk)
 
