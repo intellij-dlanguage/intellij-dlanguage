@@ -75,25 +75,19 @@ class DubProjectOpenProcessor : ProjectOpenProcessorBase<DubProjectImportBuilder
         val project = ProjectUtil.openOrCreateProject(baseDir.name, baseDir.toNioPath())
 
         if (project != null) {
-            // Disposer.register(ApplicationManager.getApplication(), project)
-
-            WriteAction.run<RuntimeException> {
+            // Run on EDT for with the ability to take a write action lock
+            ApplicationManager.getApplication().invokeLater {
                 val sdk = DlangSdkType.findOrCreateSdk()
-                ProjectRootManager.getInstance(project).projectSdk = sdk
                 val builder = DlangModuleBuilder(sdk)
 
-                ApplicationManager.getApplication().invokeLater {
-                    builder.commit(project) // Cannot run in write action, also could get "Module already exists" exception
-                    ProjectUtil.focusProjectWindow(project, false)
-                }
-                // todo: need to find out if this is the better approach:
-                // ApplicationUtil.invokeLaterSomewhere(
-                //     EdtReplacementThread.EDT,
-                //     ModalityState.defaultModalityState()
-                // ) {
-                //     builder.commit(project)
-                //     ProjectUtil.focusProjectWindow(project, true)
-                // }
+                ApplicationManager.getApplication().runWriteAction {
+                    // must be run in a write action
+                    ProjectRootManager.getInstance(project).projectSdk = sdk
+                };
+
+                // must run on EDT for AWT events (can show dialog) but not in write action
+                builder.commit(project)
+                ProjectUtil.focusProjectWindow(project, false)
             }
         }
         return project
