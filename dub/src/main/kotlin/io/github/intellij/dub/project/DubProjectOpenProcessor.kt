@@ -6,6 +6,7 @@ import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ex.ProjectManagerEx
 import com.intellij.openapi.roots.ProjectRootManager
@@ -75,25 +76,26 @@ class DubProjectOpenProcessor : ProjectOpenProcessorBase<DubProjectImportBuilder
         val project = ProjectUtil.openOrCreateProject(baseDir.name, baseDir.toNioPath())
 
         if (project != null) {
-            // Disposer.register(ApplicationManager.getApplication(), project)
+            // Run on EDT for with the ability to take a write action lock
+            ApplicationManager.getApplication().invokeLater {
+                var mm = ModuleManager.getInstance(project)
+                mm.modules.forEach{
+                    // I couldn't figure out where project was gaining the additional module(s)
+                    // so we'll just dispose it and it'll be fine and things should work ok without it
+                    mm.disposeModule(it)
+                }
 
-            WriteAction.run<RuntimeException> {
                 val sdk = DlangSdkType.findOrCreateSdk()
-                ProjectRootManager.getInstance(project).projectSdk = sdk
                 val builder = DlangModuleBuilder(sdk)
 
-                ApplicationManager.getApplication().invokeLater {
-                    builder.commit(project) // Cannot run in write action, also could get "Module already exists" exception
-                    ProjectUtil.focusProjectWindow(project, false)
-                }
-                // todo: need to find out if this is the better approach:
-                // ApplicationUtil.invokeLaterSomewhere(
-                //     EdtReplacementThread.EDT,
-                //     ModalityState.defaultModalityState()
-                // ) {
-                //     builder.commit(project)
-                //     ProjectUtil.focusProjectWindow(project, true)
-                // }
+                ApplicationManager.getApplication().runWriteAction {
+                    // must be run in a write action
+                    ProjectRootManager.getInstance(project).projectSdk = sdk
+                };
+
+                // must run on EDT for AWT events (can show dialog) but not in write action
+                builder.commit(project)
+                ProjectUtil.focusProjectWindow(project, false)
             }
         }
         return project
