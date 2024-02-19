@@ -20,16 +20,16 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>1.32.5</b><br/>
+        <b>1.33</b><br/>
         <ul>
-            <li>Compatibility IntelliJ IDEA 2023.2.* - 2023.3.*</li>
+            <li>Compatibility IntelliJ IDEA 2023.2.* - 2024.1.*</li>
             <li>various bug fixes</li>
         </ul>
     ]]>
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="232" until-build="233.*"/>
+    <idea-version since-build="232" until-build="241.*"/>
 
     <!-- We want to support IntelliJ IDEA and CLion
         see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
