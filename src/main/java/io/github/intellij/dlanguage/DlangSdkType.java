@@ -84,8 +84,8 @@ public class DlangSdkType extends SdkType {
         } else if (SystemInfo.isUnix) {
             // The official .rpm and .deb installers are the priority
             DEFAULT_DMD_PATHS = new File[] {
-                new File("/usr/bin/dmd"), // Fedora (official .rpm), note that Arch also uses this path
-                new File("/usr/local/bin/dmd"), // Ubuntu
+                new File("/usr/bin"), // Debian, Ubuntu & Fedora (official .rpm), note that Arch also uses this path
+                new File("/usr/local/bin"),
                 new File("/snap/bin/dmd") // snapcraft.io (symlink to /snap/dmd/current/bin/dmd)
             };
             // the path to D documentation should contain "index.html"
