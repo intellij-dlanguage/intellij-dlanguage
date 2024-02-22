@@ -2,6 +2,7 @@ package io.github.intellij.dlanguage
 
 import com.intellij.mock.MockPsiManager
 import com.intellij.openapi.projectRoots.Sdk
+import com.intellij.openapi.projectRoots.SdkType
 import com.intellij.openapi.projectRoots.impl.MockSdk
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.roots.OrderRootType
@@ -10,9 +11,10 @@ import com.intellij.psi.FileViewProvider
 import com.intellij.psi.SingleRootFileViewProvider
 import com.intellij.testFramework.LightPlatform4TestCase
 import com.intellij.testFramework.LightVirtualFile
-import io.github.intellij.dlanguage.psi.DlangFile
 import com.intellij.testFramework.VfsTestUtil
 import com.intellij.util.containers.MultiMap
+import io.github.intellij.dlanguage.psi.DlangFile
+import io.github.intellij.dlanguage.sdk.DlangDmdSdkType
 
 /**
  * Provides a base for unit testing that requires in-memory D source files
@@ -31,7 +33,7 @@ abstract class LightDlangTestCase : LightPlatform4TestCase() {
         roots.putValue(OrderRootType.SOURCES, MockDir("phobos"))
         roots.putValue(OrderRootType.SOURCES, MockDir("druntime"))
 
-        return MockSdk("dmd", "", "2", roots) { DlangSdkType.getInstance() }
+        return MockSdk("dmd", "", "2", roots) { SdkType.findInstance(DlangDmdSdkType::class.java) }
     }
 
     fun addFileToModuleSource(filename: String, content: String? = null): VirtualFile {

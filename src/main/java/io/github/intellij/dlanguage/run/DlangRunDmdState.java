@@ -88,7 +88,7 @@ public class DlangRunDmdState extends CommandLineState {
         if(sdk != null && DlangSdkType.class.isAssignableFrom(sdk.getSdkType().getClass())) {
             final DlangSdkType dlangSdkType = (DlangSdkType) sdk.getSdkType();
 
-            final String dmdPath = dlangSdkType.getDmdPath(sdk);
+            final String dmdPath = dlangSdkType.getDlangCompilerPath(sdk);
 
             if (StringUtil.isEmptyOrSpaces(dmdPath)) {
                 throw new ExecutionException("DMD executable is not specified");
