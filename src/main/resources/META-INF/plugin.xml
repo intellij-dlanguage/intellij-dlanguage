@@ -1,7 +1,7 @@
 <idea-plugin xmlns:xi="http://www.w3.org/2001/XInclude" allow-bundled-update="true">
     <id>net.masterthought.dlanguage</id>
     <name>D Language</name>
-    <version>@version@</version>
+    <version>${version}</version>
     <vendor url="https://intellij-dlanguage.github.io/">D Language</vendor>
 
     <description><![CDATA[

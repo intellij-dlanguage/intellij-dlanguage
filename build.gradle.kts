@@ -1,43 +1,50 @@
-import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.grammarkit.tasks.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
+// The same as `--stacktrace` param
+gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS
+
+fun properties(key: String) = providers.gradleProperty(key).get()
 
 plugins {
-    id 'org.gradle.idea'
-    id 'java'
-    id 'org.jetbrains.intellij' version '1.10.1' // cannot update to '1.15.0' as it breaks verifyPlugin
-    id 'org.jetbrains.kotlin.jvm' version '1.8.22'
-//    id 'net.saliman.cobertura' version '4.0.0'
-//    id 'com.github.kt3k.coveralls' version '2.10.2'
-    id 'org.jetbrains.grammarkit' version '2022.3.1'
+    id("org.gradle.idea")
+    id("java")
+    id("org.jetbrains.intellij") version "1.10.1" // cannot update to "1.15.0" as it breaks verifyPlugin
+    id("org.jetbrains.kotlin.jvm") version "1.8.22"
+//    id("net.saliman.cobertura") version "4.0.0"
+//    id("com.github.kt3k.coveralls") version "2.10.2"
+    id("org.jetbrains.grammarkit") version "2022.3.1"
 }
 
 
 sourceSets {
     main {
-        java.srcDirs 'src/main/java', 'src/main/kotlin', 'gen' , 'src/main/jflex'
-        // resources.srcDirs 'src/main/resources' // specifying the default causes a problem with processResources on Gradle 7
+        java.srcDirs("src/main/java", "src/main/kotlin", "gen" , "src/main/jflex")
+        // resources.srcDirs("src/main/resources") // specifying the default causes a problem with processResources on Gradle 7
     }
     test {
-        java.srcDirs 'src/test/java', 'src/test/kotlin'
+        java.srcDirs("src/test/java", "src/test/kotlin")
     }
 }
 
-version = "${version}"
+version = properties("version")
 
-apply plugin: 'kotlin'
+val javaVersion = properties("javaVersion")
+val ideaVersion = properties("ideaVersion")
 
-//apply plugin: 'cobertura'
+val publishChannels = listOf(properties("publishChannels"))
 
-apply plugin: 'org.jetbrains.grammarkit'
+val baseIDE = "idea"
 
-// cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
-// cobertura.coverageSourceDirs = [sourceSets.main.java.srcDirs, sourceSets.main.kotlin.srcDirs, 'gen']
-// cobertura.coverageEncoding = 'UTF-8'
-// cobertura.coverageExcludes = [ '.*uk.co.cwspencer.*' ]
+// When testing, set to "true" if you want to have expected data written (to easily update lexer/parser tests)
+val overrideTestData = "false"
+
+// cobertura.coverageFormats = ["html", "xml"] // coveralls plugin depends on xml format report
+// cobertura.coverageSourceDirs = [sourceSets.main.java.srcDirs, sourceSets.main.kotlin.srcDirs, "gen"]
+// cobertura.coverageEncoding = "UTF-8"
+// cobertura.coverageExcludes = [ ".*uk.co.cwspencer.*" ]
 
 
 
@@ -47,231 +54,217 @@ allprojects {
         mavenCentral()
     }
 
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-
-    tasks.withType(JavaCompile).configureEach {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-        options.encoding = 'UTF-8'
-        options.compilerArgs << "-Xlint:deprecation"
-    }
-
-    tasks.withType(KotlinCompile).configureEach {
-        compilerOptions {
-            apiVersion = KotlinVersion.KOTLIN_1_7
-            languageVersion = KotlinVersion.KOTLIN_1_8
-            jvmTarget = JvmTarget.JVM_17
-            // allWarningsAsErrors = true
+    tasks {
+        withType<JavaCompile> {
+            sourceCompatibility = JavaVersion.VERSION_17.majorVersion
+            targetCompatibility = JavaVersion.VERSION_17.majorVersion
+            options.encoding = "UTF-8"
+            options.compilerArgs.add("-Xlint:deprecation")
         }
-    }
 
-    tasks.withType(Test).configureEach {
-//        // Uncomment when testing if you want to have expected data written (to easily update lexer/parser tests)
-//        //systemProperties['idea.tests.overwrite.data'] = "true"
-//
-        jvmArgs = [
-            '-Djava.awt.headless=true' // avoid "Must be precomputed" error, because IDE is not started (LoadingState.APP_STARTED.isOccurred is false)
-//            '--illegal-access=warn',
-//            '--add-opens=java.base/java.lang=ALL-UNNAMED',
-//            '--add-opens=java.base/java.io=ALL-UNNAMED',
-//            '--add-opens=java.desktop/sun.awt=ALL-UNNAMED',
-//            '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
-//            '--add-opens=java.desktop/java.awt.event=ALL-UNNAMED',
-//            '--add-opens=java.desktop/javax.swing=ALL-UNNAMED'
-        ]
-//
-//        testLogging {
-//            exceptionFormat = 'full'
-//            beforeSuite { suite ->
-//                if (!suite.parent) { // will match the outermost suite
-//                    logger.lifecycle ' ----------- Building Tests -----------'
-//                } else if (suite.className != null) {
-//                    logger.lifecycle "${suite.className}:"
-//                }
-//            }
-//
-//            afterTest { descriptor, result ->
-//                switch (result.resultType) {
-//                    case 'SUCCESS':
-//                    case 'PASSED':
-//                        logger.info(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "√":"✔", descriptor.name)
-//                        break
-//                    case TestResult.ResultType.SKIPPED.name():
-//                        logger.warn(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "!":"⛔", descriptor.name)
-//                        break
-//                    case TestResult.ResultType.FAILURE.name():
-//                        logger.error(" {} {}", Os.isFamily(Os.FAMILY_WINDOWS)? "×":"✘", descriptor.name)
-//                        break
-//                    default:
-//                        logger.lifecycle(" ? {} {}", descriptor.name, result.resultType)
-//                }
-//            }
-//
-//            afterSuite { desc, result ->
-//                if (!desc.parent) { // will match the outermost suite
-//                    def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} passed, ${result.failedTestCount} failed, ${result.skippedTestCount} skipped)"
-//                    def startItem = '|  ', endItem = '  |'
-//                    def repeatLength = startItem.length() + output.length() + endItem.length()
-//                    println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength) + '\n')
-//                }
-//            }
-//        }
+        withType<KotlinCompile> {
+            compilerOptions {
+                apiVersion.set(KotlinVersion.KOTLIN_1_7)
+                languageVersion.set(KotlinVersion.KOTLIN_1_8)
+                jvmTarget.set(JvmTarget.JVM_17)
+                //allWarningsAsErrors.set(true)
+            }
+        }
+
+        withType<Test> {
+            systemProperty("idea.tests.overwrite.data", overrideTestData)
+            systemProperty("java.awt.headless", "true") // avoid "Must be precomputed" error, because IDE is not started (LoadingState.APP_STARTED.isOccurred is false)
+
+//            jvmArgs = listOf(
+//                "--illegal-access=warn",
+//                "--add-opens=java.base/java.lang=ALL-UNNAMED",
+//                "--add-opens=java.base/java.io=ALL-UNNAMED",
+//                "--add-opens=java.desktop/sun.awt=ALL-UNNAMED",
+//                "--add-opens=java.desktop/java.awt=ALL-UNNAMED",
+//                "--add-opens=java.desktop/java.awt.event=ALL-UNNAMED",
+//                "--add-opens=java.desktop/javax.swing=ALL-UNNAMED"
+//            )
+        }
     }
 
 }
 
-apply plugin: 'org.jetbrains.intellij'
 intellij {
-    pluginName = 'intellij-dlanguage'
-    version = ideaVersion
-    //type = 'CL' // maybe helpful to change this when trying other IDE. can be 'IC', 'IU', 'JPS', or 'CL'
-    updateSinceUntilBuild = false
-    downloadSources = !System.getenv().containsKey("CI") && 'IC' == type.get() // Only download sources when type is Intellij (required because no public source code is available for CLion)
-    plugins = [ 'org.intellij.intelliLang', 'com.intellij.java', 'com.intellij.java.ide', 'com.intellij.copyright' ] // IDEA only (plugin was previously 'java')
-    //plugins = [ 'org.intellij.intelliLang', 'com.intellij.cidr.base', 'com.intellij.cidr.lang' ] // CLion & AppCode
-    //plugins = [ 'org.intellij.intelliLang', 'com.intellij.clion', 'com.intellij.cidr.base', 'com.intellij.cidr.lang' ] // CLion only
+    pluginName.set("intellij-dlanguage")
+    version.set(ideaVersion)
+    //type.set("CL") // maybe helpful to change this when trying other IDE. can be "IC", "IU", "JPS", or "CL"
+    updateSinceUntilBuild.set(false)
+    downloadSources.set(!System.getenv().containsKey("CI") && "IC" == type.get()) // Only download sources when type is Intellij (required because no public source code is available for CLion)
+
+    val pluginList = mutableListOf(
+        "org.intellij.intelliLang",
+        "com.intellij.copyright"
+    )
+
+    if (baseIDE == "idea") {
+        pluginList += listOf(
+            "com.intellij.java",
+            "com.intellij.java.ide"
+        )
+    }
+    else if (baseIDE == "clion" || baseIDE == "appcode") {
+        pluginList += listOf(
+            "com.intellij.cidr.base",
+            "com.intellij.cidr.lang"
+        )
+        if (baseIDE == "clion")
+            pluginList += listOf(
+                "com.intellij.clion"
+            )
+    }
+    plugins.set(pluginList)
 
     // uncomment to test/run/debug the plugin with another IDE such as CLion or AppCode
-    //localPath = '<path to>/CLion.app'
-    //localPath = 'C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\222.3345.126'
+    //localPath = "<path to>/CLion.app"
+    //localPath = "C:\\Users\\USERNAME\\AppData\\Local\\JetBrains\\Toolbox\\apps\\CLion\\ch-0\\222.3345.126"
     //localPath = "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.3345.126"
     //localPath = "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/222.3739.37"
 
-    buildSearchableOptions {
-        // workaround for https://youtrack.jetbrains.com/issue/IDEA-210683
-        jvmArgs = [
-            '--illegal-access=warn',
-            '--add-opens=java.base/java.lang=ALL-UNNAMED',
-            '--add-opens=java.base/sun.nio.ch=ALL-UNNAMED',
-            '--add-opens=java.base/jdk.internal.vm=ALL-UNNAMED',
-            '--add-opens=java.desktop/sun.awt=ALL-UNNAMED',
-            '--add-opens=java.desktop/sun.awt.image=ALL-UNNAMED',
-            '--add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED', // Linux only
-            '--add-opens=java.desktop/sun.font=ALL-UNNAMED',
-            '--add-opens=java.desktop/sun.swing=ALL-UNNAMED',
-            '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
-            '--add-opens=java.desktop/java.awt.peer=ALL-UNNAMED',
-            '--add-opens=java.desktop/java.awt.event=ALL-UNNAMED',
-            '--add-opens=java.desktop/javax.swing=ALL-UNNAMED',
-            '--add-opens=java.desktop/javax.swing.text.html=ALL-UNNAMED',
-            '--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED',
-            '--add-opens=java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED', // Linux only
-            '--add-opens=java.desktop/com.apple.eawt.event=ALL-UNNAMED',  // Mac OSX only
-        ]
-        enabled = false // workaround for https://youtrack.jetbrains.com/issue/KT-42837
-    }
-
-    runIde {
-        jvmArgs = [
-            '--illegal-access=warn',
-            '--add-opens=java.base/java.lang=ALL-UNNAMED',
-            '--add-opens=java.base/java.nio=ALL-UNNAMED',
-            '--add-opens=java.base/java.util=ALL-UNNAMED',
-            '--add-opens=java.base/sun.nio.ch=ALL-UNNAMED',
-            '--add-opens=java.base/jdk.internal.vm=ALL-UNNAMED',
-            '--add-opens=java.desktop/sun.awt=ALL-UNNAMED',
-            '--add-opens=java.desktop/sun.awt.image=ALL-UNNAMED',
-            '--add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED', // Linux only
-            '--add-opens=java.desktop/sun.font=ALL-UNNAMED',
-            '--add-opens=java.desktop/sun.swing=ALL-UNNAMED',
-            '--add-opens=java.desktop/sun.java2d=ALL-UNNAMED',
-            '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
-            '--add-opens=java.desktop/java.awt.peer=ALL-UNNAMED',
-            '--add-opens=java.desktop/java.awt.event=ALL-UNNAMED',
-            '--add-opens=java.desktop/javax.swing=ALL-UNNAMED',
-            '--add-opens=java.desktop/javax.swing.text.html=ALL-UNNAMED',
-            '--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED',
-            '--add-opens=java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED', // Linux only
-            '--add-opens=java.desktop/com.apple.eawt.event=ALL-UNNAMED',  // Mac OSX only
-        ]
-        systemProperties['idea.debug.mode'] = 'true'
-        // The package names have to be prefixed with a #
-        systemProperties['idea.log.debug.categories'] = '#io.github.intellij.dlanguage'
-        //systemProperties['idea.log.trace.categories'] = '#io.github.intellij.dlanguage'
-
-        // Enable internal mode (https://plugins.jetbrains.com/docs/intellij/enabling-internal.html)
-        systemProperties['idea.is.internal'] = "true"
-
-        // idea.auto.reload.plugins=false
-        systemProperties['ide.show.tips.on.startup.default.value'] = "false"
-
-        // Set these properties to test alternative languages
-        // systemProperties["user.language"] = "de"
-        // systemProperties["user.country"] = "DE"
-
-        // jbrVersion = null
-        // jbrVersion = '11_0_4b304.69'
-    }
-
-    publishPlugin {
-        token = provider {
-            System.getenv('JETBRAINS_TOKEN')
+    tasks {
+        buildSearchableOptions {
+            // workaround for https://youtrack.jetbrains.com/issue/IDEA-210683
+            jvmArgs = listOf(
+                "--illegal-access=warn",
+                "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+                "--add-opens=java.base/jdk.internal.vm=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.awt=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.awt.image=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED", // Linux only
+                "--add-opens=java.desktop/sun.font=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.swing=ALL-UNNAMED",
+                "--add-opens=java.desktop/java.awt=ALL-UNNAMED",
+                "--add-opens=java.desktop/java.awt.peer=ALL-UNNAMED",
+                "--add-opens=java.desktop/java.awt.event=ALL-UNNAMED",
+                "--add-opens=java.desktop/javax.swing=ALL-UNNAMED",
+                "--add-opens=java.desktop/javax.swing.text.html=ALL-UNNAMED",
+                "--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
+                "--add-opens=java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED", // Linux only
+                "--add-opens=java.desktop/com.apple.eawt.event=ALL-UNNAMED",  // Mac OSX only
+            )
+            enabled = false // workaround for https://youtrack.jetbrains.com/issue/KT-42837
         }
-        channels = [publishChannels]
+
+        runIde {
+            jvmArgs = listOf(
+                "--illegal-access=warn",
+                "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                "--add-opens=java.base/java.nio=ALL-UNNAMED",
+                "--add-opens=java.base/java.util=ALL-UNNAMED",
+                "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+                "--add-opens=java.base/jdk.internal.vm=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.awt=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.awt.image=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED", // Linux only
+                "--add-opens=java.desktop/sun.font=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.swing=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.java2d=ALL-UNNAMED",
+                "--add-opens=java.desktop/java.awt=ALL-UNNAMED",
+                "--add-opens=java.desktop/java.awt.peer=ALL-UNNAMED",
+                "--add-opens=java.desktop/java.awt.event=ALL-UNNAMED",
+                "--add-opens=java.desktop/javax.swing=ALL-UNNAMED",
+                "--add-opens=java.desktop/javax.swing.text.html=ALL-UNNAMED",
+                "--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
+                "--add-opens=java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED", // Linux only
+                "--add-opens=java.desktop/com.apple.eawt.event=ALL-UNNAMED",  // Mac OSX only
+            )
+            systemProperty("idea.debug.mode", "true")
+            // The package names have to be prefixed with a #
+            systemProperty("idea.log.debug.categories", "#io.github.intellij.dlanguage")
+            //systemProperty("idea.log.trace.categories"], "#io.github.intellij.dlanguage")
+
+            // Enable internal mode (https://plugins.jetbrains.com/docs/intellij/enabling-internal.html)
+            systemProperty("idea.is.internal", "true")
+
+            // idea.auto.reload.plugins=false
+            systemProperty("ide.show.tips.on.startup.default.value", "false")
+
+            // Set these properties to test alternative languages
+            // systemProperty("user.language"], "de")
+            // systemProperty("user.country"], "DE")
+
+            // jbrVersion = null
+            // jbrVersion = "11_0_4b304.69"
+        }
+
+        publishPlugin {
+            token.set(provider {
+                System.getenv("JETBRAINS_TOKEN")
+            })
+            channels.set(publishChannels)
+        }
     }
 }
 
 
 // take the version number defined in gradle build and use that in plugin.xml
-tasks.register('initConfig', Copy) {
-    from('src/main/resources') {
-        include '**/plugin.xml'
-        filter(ReplaceTokens, tokens: [version: version])
+tasks.register<Copy>("initConfig") {
+    from("src/main/resources") {
+        include("**/plugin.xml")
+        expand("version" to version)
     }
 }
 
-tasks.register('testCompilation', Test) {
-    group 'Verification'
-    dependsOn classes, testClasses
+tasks.register<Test>("testCompilation") {
+    group = "Verification"
+    dependsOn(tasks.classes, tasks.testClasses)
     useJUnit {
-        include 'io/github/intellij/dlanguage/build/**'
+        include("io/github/intellij/dlanguage/build/**")
     }
 }
 
-tasks.register('generateSyntaxLexer', GenerateLexerTask) {
+val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer") {
     // source flex file
-    sourceFile.set(file('src/main/jflex/io/github/intellij/dlanguage/lexer/DLanguageLexer.flex'))
+    sourceFile.set(file("src/main/jflex/io/github/intellij/dlanguage/lexer/DLanguageLexer.flex"))
 
     // target directory for lexer
-    targetDir.set('gen/io/github/intellij/dlanguage/')
+    targetDir.set("gen/io/github/intellij/dlanguage/")
 
     // target classname, target file will be targetDir/targetClass.java
-    targetClass.set('DlangLexer')
+    targetClass.set("DlangLexer")
 }
 
-tasks.register('generateDocSyntaxLexer', GenerateLexerTask) {
+val generateDocSyntaxLexer = tasks.register<GenerateLexerTask>("generateDocSyntaxLexer") {
     // source flex file
-    sourceFile.set(file('src/main/kotlin/io/github/intellij/dlanguage/features/documentation/DDocLexer.flex'))
+    sourceFile.set(file("src/main/kotlin/io/github/intellij/dlanguage/features/documentation/DDocLexer.flex"))
 
     // target directory for lexer
-    targetDir.set('gen/io/github/intellij/dlanguage/features/documentation')
+    targetDir.set("gen/io/github/intellij/dlanguage/features/documentation")
 
     // target classname, target file will be targetDir/targetClass.java
-    targetClass.set('_DDocLexer')
+    targetClass.set("_DDocLexer")
 }
 
-tasks.register('copyGenScript', Copy) {
-    from 'src/main/resources/types_regen_script.d'
-    into 'gen/io/github/intellij/dlanguage/psi/'
+val copyGenScript = tasks.register<Copy>("copyGenScript") {
+    from("src/main/resources/types_regen_script.d")
+    into("gen/io/github/intellij/dlanguage/psi/")
 }
 
-tasks.register('generatePsi', Exec) {
-    dependsOn copyGenScript
-    workingDir 'gen/io/github/intellij/dlanguage/psi/'
-    commandLine 'rdmd', 'types_regen_script.d'
+val generatePsi = tasks.register<Exec>("generatePsi") {
+    dependsOn(copyGenScript)
+    workingDir("gen/io/github/intellij/dlanguage/psi/")
+    commandLine("rdmd", "types_regen_script.d")
 }
 
-tasks.withType(JavaCompile).configureEach {
-    it.dependsOn(generateSyntaxLexer)
-    it.dependsOn(generateDocSyntaxLexer)
-    it.dependsOn(generatePsi)
+tasks.withType<JavaCompile>().configureEach {
+    dependsOn(
+        generateSyntaxLexer,
+        generateDocSyntaxLexer,
+        generatePsi
+    )
 }
 
-tasks.withType(KotlinCompile).configureEach {
-    it.dependsOn(generateSyntaxLexer)
-    it.dependsOn(generateDocSyntaxLexer)
-    it.dependsOn(generatePsi)
+tasks.withType<KotlinCompile>().configureEach {
+    dependsOn(
+        generateSyntaxLexer,
+        generateDocSyntaxLexer,
+        generatePsi
+    )
 }
 
 dependencies {
@@ -287,28 +280,22 @@ dependencies {
     // see:
     //  https://github.com/JetBrains/gradle-intellij-plugin/issues/1412
     //  https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#multi-module-project
-    implementation project(':utils')
-    implementation project(':errorreporting')
-    implementation project(':debugger')
-    implementation project(':sdlang')
-    runtimeOnly project(':dub')
+    implementation (project(":utils"))
+    implementation (project(":errorreporting"))
+    implementation (project(":debugger"))
+    implementation (project(":sdlang"))
+    runtimeOnly (project(":dub"))
 
-    implementation 'com.google.code.gson:gson:2.10.+' // used by dub parser
+    implementation ("com.google.code.gson:gson:2.10.+") // used by dub parser
 
-    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0+'
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0+")
 
-    testImplementation 'junit:junit:4.13+'
-    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.9+'
+    testImplementation ("junit:junit:4.13+")
+    testRuntimeOnly ("org.junit.vintage:junit-vintage-engine:5.9+")
 }
 
-apply plugin: 'idea'
-
 idea {
-    project {
-        jdkName = javaVersion
-        languageLevel = javaVersion
-    }
     module {
-        generatedSourceDirs += file('gen')
+        generatedSourceDirs.add(file("gen"))
     }
 }
