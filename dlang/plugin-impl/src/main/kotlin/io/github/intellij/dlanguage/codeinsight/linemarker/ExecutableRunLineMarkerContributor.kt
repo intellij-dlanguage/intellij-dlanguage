@@ -9,7 +9,7 @@ import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.DlangTypes.IDENTIFIER
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
 
-class DubExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
+class ExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
     override fun getInfo(element: PsiElement): Info? {
         if(!isDMainFunction(element)) return null
 

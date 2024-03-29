@@ -106,7 +106,7 @@
 
         <!-- Line Marker Providers -->
         <runLineMarkerContributor language="D"
-                                  implementationClass="io.github.intellij.dlanguage.codeinsight.linemarker.DubExecutableRunLineMarkerContributor"/>
+                                  implementationClass="io.github.intellij.dlanguage.codeinsight.linemarker.ExecutableRunLineMarkerContributor"/>
 
         <!-- module -->
         <moduleType id="DLANGUAGE_MODULE" implementationClass="io.github.intellij.dlanguage.module.DlangModuleType"/>

@@ -35,4 +35,6 @@ jflex-install/
 
 # exclude generated files
 /gen/
+/dlang/plugin-api/gen/
+/dlang/plugin-impl/gen/
 /sdlang/gen/

@@ -29,7 +29,8 @@ intellij {
 }
 
 dependencies {
-    implementation(project(":"))
+    api(project(":dlang:plugin-api"))
+    testImplementation(project(":dlang:plugin-impl"))
     implementation(project(":utils"))
     implementation(project(":errorreporting"))
 }
