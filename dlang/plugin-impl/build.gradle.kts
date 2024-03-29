@@ -219,17 +219,12 @@ dependencies {
     //compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //compileOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    // todo: When updating the gradle intellij plugin we'll most likely need to set
-    // some project dependencies with the 'instrumentedJar' configuration
-    // see:
-    //  https://github.com/JetBrains/gradle-intellij-plugin/issues/1412
-    //  https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#multi-module-project
-    implementation (project(":"))
-    implementation (project(":utils"))
-    implementation (project(":errorreporting"))
-    implementation (project(":debugger"))
-    implementation (project(":sdlang"))
-    runtimeOnly (project(":dub"))
+    implementation (project(":", "instrumentedJar"))
+    implementation (project(":utils", "instrumentedJar"))
+    implementation (project(":errorreporting", "instrumentedJar"))
+    implementation (project(":debugger", "instrumentedJar"))
+    implementation (project(":sdlang", "instrumentedJar"))
+    runtimeOnly (project(":dub", "instrumentedJar"))
 
     implementation (libs.gson) // used by dub parser
 
