@@ -1,17 +1,16 @@
 [versions]
 # libraries
 annotations = "24.1.0"
-
-# plugins
-# cannot update to latest as it breaks verifyPlugin
-gradleIntelliJPlugin = "1.10.1"
-grammarkit = "2022.3.1"
 gson = "2.10.+"
 junit = "1.13+"
 junit-vintage = "5.9+"
-kotlin = "1.8.22"
 mockito-kotlin = "4.0+"
 sentry = "7+"
+
+# plugins
+gradleIntelliJPlugin = "1.10.1" # cannot update to latest as it breaks verifyPlugin
+grammarkit = "2022.3.1"
+kotlin = "1.8.22"
 
 [plugins]
 gradleIntelliJPlugin = { id = "org.jetbrains.intellij", version.ref = "gradleIntelliJPlugin" }
