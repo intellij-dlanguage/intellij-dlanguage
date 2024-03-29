@@ -2,7 +2,7 @@ plugins {
     id("java")
     // todo: Rework the utils module to just use com.jetbrains.intellij.platform:core and com.jetbrains.intellij.platform:lang
     // so that there's no need to use 'org.jetbrains.intellij' plugin in this module
-    id("org.jetbrains.intellij")
+    alias(libs.plugins.gradleIntelliJPlugin)
 }
 
 

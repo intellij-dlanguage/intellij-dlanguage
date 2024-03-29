@@ -11,11 +11,11 @@ fun properties(key: String) = providers.gradleProperty(key).get()
 plugins {
     id("org.gradle.idea")
     id("java")
-    id("org.jetbrains.intellij") version "1.10.1" // cannot update to "1.15.0" as it breaks verifyPlugin
-    id("org.jetbrains.kotlin.jvm") version "1.8.22"
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.gradleIntelliJPlugin)
+    alias(libs.plugins.grammarkit)
 //    id("net.saliman.cobertura") version "4.0.0"
 //    id("com.github.kt3k.coveralls") version "2.10.2"
-    id("org.jetbrains.grammarkit") version "2022.3.1"
 }
 
 
@@ -300,12 +300,12 @@ dependencies {
     implementation (project(":sdlang"))
     runtimeOnly (project(":dub"))
 
-    implementation ("com.google.code.gson:gson:2.10.+") // used by dub parser
+    implementation (libs.gson) // used by dub parser
 
-    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0+")
+    testImplementation (libs.mockito.kotlin)
 
-    testImplementation ("junit:junit:4.13+")
-    testRuntimeOnly ("org.junit.vintage:junit-vintage-engine:5.9+")
+    testImplementation (libs.junit.engine)
+    testRuntimeOnly (libs.junit.engine)
 }
 
 idea {

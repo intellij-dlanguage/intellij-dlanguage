@@ -5,9 +5,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm")
-    id("org.jetbrains.grammarkit")
-    id("org.jetbrains.intellij")
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.grammarkit)
+    alias(libs.plugins.gradleIntelliJPlugin)
 }
 
 // Disable all Gradle Tasks for the gradle-intellij-plugin as we only use the plugin for the dependencies

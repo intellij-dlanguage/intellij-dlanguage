@@ -1,9 +1,9 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm")
+    alias(libs.plugins.kotlin)
     // todo: Rework the utils module to just use com.jetbrains.intellij.platform:core and com.jetbrains.intellij.platform:lang
     // so that there's no need to use 'org.jetbrains.intellij' plugin in this module
-    id("org.jetbrains.intellij")
+    alias(libs.plugins.gradleIntelliJPlugin)
 }
 
 // Disable all Gradle Tasks for the gradle-intellij-plugin as we only use the plugin for the dependencies

@@ -1,6 +1,7 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij")
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.gradleIntelliJPlugin)
 }
 
 
