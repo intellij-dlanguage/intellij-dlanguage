@@ -126,6 +126,18 @@ intellij {
     //localPath = "$System.env.HOME/.local/share/JetBrains/Toolbox/apps/Rider/ch-0/222.3739.37"
 
     tasks {
+        buildPlugin { enabled = true }
+        downloadRobotServerPlugin { enabled = true }
+        jarSearchableOptions { enabled = true }
+        patchPluginXml { enabled = true }
+        prepareSandbox { enabled = true }
+        prepareTestingSandbox { enabled = true }
+        prepareUiTestingSandbox { enabled = true }
+        runIdeForUiTests { enabled = true }
+        runPluginVerifier { enabled = true }
+        signPlugin { enabled = true }
+        verifyPlugin { enabled = true }
+
         buildSearchableOptions {
             // workaround for https://youtrack.jetbrains.com/issue/IDEA-210683
             jvmArgs = listOf(
@@ -151,6 +163,7 @@ intellij {
         }
 
         runIde {
+            enabled = true
             jvmArgs = listOf(
                 "--illegal-access=warn",
                 "--add-opens=java.base/java.lang=ALL-UNNAMED",
@@ -193,6 +206,7 @@ intellij {
         }
 
         publishPlugin {
+            enabled = true
             token.set(provider {
                 System.getenv("JETBRAINS_TOKEN")
             })
