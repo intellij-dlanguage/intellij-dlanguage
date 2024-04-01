@@ -1,0 +1,26 @@
+[versions]
+# libraries
+annotations = "24.1.0"
+gson = "2.10.+"
+junit = "1.13+"
+junit-vintage = "5.9+"
+mockito-kotlin = "4.0+"
+sentry = "7+"
+
+# plugins
+gradleIntelliJPlugin = "1.10.1" # cannot update to latest as it breaks verifyPlugin
+grammarkit = "2022.3.1"
+kotlin = "1.8.22"
+
+[plugins]
+gradleIntelliJPlugin = { id = "org.jetbrains.intellij", version.ref = "gradleIntelliJPlugin" }
+grammarkit = { id = "org.jetbrains.grammarkit", version.ref = "grammarkit" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+[libraries]
+annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+junit = { module = "junit:junit", version.ref = "junit" }
+junit-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit-vintage" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
+sentry = { module ="io.sentry:sentry", version.ref = "sentry" }
