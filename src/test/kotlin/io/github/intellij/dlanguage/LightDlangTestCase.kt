@@ -31,7 +31,7 @@ abstract class LightDlangTestCase : LightPlatform4TestCase() {
         roots.putValue(OrderRootType.SOURCES, MockDir("phobos"))
         roots.putValue(OrderRootType.SOURCES, MockDir("druntime"))
 
-        return MockSdk("dmd", "", "2", roots) { DlangSdkType.getInstance() }
+        return MockSdk("dmd", "", "2", roots, DlangSdkType.getInstance())
     }
 
     fun addFileToModuleSource(filename: String, content: String? = null): VirtualFile {

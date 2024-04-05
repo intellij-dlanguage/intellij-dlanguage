@@ -49,15 +49,12 @@ val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer
     sourceFile.set(file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/lexer/SDLangLexer.flex"))
 
     // target directory for lexer
-    targetDir.set("gen/io/github/intellij/dlanguage/sdlang/lexer")
-
-    // target classname, target file will be targetDir/targetClass.java
-    targetClass.set("_SDLangLexer")
+    targetOutputDir.set(file("gen/io/github/intellij/dlanguage/sdlang/lexer"))
 }
 
 val generateSyntaxParser = tasks.register<GenerateParserTask>("generateSyntaxParser") {
     sourceFile.set(file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/parser/SDLangParser.bnf"))
-    targetRoot.set("gen")
+    targetRootOutputDir.set(file("gen"))
     pathToParser.set("io/github/intellij/dlanguage/sdlang/parser/SDLangParser.java")
     pathToPsiRoot.set("io/github/intellij/dlanguage/sdlang/psi")
 }

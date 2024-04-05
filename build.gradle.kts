@@ -129,7 +129,8 @@ intellij {
         buildPlugin { enabled = true }
         downloadRobotServerPlugin { enabled = true }
         jarSearchableOptions { enabled = true }
-        patchPluginXml { enabled = true }
+        patchPluginXml { enabled = false }
+        listProductsReleases { enabled = false }
         prepareSandbox { enabled = true }
         prepareTestingSandbox { enabled = true }
         prepareUiTestingSandbox { enabled = true }
@@ -237,10 +238,7 @@ val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer
     sourceFile.set(file("src/main/jflex/io/github/intellij/dlanguage/lexer/DLanguageLexer.flex"))
 
     // target directory for lexer
-    targetDir.set("gen/io/github/intellij/dlanguage/")
-
-    // target classname, target file will be targetDir/targetClass.java
-    targetClass.set("DlangLexer")
+    targetOutputDir.set(file("gen/io/github/intellij/dlanguage/"))
 }
 
 val generateDocSyntaxLexer = tasks.register<GenerateLexerTask>("generateDocSyntaxLexer") {
@@ -248,10 +246,7 @@ val generateDocSyntaxLexer = tasks.register<GenerateLexerTask>("generateDocSynta
     sourceFile.set(file("src/main/kotlin/io/github/intellij/dlanguage/features/documentation/DDocLexer.flex"))
 
     // target directory for lexer
-    targetDir.set("gen/io/github/intellij/dlanguage/features/documentation")
-
-    // target classname, target file will be targetDir/targetClass.java
-    targetClass.set("_DDocLexer")
+    targetOutputDir.set(file("gen/io/github/intellij/dlanguage/features/documentation/"))
 }
 
 val copyGenScript = tasks.register<Copy>("copyGenScript") {
