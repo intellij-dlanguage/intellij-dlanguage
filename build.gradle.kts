@@ -129,8 +129,8 @@ intellij {
         buildPlugin { enabled = true }
         downloadRobotServerPlugin { enabled = true }
         jarSearchableOptions { enabled = true }
-        patchPluginXml { enabled = false }
-        listProductsReleases { enabled = false }
+        patchPluginXml { enabled = true }
+        //listProductsReleases { enabled = false }
         prepareSandbox { enabled = true }
         prepareTestingSandbox { enabled = true }
         prepareUiTestingSandbox { enabled = true }
