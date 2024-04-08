@@ -29,5 +29,6 @@ intellij {
 }
 
 dependencies {
+    implementation(project(":utils"))
     implementation(libs.sentry)
 }

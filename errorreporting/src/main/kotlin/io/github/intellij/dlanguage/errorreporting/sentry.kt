@@ -14,6 +14,7 @@ import com.intellij.openapi.diagnostic.SubmittedReportInfo
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.util.Consumer
+import io.github.intellij.dlanguage.DlangBundle
 import io.sentry.*
 import java.awt.Component
 
@@ -27,12 +28,12 @@ class SentryErrorHandler : ErrorReportSubmitter() {
     /*
      * @return text that is used on the Error Reporters submit button, e.g. "Report to JetBrains".
      */
-    override fun getReportActionText(): String = "Report to D Language Plugin Development Team"
+    override fun getReportActionText(): String = DlangBundle.message("dlang.errorreporting.reportaction")
 
     /*
      * @return the text to display in the UI in T&C of privacy policy (under the stack trace)
      */
-    override fun getPrivacyNoticeText(): String = "Please provide a brief description to explain how the error occurred. By submitting this bug report you are agreeing for the displayed stacktrace to be shared with the developers via <a href=\"https://sentry.io\">sentry.io</a>. Please also consider raising a bug directly on our <a href=\"https://github.com/intellij-dlanguage/intellij-dlanguage\">Github</a>."
+    override fun getPrivacyNoticeText(): String = DlangBundle.message("dlang.errorreporting.privacynotice")
 
     override fun submit(
         events: Array<out IdeaLoggingEvent>,
@@ -42,6 +43,7 @@ class SentryErrorHandler : ErrorReportSubmitter() {
     ): Boolean {
         Sentry.init { options ->
             options.dsn = SENTRY_DSN
+            // options.isEnableMetrics = true // todo: configure some metrics in Sentry
             options.isAttachStacktrace = true
             options.isAttachServerName = false
 
@@ -49,19 +51,23 @@ class SentryErrorHandler : ErrorReportSubmitter() {
             options.setTag("Java version", SystemInfo.JAVA_VERSION)
             options.setTag("Java vendor", SystemInfo.JAVA_VENDOR)
 
-            val appNames = ApplicationNamesInfo.getInstance()
-            options.setTag("IDE Name", appNames.productName)
-            options.setTag("IDE Full Name", appNames.fullProductNameWithEdition)
+            ApplicationNamesInfo.getInstance().let {
+                options.environment = it.productName // the default environment is 'production' which isn't useful
+                options.setTag("IDE Name", it.productName)
+                options.setTag("IDE Full Name", it.fullProductNameWithEdition)
+            }
 
-            val appInfo = ApplicationInfo.getInstance()
-            options.setTag("IDE Version", appInfo.fullVersion)
-            options.setTag("IDE Build", appInfo.build.asString())
-            options.setTag("Is EAP", "${(appInfo as ApplicationInfoEx).isEAP}")
+            ApplicationInfo.getInstance().let {
+                options.setTag("IDE Version", it.fullVersion)
+                options.setTag("IDE Build", it.build.asString())
+                options.setTag("Is EAP", "${(it as ApplicationInfoEx).isEAP}")
+            }
 
             super.getPluginDescriptor()?.let {
                 PluginManagerCore.getPlugin(it.pluginId)?.let { plugin ->
                     options.setTag("Plugin", plugin.name)
                     options.setTag("Version", plugin.version)
+                    options.release = plugin.version // specifying the release is important to make the most of Sentry
                 }
             }
 
@@ -84,13 +90,30 @@ class SentryErrorHandler : ErrorReportSubmitter() {
 
             ApplicationManager
                 .getApplication()
-                .invokeLater {
-                    val sentryEventId = Sentry.captureEvent(sentryEvent)
-                    log.info("An error report has been submitted to Sentry.io for the D language plugin. Ref: $sentryEventId")
+                .invokeAndWait {
+                    try {
+                        val sentryEventId = Sentry.captureEvent(sentryEvent)
+                        log.info("An error report has been submitted to Sentry.io for the D language plugin. Ref: $sentryEventId")
+
+                        // the error reporting modal will display the link text prefixed with "Submitted as"
+                        consumer.consume(
+                            SubmittedReportInfo(
+                                "https://singingbush.sentry.io/issues?query=${sentryEventId}",
+                                sentryEventId.toString(),
+                                SubmittedReportInfo.SubmissionStatus.NEW_ISSUE
+                            )
+                        )
+
+                        // Instead of displaying the sentry id we could just show the default "Submitted" message using the following:
+                        // consumer.consume(SubmittedReportInfo(null, null, SubmittedReportInfo.SubmissionStatus.NEW_ISSUE))
+                    } catch (e: Throwable) {
+                        log.warn("Unable to report error to sentry.io", e)
+                        consumer.consume(SubmittedReportInfo(null, e.message, SubmittedReportInfo.SubmissionStatus.FAILED))
+                    }
                 }
         }
 
-        return true // return true to indicate that a process has begun to send data async
+        return false // return true for the window to close and false for it to remain open
     }
 
 }
