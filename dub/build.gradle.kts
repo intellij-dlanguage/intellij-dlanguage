@@ -32,4 +32,5 @@ dependencies {
     implementation(project(":"))
     implementation(project(":utils"))
     implementation(project(":errorreporting"))
+    testImplementation(project(":dlang:plugin-impl"))
 }

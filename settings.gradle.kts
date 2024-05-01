@@ -5,5 +5,6 @@ include (
     "errorreporting",
     "debugger",
     "sdlang",
-    "dub"
+    "dub",
+    "dlang:plugin-impl"
 )
