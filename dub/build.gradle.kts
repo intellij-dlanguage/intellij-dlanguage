@@ -29,8 +29,9 @@ intellij {
 }
 
 dependencies {
-    implementation(project(":"))
-    implementation(project(":utils"))
-    implementation(project(":errorreporting"))
+    api(project(":", "instrumentedJar"))
+    implementation(project(":utils", "instrumentedJar"))
+    implementation(project(":errorreporting", "instrumentedJar"))
+    testImplementation(project(":"))
     testImplementation(project(":dlang:plugin-impl"))
 }
