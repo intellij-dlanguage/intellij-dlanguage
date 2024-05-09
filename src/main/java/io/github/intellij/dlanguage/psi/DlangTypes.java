@@ -846,7 +846,7 @@ public interface DlangTypes {
             } else if (type == NAMED_IMPORT_BIND) {
                 return new DLanguageNamedImportBindImpl(node);
             } else if (type == STATIC_FOREACH_STATEMENT) {
-                return new DLangStaticForeachStatementImpl(node);
+                return new DLanguageStaticForeachStatementImpl(node);
             } else if (type == STATIC_FOREACH_DECLARATION) {
                 return new DLanguageStaticForeachDeclarationImpl(node);
             } else if (type == ALIAS_ASSIGN) {
