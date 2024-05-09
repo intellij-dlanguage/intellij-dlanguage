@@ -1,26 +1,24 @@
-package io.github.intellij.dlanguage.psi.references;
+package io.github.intellij.dlanguage.psi.references
 
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNamedElement;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.PsiReferenceProvider;
-import com.intellij.util.ProcessingContext;
-import io.github.intellij.dlanguage.DLanguage;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiNamedElement
+import com.intellij.psi.PsiReference
+import com.intellij.psi.PsiReferenceProvider
+import com.intellij.util.ProcessingContext
+import io.github.intellij.dlanguage.DLanguage
 
-public class DReferenceProvider extends PsiReferenceProvider {
-    @NotNull
-    @Override
-    public PsiReference[] getReferencesByElement(@NotNull final PsiElement element,
-                                                 @NotNull final ProcessingContext context) {
-        if (!element.getLanguage().is(DLanguage.INSTANCE)) {
-            return PsiReference.EMPTY_ARRAY;
+class DReferenceProvider : PsiReferenceProvider() {
+    override fun getReferencesByElement(
+        element: PsiElement,
+        context: ProcessingContext
+    ): Array<PsiReference> {
+        if (!element.language.`is`(DLanguage)) {
+            return PsiReference.EMPTY_ARRAY
         }
 
-        if (element instanceof PsiNamedElement) {
-            final PsiNamedElement se = (PsiNamedElement) element;
-            return new PsiReference[]{new DReference(se, se.getTextRange())};
+        if (element is PsiNamedElement) {
+            return arrayOf(DReference(element, element.textRange))
         }
-        return PsiReference.EMPTY_ARRAY;
+        return PsiReference.EMPTY_ARRAY
     }
 }
