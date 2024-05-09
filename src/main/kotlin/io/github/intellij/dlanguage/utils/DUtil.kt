@@ -1,144 +1,149 @@
-package io.github.intellij.dlanguage.utils;
+package io.github.intellij.dlanguage.utils
 
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiNamedElement;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.psi.interfaces.Declaration;
-import io.github.intellij.dlanguage.psi.named.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import com.intellij.lang.ASTNode
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiNamedElement
+import com.intellij.psi.tree.IElementType
+import com.intellij.psi.util.PsiTreeUtil
+import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration
+import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain
+import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateChain
+import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression
+import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
+import io.github.intellij.dlanguage.psi.named.*
+import java.util.*
 
 /**
  * General util class. Provides methods for finding named nodes in the Psi tree.
  */
-public class DUtil {
-
+object DUtil {
     /**
      * Tells whether a named node is a definition node based on its context.
-     * <p/>
+     *
+     *
      * Precondition: Element is in a DLanguage file.
      */
-    public static boolean definitionNode(@NotNull final PsiNamedElement e) {
-        if (e instanceof DlangIdentifier) return true;
-        return e instanceof Declaration;
+    fun definitionNode(e: PsiNamedElement): Boolean {
+        if (e is DlangIdentifier) return true
+        return e is Declaration
     }
 
     /**
      * Tells whether a node is a definition node based on its context.
      */
-    public static boolean definitionNode(@NotNull final ASTNode node) {
-        final PsiElement element = node.getPsi();
-        return element instanceof PsiNamedElement && definitionNode((PsiNamedElement) element);
+    fun definitionNode(node: ASTNode): Boolean {
+        val element = node.psi
+        return element is PsiNamedElement && definitionNode(
+            element
+        )
     }
 
-    public static boolean isNotNullOrEmpty(final String str) {
-        return (str != null && !str.isEmpty());
+    @JvmStatic
+    fun isNotNullOrEmpty(str: String?): Boolean {
+        return (str != null && !str.isEmpty())
     }
 
 
-
-    public static boolean isDunitTestFile(final PsiFile psiFile) {
-        final Collection<DLanguageClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration.class);
-        for (final DLanguageClassDeclaration cd : cds) {
+    @JvmStatic
+    fun isDunitTestFile(psiFile: PsiFile?): Boolean {
+        val cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration::class.java)
+        for (cd in cds) {
             // if a class contains the UnitTest mixin assume its a valid d-unit test class
-            final Collection<DLanguageTemplateMixinExpression> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression.class);
-            for (final DLanguageTemplateMixinExpression tmi : tmis) {
-                if (tmi.getText().contains("UnitTest")) {
-                    return true;
+            val tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression::class.java)
+            for (tmi in tmis) {
+                if (tmi.text.contains("UnitTest")) {
+                    return true
                 }
             }
         }
-        return false;
+        return false
     }
 
     /**
      * @param namedElement constructor, or method contained within a class or struct
      * @return the class or struct containing this constructor/method. returns null if not found
      */
-    public static DNamedElement getParentClassOrStructOrTemplateOrInterfaceOrUnion(final PsiElement namedElement) {
-        return PsiTreeUtil.getParentOfType(namedElement, DlangInterfaceOrClass.class, DlangStructDeclaration.class, DlangTemplateDeclaration.class, DlangUnionDeclaration.class);
+    @JvmStatic
+    fun getParentClassOrStructOrTemplateOrInterfaceOrUnion(namedElement: PsiElement?): DNamedElement {
+        return PsiTreeUtil.getParentOfType(
+            namedElement,
+            DlangInterfaceOrClass::class.java,
+            DlangStructDeclaration::class.java,
+            DlangTemplateDeclaration::class.java,
+            DlangUnionDeclaration::class.java
+        )!!
     }
 
-    @Nullable
-    public static ASTNode getPrevSiblingOfType(@Nullable final ASTNode child,
-                                               @Nullable final IElementType type) {
-        if (child == null)
-            return null;
-        if (child.getElementType() == type) {
-            return child.getTreePrev();
+    fun getPrevSiblingOfType(
+        child: ASTNode?,
+        type: IElementType?
+    ): ASTNode? {
+        if (child == null) return null
+        if (child.elementType === type) {
+            return child.treePrev
         }
-        return getPrevSiblingOfType(child.getTreePrev(), type);
+        return getPrevSiblingOfType(child.treePrev, type)
     }
 
-    @Nullable
-    public static ASTNode getPrevSiblingOfType(@Nullable final ASTNode child,
-                                               @NotNull final IElementType type,
-                                               @Nullable final HashSet<IElementType> excluded) {
-        if (child == null)
-            return null;
-        if (child.getElementType() == type) {
-            return child;
+    fun getPrevSiblingOfType(
+        child: ASTNode?,
+        type: IElementType,
+        excluded: HashSet<IElementType?>?
+    ): ASTNode? {
+        if (child == null) return null
+        if (child.elementType === type) {
+            return child
         }
-        if(excluded != null && excluded.contains(child.getElementType())) {
-            return null;
+        if (excluded != null && excluded.contains(child.elementType)) {
+            return null
         }
-        return getPrevSiblingOfType(child.getTreePrev(), type, excluded);
+        return getPrevSiblingOfType(child.treePrev, type, excluded)
     }
 
-    @Nullable
-    public static ASTNode getPrevSiblingOfTypes(@Nullable final ASTNode child,
-                                               @NotNull final HashSet<IElementType> newHashSet,
-                                               @Nullable final HashSet<IElementType> excluded) {
-        if (child == null)
-            return null;
-        if (newHashSet.contains(child.getElementType())) {
-            return child;
+    fun getPrevSiblingOfTypes(
+        child: ASTNode?,
+        newHashSet: HashSet<IElementType?>,
+        excluded: HashSet<IElementType?>?
+    ): ASTNode? {
+        if (child == null) return null
+        if (newHashSet.contains(child.elementType)) {
+            return child
         }
-        if(excluded != null && excluded.contains(child.getElementType())) {
-            return null;
+        if (excluded != null && excluded.contains(child.elementType)) {
+            return null
         }
-        return getPrevSiblingOfTypes(child.getTreePrev(), newHashSet, excluded);
+        return getPrevSiblingOfTypes(child.treePrev, newHashSet, excluded)
     }
 
-    @SuppressWarnings("unchecked")
-    @Nullable
-    public static <T extends PsiElement> T findParentOfType(@NotNull final PsiElement element, @NotNull final Class<T> className) {
+    @JvmStatic
+    fun <T : PsiElement?> findParentOfType(element: PsiElement, className: Class<T>): T? {
         if (className.isInstance(element)) {
-            return (T) element;
+            return element as T
         }
 
-        return Optional.ofNullable(element.getParent())
-                .map(parent -> findParentOfType(parent, className))
-                .orElse(null);
+        return Optional.ofNullable(element.parent)
+            .map { parent: PsiElement -> findParentOfType(parent, className) }
+            .orElse(null)
     }
 
-    @Nullable
-    public static DlangIdentifier getEndOfIdentifierList(final @NotNull DLanguageIdentifierChain chain) {
-        final List<DlangIdentifier> list = chain.getIdentifiers();
+    @JvmStatic
+    fun getEndOfIdentifierList(chain: DLanguageIdentifierChain): DlangIdentifier? {
+        val list = chain.identifiers
         if (list.isEmpty()) {
-            return null;
+            return null
         }
 
-        return list.get(list.size() - 1);
+        return list[list.size - 1]
     }
 
-    @Nullable
-    public static DlangIdentifier getEndOfIdentifierList(@Nullable final DLanguageIdentifierOrTemplateChain chain) {
-        if(chain == null) return null;
+    fun getEndOfIdentifierList(chain: DLanguageIdentifierOrTemplateChain?): DlangIdentifier? {
+        if (chain == null) return null
 
-        @NotNull final List<DLanguageIdentifierOrTemplateInstance> list = chain.getIdentifierOrTemplateInstances();
+        val list = chain.identifierOrTemplateInstances
 
-        return list.size() > 0 ? list.get(list.size() - 1).getIdentifier() : null;
+        return if (list.size > 0) list[list.size - 1].identifier else null
     }
 
     /**
@@ -146,8 +151,9 @@ public class DUtil {
      * @param name a filename to check
      * @return true if filename
      */
-    public static boolean isValidDlangFileName(@NotNull final String name) {
-        return name.matches("[a-zA-Z_0-9]+(\\.di|\\.d)?");
+    @JvmStatic
+    fun isValidDlangFileName(name: String): Boolean {
+        return name.matches("[a-zA-Z_0-9]+(\\.di|\\.d)?".toRegex())
     }
 }
 
