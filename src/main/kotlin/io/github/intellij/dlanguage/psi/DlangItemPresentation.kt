@@ -1,34 +1,20 @@
-package io.github.intellij.dlanguage.psi;
+package io.github.intellij.dlanguage.psi
 
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiFile;
-import io.github.intellij.dlanguage.DLanguage;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.Icon;
+import com.intellij.navigation.ItemPresentation
+import com.intellij.psi.PsiFile
+import io.github.intellij.dlanguage.DLanguage
+import javax.swing.Icon
 
 /**
  * @author Samael Bate (singingbush)
  * created on 20/10/18
  */
-public abstract class DlangItemPresentation implements ItemPresentation {
-
-    private final PsiFile psiFile;
-
-    protected DlangItemPresentation(final PsiFile psiFile) {
-        this.psiFile = psiFile;
+abstract class DlangItemPresentation protected constructor(private val psiFile: PsiFile) : ItemPresentation {
+    override fun getLocationString(): String? {
+        return if (psiFile is DlangFile) psiFile.getModuleName() else null
     }
 
-    @Nullable
-    @Override
-    public String getLocationString() {
-        return psiFile instanceof DlangFile ? ((DlangFile) psiFile).getModuleName() : null;
-    }
-
-    @NotNull
-    @Override
-    public Icon getIcon(boolean unused) {
-        return DLanguage.Icons.FILE;
+    override fun getIcon(unused: Boolean): Icon {
+        return DLanguage.Icons.FILE
     }
 }
