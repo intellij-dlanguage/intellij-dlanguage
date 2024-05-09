@@ -1,30 +1,23 @@
-package io.github.intellij.dlanguage.utils;
+package io.github.intellij.dlanguage.utils
 
-import com.intellij.openapi.actionSystem.ActionUpdateThread;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.options.ShowSettingsUtil;
-import com.intellij.openapi.project.DumbAware;
-import io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.openapi.actionSystem.ActionUpdateThread
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.options.ShowSettingsUtil
+import com.intellij.openapi.project.DumbAware
+import io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable
 
-public class DToolsNotificationAction extends AnAction implements DumbAware {
-    public DToolsNotificationAction(String text) {
-        super(text);
+class DToolsNotificationAction(text: String?) : AnAction(text), DumbAware {
+    override fun update(e: AnActionEvent) {
+        super.update(e)
+        e.presentation.isEnabledAndVisible = e.project != null
     }
 
-    public void update(@NotNull AnActionEvent e) {
-        super.update(e);
-        e.getPresentation().setEnabledAndVisible(e.getProject() != null);
+    override fun actionPerformed(e: AnActionEvent) {
+        ShowSettingsUtil.getInstance().showSettingsDialog(e.project, DLanguageToolsConfigurable.D_TOOLS_ID)
     }
 
-    @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
-        ShowSettingsUtil.getInstance().showSettingsDialog(e.getProject(), DLanguageToolsConfigurable.D_TOOLS_ID);
-    }
-
-    @Override
-    public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.EDT;
+    override fun getActionUpdateThread(): ActionUpdateThread {
+        return ActionUpdateThread.EDT
     }
 }
