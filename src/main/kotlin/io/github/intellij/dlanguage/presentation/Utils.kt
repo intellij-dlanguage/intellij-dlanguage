@@ -69,7 +69,7 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
     is AliasDeclaration -> DLanguage.Icons.NODE_ALIAS
     is MixinTemplateDeclaration -> DLanguage.Icons.NODE_MIXIN
     is TemplateDeclaration -> getPresentationIcon(psi.parent)
-    is DlangFile -> DLanguage.Icons.FILE
+    is DlangPsiFile -> DLanguage.Icons.FILE
     else -> null
 }
 

@@ -6,16 +6,15 @@ import com.intellij.ide.projectView.impl.nodes.BasePsiNode
 import com.intellij.ide.util.treeView.AbstractTreeNode
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtil
-import com.intellij.psi.PsiFile
 import com.intellij.ui.SimpleTextAttributes
-import io.github.intellij.dlanguage.psi.DlangFile
+import io.github.intellij.dlanguage.psi.DlangPsiFile
 
 /**
  * Each instance of this class corresponds to a D language file
  * in the project view.
  */
-class DPsiFileNode(project: Project?, dFilePsi: DlangFile, viewSettings: ViewSettings) :
-    BasePsiNode<DlangFile>(project, dFilePsi, viewSettings) {
+class DPsiFileNode(project: Project?, dFilePsi: DlangPsiFile, viewSettings: ViewSettings) :
+    BasePsiNode<DlangPsiFile>(project, dFilePsi, viewSettings) {
 
     override fun getTypeSortKey(): Comparable<*> = TypeSortKey(this)
 
@@ -26,12 +25,12 @@ class DPsiFileNode(project: Project?, dFilePsi: DlangFile, viewSettings: ViewSet
     override fun canRepresent(element: Any?): Boolean {
         if (super.canRepresent(element)) return true
 
-        val value: DlangFile? = value
+        val value: DlangPsiFile? = value
         return value != null && element != null && element == value.virtualFile
     }
 
     override fun updateImpl(data: PresentationData) {
-        val filePsi: DlangFile? = value
+        val filePsi: DlangPsiFile? = value
         if (filePsi != null) {
             data.presentableText = value.getModuleName()
             val fileName = filePsi.virtualFile.nameWithoutExtension

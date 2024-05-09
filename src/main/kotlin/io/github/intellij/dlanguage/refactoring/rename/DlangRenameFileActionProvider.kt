@@ -2,7 +2,7 @@ package io.github.intellij.dlanguage.refactoring.rename
 
 import com.intellij.psi.PsiFile
 import com.intellij.refactoring.actions.RenameFileActionProvider
-import io.github.intellij.dlanguage.psi.DlangFile
+import io.github.intellij.dlanguage.psi.DlangPsiFile
 
 /**
  * @author Samael Bate (singingbush)
@@ -10,6 +10,6 @@ import io.github.intellij.dlanguage.psi.DlangFile
  */
 class DlangRenameFileActionProvider : RenameFileActionProvider {
     override fun enabledInProjectView(file: PsiFile): Boolean {
-        return DlangFile::class.java.isAssignableFrom(file.javaClass)
+        return file is DlangPsiFile
     }
 }

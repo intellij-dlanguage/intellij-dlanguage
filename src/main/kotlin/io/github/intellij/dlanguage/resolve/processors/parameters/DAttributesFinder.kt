@@ -272,7 +272,7 @@ class DAttributesFinder {
                 if (!execute(point)) {
                     return
                 }
-                if (point is DlangFile || point.prevSibling == null) {
+                if (point is DlangPsiFile || point.prevSibling == null) {
                     break
                 }
                 point = point.prevSibling
@@ -287,7 +287,7 @@ class DAttributesFinder {
     fun isParent(parent: PsiElement, child: PsiElement): Boolean {
         if (child == parent)
             return true
-        if (child is DlangFile) {
+        if (child is DlangPsiFile) {
             return false
         }
         return isParent(parent, child.parent)

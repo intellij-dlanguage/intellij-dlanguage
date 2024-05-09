@@ -2,7 +2,7 @@ package io.github.intellij.dlanguage.stubs.index
 
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.*
-import io.github.intellij.dlanguage.psi.DlangFile
+import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers
@@ -21,12 +21,12 @@ class DTopLevelDeclarationsByModule : StringStubIndexExtension<DNamedElement>() 
     }
 
     companion object {
-        val KEY: StubIndexKey<String, DNamedElement> = StubIndexKey.createIndexKey<String, DNamedElement>("d.globally.accessible.module")
+        val KEY: StubIndexKey<String, DNamedElement> = StubIndexKey.createIndexKey("d.globally.accessible.module")
         val VERSION = 4
         fun <S : NamedStubBase<T>, T : DNamedElement> indexTopLevelDeclarationsByModule(stub: S, sink: IndexSink) {
             if (stub !is io.github.intellij.dlanguage.stubs.DlangIdentifierStub && topLevelDeclaration(stub)) {
-                val fileName = (stub.psi.containingFile as DlangFile).getFullyQualifiedModuleName()
-                sink.occurrence(DTopLevelDeclarationsByModule.KEY, fileName)
+                val fileName = (stub.psi.containingFile as DlangPsiFile).getFullyQualifiedModuleName()
+                sink.occurrence(KEY, fileName)
             }
         }
 

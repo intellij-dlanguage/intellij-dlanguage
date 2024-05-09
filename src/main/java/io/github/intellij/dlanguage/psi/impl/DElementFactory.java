@@ -7,7 +7,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
-import io.github.intellij.dlanguage.psi.DlangFile;
+import io.github.intellij.dlanguage.psi.DlangPsiFile;
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +42,7 @@ public class DElementFactory {
      */
     @Nullable
     private static PsiElement createExpressionFromText(@NotNull final Project project, @NotNull final String name) {
-        @NotNull final DlangFile fileFromText = createFileFromText(project, name);
+        @NotNull final DlangPsiFile fileFromText = createFileFromText(project, name);
 
         @Nullable final PsiElement firstChild = fileFromText.getFirstChild();
 
@@ -59,9 +59,9 @@ public class DElementFactory {
      * Create a file containing text.
      */
     @NotNull
-    private static DlangFile createFileFromText(@NotNull final Project project,
+    private static DlangPsiFile createFileFromText(@NotNull final Project project,
                                                 @NotNull final String text) {
-        return (DlangFile) PsiFileFactory.getInstance(project)
+        return (DlangPsiFile) PsiFileFactory.getInstance(project)
             .createFileFromText("A.hs", DLanguage.INSTANCE, text);
     }
 

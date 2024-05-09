@@ -9,7 +9,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import io.github.intellij.dlanguage.DlangWritingAccessProvider;
-import io.github.intellij.dlanguage.psi.DlangFile;
+import io.github.intellij.dlanguage.psi.DlangPsiFile;
 import io.github.intellij.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,7 +44,7 @@ public class DUnitTestRunConfigurationProducer extends LazyRunConfigurationProdu
         final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
         final VirtualFile virtualFile = getRealVirtualFile(psiFile);
 
-        if ((psiFile instanceof DlangFile) &&
+        if ((psiFile instanceof DlangPsiFile) &&
                 virtualFile != null &&
                 ProjectRootManager.getInstance(context.getProject()).getFileIndex().isInContent(virtualFile) &&
                 !DlangWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)) {
@@ -72,7 +72,7 @@ public class DUnitTestRunConfigurationProducer extends LazyRunConfigurationProdu
         @Nullable final PsiElement psiLocation = context.getPsiLocation();
         final PsiFile psiFile = psiLocation == null ? null : psiLocation.getContainingFile();
         final VirtualFile virtualFile = getRealVirtualFile(psiFile);
-        return psiFile instanceof DlangFile && virtualFile != null ? virtualFile : null;
+        return psiFile instanceof DlangPsiFile && virtualFile != null ? virtualFile : null;
     }
 
     public static VirtualFile getRealVirtualFile(final PsiFile psiFile) {

@@ -10,7 +10,7 @@ import com.intellij.util.indexing.*
 import com.intellij.util.io.EnumeratorStringDescriptor
 import com.intellij.util.io.KeyDescriptor
 import io.github.intellij.dlanguage.DlangFileType
-import io.github.intellij.dlanguage.psi.DlangFile
+import io.github.intellij.dlanguage.psi.DlangPsiFile
 import java.util.*
 
 
@@ -34,7 +34,7 @@ class DModuleIndex : ScalarIndexExtension<String>() {
     private class MyDataIndexer : DataIndexer<String, Void, FileContent> {
         override fun map(inputData: FileContent): Map<String, Void?> {
             val psiFile = inputData.psiFile
-            if (psiFile is DlangFile) {
+            if (psiFile is DlangPsiFile) {
                 val moduleName = psiFile.getFullyQualifiedModuleName()
                 if (psiFile.name == "package.d") {
                     val directoryBasedModuleName = getDirectoryBasedModuleName(inputData)
@@ -78,14 +78,14 @@ class DModuleIndex : ScalarIndexExtension<String>() {
         @Deprecated("Only Logger and constant should be in the companion object!")
         fun getFilesByModuleName(project: Project,
                                  moduleName: String,
-                                 searchScope: GlobalSearchScope): List<DlangFile> {
+                                 searchScope: GlobalSearchScope): List<DlangPsiFile> {
             val psiManager = PsiManager.getInstance(project)
 
             val virtualFiles = FileBasedIndex.getInstance().getContainingFiles(D_MODULE_INDEX, moduleName, searchScope)
 
             return ContainerUtil.mapNotNull(virtualFiles) { virtualFile: VirtualFile? ->
                 val psiFile = psiManager.findFile(virtualFile!!)
-                if (psiFile is DlangFile) psiFile else null
+                if (psiFile is DlangPsiFile) psiFile else null
             }
         }
     }

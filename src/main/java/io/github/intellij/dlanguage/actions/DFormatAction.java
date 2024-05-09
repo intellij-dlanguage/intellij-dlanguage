@@ -11,7 +11,6 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -20,13 +19,11 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.ExceptionUtil;
-import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer;
-import io.github.intellij.dlanguage.psi.DlangFile;
+import io.github.intellij.dlanguage.psi.DlangPsiFile;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DToolsNotificationAction;
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +46,7 @@ public class DFormatAction extends DumbAwareAction {
     public void update(final AnActionEvent e) {
         final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         if (psiFile != null) {
-            e.getPresentation().setEnabled(DlangFile.class.isAssignableFrom(psiFile.getClass()));
+            e.getPresentation().setEnabled(DlangPsiFile.class.isAssignableFrom(psiFile.getClass()));
         }
     }
 
@@ -59,7 +56,7 @@ public class DFormatAction extends DumbAwareAction {
         final VirtualFile virtualFile = event.getRequiredData(CommonDataKeys.VIRTUAL_FILE);
         final Project project = getEventProject(event);
 
-        if (project == null || !(psiFile instanceof DlangFile))
+        if (project == null || !(psiFile instanceof DlangPsiFile))
             return;
 
         if (!virtualFile.isValid()) {
@@ -75,7 +72,7 @@ public class DFormatAction extends DumbAwareAction {
 
         // This will execute dfmt on another background thread that shouldn't throw up BGT too slow errors
         // and the best part? It'll give us a progress indicator!
-        ProgressManager.getInstance().run(new Task.Backgroundable(project, "DFormat formatting: " + ((DlangFile) psiFile).getFullyQualifiedModuleName()) {
+        ProgressManager.getInstance().run(new Task.Backgroundable(project, "DFormat formatting: " + ((DlangPsiFile) psiFile).getFullyQualifiedModuleName()) {
             @Override
             public void run(@NotNull ProgressIndicator indicator) {
                 final GeneralCommandLine commandLine = createCommandLine(project, virtualFile);

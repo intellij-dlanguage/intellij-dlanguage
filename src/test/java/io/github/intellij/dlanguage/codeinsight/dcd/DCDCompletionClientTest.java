@@ -5,7 +5,7 @@ import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.util.PathUtil;
 import io.github.intellij.dlanguage.LightDlangTestCase;
 import io.github.intellij.dlanguage.codeinsight.dcd.completions.Completion;
-import io.github.intellij.dlanguage.psi.DlangFile;
+import io.github.intellij.dlanguage.psi.DlangPsiFile;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class DCDCompletionClientTest extends LightDlangTestCase {
 
     @Test
     public void testBuildDcdCommand() {
-        final DlangFile sourceFile = super.lightDlangPsiFile("app.d", "");
+        final DlangPsiFile sourceFile = super.lightDlangPsiFile("app.d", "");
         PropertiesComponent.getInstance().setValue(ToolKey.DCD_CLIENT_KEY.getFlagsKey(), null);
 
         final GeneralCommandLine commandLine = DCDCompletionClient.buildDcdCommand("dcd-client", 33, sourceFile);
@@ -35,7 +35,7 @@ public class DCDCompletionClientTest extends LightDlangTestCase {
 
     @Test
     public void testBuildDcdCommandWithDcdParams() {
-        final DlangFile sourceFile = super.lightDlangPsiFile("app.d", "");
+        final DlangPsiFile sourceFile = super.lightDlangPsiFile("app.d", "");
         PropertiesComponent.getInstance().setValue(ToolKey.DCD_CLIENT_KEY.getFlagsKey(), "one,\\test directory\\fileTwo");
 
         final GeneralCommandLine commandLine = DCDCompletionClient.buildDcdCommand("dcd-client", 0, sourceFile);
