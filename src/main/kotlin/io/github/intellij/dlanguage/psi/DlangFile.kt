@@ -1,60 +1,54 @@
-package io.github.intellij.dlanguage.psi;
+package io.github.intellij.dlanguage.psi
 
-import com.intellij.extapi.psi.PsiFileBase;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.*;
-import com.intellij.psi.scope.PsiScopeProcessor;
-import com.intellij.util.IncorrectOperationException;
-import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.DlangFileType;
-import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
-import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil;
-import io.github.intellij.dlanguage.stubs.DlangFileStub;
-import javax.swing.Icon;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.apache.commons.lang3.StringUtils.removeEnd;
+import com.intellij.extapi.psi.PsiFileBase
+import com.intellij.openapi.fileTypes.FileType
+import com.intellij.openapi.util.text.StringUtil
+import com.intellij.psi.FileViewProvider
+import com.intellij.psi.PsiElement
+import com.intellij.psi.ResolveState
+import com.intellij.psi.scope.PsiScopeProcessor
+import com.intellij.util.IncorrectOperationException
+import io.github.intellij.dlanguage.DLanguage
+import io.github.intellij.dlanguage.DlangFileType
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier
+import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
+import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
+import io.github.intellij.dlanguage.stubs.DlangFileStub
+import org.apache.commons.collections.CollectionUtils
+import org.apache.commons.lang3.StringUtils
+import java.util.*
+import java.util.stream.Collectors
+import javax.swing.Icon
 
 // todo: consider making this class abstract so that there can be x2 classes that inherit from it.
 // One for .di files (interfaces) and another for regular .d source files
-public class DlangFile extends PsiFileBase implements DlangPsiFile {
-
-    public DlangFile(@NotNull final FileViewProvider viewProvider) {
-        super(viewProvider, DLanguage.INSTANCE);
+class DlangFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, DLanguage), DlangPsiFile {
+    override fun getFileType(): FileType {
+        return DlangFileType.INSTANCE
     }
 
-    @NotNull
-    @Override
-    public FileType getFileType() {
-        return DlangFileType.INSTANCE;
+    override fun toString(): String {
+        return "D Language File"
     }
 
-    @Override
-    public String toString() {
-        return "D Language File";
+    override fun getIcon(flags: Int): Icon? {
+        return super.getIcon(flags)
     }
 
-    @Override
-    public Icon getIcon(final int flags) {
-        return super.getIcon(flags);
-    }
-
-    private Optional<String> findModuleDeclaration() {
-        return Optional.ofNullable(findChildByClass(DlangModuleDeclaration.class))
-            .map(DlangModuleDeclaration::getIdentifierChain)
-            .map(DLanguageIdentifierChain::getIdentifiers)
-            .filter(CollectionUtils::isNotEmpty)
-            .map(identifiers -> identifiers.stream()
-                .map(PsiElement::getText)
-                .collect(Collectors.joining("."))
-            );
+    private fun findModuleDeclaration(): Optional<String> {
+        return Optional.ofNullable(
+            findChildByClass(
+                DlangModuleDeclaration::class.java
+            )
+        )
+            .map { obj: DlangModuleDeclaration -> obj.identifierChain }
+            .map { obj: DLanguageIdentifierChain? -> obj!!.identifiers }
+            .filter { coll: List<DlangIdentifier?>? -> CollectionUtils.isNotEmpty(coll) }
+            .map { identifiers: List<DlangIdentifier?> ->
+                identifiers.stream()
+                    .map { obj: DlangIdentifier? -> obj!!.text }
+                    .collect(Collectors.joining("."))
+            }
     }
 
     /**
@@ -66,12 +60,10 @@ public class DlangFile extends PsiFileBase implements DlangPsiFile {
      *
      * If the module name is not defined within the file then the filename (without extension) is used as the module name.
      */
-    @NotNull
-    @Override
-    public String getFullyQualifiedModuleName() {
-        final Optional<String> moduleDeclaration = findModuleDeclaration();
+    override fun getFullyQualifiedModuleName(): String {
+        val moduleDeclaration = findModuleDeclaration()
 
-        return moduleDeclaration.orElseGet(this::getModuleName);
+        return moduleDeclaration.orElseGet { this.getModuleName() }
     }
 
     /**
@@ -80,63 +72,62 @@ public class DlangFile extends PsiFileBase implements DlangPsiFile {
      * This method attempts to find an explicitly defined module declaration first and then return the filename (without extension)
      * if no module declaration is found.
      */
-    @NotNull
-    @Override
-    public String getModuleName() {
-        final Optional<String> moduleDeclaration = findModuleDeclaration();
+    override fun getModuleName(): String {
+        val moduleDeclaration = findModuleDeclaration()
 
         return moduleDeclaration
-            .filter(StringUtil::isNotEmpty)
-            .map(fullDeclaration -> {
-                final String[] identifiers = fullDeclaration.split("\\.");
-                return identifiers[identifiers.length - 1];
-            })
-            .orElseGet(() -> StringUtil.trimExtensions(super.getName()));
+            .filter { s: String? -> StringUtil.isNotEmpty(s) }
+            .map { fullDeclaration: String ->
+                val identifiers = fullDeclaration.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }
+                    .toTypedArray()
+                identifiers[identifiers.size - 1]
+            }
+            .orElseGet { StringUtil.trimExtensions(super.getName()) }
     }
 
-    @Nullable
-    @Override
-    public String getPackageName() {
-        return StringUtils.trimToNull(StringUtil.trimEnd(
-            StringUtil.trimEnd(getFullyQualifiedModuleName(), this.getModuleName()),
-            "."
-        ));
+    override fun getPackageName(): String? {
+        return StringUtils.trimToNull(
+            StringUtil.trimEnd(
+                StringUtil.trimEnd(getFullyQualifiedModuleName(), this.getModuleName()),
+                "."
+            )
+        )
     }
 
     /**
      * Generates a stub for the current file, particularly so we can index names.
      */
-    @Nullable
-    @Override
-    public DlangFileStub getStub() {
-        return (DlangFileStub) super.getStub();
+    override fun getStub(): DlangFileStub? {
+        return super.getStub() as DlangFileStub?
     }
 
-    @Override
-    public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
-        boolean toContinue = true;
-        for (final PsiElement element : getChildren()) {
-            if (element instanceof DLanguageDeclaration) {
-                if (!ScopeProcessorImplUtil.INSTANCE.processDeclaration((DLanguageDeclaration) element, processor, state, lastParent, place)) {
-                    toContinue = false;
+    override fun processDeclarations(
+        processor: PsiScopeProcessor,
+        state: ResolveState,
+        lastParent: PsiElement?,
+        place: PsiElement
+    ): Boolean {
+        var toContinue = true
+        for (element in children) {
+            if (element is DLanguageDeclaration) {
+                if (!processDeclaration(element, processor, state, lastParent, place)) {
+                    toContinue = false
                 }
             }
-            if (element instanceof DlangModuleDeclaration) {
+            if (element is DlangModuleDeclaration) {
                 if (!processor.execute(element, state)) {
-                    toContinue = false;
+                    toContinue = false
                 }
             }
         }
-        return toContinue;
+        return toContinue
     }
 
     /**
      * @return the filename including the extension
      */
-    @NotNull
-    @Override
-    public String getName() {
-        return super.getName();
+    override fun getName(): String {
+        return super.getName()
     }
 
     /**
@@ -146,19 +137,18 @@ public class DlangFile extends PsiFileBase implements DlangPsiFile {
      * @throws IncorrectOperationException if the user attempts to rename the file in an illegal way. Eg:
      * D file names should be composed of the ASCII characters lower case letters, digits or _ and should also not be a Keyword.
      */
-    @Override
-    public PsiElement setName(@NotNull final String name) throws IncorrectOperationException {
-        final DlangModuleDeclaration module = findChildByClass(DlangModuleDeclaration.class);
-        final String extensionLessName = removeEnd(name, ".d");
-        final String packageName = getPackageName();
-        String newModuleName = extensionLessName;
-        if (packageName != null && !packageName.isEmpty())
-            newModuleName = packageName + "." + extensionLessName;
+    @Throws(IncorrectOperationException::class)
+    override fun setName(name: String): PsiElement {
+        val module = findChildByClass(
+            DlangModuleDeclaration::class.java
+        )
+        val extensionLessName = StringUtils.removeEnd(name, ".d")
+        val packageName = getPackageName()
+        var newModuleName = extensionLessName
+        if (!packageName.isNullOrEmpty()) newModuleName = "$packageName.$extensionLessName"
 
-        if (module != null) {
-            module.setName(newModuleName);
-        }
+        module?.setName(newModuleName!!)
 
-        return super.setName(extensionLessName + ".d");
+        return super.setName("$extensionLessName.d")
     }
 }
