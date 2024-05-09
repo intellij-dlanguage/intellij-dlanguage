@@ -31,7 +31,7 @@ import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_THROWS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_VERSION_SECTION
 import io.github.intellij.dlanguage.features.documentation.psi.impl.*
-import io.github.intellij.dlanguage.psi.DlangFile
+import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
 
 class DDocParserDefinition : ParserDefinition {
     override fun createLexer(project: Project?): Lexer = DDocLexer()
@@ -72,6 +72,6 @@ class DDocParserDefinition : ParserDefinition {
         }
     }
 
-    override fun createFile(viewProvider: FileViewProvider): PsiFile = DlangFile(viewProvider) // TODO can actually be DDocFile (.dd)
+    override fun createFile(viewProvider: FileViewProvider): PsiFile = DlangPsiFileImpl(viewProvider) // TODO can actually be DDocFile (.dd)
 
 }

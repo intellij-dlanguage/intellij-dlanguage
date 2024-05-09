@@ -15,7 +15,7 @@ public class DlangFileTest extends LightDlangTestCase {
      */
     @Test
     public void testGetModuleName_shouldBeFilenameWithoutExtension() {
-        final DlangFile dlangFile = virtualDlangPsiFile("myapp.d", "// no module defined in source");
+        final DlangPsiFileImpl dlangFile = virtualDlangPsiFile("myapp.d", "// no module defined in source");
 
         assertEquals("myapp.d", dlangFile.getName()); // should be the filename
         assertEquals("myapp", dlangFile.getModuleName());
@@ -29,7 +29,7 @@ public class DlangFileTest extends LightDlangTestCase {
      */
     @Test
     public void testGetModuleName_shouldBeFilenameWithoutExtension_IncludingPath() {
-        final DlangFile dlangFile = virtualDlangPsiFile("awesome/app.d", "// no module defined in source");
+        final DlangPsiFileImpl dlangFile = virtualDlangPsiFile("awesome/app.d", "// no module defined in source");
 
         assertEquals("app.d", dlangFile.getName()); // should be the filename
         assertEquals("app", dlangFile.getModuleName());
@@ -43,7 +43,7 @@ public class DlangFileTest extends LightDlangTestCase {
      */
     @Test
     public void testGetModuleName_HonoursTheNameDefinedInSource() {
-        final DlangFile dlangFile = virtualDlangPsiFile("myapp.d", "module realname;");
+        final DlangPsiFileImpl dlangFile = virtualDlangPsiFile("myapp.d", "module realname;");
 
         assertEquals("myapp.d", dlangFile.getName()); // should be the filename
         assertEquals("realname", dlangFile.getModuleName());
@@ -57,7 +57,7 @@ public class DlangFileTest extends LightDlangTestCase {
      */
     @Test
     public void testGetModuleName_HonoursTheNameDefinedInSource_Multipart() {
-        final DlangFile dlangFile = virtualDlangPsiFile("myapp.d", "module my.app.realname;");
+        final DlangPsiFileImpl dlangFile = virtualDlangPsiFile("myapp.d", "module my.app.realname;");
 
         assertEquals("myapp.d", dlangFile.getName());
         assertEquals("realname", dlangFile.getModuleName());
@@ -70,7 +70,7 @@ public class DlangFileTest extends LightDlangTestCase {
      */
     @Test
     public void testGetModuleName_ReturnsProperModuleName_stdio() {
-        final DlangFile dlangFile = virtualDlangPsiFile(
+        final DlangPsiFileImpl dlangFile = virtualDlangPsiFile(
             "c/stdio.d",
             "module c.stdio; // module stdio in the c package"
         );
@@ -87,7 +87,7 @@ public class DlangFileTest extends LightDlangTestCase {
     // https://dlang.org/spec/module.html
     @Test
     public void testGetModuleName_ReturnsProperModuleName_foo_bar() {
-        final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "module foo_bar;");
+        final DlangPsiFileImpl dlangFile = virtualDlangPsiFile("foo-bar.d", "module foo_bar;");
 
         assertEquals("foo-bar.d", dlangFile.getName());
         assertEquals("foo_bar", dlangFile.getModuleName());
@@ -98,7 +98,7 @@ public class DlangFileTest extends LightDlangTestCase {
     // https://dlang.org/spec/module.html
     @Test
     public void testGetModuleName_ReturnsProperModuleName_deprecated_foo() {
-        final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "deprecated module foo;");
+        final DlangPsiFileImpl dlangFile = virtualDlangPsiFile("foo-bar.d", "deprecated module foo;");
 
         assertEquals("foo-bar.d", dlangFile.getName());
         assertEquals("foo", dlangFile.getModuleName());
@@ -109,7 +109,7 @@ public class DlangFileTest extends LightDlangTestCase {
     // https://dlang.org/spec/module.html
     @Test
     public void testGetModuleName_ReturnsProperModuleName_deprecated_foo_with_message() {
-        final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "deprecated(\"Please use foo2 instead.\") module foo;");
+        final DlangPsiFileImpl dlangFile = virtualDlangPsiFile("foo-bar.d", "deprecated(\"Please use foo2 instead.\") module foo;");
 
         assertEquals("foo-bar.d", dlangFile.getName());
         assertEquals("foo", dlangFile.getModuleName());
@@ -126,7 +126,7 @@ public class DlangFileTest extends LightDlangTestCase {
      */
     @Test
     public void testGetModuleName_HandlesInvalidModuleName() {
-        final DlangFile dlangFile = virtualDlangPsiFile("foo-bar.d", "");
+        final DlangPsiFileImpl dlangFile = virtualDlangPsiFile("foo-bar.d", "");
 
         assertEquals("foo-bar.d", dlangFile.getName());
         assertNotNull("Should return file name without extension", dlangFile.getModuleName());
