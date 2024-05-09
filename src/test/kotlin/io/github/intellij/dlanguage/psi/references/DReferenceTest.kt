@@ -38,7 +38,7 @@ class DReferenceTest : LightPlatformCodeInsightFixture4TestCase() {
             |}
             """.trimMargin()
 
-        myFixture.configureByText(DlangFileType.INSTANCE, source)
+        myFixture.configureByText(DlangFileType, source)
 
         val element = myFixture.elementAtCaret as DNamedElement // DlangIdentifier
 
@@ -65,7 +65,7 @@ class DReferenceTest : LightPlatformCodeInsightFixture4TestCase() {
             |}
             """.trimMargin()
 
-        myFixture.configureByText(DlangFileType.INSTANCE, source)
+        myFixture.configureByText(DlangFileType, source)
 
         val element = myFixture.elementAtCaret as PsiNamedElement
         val textRange: TextRange = element.textRange

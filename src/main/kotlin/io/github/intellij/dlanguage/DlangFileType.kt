@@ -1,43 +1,26 @@
-package io.github.intellij.dlanguage;
+package io.github.intellij.dlanguage
 
-import com.intellij.openapi.fileTypes.LanguageFileType;
-import com.intellij.openapi.fileTypes.OSFileIdeAssociation;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.intellij.openapi.fileTypes.LanguageFileType
+import com.intellij.openapi.fileTypes.OSFileIdeAssociation
+import io.github.intellij.dlanguage.DlangBundle.message
+import javax.swing.Icon
 
-import javax.swing.*;
-
-public class DlangFileType extends LanguageFileType implements OSFileIdeAssociation {
-
-    public static final DlangFileType INSTANCE = new DlangFileType();
-    public static final String DEFAULT_EXTENSION = "d";
-
-    private DlangFileType() {
-        super(DLanguage.INSTANCE);
+object DlangFileType : LanguageFileType(DLanguage), OSFileIdeAssociation {
+    override fun getName(): String {
+        return "D file"
     }
 
-    @NotNull
-    @Override
-    public String getName() {
-        return "D file";
+    override fun getDescription(): String {
+        return message("dlang.filetype")
     }
 
-    @NotNull
-    @Override
-    public String getDescription() {
-        return DlangBundle.INSTANCE.message("dlang.filetype");
+    override fun getDefaultExtension(): String {
+        return DEFAULT_EXTENSION
     }
 
-    @NotNull
-    @Override
-    public String getDefaultExtension() {
-        return DEFAULT_EXTENSION;
+    override fun getIcon(): Icon {
+        return DLanguage.Icons.FILE
     }
 
-    @Nullable
-    @Override
-    public Icon getIcon() {
-        return DLanguage.Icons.FILE;
-    }
-
+    const val DEFAULT_EXTENSION: String = "d"
 }
