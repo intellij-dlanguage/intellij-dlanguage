@@ -49,6 +49,11 @@
 
     <xi:include href="/META-INF/io.github.intellij.dub.xml" xpointer="xpointer(/idea-plugin/*)"/>
 
+    <extensionPoints>
+        <extensionPoint qualifiedName="io.github.intellij.dlanguage.projectWizard.dlang.buildSystem"
+                        interface="io.github.intellij.dlanguage.project.wizard.generator.BuildSystemDlangNewProjectWizard" dynamic="true"/>
+    </extensionPoints>
+
     <extensions defaultExtensionNs="com.intellij">
 
         <!-- Add your extensions here -->
@@ -119,6 +124,7 @@
 
 
         <directoryProjectGenerator implementation="io.github.intellij.dlanguage.project.DlangProjectGenerator"/>
+        <newProjectWizard.languageGenerator implementation="io.github.intellij.dlanguage.project.wizard.DlangNewProjectWizard"/>
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDmdConfigurationType"/>
         <programRunner implementation="io.github.intellij.dlanguage.run.DmdBuildRunner"/>

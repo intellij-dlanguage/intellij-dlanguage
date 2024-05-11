@@ -83,6 +83,8 @@ dependencies {
         pluginComposedModule(implementation (project(":sdlang")))
         pluginComposedModule(implementation (project(":dub")))
         pluginComposedModule(implementation (project(":dlang:psi-impl")))
+        pluginComposedModule(implementation (project(":dlang:idea")))
+        pluginComposedModule(implementation (project(":dub:idea")))
 
         intellijIdeaCommunity(properties("ideaVersion"))
 

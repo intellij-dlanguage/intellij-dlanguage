@@ -8,4 +8,8 @@
         <projectImportBuilder implementation="io.github.intellij.dub.project.DubProjectImportBuilder"/>
         <projectOpenProcessor id="DubProjectOpenProcessor" implementation="io.github.intellij.dub.project.DubProjectOpenProcessor"/>
     </extensions>
+
+    <extensions defaultExtensionNs="io.github.intellij.dlanguage">
+        <projectWizard.dlang.buildSystem implementation="io.github.intellij.dub.project.wizard.generators.DubDlangNewProjectWizard" />
+    </extensions>
 </idea-plugin>

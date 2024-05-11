@@ -100,6 +100,16 @@ public class DlangModuleBuilder extends ModuleBuilder {
     }
 
     @Override
+    public boolean isAvailable() {
+        return false;
+    }
+
+    @Override
+    public int getWeight() {
+        return 900;
+    }
+
+    @Override
     public @Nullable Project createProject(String name, String path) {
         LOG.debug(String.format("Creating Dlang project '%s' in '%s'", name, path));
         return super.createProject(name, path);
