@@ -1,0 +1,152 @@
+package io.github.intellij.dlanguage.psi
+
+import com.intellij.extapi.psi.PsiFileBase
+import com.intellij.openapi.fileTypes.FileType
+import com.intellij.openapi.util.text.StringUtil
+import com.intellij.psi.FileViewProvider
+import com.intellij.psi.PsiElement
+import com.intellij.psi.ResolveState
+import com.intellij.psi.scope.PsiScopeProcessor
+import com.intellij.util.IncorrectOperationException
+import io.github.intellij.dlanguage.DLanguage
+import io.github.intellij.dlanguage.DlangFileType
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier
+import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
+import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
+import io.github.intellij.dlanguage.stubs.DlangFileStub
+import org.apache.commons.collections.CollectionUtils
+import org.apache.commons.lang3.StringUtils
+import java.util.*
+import java.util.stream.Collectors
+import javax.swing.Icon
+
+// todo: consider making this class abstract so that there can be x2 classes that inherit from it.
+// One for .di files (interfaces) and another for regular .d source files
+class DlangFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, DLanguage), DlangPsiFile {
+    override fun getFileType(): FileType = DlangFileType
+
+    override fun toString(): String {
+        return "D Language File"
+    }
+
+    override fun getIcon(flags: Int): Icon? {
+        return super.getIcon(flags)
+    }
+
+    private fun findModuleDeclaration(): Optional<String> {
+        return Optional.ofNullable(
+            findChildByClass(
+                DlangModuleDeclaration::class.java
+            )
+        )
+            .map { obj: DlangModuleDeclaration -> obj.identifierChain }
+            .map { obj: DLanguageIdentifierChain? -> obj!!.identifiers }
+            .filter { coll: List<DlangIdentifier?>? -> CollectionUtils.isNotEmpty(coll) }
+            .map { identifiers: List<DlangIdentifier?> ->
+                identifiers.stream()
+                    .map { obj: DlangIdentifier? -> obj!!.text }
+                    .collect(Collectors.joining("."))
+            }
+    }
+
+    /**
+     * A fully qualified module name is the package (if defined) followed by the module name.
+     * Both should be lowercase ASCII characters (letters, digits, underscore). Packages correspond
+     * to directory names in the source file path. Package and module names cannot be Keywords.
+     *
+     * An example of such would be "c.stdio", where the stdio module is in the c package.
+     *
+     * If the module name is not defined within the file then the filename (without extension) is used as the module name.
+     */
+    override fun getFullyQualifiedModuleName(): String {
+        val moduleDeclaration = findModuleDeclaration()
+
+        return moduleDeclaration.orElseGet { this.getModuleName() }
+    }
+
+    /**
+     * D module names are, by default, the file name with the path and extension stripped off.
+     * They can be set explicitly with the module declaration.
+     * This method attempts to find an explicitly defined module declaration first and then return the filename (without extension)
+     * if no module declaration is found.
+     */
+    override fun getModuleName(): String {
+        val moduleDeclaration = findModuleDeclaration()
+
+        return moduleDeclaration
+            .filter { s: String? -> StringUtil.isNotEmpty(s) }
+            .map { fullDeclaration: String ->
+                val identifiers = fullDeclaration.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }
+                    .toTypedArray()
+                identifiers[identifiers.size - 1]
+            }
+            .orElseGet { StringUtil.trimExtensions(super.getName()) }
+    }
+
+    override fun getPackageName(): String? {
+        return StringUtils.trimToNull(
+            StringUtil.trimEnd(
+                StringUtil.trimEnd(getFullyQualifiedModuleName(), this.getModuleName()),
+                "."
+            )
+        )
+    }
+
+    /**
+     * Generates a stub for the current file, particularly so we can index names.
+     */
+    override fun getStub(): DlangFileStub? {
+        return super.getStub() as DlangFileStub?
+    }
+
+    override fun processDeclarations(
+        processor: PsiScopeProcessor,
+        state: ResolveState,
+        lastParent: PsiElement?,
+        place: PsiElement
+    ): Boolean {
+        var toContinue = true
+        for (element in children) {
+            if (element is DLanguageDeclaration) {
+                if (!processDeclaration(element, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+            if (element is DlangModuleDeclaration) {
+                if (!processor.execute(element, state)) {
+                    toContinue = false
+                }
+            }
+        }
+        return toContinue
+    }
+
+    /**
+     * @return the filename including the extension
+     */
+    override fun getName(): String {
+        return super.getName()
+    }
+
+    /**
+     * Called when a D source file is renamed
+     * @param name filename of the source file being renamed
+     * @return the new element after the file has been replaced
+     * @throws IncorrectOperationException if the user attempts to rename the file in an illegal way. Eg:
+     * D file names should be composed of the ASCII characters lower case letters, digits or _ and should also not be a Keyword.
+     */
+    @Throws(IncorrectOperationException::class)
+    override fun setName(name: String): PsiElement {
+        val module = findChildByClass(
+            DlangModuleDeclaration::class.java
+        )
+        val extensionLessName = StringUtils.removeEnd(name, ".d")
+        val packageName = getPackageName()
+        var newModuleName = extensionLessName
+        if (!packageName.isNullOrEmpty()) newModuleName = "$packageName.$extensionLessName"
+
+        module?.setName(newModuleName!!)
+
+        return super.setName("$extensionLessName.d")
+    }
+}

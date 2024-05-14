@@ -1,35 +1,53 @@
-package io.github.intellij.dlanguage.psi;
+package io.github.intellij.dlanguage.psi
 
-import com.intellij.psi.TokenType;
-import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.TokenType
+import com.intellij.psi.tree.TokenSet
 
-public class DTokenSets {
+object DTokenSets {
+    @JvmField
+    val WHITESPACES: TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
 
-    public static final TokenSet WHITESPACES = TokenSet.create(TokenType.WHITE_SPACE);
+    @JvmField
+    val LINE_COMMENTS: TokenSet = TokenSet.create(DlangTypes.LINE_COMMENT)
 
-    public static final TokenSet LINE_COMMENTS = TokenSet.create(DlangTypes.LINE_COMMENT);
+    @JvmField
+    val BLOCK_COMMENTS: TokenSet = TokenSet.create(DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT)
 
-    public static final TokenSet BLOCK_COMMENTS = TokenSet.create(DlangTypes.BLOCK_COMMENT, DlangTypes.NESTING_BLOCK_COMMENT);
+    @JvmField
+    val LINE_DOCS: TokenSet = TokenSet.create(DlangTypes.LINE_DOC)
 
-    public static final TokenSet LINE_DOCS = TokenSet.create(DlangTypes.LINE_DOC);
+    @JvmField
+    val BLOCK_DOCS: TokenSet = TokenSet.create(DlangTypes.BLOCK_DOC, DlangTypes.NESTING_BLOCK_DOC)
 
-    public static final TokenSet BLOCK_DOCS = TokenSet.create(DlangTypes.BLOCK_DOC, DlangTypes.NESTING_BLOCK_DOC);
+    @JvmField
+    val DOCS: TokenSet = TokenSet.orSet(LINE_DOCS, BLOCK_DOCS)
 
-    public static final TokenSet DOCS = TokenSet.orSet(LINE_DOCS, BLOCK_DOCS);
-
-    public static final TokenSet STRING_LITERALS = TokenSet.create(DlangTypes.DOUBLE_QUOTED_STRING,
+    @JvmField
+    val STRING_LITERALS: TokenSet = TokenSet.create(
+        DlangTypes.DOUBLE_QUOTED_STRING,
         DlangTypes.CHARACTER_LITERAL,
         DlangTypes.DELIMITED_STRING,
         DlangTypes.WYSIWYG_STRING,
-        DlangTypes.ALTERNATE_WYSIWYG_STRING);
-    public static final TokenSet INTEGER_LITERALS = TokenSet.create(DlangTypes.INTEGER_LITERAL);
-    public static final TokenSet FLOAT_LITERALS = TokenSet.create(DlangTypes.FLOAT_LITERAL);
+        DlangTypes.ALTERNATE_WYSIWYG_STRING
+    )
 
-    public static final TokenSet PARENS = TokenSet.create(DlangTypes.OP_PAR_LEFT, DlangTypes.OP_PAR_RIGHT);
-    public static final TokenSet BRACE = TokenSet.create(DlangTypes.OP_BRACES_LEFT, DlangTypes.OP_BRACES_RIGHT);
-    public static final TokenSet BRACKET = TokenSet.create(DlangTypes.OP_BRACKET_LEFT, DlangTypes.OP_BRACKET_RIGHT);
+    @JvmField
+    val INTEGER_LITERALS: TokenSet = TokenSet.create(DlangTypes.INTEGER_LITERAL)
 
-    public static final TokenSet KEYWORD = TokenSet.create(
+    @JvmField
+    val FLOAT_LITERALS: TokenSet = TokenSet.create(DlangTypes.FLOAT_LITERAL)
+
+    @JvmField
+    val PARENS: TokenSet = TokenSet.create(DlangTypes.OP_PAR_LEFT, DlangTypes.OP_PAR_RIGHT)
+
+    @JvmField
+    val BRACE: TokenSet = TokenSet.create(DlangTypes.OP_BRACES_LEFT, DlangTypes.OP_BRACES_RIGHT)
+
+    @JvmField
+    val BRACKET: TokenSet = TokenSet.create(DlangTypes.OP_BRACKET_LEFT, DlangTypes.OP_BRACKET_RIGHT)
+
+    @JvmField
+    val KEYWORD: TokenSet = TokenSet.create(
         DlangTypes.KW_ABSTRACT,
         DlangTypes.KW_ALIAS,
         DlangTypes.KW_ALIGN,
@@ -43,7 +61,7 @@ public class DTokenSets {
         DlangTypes.KW_CAST,
         DlangTypes.KW_CATCH,
         DlangTypes.KW_CDOUBLE,
-//            DlangTypes.KW_CENT,
+//        DlangTypes.KW_CENT,
         DlangTypes.KW_CFLOAT,
         DlangTypes.KW_CHAR,
         DlangTypes.KW_CLASS,
@@ -85,7 +103,7 @@ public class DTokenSets {
         DlangTypes.KW_IS,
         DlangTypes.KW_LAZY,
         DlangTypes.KW_LONG,
-//            DlangTypes.KW_MACRO,
+//        DlangTypes.KW_MACRO,
         DlangTypes.KW_MIXIN,
         DlangTypes.KW_MODULE,
         DlangTypes.KW_NEW,
@@ -115,11 +133,11 @@ public class DTokenSets {
         DlangTypes.KW_THROW,
         DlangTypes.KW_TRUE,
         DlangTypes.KW_TRY,
-//            DlangTypes.KW_TYPEDEF,
+//        DlangTypes.KW_TYPEDEF,
         DlangTypes.KW_TYPEID,
         DlangTypes.KW_TYPEOF,
         DlangTypes.KW_UBYTE,
-//            DlangTypes.KW_UCENT,
+//        DlangTypes.KW_UCENT,
         DlangTypes.KW_UINT,
         DlangTypes.KW_ULONG,
         DlangTypes.KW_UNION,
@@ -127,18 +145,19 @@ public class DTokenSets {
         DlangTypes.KW_USHORT,
         DlangTypes.KW_VERSION,
         DlangTypes.KW_VOID,
-//            DlangTypes.KW_VOLATILE,
+//        DlangTypes.KW_VOLATILE,
         DlangTypes.KW_WCHAR,
         DlangTypes.KW_WHILE,
         DlangTypes.KW_WITH,
         DlangTypes.KW___FILE__,
         DlangTypes.KW___LINE__,
         DlangTypes.KW___GSHARED,
-        DlangTypes.KW___TRAITS
-//            DlangTypes.KW___VECTOR
-    );
+        DlangTypes.KW___TRAITS,
+//        DlangTypes.KW___VECTOR,
+    )
 
-    public static final TokenSet OPERATOR = TokenSet.create(
+    @JvmField
+    val OPERATOR: TokenSet = TokenSet.create(
         DlangTypes.OP_SCOLON,
         DlangTypes.OP_COLON,
         DlangTypes.OP_EQ,
@@ -194,5 +213,5 @@ public class DTokenSets {
         DlangTypes.OP_UNORD,
         DlangTypes.OP_UNORD_EQ,
         DlangTypes.OP_LAMBDA_ARROW
-    );
+    )
 }

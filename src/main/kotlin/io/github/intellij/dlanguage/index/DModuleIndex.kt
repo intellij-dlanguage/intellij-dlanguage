@@ -69,7 +69,7 @@ class DModuleIndex : ScalarIndexExtension<String>() {
     }
 
     companion object {
-        val D_MODULE_FILTER = FileBasedIndex.InputFilter { file -> file.fileType === DlangFileType.INSTANCE }
+        val D_MODULE_FILTER = FileBasedIndex.InputFilter { file -> file.fileType === DlangFileType }
         private val D_MODULE_INDEX = ID.create<String, Void>("DModuleIndex")
         private const val INDEX_VERSION = 1
         private val KEY_DESCRIPTOR = EnumeratorStringDescriptor()

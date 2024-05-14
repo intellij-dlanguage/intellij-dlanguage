@@ -108,7 +108,7 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
     )
 
     override fun isApplicableFor(project: Project, file: VirtualFile): Boolean {
-        if (DlangFileType.INSTANCE != file.fileType) return false
+        if (DlangFileType != file.fileType) return false
         val projectSdk = ProjectRootManager.getInstance(project).projectSdk ?: return true
         val sdkType = projectSdk.sdkType as? DlangSdkType ?: return true
 
