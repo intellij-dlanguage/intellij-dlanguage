@@ -2319,7 +2319,7 @@ class DLangParser {
                 }
             exit_section_modified(builder, m, CMP_EXPRESSION, true);
             return true;
-        } else if (i.equals(OP_LESS) || i.equals(OP_LESS_EQ) || i.equals(OP_GT) || i.equals(OP_GT_EQ) || i.equals(OP_UNORD_EQ) || i.equals(OP_UNORD) || i.equals(OP_LESS_GR) || i.equals(OP_LESS_GR_EQ) || i.equals(OP_NOT_GR) || i.equals(OP_NOT_GR_EQ) || i.equals(OP_NOT_LESS) || i.equals(OP_NOT_LESS_EQ)) {
+        } else if (i.equals(OP_LESS) || i.equals(OP_LESS_EQ) || i.equals(OP_GT) || i.equals(OP_GT_EQ) || i.equals(OP_NOT_GR) || i.equals(OP_NOT_GR_EQ) || i.equals(OP_NOT_LESS) || i.equals(OP_NOT_LESS_EQ)) {
             if (!parseRelExpression(false)) {
                 cleanup(m, CMP_EXPRESSION);
                 return false;
@@ -6559,7 +6559,7 @@ class DLangParser {
         final Marker marker = enter_section_modified(builder);
         final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
-        final boolean b = parseLeftAssocBinaryExpression(toParseExpression, "RelExpression", "ShiftExpression", !parseShift, OP_LESS, OP_LESS_EQ, OP_GT, OP_GT_EQ, OP_UNORD_EQ, OP_UNORD, OP_LESS_GR, OP_LESS_GR_EQ, OP_NOT_GR, OP_NOT_GR_EQ, OP_NOT_LESS, OP_NOT_LESS_EQ);
+        final boolean b = parseLeftAssocBinaryExpression(toParseExpression, "RelExpression", "ShiftExpression", !parseShift, OP_LESS, OP_LESS_EQ, OP_GT, OP_GT_EQ, OP_NOT_GR, OP_NOT_GR_EQ, OP_NOT_LESS, OP_NOT_LESS_EQ);
         if (!toParseExpression.element) {
             marker.drop();
 //            beginnings.remove(marker);

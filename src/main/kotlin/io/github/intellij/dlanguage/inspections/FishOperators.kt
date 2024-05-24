@@ -18,7 +18,7 @@ class FishOperators : LocalInspectionTool() {
 
 class FishOperatorsVisitor(val holder: ProblemsHolder) : DlangVisitor() {
     override fun visitRelExpression(o: DLanguageRelExpressionImpl) {
-        if (o.oP_GT != null || o.oP_GT_EQ != null || o.oP_LESS != null || o.oP_LESS_EQ != null || o.oP_LESS_GR != null || o.oP_LESS_GR_EQ != null || o.oP_NOT_GR != null || o.oP_NOT_LESS != null || o.oP_NOT_GR_EQ != null || o.oP_UNORD != null || o.oP_UNORD_EQ != null)
+        if (o.oP_GT != null || o.oP_GT_EQ != null || o.oP_LESS != null || o.oP_LESS_EQ != null || o.oP_NOT_GR != null || o.oP_NOT_LESS != null || o.oP_NOT_GR_EQ != null)
             holder.registerProblem(o, "Avoid using the deprecated floating-point operators.")
     }
 }
