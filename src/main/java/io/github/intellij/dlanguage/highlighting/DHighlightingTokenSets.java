@@ -185,8 +185,6 @@ public class DHighlightingTokenSets {
             DlangTypes.OP_LESS,
             DlangTypes.OP_LESS_EQ,
             DlangTypes.OP_GT,
-            DlangTypes.OP_GT_EQ,
-            DlangTypes.OP_UNORD,
-            DlangTypes.OP_UNORD_EQ
+            DlangTypes.OP_GT_EQ
     );
 }

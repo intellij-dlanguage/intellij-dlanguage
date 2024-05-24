@@ -159,8 +159,6 @@ public class DlangHighlightingLexerTest extends DHighlightingLexerTestBase {
     public void testtokens_left_shift() { doTest(true, true); }
     public void testtokens_left_shift_assign() { doTest(true, true); }
     public void testtokens_less_equal() { doTest(true, true); }
-    public void testtokens_less_greater() { doTest(true, true); }
-    public void testtokens_less_greater_equal() { doTest(true, true); }
     public void testtokens_less_than() { doTest(true, true); }
     public void testtokens_logical_and() { doTest(true, true); }
     public void testtokens_logical_or() { doTest(true, true); }
@@ -188,8 +186,6 @@ public class DlangHighlightingLexerTest extends DHighlightingLexerTestBase {
     public void testtokens_triple_dot() { doTest(true, true); }
     public void testtokens_triple_rshift() { doTest(true, true); }
     public void testtokens_triple_rshift_assign() { doTest(true, true); }
-    public void testtokens_unordered() { doTest(true, true); }
-    public void testtokens_unordered_e() { doTest(true, true); }
     public void testtokens_unordered_g() { doTest(true, true); }
     public void testtokens_unordered_ge() { doTest(true, true); }
     public void testtokens_unordered_l() { doTest(true, true); }

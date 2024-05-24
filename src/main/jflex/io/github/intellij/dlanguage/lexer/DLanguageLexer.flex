@@ -370,10 +370,6 @@ NESTING_BLOCK_DOC_END = "+/"
  "<="                       { return OP_LESS_EQ; }
  ">"                        { return OP_GT; }
  ">="                       { return OP_GT_EQ; }
- "!<>"                      { return OP_UNORD; }
- "!<>="                     { return OP_UNORD_EQ; }
- "<>"                       { return OP_LESS_GR; }
- "<>="                      { return OP_LESS_GR_EQ; }
  "!>"                       { return OP_NOT_GR; }
  "!>="                      { return OP_NOT_GR_EQ; }
  "!<"                       { return OP_NOT_LESS; }

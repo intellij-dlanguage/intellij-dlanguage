@@ -359,8 +359,6 @@ public interface DlangTypes {
     DlangTokenType OP_LAMBDA_ARROW = new DlangTokenType("=>");
     DlangTokenType OP_LESS = new DlangTokenType("<");
     DlangTokenType OP_LESS_EQ = new DlangTokenType("<=");
-    DlangTokenType OP_LESS_GR = new DlangTokenType("<>");
-    DlangTokenType OP_LESS_GR_EQ = new DlangTokenType("<>=");
     DlangTokenType OP_MINUS = new DlangTokenType("-");
     DlangTokenType OP_MINUS_EQ = new DlangTokenType("-=");
     DlangTokenType OP_MINUS_MINUS = new DlangTokenType("--");
@@ -391,8 +389,6 @@ public interface DlangTypes {
     DlangTokenType OP_TILDA = new DlangTokenType("~");
     DlangTokenType OP_TILDA_EQ = new DlangTokenType("~=");
     DlangTokenType OP_TRIPLEDOT = new DlangTokenType("...");
-    DlangTokenType OP_UNORD = new DlangTokenType("!<>");
-    DlangTokenType OP_UNORD_EQ = new DlangTokenType("!<>=");
     DlangTokenType OP_USH_RIGHT = new DlangTokenType(">>>");
     DlangTokenType OP_USH_RIGHT_EQ = new DlangTokenType(">>>=");
     DlangTokenType OP_XOR = new DlangTokenType("^");
