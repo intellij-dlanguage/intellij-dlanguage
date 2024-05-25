@@ -37,7 +37,6 @@ class DLangParser {
         "YMM3", "YMM4", "YMM5", "YMM6", "YMM7", "YMM8", "YMM9"
     };
 
-    @Deprecated
     final int MAX_ERRORS = 200;
 
     private static final IElementType[] stringLiteralsArray = new IElementType[] {
@@ -114,7 +113,7 @@ class DLangParser {
     private final Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
     private final Map<Integer, Boolean> cachedTypedChecks = new HashMap<>();
 
-    private ArrayList<Integer> suppressMessages;
+    private final ArrayList<Integer> suppressMessages;
 
 
     private int suppressedErrorCount() {
@@ -435,7 +434,6 @@ class DLangParser {
             exit_section_modified(builder, section, ADD_EXPRESSION, result);
         } else {
             section.drop();
-//            beginnings.remove(section);
         }
         return result;
     }
@@ -520,7 +518,6 @@ class DLangParser {
                     goToBookmark(b);
                     return true;
                 }
-
             }
         }
         goToBookmark(b);
@@ -536,7 +533,6 @@ class DLangParser {
     boolean parseAliasAssign()
     {
         final Marker m = enter_section_modified(builder);
-        //mixin(traceEnterAndExit!(__FUNCTION__));
         if (!tokenCheck(ID)) {
             cleanup(m, ALIAS_ASSIGN);
             return false;
@@ -624,7 +620,6 @@ class DLangParser {
      */
     boolean parseAliasThisDeclaration() {
         final Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DlangTypes.AliasThisDeclaration,false);
         if (!tokenCheck(KW_ALIAS)) {
             cleanup(m, ALIAS_THIS_DECLARATION);
             return false;
@@ -690,7 +685,6 @@ class DLangParser {
             exit_section_modified(builder, m, AND_AND_EXPRESSION, result);
         } else {
             m.drop();
-//            beginnings.remove(m);
         }
         return result;
     }
@@ -710,7 +704,6 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AndExpression", "CmpExpression", OP_AND);
         if (!toParseExpression.element) {
             m.drop();
-//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, AND_EXPRESSION, result);
@@ -775,7 +768,6 @@ class DLangParser {
      * ;)
      */
     boolean parseArrayInitializer() {
-//        Marker m = enter_section_(builder);
         final Marker arrayInit = enter_section_modified(builder);
         while (moreTokens()) {
             if (currentIs(OP_BRACKET_RIGHT))
@@ -802,7 +794,6 @@ class DLangParser {
      */
     boolean parseArrayLiteral() {
         final Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DlangTypes.ArrayLiteral,false);
         final IElementType open = expect(OP_BRACKET_LEFT);
         if (open == null) {
             cleanup(m, ARRAY_LITERAL);
@@ -829,9 +820,7 @@ class DLangParser {
      * ;)
      */
     boolean parseArrayMemberInitialization() {
-//            mixin(traceEnterAndExit!(__FUNCTION__))
         final Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DlangTypes.ArrayMemberInitialization,false);
         if (currentIs(OP_BRACKET_LEFT)) {
             final Bookmark b = setBookmark();
             skipBrackets();
@@ -890,14 +879,12 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmAddExp() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
         final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmAddExp", "AsmMulExp", OP_PLUS, OP_MINUS);
         if (!toParseExpression.element) {
             m.drop();
-//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_ADD_EXP, result);
@@ -913,14 +900,12 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmAndExp() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
         final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmAndExp", "AsmEqualExp", OP_AND);
         if (!toParseExpression.element) {
             m.drop();
-//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_AND_EXP, result);
@@ -936,7 +921,6 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmBrExp() {
-//            AsmBrExp node = allocator.make!AsmBrExp();
         final Marker m = enter_section_modified(builder);
         if (!moreTokens())
         {
@@ -1003,7 +987,6 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmEqualExp", "AsmRelExp", OP_EQ_EQ, OP_NOT_EQ);
         if (!toParseExpression.element) {
             m.drop();
-//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_EQUAL_EXP, result);
@@ -1018,7 +1001,6 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmExp() {
-//            AsmExp node = allocator.make!AsmExp;
         final Marker m = enter_section_modified(builder);
         if (!parseAsmLogOrExp()) {
             cleanup(m, ASM_EXP);
@@ -1059,8 +1041,6 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmInstruction() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
-//            AsmInstruction node = allocator.make!AsmInstruction;
         final Marker m = enter_section_modified(builder);
         if (currentIs(OP_SCOLON)) {
             warn("Empty asm instruction");
@@ -1114,14 +1094,12 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmLogAndExp() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
         final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmLogAndExp", "AsmOrExp", OP_BOOL_AND);
         if (!toParseExpression.element) {
             m.drop();
-//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_LOG_AND_EXP, result);
@@ -1143,7 +1121,6 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmLogOrExp", "AsmLogAndExp", OP_BOOL_OR);
         if (!toParseExpression.element) {
             m.drop();
-//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_LOG_OR_EXP, result);
@@ -1165,7 +1142,6 @@ class DLangParser {
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmMulExp", "AsmBrExp", OP_ASTERISK, OP_DIV, OP_MOD);
         if (!toParseExpression.element) {
             m.drop();
-//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_MUL_EXP, result);
@@ -1181,14 +1157,12 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmOrExp() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
         final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmOrExp", "AsmXorExp", OP_OR);
         if (!toParseExpression.element) {
             m.drop();
-//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_OR_EXP, result);
@@ -1211,15 +1185,12 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmPrimaryExp() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
-//            AsmPrimaryExp node = allocator.make!AsmPrimaryExp();
         final Marker m = enter_section_modified(builder);
         final IElementType i = current();
         if (i.equals(FLOAT_LITERAL) || i.equals(INTEGER_LITERAL) || i.equals(DOUBLE_QUOTED_STRING) || i.equals(OP_DOLLAR) || i.equals(KW_THIS)) {
             advance();
         } else if (i.equals(ID)) {
             if ((Sets.newHashSet(Arrays.asList(REGISTER_NAMES))).contains(currentText())) {
-//                trace("Found register");
                 if (!parseRegister()) {
                     cleanup(m, ASM_PRIMARY_EXP);
                     return false;
@@ -1255,14 +1226,12 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmRelExp() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
         final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmRelExp", "AsmShiftExp", OP_LESS, OP_LESS_EQ, OP_GT, OP_GT_EQ);//todo refactor this to make this shorter
         if (!toParseExpression.element) {
             m.drop();
-//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_REL_EXP, result);
@@ -1278,14 +1247,12 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmShiftExp() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
         final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmShiftExp", "AsmAddExp", OP_SH_LEFT, OP_SH_RIGHT, OP_USH_RIGHT);
         if (!toParseExpression.element) {
             m.drop();
-//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_SHIFT_EXP, result);
@@ -1300,8 +1267,6 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmStatement() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
-//            AsmStatement node = allocator.make!AsmStatement;
         final Marker m = enter_section_modified(builder);
         advance(); // asm
         while (isAttribute()) {
@@ -1344,7 +1309,6 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmTypePrefix() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
         final IElementType i = current();
         if (i.equals(ID) || i.equals(KW_BYTE) || i.equals(KW_SHORT) || i.equals(KW_INT) || i.equals(KW_FLOAT) || i.equals(KW_DOUBLE) || i.equals(KW_REAL)) {
@@ -1391,8 +1355,6 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmUnaExp() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
-//            AsmUnaExp node = allocator.make!AsmUnaExp();
         final Marker m = enter_section_modified(builder);
         final IElementType i = current();
         if (i.equals(OP_PLUS) || i.equals(OP_MINUS) || i.equals(OP_NOT) || i.equals(OP_TILDA)) {
@@ -1464,14 +1426,12 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmXorExp() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
         final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmXorExp", "AsmAndExp", OP_XOR);
         if (!toParseExpression.element) {
             m.drop();
-//            beginnings.remove(m);
             return result;
         }
         exit_section_modified(builder, m, ASM_XOR_EXP, result);
@@ -1519,7 +1479,6 @@ class DLangParser {
      * ;)
      */
     boolean parseAssertExpression() {
-//            Marker m = enter_section_(builder);
         final Marker m = enter_section_modified(builder);
         advance(); // "assert"
         if (!tokenCheck(OP_PAR_LEFT)) {
@@ -1793,7 +1752,7 @@ class DLangParser {
      * $(RULE attribute) $(LITERAL ':')
      * ;)
      */
-    private boolean parseAttributeDeclaration(final boolean parseAttribute)//(Attribute attribute = null)
+    private boolean parseAttributeDeclaration(final boolean parseAttribute)
     {
         final Marker m = enter_section_modified(builder);
         if (parseAttribute) {
@@ -1846,7 +1805,6 @@ class DLangParser {
      * ;)
      */
     boolean parseAutoDeclarationPart() {
-//            auto part = allocator.make!AutoDeclarationPart;
         final Marker m = enter_section_modified(builder);
         final IElementType i = expect(ID);
         if (i == null) {
@@ -2015,8 +1973,6 @@ class DLangParser {
      * ;)
      */
     boolean parseCaseRangeStatement(Marker m) {
-//            assert (low != null);
-//            node.low = low;
         if (!tokenCheck(OP_COLON)) {
             cleanup(m, CASE_RANGE_STATEMENT);
             return false;
@@ -2308,8 +2264,7 @@ class DLangParser {
     }
 
     private Marker enter_section_modified(final PsiBuilder builder) {
-        final Marker marker = enter_section_(builder);
-        return marker;
+        return enter_section_(builder);
     }
 
     /**
@@ -2380,12 +2335,10 @@ class DLangParser {
             final boolean brace = advance().equals(OP_BRACES_LEFT);
             while (moreTokens() && !currentIs(OP_BRACES_RIGHT) && !currentIs(KW_ELSE)) {
                 final Bookmark b = setBookmark();
-//                    c = allocator.setCheckpoint();
                 if (parseDeclaration(strict, true, inTemplateDeclaration)) {
                     abandonBookmark(b);
                 } else {
                     goToBookmark(b);
-//                        allocator.rollback(c);
                     cleanup(m, CONDITIONAL_DECLARATION);
                     return false;
                 }
@@ -2494,7 +2447,6 @@ class DLangParser {
      * ;)
      */
     boolean parseConstructor() {
-//            Constructor node = allocator.make!Constructor;
         final Marker m = enter_section_modified(builder);
         final IElementType t = expect(KW_THIS);
         if (t == null) {
@@ -2682,10 +2634,6 @@ class DLangParser {
         return parseDeclaration(false, false, false);
     }
 
-    boolean parseDeclaration(final boolean strict) {
-        return parseDeclaration(strict, false, false);
-    }
-
     boolean parseDeclaration(final boolean strict, final boolean mustBeDeclaration) {
         return parseDeclaration(strict, mustBeDeclaration, false);
     }
@@ -2707,10 +2655,8 @@ class DLangParser {
                 break;
             if (!isAttribute())
                 break;
-//                c = allocator.setCheckpoint();
             final boolean attr = parseAttribute();
             if (!attr) {
-//                    allocator.rollback(c);
                 break;
             }
             if (currentIs(OP_COLON)) {
@@ -2764,9 +2710,7 @@ class DLangParser {
                 }
                 advance();
                 while (moreTokens() && !currentIs(OP_BRACES_RIGHT)) {
-//                        auto c = allocator.setCheckpoint();
                     if (!parseDeclaration(strict, false, inTemplateDeclaration)) {
-//                            allocator.rollback(c);
                         cleanup(m, DECLARATION);
                         return false;
                     }
@@ -2992,7 +2936,6 @@ class DLangParser {
                 }
             } else if (idType.equals(ID) || idType.equals(OP_DOT) || idType.equals(KW_CONST) || idType.equals(KW_IMMUTABLE) || idType.equals(KW_INOUT) || idType.equals(KW_SCOPE) || idType.equals(KW_TYPEOF) || idType.equals(KW___VECTOR) || idType.equals(KW___TRAITS) || idType.equals(KW_INT) || idType.equals(KW_BOOL) || idType.equals(KW_BYTE) || idType.equals(KW_CDOUBLE) || idType.equals(KW_CENT) || idType.equals(KW_CFLOAT) || idType.equals(KW_CHAR) || idType.equals(KW_CREAL) || idType.equals(KW_DCHAR) || idType.equals(KW_DOUBLE) || idType.equals(KW_FLOAT) || idType.equals(KW_IDOUBLE) || idType.equals(KW_IFLOAT) || idType.equals(KW_IREAL) || idType.equals(KW_LONG) || idType.equals(KW_REAL) || idType.equals(KW_SHORT) || idType.equals(KW_UBYTE) || idType.equals(KW_UCENT) || idType.equals(KW_UINT) || idType.equals(KW_ULONG) || idType.equals(KW_USHORT) || idType.equals(KW_VOID) || idType.equals(KW_WCHAR)) {
                 if (!type(m)) {
-//                    cleanup(m);
                     return false;//no cleanup needed already done in type
                 }
             } else if (idType.equals(KW_VERSION)) {
@@ -3092,10 +3035,7 @@ class DLangParser {
                 } else
                     abandonBookmark(b);
             }
-//                c = allocator.setCheckpoint();
             if (!parseDeclarationOrStatement()) {
-//                    allocator.rollback(c);
-
                 if (!suppressMessages.isEmpty()) {
                     cleanup(m, DECLARATIONS_AND_STATEMENTS);
                     return false;
@@ -3107,8 +3047,6 @@ class DLangParser {
     }
 
     private void exit_section_modified(final PsiBuilder builder, final Marker m, final IElementType type, final boolean b) {
-        //there is no incorrect parsing aka, markers should only be dropped in case of bookmarks
-//        beginnings.remove(m);
         if (type.equals(DECLARATION) || type.equals(MODULE_DECLARATION)) {
             // Attach documentations to their declarations
             m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
@@ -3130,10 +3068,8 @@ class DLangParser {
         // "Any ambiguities in the grammar between Statements and
         // Declarations are resolved by the declarations taking precedence."
         final Bookmark b = setBookmark();
-//            c = allocator.setCheckpoint();
         final boolean d = parseDeclaration(true, false);
         if (!d) {
-//                allocator.rollback(c);
             goToBookmark(b);
             if (!parseStatement()) {
                 cleanup(m, DECLARATION_OR_STATEMENT);
@@ -3144,7 +3080,6 @@ class DLangParser {
             // : Make this more efficient. Right now we parse the declaration
             // twice, once with errors and warnings ignored, and once with them
             // printed. Maybe store messages to then be abandoned or written later?
-//                allocator.rollback(c);
             goToBookmark(b);
             parseDeclaration(true, true);
         }
@@ -3203,7 +3138,7 @@ class DLangParser {
 
     /**
      * Parses a DeclaratorIdentifierList
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF declaratorIdentifierList):
      *     $(LITERAL Identifier) ($(LITERAL ',') $(LITERAL Identifier))*
      *     ;)
@@ -3402,7 +3337,6 @@ class DLangParser {
      * ;)
      */
     boolean parseEnumBody() {
-//            EnumBody node = allocator.make!EnumBody;
         final Marker m = enter_section_modified(builder);
         final IElementType open = expect(OP_BRACES_LEFT);
         if (open == null) {
@@ -3411,12 +3345,7 @@ class DLangParser {
         }
         while (moreTokens()) {
             if (currentIsOneOf(ID, OP_AT, KW_DEPRECATED)) {
-//                    auto c = allocator.setCheckpoint();
-                final boolean e = parseEnumMember();
-//                    if (!e)
-//                        allocator.rollback(c);
-//                    else
-//                        last = e;
+                parseEnumMember();
                 if (currentIs(OP_COMMA)) {
                     advance();
                     if (!currentIs(OP_BRACES_RIGHT))
@@ -3432,7 +3361,7 @@ class DLangParser {
             } else
                 error("Enum member expected");
         }
-        final IElementType close = expect(OP_BRACES_RIGHT);
+        expect(OP_BRACES_RIGHT);
         exit_section_modified(builder, m, ENUM_BODY, true);
         return true;
     }
@@ -3515,20 +3444,11 @@ class DLangParser {
         }
         while (moreTokens()) {
             if (currentIs(OP_COMMA)) {
-//                    if (last != null && last.comment == null)
-//                    last.comment = current().trailingComment;
                 advance();
             } else if (currentIs(OP_BRACES_RIGHT)) {
-//                    if (last != null && last.comment == null)
-//                    last.comment = tokens[index - 1].trailingComment;
                 break;
             } else {
-//                    c = allocator.setCheckpoint();
                 parseAnonymousEnumMember(!hasBaseType);
-//                    if (!e)
-//                        allocator.rollback(c);
-//                    else
-//                        last = e;
             }
         }
         if (!tokenCheck(OP_BRACES_RIGHT)) {
@@ -3845,7 +3765,6 @@ class DLangParser {
      */
     boolean parseStaticForeachDeclaration(final boolean inTemplateDeclaration)
     {
-        //mixin(traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
         if (!tokenCheck(KW_STATIC)) {
             cleanup(m, STATIC_FOREACH_DECLARATION);
@@ -3868,7 +3787,6 @@ class DLangParser {
      * ;)
      */
     boolean parseForeachStatement() {
-        //mixin(traceEnterAndExit!(__FUNCTION__));
         return parseForeach(FOREACH_STATEMENT, false);
     }
 
@@ -3882,7 +3800,6 @@ class DLangParser {
     }
 
     boolean parseForeach(IElementType elementType, boolean declOnly, boolean inTemplateDeclaration) {
-//            ForeachStatement node = allocator.make!ForeachStatement;
         final Marker m = enter_section_modified(builder);
         if (currentIsOneOf(KW_FOREACH, KW_FOREACH_REVERSE)) {
             advance();
@@ -3928,23 +3845,20 @@ class DLangParser {
             return false;
         }
         if (currentIs(OP_BRACES_RIGHT)) {
-            error("Statement expected"/*, false*/);
+            error("Statement expected");
             cleanup(m, elementType);
             return true; // this line makes DCD better
         }
         if (declOnly) {
-            //node.style = currentIs(OP_BRACES_LEFT) ? DeclarationListStyle.block : DeclarationListStyle.single;
             if (currentIs(OP_BRACES_LEFT)) {
                 advance();
                 while (moreTokens() && !currentIs(OP_BRACES_RIGHT)) {
                     Bookmark b = setBookmark();
-                    //immutable c = allocator.setCheckpoint();
                     if (parseDeclaration(true, true, inTemplateDeclaration)) {
                         abandonBookmark(b);
                     } else {
                         goToBookmark(b);
                         cleanup(m, elementType);
-                        //allocator.rollback(c);
                         return false;
                     }
                 }
@@ -3987,7 +3901,7 @@ class DLangParser {
             } else if (currentIs(KW_ENUM)) {
                 advance();
             } else if (parseTypeConstructor(false) != null) {
-                //trace ("\033[01;36mType constructor");
+                // do nothing
             } else {
                 break;
             }
@@ -4103,7 +4017,7 @@ class DLangParser {
      * | $(RULE type) $(RULE arguments)
      * ;)
      */
-    private Pair<Boolean, Marker> parseFunctionCallExpression(final Marker unary)//(UnaryExpression unary = null)
+    private Pair<Boolean, Marker> parseFunctionCallExpression(final Marker unary)
     {
         final Marker m;
         if (unary != null) {
@@ -4149,7 +4063,7 @@ class DLangParser {
 
     /**
      * Parses a FunctionContract
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF functionContract):
      *       $(RULE inOutContractExpression)
      *     | $(RULE inOutStatement)
@@ -4190,7 +4104,7 @@ class DLangParser {
      * | ($(RULE storageClass)+ | $(RULE _type)) $(LITERAL Identifier) $(RULE templateParameters) $(RULE parameters) $(RULE memberFunctionAttribute)* $(RULE constraint)? ($(RULE functionBody) | $(LITERAL ';'))
      * ;)
      */
-    boolean parseFunctionDeclaration(final Marker type, final boolean isAuto)//(Type type = null,Attribute[] attributes = null)
+    boolean parseFunctionDeclaration(final Marker type, final boolean isAuto)
     {
         Marker m = null;
         if (type == null) {
@@ -4203,15 +4117,6 @@ class DLangParser {
                     cleanup(m, FUNCTION_DECLARATION);
                     return false;
                 }
-//                for( a; node.attributes)
-//                {
-//                    if (a.attribute == KW_AUTO)
-//                    node.hasAuto = true;
-//                else if (a.attribute == KW_REF)
-//                    node.hasRef = true;
-//                else
-//                    continue;
-//                }
         } else {
             while (moreTokens() && currentIsMemberFunctionAttribute())
                 if (!parseMemberFunctionAttribute()) {
@@ -4321,9 +4226,7 @@ class DLangParser {
                 return false;
             }
             while (currentIsMemberFunctionAttribute()) {
-//                    auto c =/ allocator.setCheckpoint();
                 if (!parseMemberFunctionAttribute()) {
-//                        allocator.rollback(c);
                     break;
                 }
             }
@@ -4409,7 +4312,7 @@ class DLangParser {
 
     /**
      * Parses a TypeIdentifierPart.
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF typeIdentifierPart):
      *       $(RULE identifierOrTemplateInstance)
      *     | $(RULE identifierOrTemplateInstance) $(LITERAL '.') $(RULE typeIdentifierPart)
@@ -4911,7 +4814,7 @@ class DLangParser {
 
     /**
      * Parses an InContractExpression
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF inContractExpression):
      *     $(LITERAL 'in') $(LITERAL '$(LPAREN)') $(RULE assertArguments) $(LITERAL '$(RPAREN)')
      *     ;)
@@ -4949,7 +4852,7 @@ class DLangParser {
      * $(RULE shiftExpression) ($(LITERAL 'in') | ($(LITERAL '!') $(LITERAL 'in'))) $(RULE shiftExpression)
      * ;)
      */
-    boolean parseInExpression(final boolean parseShift)//(ExpressionNode shift = null)
+    boolean parseInExpression(final boolean parseShift)
     {
         final Marker m = enter_section_modified(builder);
         if (parseShift) {
@@ -5001,7 +4904,7 @@ class DLangParser {
 
     /**
      * Parses an InOutStatement
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF inOutStatement):
      *       $(RULE inStatement)
      *     | $(RULE outStatement)
@@ -5377,7 +5280,7 @@ class DLangParser {
 
     /**
      * Parses a MissingFunctionBody
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF missingFunctionBody):
      *       $(LITERAL ';')
      *     | $(RULE functionContract)* $(LITERAL ';')
@@ -5523,7 +5426,6 @@ class DLangParser {
         if (currentIs(SHEBANG)) {
             advance();
         }
-        boolean isDeprecatedModule = false;
         final Bookmark b = setBookmark();
         while (currentIs(OP_AT) || currentIs(KW_DEPRECATED)) {
             parseAttribute();
@@ -5531,14 +5433,10 @@ class DLangParser {
         boolean isModule = currentIs(KW_MODULE);
         goToBookmark(b);
         if (isModule) {
-//                c = allocator.setCheckpoint();
             parseModuleDeclaration();
-//                allocator.rollback(c);
         }
         while (moreTokens()) {
-//                c = allocator.setCheckpoint();
             parseDeclaration(true, true);
-//                    allocator.rollback(c);
         }
         return true;
     }
@@ -5593,7 +5491,6 @@ class DLangParser {
             OP_ASTERISK, OP_DIV, OP_MOD);
         if (!toParseExpression.element) {
             marker.drop();
-//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, MUL_EXPRESSION, b);
@@ -5602,7 +5499,7 @@ class DLangParser {
 
     /**
      * Parses a NamespaceList.
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF namespaceList):
      *     $(RULE ternaryExpression) ($(LITERAL ',') $(RULE ternaryExpression)?)* $(LITERAL ',')?
      *     ;)
@@ -5801,7 +5698,6 @@ class DLangParser {
             OP_OR);
         if (!toParseExpression.element) {
             marker.drop();
-//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, OR_EXPRESSION, b);
@@ -5829,7 +5725,6 @@ class DLangParser {
             tokens);
         if (!toParseExpression.element) {
             marker.drop();
-//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, type, b);
@@ -5962,10 +5857,6 @@ class DLangParser {
         }
         exit_section_modified(builder, m, PARAMETER, true);
         return true;
-    }
-
-    IElementType parseParameterAttribute() {
-        return parseParameterAttribute(false);
     }
 
     /**
@@ -6159,7 +6050,6 @@ class DLangParser {
      * ;)
      */
     boolean parsePowExpression() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker marker = enter_section_modified(builder);
         final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
@@ -6167,7 +6057,6 @@ class DLangParser {
             OP_POW);
         if (!toParseExpression.element) {
             marker.drop();
-//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, POW_EXPRESSION, b);
@@ -6196,7 +6085,6 @@ class DLangParser {
      * ;)
      */
     boolean parsePragmaExpression() {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m = enter_section_modified(builder);
         expect(KW_PRAGMA);
         expect(OP_PAR_LEFT);
@@ -6520,16 +6408,14 @@ class DLangParser {
      * | $(LITERAL '!<=')
      * ;)
      */
-    boolean parseRelExpression(final boolean parseShift)//(ExpressionNode shift)
+    boolean parseRelExpression(final boolean parseShift)
     {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker marker = enter_section_modified(builder);
         final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
         toParseExpression.element = false;
         final boolean b = parseLeftAssocBinaryExpression(toParseExpression, "RelExpression", "ShiftExpression", !parseShift, OP_LESS, OP_LESS_EQ, OP_GT, OP_GT_EQ, OP_NOT_GR, OP_NOT_GR_EQ, OP_NOT_LESS, OP_NOT_LESS_EQ);
         if (!toParseExpression.element) {
             marker.drop();
-//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, REL_EXPRESSION, b);
@@ -6652,7 +6538,6 @@ class DLangParser {
         final boolean b = parseLeftAssocBinaryExpression(toParseExpression, "ShiftExpression", "AddExpression", OP_SH_LEFT, OP_SH_RIGHT, OP_USH_RIGHT);
         if (!toParseExpression.element) {
             marker.drop();
-//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, SHIFT_EXPRESSION, b);
@@ -6682,7 +6567,7 @@ class DLangParser {
 
     /**
      * Parses a ShortenedFunctionBody
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF shortenedFunctionBody):
      *      $(RULE inOutContractExpression)* $(LITERAL '=>') $(RULE expression) $(LITERAL ';')
      *     ;)
@@ -7004,7 +6889,6 @@ class DLangParser {
                 return false;
             }
         }
-//            node.endLocation = tokens[index - 1].index;
         exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
         return true;
     }
@@ -7066,8 +6950,6 @@ class DLangParser {
      */
     boolean parseStaticDestructor() {
         final Marker m = enter_section_modified(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DlangTypes.StaticDestructor,false);
-//            node.location = current().index;
         if (!tokenCheck(KW_STATIC)) {
             cleanup(m, STATIC_DESTRUCTOR);
             return false;
@@ -7226,7 +7108,7 @@ class DLangParser {
      */
     boolean parseStructInitializer() {
         final Marker m = enter_section_modified(builder);
-        final IElementType a = expect(OP_BRACES_LEFT);
+        expect(OP_BRACES_LEFT);
         if (currentIs(OP_BRACES_RIGHT)) {
             advance();
         } else {
@@ -7275,9 +7157,7 @@ class DLangParser {
     boolean parseStructMemberInitializers() {
         final Marker m = enter_section_modified(builder);
         do {
-//                auto c = allocator.setCheckpoint();
             parseStructMemberInitializer();
-//                    allocator.rollback(c);
             if (currentIs(OP_COMMA))
                 advance();
             else
@@ -7536,11 +7416,9 @@ class DLangParser {
             return false;
         }
         while (moreTokens() && !currentIs(OP_BRACES_RIGHT)) {
-//                c = allocator.setCheckpoint();
             parseDeclaration(true, true, true);
-//                    allocator.rollback(c);
         }
-        final IElementType end = expect(OP_BRACES_RIGHT);
+        expect(OP_BRACES_RIGHT);
         exit_section_modified(builder, m, TEMPLATE_DECLARATION, true);
         return true;
     }
@@ -8026,7 +7904,6 @@ class DLangParser {
                 if (parseTypeSuffix())
                     abandonBookmark(newBookmark);
                 else {
-//                        allocator.rollback(c);
                     goToBookmark(newBookmark);
                     break;
                 }
@@ -8133,10 +8010,6 @@ class DLangParser {
         }
         exit_section_modified(builder, m, TYPE_2, true);
         return true;
-    }
-
-    IElementType parseTypeConstructor() {
-        return parseTypeConstructor(true);
     }
 
     /**
@@ -8609,7 +8482,6 @@ class DLangParser {
      */
     boolean parseVariableDeclaration(final Marker type, final boolean isAuto)//(Type type = null )
     {
-//            mixin (traceEnterAndExit!(__FUNCTION__));
         final Marker m;
         if (type == null) {
             m = enter_section_modified(builder);
@@ -8764,7 +8636,7 @@ class DLangParser {
             return false;
         }
         if (currentIs(OP_BRACES_RIGHT)) {
-            error("Statement expected"/*, false*/);
+            error("Statement expected");
             exit_section_modified(builder, m, WHILE_STATEMENT, true);
             return true; // this line makes DCD better
         }
@@ -8857,7 +8729,6 @@ class DLangParser {
     Pair<DecType, Integer> isAutoDeclaration() {
         int beginIndex = Integer.MAX_VALUE;
         final Bookmark b = setBookmark();
-//            goToBookmark(b);// on scope exit
         loop:
         while (moreTokens()) {
             final IElementType i = current();
@@ -8941,70 +8812,6 @@ class DLangParser {
         return new Pair<>(DecType.other, beginIndex);
     }
 
-    boolean isDeclaration() {
-        if (!moreTokens()) return false;
-        final IElementType i = current();
-        if (i.equals(KW_FINAL)) {
-            return !peekIs(KW_SWITCH);
-        }
-        if (i.equals(KW_DEBUG)) {
-            if (peekIs(OP_COLON))
-                return true;
-            if (peekIs(OP_EQ))
-                return true;
-            if (peekIs(OP_PAR_LEFT)) {
-                //default
-                return isDeclarationDefault();
-            }
-            return false;
-        }
-        if (i.equals(KW_VERSION)) {
-            if (peekIs(OP_EQ))
-                return true;
-            if (peekIs(OP_PAR_LEFT)) {
-                //default
-                return isDeclarationDefault();
-            }
-            return false;
-        }
-        if (i.equals(KW_SYNCHRONIZED)) {
-            if (peekIs(OP_PAR_LEFT))
-                return false;
-            else {
-                //default
-                return isDeclarationDefault();
-            }
-        }
-        if (i.equals(KW_STATIC)) {
-            if (peekIs(KW_IF))
-                return false;
-            if (peekIs(KW_FOREACH) || peekIs(KW_FOREACH_REVERSE))
-                return isDeclarationDefault();
-            return !peekIs(OP_PAR_LEFT);
-        }
-        if (i.equals(KW_SCOPE)) {
-            return !peekIs(OP_PAR_LEFT);
-        }
-        if (i.equals(OP_AT) || i.equals(KW_ABSTRACT) || i.equals(KW_ALIAS) || i.equals(KW_ALIGN) || i.equals(KW_AUTO) || i.equals(KW_CLASS) || i.equals(KW_DEPRECATED) || i.equals(KW_ENUM) || i.equals(KW_EXPORT) || i.equals(KW_EXTERN) || i.equals(KW___GSHARED) || i.equals(KW_INTERFACE) || i.equals(KW_NOTHROW) || i.equals(KW_OVERRIDE) || i.equals(KW_PACKAGE) || i.equals(KW_PRIVATE) || i.equals(KW_PROTECTED) || i.equals(KW_PUBLIC) || i.equals(KW_PURE) || i.equals(KW_REF) || i.equals(KW_STRUCT) || i.equals(KW_UNION) || i.equals(KW_UNITTEST)) {
-            return true;
-        }
-        if (isBasicType(i)) {
-            return !peekIsOneOf(OP_DOT, OP_PAR_LEFT);
-        }
-        if (i.equals(KW_ASM) || i.equals(KW_BREAK) || i.equals(KW_CASE) || i.equals(KW_CONTINUE) || i.equals(KW_DEFAULT) || i.equals(KW_DO) || i.equals(KW_FOR) || i.equals(KW_FOREACH) || i.equals(KW_FOREACH_REVERSE) || i.equals(KW_GOTO) || i.equals(KW_IF) || i.equals(KW_RETURN) || i.equals(KW_SWITCH) || i.equals(KW_THROW) || i.equals(KW_TRY) || i.equals(KW_WHILE) || i.equals(OP_BRACES_LEFT) || i.equals(KW_ASSERT)) {
-            return false;
-        } else {
-            return isDeclarationDefault();
-        }
-    }
-
-    private boolean isDeclarationDefault() {
-        final Bookmark b = setBookmark();
-        final boolean res = parseDeclaration(true, true);
-        goToBookmark(b);
-        return res;
-    }
-
     /// Only use this in template parameter parsing
     boolean isType() {
         if (!moreTokens()) return false;
@@ -9080,7 +8887,6 @@ class DLangParser {
         }
         while (currentIsOneOf(operators)) {
             operatorWasMatched.element = true;
-//                auto n = allocator.make!ExpressionType;
             advance();
             if (!parseNodeQ(ExpressionPartType)) {
                 return false;
@@ -9103,19 +8909,9 @@ class DLangParser {
 
     private boolean parseCommaSeparatedRule(final Ref.IntRef foreachTypeRefLength, final String listType, final String itemType, boolean allowTrailingComma)//(alias ListType, alias ItemType,)
     {
-//            final boolean setLineAndColumn = false;
-//        Marker m = enter_section_(builder);
-//			Runnable cleanup =() ->  exit_section_modified(builder,m,DlangTypes.ListType,false);
-//            if (setLineAndColumn)
-//            {
-////                node.line = current().line;
-////                node.column = current().column;
-//            }
-//            final Marker m = enter_section_(builder);
         foreachTypeRefLength.element = 0;
         while (moreTokens()) {
             if (!parseName(itemType)) {
-//                    cleanup(m);
                 return false;
             }
             foreachTypeRefLength.element++;
@@ -9123,12 +8919,9 @@ class DLangParser {
                 advance();
                 if (allowTrailingComma && currentIsOneOf(OP_PAR_RIGHT, OP_BRACES_RIGHT, OP_BRACKET_RIGHT))
                     break;
-                else
-                    continue;
             } else
                 break;
         }
-//            exit_section_modified(builder,m,,true);
         return true;
     }
 
@@ -9152,7 +8945,7 @@ class DLangParser {
         }
     }
 
-    private void skip(final IElementType o, final IElementType c)//(alias O, alias C)
+    private void skip(final IElementType o, final IElementType c)
     {
         assert (currentIs(o));
         advance();
@@ -9328,13 +9121,9 @@ class DLangParser {
         final IElementType curr = current();
 
         if(curr != null && types != null) {
-            return Arrays.stream(types)
-                .anyMatch(t -> t.equals(curr));
+            return Arrays.asList(types).contains(curr);
         }
-
         return false;
-
-//        return canFind(types, current().type);
     }
 
     private boolean startsWith(final IElementType... types) {
@@ -9377,8 +9166,6 @@ class DLangParser {
     }
 
     private boolean parseStaticCtorDtorCommon() {
-//            node.line = current().line;
-//            node.column = current().column;
         if (!tokenCheck(KW_THIS)) {
             return false;
         }
