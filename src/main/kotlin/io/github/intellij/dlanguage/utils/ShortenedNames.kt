@@ -86,7 +86,6 @@ typealias DebugCondition = io.github.intellij.dlanguage.psi.DLanguageDebugCondit
 typealias DebugSpecification = io.github.intellij.dlanguage.psi.DLanguageDebugSpecification
 typealias Declaration = io.github.intellij.dlanguage.psi.DLanguageDeclaration
 typealias DeclarationOrStatement = io.github.intellij.dlanguage.psi.DLanguageDeclarationOrStatement
-typealias DeclarationsAndStatements = io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements
 typealias Declarator = DlangDeclarator
 typealias DeclaratorIdentifier = io.github.intellij.dlanguage.psi.named.DlangDeclaratorIdentifier
 typealias DefaultStatement = io.github.intellij.dlanguage.psi.DLanguageDefaultStatement

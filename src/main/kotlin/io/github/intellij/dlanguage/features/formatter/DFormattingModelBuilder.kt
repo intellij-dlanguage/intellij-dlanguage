@@ -11,7 +11,8 @@ import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.TokenSet
 import io.github.intellij.dlanguage.features.formatter.impl.createSpacingBuilder
 import io.github.intellij.dlanguage.psi.DLanguageDeclaration
-import io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements
+import io.github.intellij.dlanguage.psi.DLanguageDeclarationOrStatement
+import io.github.intellij.dlanguage.psi.DLanguageStatement
 import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.psi.interfaces.Statement
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
@@ -92,10 +93,8 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                     return indentOfMultipleDeclarationChild(type, DECLARATION, LINE_COMMENT, BLOCK_COMMENT)
                 }
             }
-            if (type == DECLARATIONS_AND_STATEMENTS) {
-                if (parentType == CASE_STATEMENT || parentType == CASE_RANGE_STATEMENT || parentType == DEFAULT_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATIONS_AND_STATEMENTS, LINE_COMMENT, BLOCK_COMMENT)
-                }
+            if (parentType == CASE_STATEMENT || parentType == CASE_RANGE_STATEMENT || parentType == DEFAULT_STATEMENT) {
+                return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
             }
             if (type == OP_BRACES_RIGHT || type == OP_BRACES_LEFT) {
                 return Indent.getNoneIndent()
@@ -136,11 +135,11 @@ class DFormattingModelBuilder : FormattingModelBuilder {
 
                 if (psi1 is DLanguageDeclaration && psi2 is DLanguageDeclaration) {
                     return lineBreak()
-                } else if (psi1.text == "{" && psi2 is DLanguageDeclarationsAndStatements) {
+                } else if (psi1.text == "{" && psi2 is DLanguageDeclarationOrStatement) {
                     return lineBreak()
                 } else if (psi1.text == "{" && psi2 is DLanguageDeclaration) {
                     return lineBreak()
-                } else if (psi2.text == "}" && psi1 is DLanguageDeclarationsAndStatements) {
+                } else if (psi2.text == "}" && psi1 is DLanguageDeclarationOrStatement) {
                     return lineBreak()
                 } else if (psi2.text == "}" && psi1 is DLanguageDeclaration) {
                     return lineBreak()

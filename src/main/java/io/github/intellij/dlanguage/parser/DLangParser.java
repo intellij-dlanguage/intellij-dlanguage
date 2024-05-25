@@ -2718,7 +2718,6 @@ class DLangParser {
      * ;)
      */
     boolean parseDeclarationsAndStatements(final boolean includeCases) {
-        final Marker m = enter_section_modified(builder);
         while (!currentIsOneOf(OP_BRACES_RIGHT, KW_ELSE) && moreTokens() && suppressedErrorCount() <= MAX_ERRORS) {
             if (currentIsOneOf(KW_CASE, KW_DEFAULT) && !includeCases) {
                 break;
@@ -2738,12 +2737,10 @@ class DLangParser {
             }
             if (!parseDeclarationOrStatement()) {
                 if (!suppressMessages.isEmpty()) {
-                    cleanup(m, DECLARATIONS_AND_STATEMENTS);
                     return false;
                 }
             }
         }
-        exit_section_modified(builder, m, DECLARATIONS_AND_STATEMENTS, true);
         return true;
     }
 

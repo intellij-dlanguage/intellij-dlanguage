@@ -108,15 +108,15 @@ static this() {
     types_children["Attribute"] = ["PragmaExpression", "KW_SYNCHRONIZED","KW_ABSTRACT","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_THROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC","KW_EXPORT", "KW_PRIVATE","KW_PROTECTED","KW_PUBLIC","AlignAttribute","Deprecated","AtAttribute","KW_PACKAGE","IdentifierChain","LinkageAttribute","KW_CONST"];
     types_children["AttributeDeclaration"] = ["OP_COLON","Attribute"];
     types_children["AutoDeclaration"] = ["StorageClass*","OP_COMMA*","OP_SCOLON","AutoDeclarationPart*"];
-    types_children["BlockStatement"] = ["DeclarationsAndStatements","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
+    types_children["BlockStatement"] = ["DeclarationOrStatement*","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_extra_interfaces["BlockStatement"] = ["Statement"];
     types_children["BreakStatement"] = ["KW_BREAK","Identifier","OP_SCOLON"];
     types_children["BaseClass"] = ["TypeofExpression","OP_DOT","IdentifierOrTemplateChain"];
     types_children["BaseClassList"] = ["BaseClass*","OP_COMMA*"];
     types_children["BuiltinType"] = [/*todo add the types*/];  // UNUSED currently
-    types_children["CaseRangeStatement"] = ["KW_CASE*","OP_TRIPLEDOT","OP_COLON*","AssignExpression", "DeclarationsAndStatements"];
+    types_children["CaseRangeStatement"] = ["KW_CASE*","OP_TRIPLEDOT","OP_COLON*","AssignExpression", "DeclarationOrStatement*"];
     types_extra_interfaces["CaseRangeStatement"] = ["Statement"];
-    types_children["CaseStatement"] = ["KW_CASE","OP_COLON","ArgumentList","DeclarationsAndStatements"];
+    types_children["CaseStatement"] = ["KW_CASE","OP_COLON","ArgumentList","DeclarationOrStatement*"];
     types_extra_interfaces["CaseRangeStatement"] = ["Statement"];
     types_children["CastExpression"] = ["CastQualifier", "Type","UnaryExpression","KW_CAST","OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_children["CastQualifier"] = ["KW_IMMUTABLE","KW_CONST","KW_SHARED","KW_INOUT"];
@@ -131,8 +131,7 @@ static this() {
     types_children["DebugSpecification"] = ["KW_DEBUG","OP_EQ","Identifier", "INTEGER_LITERAL", "OP_SCOLON"];
     types_children["Declaration"] = ["AliasThisDeclaration","AliasDeclaration","ClassDeclaration","ConditionalDeclaration"/*,"Postblit"*/,"Constructor","Destructor","AnonymousEnumDeclaration","EponymousTemplateDeclaration","EnumDeclaration","ImportDeclaration","InterfaceDeclaration","MixinTemplateDeclaration","MixinDeclaration","PragmaDeclaration",  "SharedStaticConstructor", "SharedStaticDestructor","StaticConstructor","StaticDestructor","StaticAssertDeclaration","StructDeclaration","TemplateDeclaration","UnionDeclaration","Invariant","Unittest","VersionSpecification","DebugSpecification","Attribute*","Declaration*","OP_BRACES_RIGHT","OP_BRACES_LEFT","FunctionDeclaration","VariableDeclaration","AttributeDeclaration"];
     types_children["DeclarationOrStatement"] = ["DefaultStatement","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","CaseStatement","CaseRangeStatement","Declaration"];
-    types_children["DeclarationsAndStatements"] = ["DeclarationOrStatement*"];
-    types_children["DefaultStatement"] = ["KW_DEFAULT","OP_COLON","DeclarationsAndStatements"];
+    types_children["DefaultStatement"] = ["KW_DEFAULT","OP_COLON","DeclarationOrStatement*"];
     types_extra_interfaces["DefaultStatement"] = ["Statement"];
     types_children["DeleteExpression"] = ["KW_DELETE","UnaryExpression"];
     types_children["DeleteStatement"] = ["KW_DELETE"];
@@ -363,7 +362,6 @@ static this() {
     has_processDeclaration["DebugSpecification"] = false;
     has_processDeclaration["Declaration"] = true;
     has_processDeclaration["DeclarationOrStatement"] = false;
-    has_processDeclaration["DeclarationsAndStatements"] = true;
     has_processDeclaration["Declarator"] = false;
     has_processDeclaration["DefaultStatement"] = false;
     has_processDeclaration["DeleteExpression"] = false;

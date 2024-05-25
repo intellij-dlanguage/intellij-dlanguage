@@ -7,6 +7,7 @@ import com.intellij.psi.scope.PsiScopeProcessor
 import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
+import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclarationsOrStatements
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processTemplateParameters
 import io.github.intellij.dlanguage.utils.*
@@ -283,6 +284,11 @@ object ScopeProcessorImpl {
                 return false
             }
         }
+        if (element.functionBody?.specifiedFunctionBody?.blockStatement != null) {
+           if (!processDeclarationsOrStatements(element.functionBody!!.specifiedFunctionBody!!.blockStatement!!.declarationOrStatements, processor, state, lastParent, place)) {
+               return false
+           }
+        }
         return true
     }
 
@@ -555,18 +561,6 @@ object ScopeProcessorImpl {
         }
         return toContinue
     }
-
-    @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: DeclarationsAndStatements,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean {
-        if (!ScopeProcessorImplUtil.processDeclarationsOrStatements(element.declarationOrStatements, processor, state, lastParent, place))
-            return false
-        return true
-    }
-
 
     @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: Declaration,

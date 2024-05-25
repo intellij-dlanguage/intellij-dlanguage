@@ -218,10 +218,10 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
             /// Get previous  whitespace if exist as start region
             val leftEl = leftBrace.parent?.parent?.prevSibling as? PsiWhiteSpace ?: leftBrace
-            val body = block.declarationsAndStatements ?: return false
+            val body = block.declarationOrStatements ?: return false
 
-            val range1 = TextRange(leftEl.textOffset, body.textOffset)
-            val range2 = TextRange(body.textRange.endOffset, rightBrace.textRange.endOffset)
+            val range1 = TextRange(leftEl.textOffset, body.first().textOffset)
+            val range2 = TextRange(body.last().textRange.endOffset, rightBrace.textRange.endOffset)
 
             val group = FoldingGroup.newGroup("one-liner")
             descriptors += FoldingDescriptor(leftBrace.node, range1, group)
