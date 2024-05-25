@@ -163,8 +163,8 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
 
             res
         }
-        is ClassDeclaration -> listOf(psi.interfaceOrClass?.structBody)
-        is InterfaceDeclaration -> listOf(psi.interfaceOrClass?.structBody)
+        is ClassDeclaration -> listOf(psi.structBody)
+        is InterfaceDeclaration -> listOf(psi.structBody)
         is FunctionDeclaration -> listOf(psi)
         is EnumDeclaration -> listOf(psi)
         is StructDeclaration -> listOf(psi.structBody)

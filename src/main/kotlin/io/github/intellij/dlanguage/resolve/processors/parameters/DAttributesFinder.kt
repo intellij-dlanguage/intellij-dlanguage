@@ -44,9 +44,12 @@ class DAttributesFinder {
         } else if (elem is FunctionDeclaration) {
             defualts = defaultFunctionDeclaration(elem)
             directApplication = handleFunctionDeclaration(elem)
-        } else if (elem is InterfaceOrClass) {
-            defualts = defaultInterfaceOrClass(elem)
-            directApplication = handleInterfaceOrClass(elem)
+        } else if (elem is ClassDeclaration) {
+            defualts = defaultClassDeclaration(elem)
+            directApplication = handleClassDeclaration(elem)
+        } else if (elem is InterfaceDeclaration) {
+            defualts = defaultInterfaceDeclaration(elem)
+            directApplication = handleInterfaceDeclaration(elem)
         } else if (elem is UnionDeclaration) {
             defualts = defaultUnionDeclaration(elem)
             directApplication = handleUnionDeclaration(elem)
@@ -489,12 +492,32 @@ class DAttributesFinder {
         return attribs
     }
 
-    fun handleInterfaceOrClass(interfaceOrClass: InterfaceOrClass): DirectApplication {
-        val decl = interfaceOrClass.parent.parent as Declaration
+    fun handleClassDeclaration(classDeclaration: ClassDeclaration): DirectApplication {
+        val decl = classDeclaration.parent as Declaration
         return updateFromParentDecl(decl)
     }
 
-    fun defaultInterfaceOrClass(interfaceOrClass: InterfaceOrClass): DefaultAttributes {
+    fun handleInterfaceDeclaration(interfaceDeclaration: InterfaceDeclaration): DirectApplication {
+        val decl = interfaceDeclaration.parent as Declaration
+        return updateFromParentDecl(decl)
+    }
+
+    fun defaultClassDeclaration(classDeclaration: ClassDeclaration): DefaultAttributes {
+        return DefaultAttributes(
+            static = true,
+            visibility = Visibility.PUBLIC,
+            property = false,
+            noGC = false,
+            //Not extern by default I believe
+            extern = false,
+            pure = false,
+            nothrow = false,
+            const = false,
+            immutable = false
+        )
+    }
+
+    fun defaultInterfaceDeclaration(interfaceDeclaration: InterfaceDeclaration): DefaultAttributes {
         return DefaultAttributes(
             static = true,
             visibility = Visibility.PUBLIC,

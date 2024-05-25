@@ -32,13 +32,13 @@ object ScopeProcessorImplUtil {
         if (def.aliasThisDeclaration != null) {
             return true
         }
-        if (def.classDeclaration?.interfaceOrClass?.structBody?.declarations != null) {
-            for (declaration in def.classDeclaration!!.interfaceOrClass!!.structBody!!.declarations) {
+        if (def.classDeclaration?.structBody?.declarations != null) {
+            for (declaration in def.classDeclaration!!.structBody!!.declarations) {
                 if (!processDeclaration(declaration, processor, state, lastParent, place)) {
                     toContinue = false
                 }
             }
-            if (!processor.execute(def.classDeclaration!!.interfaceOrClass!!, state)) {
+            if (!processor.execute(def.classDeclaration!!, state)) {
                 return false
             }
             return toContinue
@@ -87,14 +87,14 @@ object ScopeProcessorImplUtil {
             return toContinue
         }
         if (def.interfaceDeclaration != null) {
-            if (def.interfaceDeclaration!!.interfaceOrClass?.structBody != null) {
-                for (d in def.interfaceDeclaration!!.interfaceOrClass?.structBody!!.declarations) {
+            if (def.interfaceDeclaration!!.structBody != null) {
+                for (d in def.interfaceDeclaration!!.structBody!!.declarations) {
                     if (!processDeclaration(d, processor, state, lastParent, place)) {
                         toContinue = false
                     }
                 }
             }
-            if (!processor.execute(def.interfaceDeclaration!!.interfaceOrClass!!, state)) {
+            if (!processor.execute(def.interfaceDeclaration!!, state)) {
                 toContinue = false
             }
             return toContinue

@@ -9179,93 +9179,77 @@ class DLangParser {
     }
 
     boolean parseInterfaceOrClass() {
-        final Marker m = enter_section_(builder);
         final IElementType ident = expect(ID);
         if (ident == null) {
-            cleanup(m, INTERFACE_OR_CLASS);
             return false;
         }
         if (currentIs(OP_SCOLON)) {
-            return emptyBody(m);
+            return emptyBody();
         }
         if (currentIs(OP_BRACES_LEFT)) {
-            return structBody(m);
+            return parseStructBody();
         }
         if (currentIs(OP_PAR_LEFT)) {
             if (!parseTemplateParameters()) {
-                cleanup(m, INTERFACE_OR_CLASS);
                 return false;
             }
             if (currentIs(OP_SCOLON)) {
-                return emptyBody(m);
+                return emptyBody();
             }
-            return constraint(m, false);
+            return constraint(false);
         }
         if (currentIs(OP_COLON)) {
-            return baseClassList(m);
+            return baseClassList();
         }
-        return structBody(m);
+        return parseStructBody();
 
     }
 
-    private boolean emptyBody(final Marker m) {
+    private boolean emptyBody() {
         advance();
-        exit_section_(builder, m, INTERFACE_OR_CLASS, true);
         return true;
     }
 
-    private boolean structBody(final Marker m) {
-        final boolean res = parseStructBody();
-        if (res) {
-            exit_section_(builder, m, INTERFACE_OR_CLASS, true);
-        } else
-            cleanup(m, INTERFACE_OR_CLASS);
-        return res;
-    }
-
-    private boolean baseClassList(final Marker m) {
+    private boolean baseClassList() {
         advance(); // :
         if (!parseBaseClassList()) {
-            cleanup(m, INTERFACE_OR_CLASS);
             return false;
         }
         if (currentIs(KW_IF)) {
-            return constraint(m, true);
+            return constraint(true);
         }
-        return structBody(m);
+        return parseStructBody();
     }
 
-    private boolean constraint(final Marker m, final boolean baseClassListQ) {
+    private boolean constraint(final boolean baseClassListQ) {
         if (currentIs(KW_IF)) {
             if (!parseConstraint()) {
-                cleanup(m, INTERFACE_OR_CLASS);
                 return false;
             }
         }
         if (baseClassListQ) {
             if (currentIs(OP_BRACES_LEFT)) {
-                return structBody(m);
+                return parseStructBody();
             } else if (currentIs(OP_SCOLON)) {
-                return emptyBody(m);
+                return emptyBody();
             } else {
                 error("Struct body or ';' expected");
-                cleanup(m, INTERFACE_OR_CLASS);
                 return false;
             }
         }
         if (currentIs(OP_COLON)) {
-            return baseClassList(m);
+            return baseClassList();
         }
         if (currentIs(KW_IF)) {
-            return constraint(m, baseClassListQ);
+            return constraint(baseClassListQ);
         }
         if (currentIs(OP_SCOLON)) {
-            return emptyBody(m);
+            return emptyBody();
         }
         if (currentIs(OP_COLON)) {
-            return baseClassList(m);
+            return baseClassList();
         }
-        return structBody(m);
+        return parseStructBody();
     }
 
     private boolean parseName(final String NodeName) {

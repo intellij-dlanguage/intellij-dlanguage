@@ -15,8 +15,10 @@ public class DElementTypeFactory {
                 return new IdentifierStubElementType(name);
             case "FUNCTION_DECLARATION":
                 return new FunctionDeclarationStubElementType(name);
-            case "INTERFACE_OR_CLASS":
-                return new InterfaceOrClassStubElementType(name);
+            case "CLASS_DECLARATION":
+                return new ClassDeclarationStubElementType(name);
+            case "INTERFACE_DECLARATION":
+                return new InterfaceDeclarationStubElementType(name);
             case "TEMPLATE_DECLARATION":
                 return new DlangTemplateDeclarationStubElementType(name);
             case "CONSTRUCTOR":

@@ -5,7 +5,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.impl.named.DlangInterfaceOrClassImpl
+import io.github.intellij.dlanguage.psi.impl.named.DlangClassDeclarationImpl
 import io.github.intellij.dlanguage.psi.impl.named.DlangStructDeclarationImpl
 import io.github.intellij.dlanguage.psi.impl.named.DlangUnionDeclarationImpl
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
@@ -23,7 +23,7 @@ class EnumArrayLiteralsInClassDeclaration : LocalInspectionTool() {
 }
 
 class EnumArrayLiteralsInClassDeclarationVisitor(val holder: ProblemsHolder) : DlangVisitor() {
-    override fun visitInterfaceOrClass(o: DlangInterfaceOrClassImpl) {
+    override fun visitInterfaceOrClass(o: DlangClassDeclarationImpl) {
         checkForEnumLiterals(o)
     }
 

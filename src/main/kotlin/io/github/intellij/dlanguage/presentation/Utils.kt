@@ -60,7 +60,6 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
         }
     }
     is Constructor -> DLanguage.Icons.NODE_METHOD
-    is InterfaceOrClass -> getPresentationIcon(psi.parent)
     is EnumDeclaration -> DLanguage.Icons.NODE_ENUM
     is StructDeclaration -> DLanguage.Icons.NODE_STRUCT
     is UnionDeclaration -> DLanguage.Icons.NODE_UNION
@@ -99,7 +98,6 @@ fun psiElementIsMethod(psi: PsiElement?): Boolean {
 
     while (parent != null) {
         val isMethod = when (parent) {
-            is InterfaceOrClass -> true
             is StructDeclaration -> true
             is UnionDeclaration -> true
             else -> false
@@ -137,7 +135,8 @@ fun psiElementGetVisibility(psi: PsiElement?): Visibility {
         }
 
         when (psi) {
-            is InterfaceOrClass -> return Visibility.PUBLIC
+            is ClassDeclaration -> return Visibility.PUBLIC
+            is InterfaceDeclaration -> return Visibility.PUBLIC
             is StructDeclaration -> return Visibility.PUBLIC
             is EnumDeclaration -> return Visibility.PUBLIC
             is UnionDeclaration -> return Visibility.PUBLIC

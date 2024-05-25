@@ -117,7 +117,29 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: InterfaceOrClass,
+    fun processDeclarations(element: ClassDeclaration,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement,
+                            place: PsiElement): Boolean {
+        var toContinue = true
+        if (element.templateParameters != null) {
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+                toContinue = false
+            }
+        }
+        if (element.structBody?.declarations != null) {
+            for (declaration in element.structBody?.declarations!!) {
+                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+        }
+        return toContinue
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun processDeclarations(element: InterfaceDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,

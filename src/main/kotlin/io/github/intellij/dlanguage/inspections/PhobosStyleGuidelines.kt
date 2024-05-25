@@ -45,7 +45,7 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
         checkName("Function", StringUtil.decapitalize(o.name), o.nameIdentifier!!, varFunNameRegex)
     }
 
-    override fun visitInterfaceOrClass(o: DlangInterfaceOrClassImpl) {
+    override fun visitInterfaceOrClass(o: DlangClassDeclarationImpl) {
         val type: String
         if (o.parent is ClassDeclaration)
             type = "Class"

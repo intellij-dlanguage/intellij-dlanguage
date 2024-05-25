@@ -10,7 +10,8 @@ import io.github.intellij.dlanguage.psi.impl.named.*;
 public interface DlangTypes {
     IElementType IDENTIFIER = DElementTypeFactory.factory("IDENTIFIER");
     IElementType FUNCTION_DECLARATION = DElementTypeFactory.factory("FUNCTION_DECLARATION");
-    IElementType INTERFACE_OR_CLASS = DElementTypeFactory.factory("INTERFACE_OR_CLASS");
+    IElementType CLASS_DECLARATION =DElementTypeFactory.factory("CLASS_DECLARATION");
+    IElementType INTERFACE_DECLARATION = DElementTypeFactory.factory("INTERFACE_DECLARATION");
     IElementType TEMPLATE_DECLARATION = DElementTypeFactory.factory("TEMPLATE_DECLARATION");
     IElementType CONSTRUCTOR = DElementTypeFactory.factory("CONSTRUCTOR");
     IElementType DESTRUCTOR = DElementTypeFactory.factory("DESTRUCTOR");
@@ -91,7 +92,6 @@ public interface DlangTypes {
     DlangElementType CONDITIONAL_STATEMENT = new DlangElementType("CONDITIONAL_STATEMENT");
     DlangElementType CONSTRAINT = new DlangElementType("CONSTRAINT");
     DlangElementType CONTINUE_STATEMENT = new DlangElementType("CONTINUE_STATEMENT");
-    DlangElementType CLASS_DECLARATION = new DlangElementType("CLASS_DECLARATION");
     DlangElementType DEBUG_CONDITION = new DlangElementType("DEBUG_CONDITION");
     DlangElementType DEBUG_SPECIFICATION = new DlangElementType("DEBUG_SPECIFICATION");
     DlangElementType DECLARATION = new DlangElementType("DECLARATION");
@@ -134,7 +134,6 @@ public interface DlangTypes {
     DlangElementType INDEX = new DlangElementType("INDEX");
     DlangElementType INDEX_EXPRESSION = new DlangElementType("INDEX_EXPRESSION");
     DlangElementType INITIALIZER = new DlangElementType("INITIALIZER");
-    DlangElementType INTERFACE_DECLARATION = new DlangElementType("INTERFACE_DECLARATION");
     DlangElementType INVARIANT = new DlangElementType("INVARIANT");
     DlangElementType IS_EXPRESSION = new DlangElementType("IS_EXPRESSION");
     DlangElementType KEY_VALUE_PAIR = new DlangElementType("KEY_VALUE_PAIR");
@@ -825,13 +824,11 @@ public interface DlangTypes {
             } else if (type == ADD_EXPRESSION) {
                 return new DLanguageAddExpressionImpl(node);
             } else if (type == CLASS_DECLARATION) {
-                return new DLanguageClassDeclarationImpl(node);
+                return new DlangClassDeclarationImpl(node);
             } else if (type == UNITTEST) {
                 return new DlangUnittestImpl(node);
-            } else if (type == INTERFACE_OR_CLASS) {
-                return new DlangInterfaceOrClassImpl(node);
             } else if (type == INTERFACE_DECLARATION) {
-                return new DLanguageInterfaceDeclarationImpl(node);
+                return new DlangInterfaceDeclarationImpl(node);
             } else if (type == IF_CONDITION) {
                 return new DLanguageIfConditionImpl(node);
             } else if (type == BUILTIN_TYPE) {

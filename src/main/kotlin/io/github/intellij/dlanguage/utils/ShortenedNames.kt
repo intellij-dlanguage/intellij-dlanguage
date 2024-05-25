@@ -7,8 +7,7 @@ import io.github.intellij.dlanguage.psi.named.*
  * Created by francis on 6/13/2017.
  */
 //typealias AliasDeclaration = DLanguageAliasDeclaration\
-typealias InterfaceOrClass = DlangInterfaceOrClass
-typealias ClassDeclaration = io.github.intellij.dlanguage.psi.DLanguageClassDeclaration
+typealias ClassDeclaration = DlangClassDeclaration
 typealias Constructor = DlangConstructor
 typealias Destructor = DlangDestructor
 typealias EnumDeclaration = DlangEnumDeclaration
@@ -16,7 +15,7 @@ typealias EnumMember = DlangEnumMember
 typealias ForeachType = DlangForeachType
 typealias Identifier = DlangIdentifier
 typealias SingleImport = DlangSingleImport
-typealias InterfaceDeclaration = io.github.intellij.dlanguage.psi.DLanguageInterfaceDeclaration
+typealias InterfaceDeclaration = DlangInterfaceDeclaration
 typealias LabeledStatement = io.github.intellij.dlanguage.psi.DLanguageLabeledStatement
 typealias ModuleDeclaration = DlangModuleDeclaration
 typealias Parameter = DlangParameter

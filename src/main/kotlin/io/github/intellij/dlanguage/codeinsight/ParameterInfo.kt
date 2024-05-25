@@ -9,7 +9,6 @@ import io.github.intellij.dlanguage.psi.DLanguageFunctionCallExpression
 import io.github.intellij.dlanguage.psi.references.DReference
 import io.github.intellij.dlanguage.resolve.DResolveUtil
 import io.github.intellij.dlanguage.utils.*
-import kotlin.streams.toList
 
 private fun removeParentheses(parameterText: String): String {
     var text = parameterText
@@ -116,7 +115,7 @@ class ConstructorParameterInfo : ParameterInfoHandler<NewExpression, Parameters>
             return
         }
         val definitionNodes = DResolveUtil.getInstance(newExpression.project).findDefinitionNode(reference.element, false)
-        val classDecls: List<InterfaceOrClass> = definitionNodes.filter { it.parent is ClassDeclaration }.filterIsInstance(InterfaceOrClass::class.java)
+        val classDecls: List<ClassDeclaration> = definitionNodes.filterIsInstance(ClassDeclaration::class.java)
         val constructors = classDecls.flatMap { it.structBody?.declarations.orEmpty() }.map { it.constructor }.filterNotNull()
         context.itemsToShow = constructors.flatMap { findChildrenOfType(it, Parameters::class.java) }.filterNotNull().toTypedArray()
         context.showHint(newExpression, 0, this)

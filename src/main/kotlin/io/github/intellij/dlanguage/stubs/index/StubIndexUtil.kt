@@ -2,11 +2,9 @@ package io.github.intellij.dlanguage.stubs.index
 
 import com.intellij.psi.stubs.NamedStubBase
 import com.intellij.psi.stubs.StubElement
-import io.github.intellij.dlanguage.psi.DLanguageAnonymousEnumDeclaration
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.stubs.*
 import io.github.intellij.dlanguage.stubs.interfaces.DlangUnittestStub
-import io.github.intellij.dlanguage.utils.EnumMember
 
 /**
  * Created by francis on 8/8/2017.
@@ -37,7 +35,7 @@ fun <S : NamedStubBase<T>, T : DNamedElement> topLevelDeclaration(stub: S): Bool
         if (stubParent is DlangConstructorStub || stubParent is DlangSharedStaticConstructorStub || stubParent is DlangStaticConstructorStub || stubParent is DlangDestructorStub || stubParent is DlangSharedStaticDestructorStub || stubParent is DlangStaticDestructorStub) {
             return false
         }
-        if (stubParent is DlangStructDeclarationStub || stubParent is DlangInterfaceOrClassStub) {
+        if (stubParent is DlangStructDeclarationStub || stubParent is DlangInterfaceDeclarationStub || stubParent is DlangClassDeclarationStub) {
             return false
         }
         if (stubParent is DlangUnittestStub) {

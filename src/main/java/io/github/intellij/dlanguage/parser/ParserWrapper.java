@@ -23,8 +23,6 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
         final DLangParser parser = new DLangParser(builder);
         if (type == DlangTypes.FUNCTION_DECLARATION) {
             result = parser.parseFunctionDeclaration();
-        } else if (type == DlangTypes.INTERFACE_OR_CLASS) {
-            result = parser.parseInterfaceOrClass();
         } else if (type == DlangTypes.TEMPLATE_DECLARATION) {
             result = parser.parseTemplateDeclaration();
         } else if (type == DlangTypes.CONSTRUCTOR) {

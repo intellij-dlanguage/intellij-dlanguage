@@ -22,6 +22,7 @@ string[] named_children = [
     "AliasInitializer",
     "AutoDeclarationPart",
     "Catch",
+    "ClassDeclaration",
     "Constructor",
     "Declarator",
     "DeclaratorIdentifier",
@@ -33,7 +34,7 @@ string[] named_children = [
     "FunctionDeclaration",
     "Identifier",
     "IfCondition",
-    "InterfaceOrClass",
+    "InterfaceDeclaration",
     "LabeledStatement",
     "ModuleDeclaration",
     "NamedImportBind",
@@ -114,7 +115,6 @@ static this() {
     types_children["CastExpression"] = ["CastQualifier", "Type","UnaryExpression","KW_CAST","OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_children["CastQualifier"] = ["KW_IMMUTABLE","KW_CONST","KW_SHARED","KW_INOUT"];
     types_children["Catches"] = ["LastCatch","Catch"];
-    types_children["ClassDeclaration"] = ["KW_CLASS","InterfaceOrClass"/*"Identifier","OP_SCOLON","OP_COLON","StructBody","TemplateParameters","Constraint","BaseClassList"*/];
     types_children["CmpExpression"] = ["ShiftExpression","EqualExpression","IdentityExpression","RelExpression","InExpression"];
     types_children["CompileCondition"] = [ "VersionCondition",  "DebugCondition",  "StaticIfCondition"];
     types_children["ConditionalDeclaration"] = ["CompileCondition", "Declaration*","OP_COLON","KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
@@ -168,7 +168,6 @@ static this() {
     types_children["InOutStatement"] = ["InStatement", "OutStatement"];
     types_children["InStatement"] = ["KW_IN","BlockStatement"];
     types_children["Initializer"] = ["KW_VOID","NonVoidInitializer"];
-    types_children["InterfaceDeclaration"] = ["KW_INTERFACE","InterfaceOrClass"];
     types_children["Invariant"] = ["BlockStatement","KW_INVARIANT","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["IsExpression"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","Type","Identifier","TypeSpecialization","TemplateParameterList","OP_COMMA","OP_COLON","OP_EQ","KW_IS"];//todo technically this should be named
     types_children["KeyValuePair"] = ["AssignExpression*","OP_COLON"];
@@ -332,7 +331,7 @@ static this() {
     has_processDeclaration["CastQualifier"] = false;
     has_processDeclaration["Catch"] = true;
     has_processDeclaration["Catches"] = false;
-    has_processDeclaration["ClassDeclaration"] = false;
+    //has_processDeclaration["ClassDeclaration"] = true;
     has_processDeclaration["CmpExpression"] = false;
     has_processDeclaration["CompileCondition"] = false;
     has_processDeclaration["ConditionalDeclaration"] = true;
@@ -391,8 +390,7 @@ static this() {
     has_processDeclaration["InContractExpression"] = false;
     has_processDeclaration["InStatement"] = false;
     has_processDeclaration["Initializer"] = false;
-    has_processDeclaration["InterfaceDeclaration"] = false;
-//    has_processDeclaration["InterfaceOrClass"] = true;
+    //has_processDeclaration["InterfaceDeclaration"] = true;
     has_processDeclaration["Invariant"] = false;
     has_processDeclaration["IsExpression"] = true;
     has_processDeclaration["KeyValuePair"] = false;

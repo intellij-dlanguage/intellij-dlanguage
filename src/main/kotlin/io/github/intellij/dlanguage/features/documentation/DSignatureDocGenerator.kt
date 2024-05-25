@@ -39,7 +39,8 @@ class DSignatureDocGenerator {
             is UnionDeclaration -> appendUnionSignature(builder, element)
             is MixinTemplateDeclaration -> appendMixinTemplateDeclaration(builder, element)
             is TemplateDeclaration -> appendTemplateDeclaration(builder, element)
-            is InterfaceOrClass -> appendInterfaceOrClassSignature(builder, element)
+            is InterfaceDeclaration -> appendInterfaceSignature(builder, element)
+            is ClassDeclaration -> appendClassSignature(builder, element)
             is Parameter -> appendParameterSignature(builder, element)
             is Declarator -> {
                 appendType(builder, (element.parent as VariableDeclaration).type)
@@ -131,9 +132,22 @@ class DSignatureDocGenerator {
         builder.append(" ").append(element.identifier?.text)
     }
 
-    private fun appendInterfaceOrClassSignature(builder: StringBuilder, element: InterfaceOrClass) {
-        val type: String = if (element.parent is InterfaceDeclaration) "interface" else "class"
-        HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, type, highlightingSaturation)
+    private fun appendClassSignature(builder: StringBuilder, element: ClassDeclaration) {
+        HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, "class", highlightingSaturation)
+        builder.append(" ")
+        builder.append(element.identifier?.text)
+        builder.append(" ")
+        if (element.templateParameters != null) {
+            appendTemplateParameters(builder, element.templateParameters!!)
+        }
+        if (element.baseClassList?.baseClasss?.isNotEmpty() == true) {
+            builder.append(": ")
+            builder.append(element.baseClassList?.baseClasss?.joinToString(", ") { it.text })
+        }
+    }
+
+    private fun appendInterfaceSignature(builder: StringBuilder, element: InterfaceDeclaration) {
+        HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, "interface", highlightingSaturation)
         builder.append(" ")
         builder.append(element.identifier?.text)
         builder.append(" ")

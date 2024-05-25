@@ -61,12 +61,12 @@ class DResolveUtil private constructor(val project: Project) {
                 return potential
             }
             // No constructor found, so point to the class/struct itself
-            val result = basicResolveResult.filter { it is InterfaceOrClass || it is StructDeclaration}.toSet()
-            if (result.size != 1 || result.first().parent !is ClassDeclaration) {
+            val result = basicResolveResult.filter { it is ClassDeclaration || it is StructDeclaration}.toSet()
+            if (result.size != 1 || result.first() !is ClassDeclaration) {
                 return result
             }
             // If it was a class definition, search for his constructors if any
-            val constructors = (result.first() as InterfaceOrClass).structBody?.declarations?.mapNotNull { it.constructor }
+            val constructors = (result.first() as ClassDeclaration).structBody?.declarations?.mapNotNull { it.constructor }
             return if (constructors?.isNotEmpty() == true) constructors.toSet() else result
         }
 
@@ -124,7 +124,7 @@ class DResolveUtil private constructor(val project: Project) {
         if (parent is VersionCondition && versionIdentifiers.contains(name)) return true
         if (parent is LinkageAttribute && externAttributeIdentifiers.contains(name)) return true
         if (parent is TraitsExpression && traitsIdentifiers.contains(name)) return true
-        if (parent is FunctionDeclaration || parent is InterfaceOrClass || parent is StructDeclaration ||
+        if (parent is FunctionDeclaration || parent is ClassDeclaration || parent is InterfaceDeclaration || parent is StructDeclaration ||
             parent is UnionDeclaration || parent is EnumDeclaration || parent is EnumMember ||
             parent is AutoDeclarationPart || parent is Declarator || parent is TemplateDeclaration ||
             parent is Catch || parent is NamedImportBind) return true

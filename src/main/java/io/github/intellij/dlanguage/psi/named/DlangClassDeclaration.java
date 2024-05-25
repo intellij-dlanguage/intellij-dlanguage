@@ -9,14 +9,17 @@ import io.github.intellij.dlanguage.psi.DLanguageConstraint;
 import io.github.intellij.dlanguage.psi.DLanguageStructBody;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
-import io.github.intellij.dlanguage.stubs.DlangInterfaceOrClassStub;
+import io.github.intellij.dlanguage.stubs.DlangClassDeclarationStub;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DlangInterfaceOrClass extends PsiElement, DNamedElement, StubBasedPsiElement<DlangInterfaceOrClassStub>, HasMembers<DlangInterfaceOrClassStub> {
+public interface DlangClassDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangClassDeclarationStub>, HasMembers<DlangClassDeclarationStub> {
+    @Nullable
+    PsiElement getKW_CLASS();
+
     @Nullable
     DlangIdentifier getIdentifier();
 

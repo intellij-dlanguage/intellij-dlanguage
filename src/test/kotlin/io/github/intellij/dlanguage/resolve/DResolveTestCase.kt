@@ -9,8 +9,8 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.PsiManagerEx
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
-import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration
 import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
+import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration
 import io.github.intellij.dlanguage.psi.named.DlangConstructor
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier
@@ -75,9 +75,9 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
             resolvedElement = ref.element.parent
         }
         //if we're resolving something within a class don't resolve the class
-        if (ref is PsiMultiReference && resolvedElement is DLanguageClassDeclaration) {
+        if (ref is PsiMultiReference && resolvedElement is DlangClassDeclaration) {
             for (psiReference in ref.references) {
-                if (psiReference.element !is DLanguageClassDeclaration) {
+                if (psiReference.element !is DlangClassDeclaration) {
                     resolvedElement = psiReference.element
                 }
             }

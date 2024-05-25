@@ -200,7 +200,7 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitClassDeclaration(@NotNull final DLanguageClassDeclarationImpl o) {
+    public void visitClassDeclaration(@NotNull final DlangClassDeclarationImpl o) {
         visitPsiElement(o);
     }
 
@@ -441,7 +441,7 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitInterfaceDeclaration(@NotNull final DLanguageInterfaceDeclarationImpl o) {
+    public void visitInterfaceDeclaration(@NotNull final DlangInterfaceDeclarationImpl o) {
         visitPsiElement(o);
     }
 
@@ -909,7 +909,7 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitInterfaceOrClass(@NotNull final DlangInterfaceOrClassImpl o) {
+    public void visitInterfaceOrClass(@NotNull final DlangClassDeclarationImpl o) {
         visitPsiElement(o);
     }
 
