@@ -9185,22 +9185,21 @@ class DLangParser {
         if (builder.eof())
             return null;
         int depth = 1;
-        int i = 1;
-        IElementType token = builder.lookAhead(i);
-        while (token != null) {
-            if (token == o) {
+        var marker = builder.mark();
+        builder.advanceLexer();
+        while (builder.getTokenType() != null) {
+            if (builder.getTokenType() == o) {
                 ++depth;
-                ++i;
-            } else if (token == c) {
+            } else if (builder.getTokenType() == c) {
                 --depth;
-                ++i;
-                if (depth <= 0)
-                    break;
-            } else
-                ++i;
-            token = builder.lookAhead(i);
+            }
+            builder.advanceLexer();
+            if (depth <= 0)
+                break;
         }
-        return depth == 0 ? builder.lookAhead(i) : null;
+        var token = builder.getTokenType();
+        marker.rollbackTo();
+        return depth == 0 ? token : null;
     }
 
     private IElementType peekPastParens() {
