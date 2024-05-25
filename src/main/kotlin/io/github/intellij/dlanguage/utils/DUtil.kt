@@ -66,14 +66,14 @@ object DUtil {
      * @return the class or struct containing this constructor/method. returns null if not found
      */
     @JvmStatic
-    fun getParentClassOrStructOrTemplateOrInterfaceOrUnion(namedElement: PsiElement?): DNamedElement {
+    fun getParentClassOrStructOrTemplateOrInterfaceOrUnion(namedElement: PsiElement?): DNamedElement? {
         return PsiTreeUtil.getParentOfType(
             namedElement,
             DlangInterfaceOrClass::class.java,
             DlangStructDeclaration::class.java,
             DlangTemplateDeclaration::class.java,
             DlangUnionDeclaration::class.java
-        )!!
+        )
     }
 
     fun getPrevSiblingOfType(
