@@ -114,14 +114,7 @@ class DLangParser {
     private final Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
     private final Map<Integer, Boolean> cachedTypedChecks = new HashMap<>();
 
-    // private final HashMap<Marker, Integer> beginnings = new HashMap<>();//todo this maybe useful in the future but commented out for now
-    // private Bookmark debugBookmark = null;//used to be able to eval expressions while debugging and then rollback side effects
-
-    private int errorCount;
-    private int warningCount;
-    private IElementType[] tokens;
     private ArrayList<Integer> suppressMessages;
-    private int index;
 
 
     private int suppressedErrorCount() {
@@ -129,11 +122,7 @@ class DLangParser {
     }
 
     DLangParser(@NotNull final PsiBuilder builder) {
-        this.errorCount = 0;
-        this.warningCount = 0;
-        this.tokens = getTokens(builder);
         this.suppressMessages = new ArrayList<>();
-        this.index = 0;
         this.builder = builder;
     }
 
@@ -425,28 +414,7 @@ class DLangParser {
         }
     }
 
-    private IElementType[] getTokens(@NotNull final PsiBuilder builder) {
-        final Marker tokenRollBackMark = builder.mark();
-        final ArrayList<IElementType> tokens = new ArrayList<>();
-
-        do {
-            @Nullable final IElementType tokenType = builder.getTokenType();
-
-            if(tokenType != null) {
-                tokens.add(tokenType);
-            }
-
-            builder.advanceLexer();
-        } while (!builder.eof());
-
-        tokenRollBackMark.rollbackTo();
-
-        return tokens.toArray(new IElementType[0]);
-    }
-
     private void cleanup(@NotNull final Marker marker, final IElementType element) {
-////        index = beginnings.get(marker);
-////        beginnings.remove(marker);
         exit_section_modified(builder, marker, element, true);
     }
 
@@ -2341,7 +2309,6 @@ class DLangParser {
 
     private Marker enter_section_modified(final PsiBuilder builder) {
         final Marker marker = enter_section_(builder);
-//        beginnings.put(marker, index);
         return marker;
     }
 
@@ -2736,7 +2703,7 @@ class DLangParser {
             final Pair<DecType, Integer> pair = isAutoDeclaration();
             final int autoStorageClassStart = pair.second;
             isAuto = pair.first;
-            if (isAuto != DecType.other && index == autoStorageClassStart)
+            if (isAuto != DecType.other && builder.getCurrentOffset() == autoStorageClassStart)
                 break;
             if (!isAttribute())
                 break;
@@ -7464,10 +7431,10 @@ class DLangParser {
      */
     boolean parseTemplateArgument() {
         final Marker m = enter_section_modified(builder);
-        int startIndex = index;
-        boolean p = cachedTypedChecks.containsKey(index);
+        int startIndex = builder.getCurrentOffset();
+        boolean p = cachedTypedChecks.containsKey(startIndex);
         if (p) {
-            if (cachedTypedChecks.get(index)) {
+            if (cachedTypedChecks.get(startIndex)) {
                 parseType();
             }
             else {
@@ -8839,22 +8806,17 @@ class DLangParser {
             OP_XOR);
         if (!toParseExpression.element) {
             marker.drop();
-//            beginnings.remove(marker);
             return b;
         }
         exit_section_modified(builder, marker, XOR_EXPRESSION, b);
         return b;
     }
 
-    void setTokens(final IElementType[] tokens) {
-        this.tokens = tokens;
-    }
-
     /**
      * Returns: true if there are more tokens
      */
     boolean moreTokens() {
-        return index < tokens.length;
+        return !builder.eof();
     }
 
     boolean isCastQualifier() {
@@ -8881,9 +8843,9 @@ class DLangParser {
     }
 
     boolean isAssociativeArrayLiteral() {
-        if (cachedAAChecks.containsKey(index))
-            return cachedAAChecks.get(index);
-        int currentIndex = index;
+        if (cachedAAChecks.containsKey(builder.getCurrentOffset()))
+            return cachedAAChecks.get(builder.getCurrentOffset());
+        int currentIndex = builder.getCurrentOffset();
         final Bookmark b = setBookmark();
         advance();
         final boolean result = !currentIs(OP_BRACKET_RIGHT) && parseExpression() && currentIs(OP_COLON);
@@ -8913,7 +8875,7 @@ class DLangParser {
                 beginIndex = Integer.MAX_VALUE;
                 advance();
             } else if (i.equals(OP_AT)) {
-                beginIndex = Math.min(beginIndex, index);
+                beginIndex = Math.min(beginIndex, builder.getCurrentOffset());
                 advance();
                 if (currentIs(OP_PAR_LEFT))
                     skipParens();
@@ -8933,7 +8895,7 @@ class DLangParser {
                     return new Pair<>(DecType.other, beginIndex);
                 }
             } else if (i.equals(KW_DEPRECATED) || i.equals(KW_ALIGN) || i.equals(KW_EXTERN)) {
-                beginIndex = Math.min(beginIndex, index);
+                beginIndex = Math.min(beginIndex, builder.getCurrentOffset());
                 advance();
                 if (currentIs(OP_PAR_LEFT))
                     skipParens();
@@ -8942,18 +8904,18 @@ class DLangParser {
                     goToBookmark(b);
                     return new Pair<>(DecType.other, beginIndex);
                 } else {
-                    beginIndex = Math.min(beginIndex, index);
+                    beginIndex = Math.min(beginIndex, builder.getCurrentOffset());
                     advance();
                     break;
                 }
             } else if (i.equals(KW_AUTO) || i.equals(KW_ENUM) || i.equals(KW_EXPORT) || i.equals(KW_FINAL) || i.equals(KW___GSHARED) || i.equals(KW_NOTHROW) || i.equals(KW_OVERRIDE) || i.equals(KW_PURE) || i.equals(KW_REF) || i.equals(KW_SCOPE) || i.equals(KW_SHARED) || i.equals(KW_STATIC)) {
-                beginIndex = Math.min(beginIndex, index);
+                beginIndex = Math.min(beginIndex, builder.getCurrentOffset());
                 advance();
             } else {
                 break loop;
             }
         }
-        if (index <= b.intValue()) {
+        if (builder.getCurrentOffset() <= b.intValue()) {
             goToBookmark(b);
             return new Pair<>(DecType.other, beginIndex);
         }
@@ -9173,25 +9135,10 @@ class DLangParser {
     private void warn(final String message) {
         if (!suppressMessages.isEmpty())
             return;
-        ++warningCount;
-        //do nothing, potential add as an error.
-//            auto column = index < tokens.length ? tokens[index].column : 0;
-//            auto line = index < tokens.length ? tokens[index].line : 0;
-//            if (messageFunction == null)
-//            stderr.writefln("%s(%d:%d)[warn]: %s", fileName, line, column, message);
-//        else
-//            messageFunction(fileName, line, column, message, false);
     }
 
     private void error(final String message) {
         if (suppressMessages.isEmpty()) {
-            ++errorCount;
-//                auto column = index < tokens.length ? tokens[index].column : tokens[$ - 1].column;
-//                auto line = index < tokens.length ? tokens[index].line : tokens[$ - 1].line;
-//                if (messageFunction == null)
-//                stderr.writefln("%s(%d:%d)[error]: %s", fileName, line, column, message);
-//            else
-//                messageFunction(fileName, line, column, message, true);
             builder.error(message);
         } else
             suppressMessages.set(suppressMessages.size() - 1, suppressMessages.get(suppressMessages.size() - 1) + 1);
@@ -9211,22 +9158,18 @@ class DLangParser {
         advance();
         int depth = 1;
         while (moreTokens()) {
-            if (tokens[index].equals(c)) {
+            if (builder.getTokenType() == c) {
                 advance();
                 depth--;
                 if (depth <= 0)
                     return;
-            } else if (tokens[index].equals(o)) {
+            } else if (builder.getTokenType() == o) {
                 depth++;
                 advance();
             } else {
                 advance();
             }
         }
-    }
-
-    void skipBraces() {
-        skip(OP_BRACES_LEFT, OP_BRACES_RIGHT);
     }
 
     private void skipParens() {
@@ -9237,30 +9180,26 @@ class DLangParser {
         skip(OP_BRACKET_LEFT, OP_BRACKET_RIGHT);
     }
 
-    IElementType peek() {
-        return index + 1 < tokens.length ? tokens[index + 1] : null;
-    }
-
     private IElementType peekPast(final IElementType o, final IElementType c)//(alias O, alias C)
     {
-        if (index >= tokens.length)
+        if (builder.eof())
             return null;
         int depth = 1;
-        int i = index;
-        ++i;
-        while (i < tokens.length) {
-            if (tokens[i].equals(o)) {
+        var marker = builder.mark();
+        builder.advanceLexer();
+        while (builder.getTokenType() != null) {
+            if (builder.getTokenType() == o) {
                 ++depth;
-                ++i;
-            } else if (tokens[i].equals(c)) {
+            } else if (builder.getTokenType() == c) {
                 --depth;
-                ++i;
-                if (depth <= 0)
-                    break;
-            } else
-                ++i;
+            }
+            builder.advanceLexer();
+            if (depth <= 0)
+                break;
         }
-        return i >= tokens.length ? null : depth == 0 ? tokens[i] : null;
+        var token = builder.getTokenType();
+        marker.rollbackTo();
+        return depth == 0 ? token : null;
     }
 
     private IElementType peekPastParens() {
@@ -9287,7 +9226,7 @@ class DLangParser {
      */
     private boolean peekNIs(final IElementType t, int offset)
     {
-        return index + offset < tokens.length && tokens[index + offset].equals(t);
+        return builder.lookAhead(offset) == t;
     }
 
     /**
@@ -9310,16 +9249,14 @@ class DLangParser {
      * `types`.
      */
     private boolean peekIsOneOf(final IElementType... types) {
-        if (index + 1 >= tokens.length) return false;
-        final IElementType needle = tokens[index + 1];
+        final IElementType needle = builder.lookAhead(1);
+        if (needle == null) return false;
         for (final IElementType type : types) {
             if (type.equals(needle)) {
                 return true;
             }
         }
         return false;
-
-//        return canFind(types, );
     }
 
     /**
@@ -9327,25 +9264,20 @@ class DLangParser {
      * calls the error function and returns null. Advances the lexer by one token.
      */
     private IElementType expect(final IElementType tok) {
-        if (index < tokens.length && tokens[index].equals(tok)) {
-//            assert (builder.getTokenType().equals(tokens[index].type.type));
-            if (!builder.getTokenType().equals(tokens[index])) {
-                throw new AssertionError();
-            }
+        if (!builder.eof() && builder.getTokenType() == tok) {
             Marker m = null;
             if (currentIs(ID)) {
                 m = enter_section_(builder);
             }
+            IElementType token = builder.getTokenType();
             builder.advanceLexer();
-            index++;
             if (m != null) {
                 exit_section_(builder, m, IDENTIFIER, true);
             }
-            return tokens[index - 1];
+            return token;
         } else {
             final String tokenString = tok.getDebugName();
-//            final boolean shouldNotAdvance = index < tokens.length && (tokens[index].type.equals(OP_PAR_RIGHT) || tokens[index].type.equals(OP_SCOLON) || tokens[index].type.equals(OP_BRACES_RIGHT));
-            final String token = (index < tokens.length ? (tokens[index].toString()) : "EOF");
+            final String token = (!builder.eof() ? (builder.getTokenType().toString()) : "EOF");
             error("Expected " + tokenString + " instead of " + token/*,!shouldNotAdvance*/);
             return null;
         }
@@ -9356,57 +9288,42 @@ class DLangParser {
      */
     @Nullable
     private IElementType current() {
-        return index >= 0 && index < tokens.length ? tokens[index] : null;
+        return builder.getTokenType();
     }
 
     @Nullable
     private String currentText() {
-        return index >= 0 && index < tokens.length ? builder.getTokenText() : null;
-    }
-
-    /**
-     * Returns: the _previous token
-     */
-    private IElementType previous() {
-        return tokens[index - 1];
+        return builder.getTokenText();
     }
 
     /**
      * Advances to the next token and returns the current token
      */
     private IElementType advance() {
-        if (builder.getTokenType() != null && !builder.getTokenType().equals(tokens[index])) {
-            throw new AssertionError(
-                String.format("token type '%s' does not match %s",
-                    builder.getTokenType(),
-                    tokens[index]
-                )
-            );
-        }
         Marker identifierMarker = null;
         if (currentIs(ID)) {
             identifierMarker = enter_section_(builder);
         }
+        IElementType token = builder.getTokenType();
         builder.advanceLexer();
-        index++;
         if (identifierMarker != null) {
             exit_section_(builder, identifierMarker, IDENTIFIER, true);
         }
-        return tokens[index - 1];
+        return token;
     }
 
     /**
      * Returns: true if the current token has the given type
      */
     private boolean currentIs(final IElementType type) {
-        return index < tokens.length && tokens[index].equals(type);
+        return !builder.eof() && builder.getTokenType() == type;
     }
 
     /**
      * Returns: true if the current token is one of the given types
      */
     private boolean currentIsOneOf(final IElementType... types) {
-        if (index >= tokens.length) return false;
+        if (builder.eof()) return false;
 
         final IElementType curr = current();
 
@@ -9421,10 +9338,9 @@ class DLangParser {
     }
 
     private boolean startsWith(final IElementType... types) {
-        if (index + types.length >= tokens.length)
-            return false;
-        for (int i = 0; (i < types.length) && ((index + i) < tokens.length); ++i) {
-            if (!tokens[index + i].equals(types[i]))
+        for (int i = 0; i < types.length; ++i) {
+            IElementType token = builder.lookAhead(i);
+            if (token == null || !token.equals(types[i]))
                 return false;
         }
         return true;
@@ -9433,7 +9349,7 @@ class DLangParser {
     private Bookmark setBookmark() {
         suppressMessages.add(suppressedErrorCount());
         final Marker m = enter_section_modified(builder);
-        return new Bookmark(index, m);
+        return new Bookmark(builder.getCurrentOffset(), m);
     }
 
     private void abandonBookmark(final Bookmark bookmark) {
@@ -9448,8 +9364,6 @@ class DLangParser {
     private void goToBookmark(final Bookmark bookmark) {
         if (!suppressMessages.isEmpty())
             suppressMessages.remove(suppressMessages.size() - 1);
-        index = bookmark.num;
-//        assert !bookmark.dropped;
         bookmark.m.rollbackTo();
         bookmark.dropped = true;
     }
