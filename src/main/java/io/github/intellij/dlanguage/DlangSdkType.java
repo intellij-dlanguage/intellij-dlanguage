@@ -304,7 +304,12 @@ public class DlangSdkType extends SdkType {
             setupRuntimePaths(sdkModificator, status);
         }
 
-        sdkModificator.commitChanges();
+        ApplicationManager.getApplication().runWriteAction(new Runnable() {
+            @Override
+            public void run() {
+                sdkModificator.commitChanges();
+            }
+        });
     }
 
     private Optional<VirtualFile> firstVirtualFileFrom(File[] files) {
