@@ -28,7 +28,8 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
 %unicode
 
 WHITE_SPACE_CHAR = [\ \t\f]
-NEW_LINE = [\n\r]+
+NEW_LINE = [\n\r]
+WHITE_SPACE = ({WHITE_SPACE_CHAR}|{NEW_LINE})+
 
 
 LETTER = [:letter:]
@@ -139,8 +140,7 @@ NESTING_BLOCK_DOC_END = "+/"
 %%
 
 <YYINITIAL> {
- {WHITE_SPACE_CHAR}+       { return com.intellij.psi.TokenType.WHITE_SPACE; }
- {NEW_LINE}+               { return com.intellij.psi.TokenType.WHITE_SPACE; }
+ {WHITE_SPACE}       { return com.intellij.psi.TokenType.WHITE_SPACE; }
 
  {TOKEN_STRING_START} {
     yybegin(TOKEN_STRING_CONTENT);
