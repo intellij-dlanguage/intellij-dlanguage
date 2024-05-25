@@ -11,7 +11,7 @@ import javax.swing.Icon
  */
 abstract class DlangItemPresentation protected constructor(private val psiFile: PsiFile) : ItemPresentation {
     override fun getLocationString(): String? {
-        return if (psiFile is DlangFile) psiFile.getModuleName() else null
+        return if (psiFile is DlangPsiFile) psiFile.getModuleName() else null
     }
 
     override fun getIcon(unused: Boolean): Icon {

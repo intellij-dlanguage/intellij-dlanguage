@@ -7,10 +7,8 @@ import com.intellij.psi.stubs.NamedStubBase;
 import com.intellij.psi.stubs.Stub;
 import com.intellij.psi.stubs.StubElement;
 import io.github.intellij.dlanguage.stubs.*;
-import io.github.intellij.dlanguage.psi.DlangFile;
 import io.github.intellij.dlanguage.psi.DLanguageSharedStaticConstructor;
 import io.github.intellij.dlanguage.psi.DLanguageSharedStaticDestructor;
-import io.github.intellij.dlanguage.stubs.*;
 import io.github.intellij.dlanguage.stubs.interfaces.DlangUnittestStub;
 
 import java.util.Collections;
@@ -24,9 +22,8 @@ import org.jetbrains.annotations.NotNull;
 public interface HasMembers<T extends StubElement> extends StubBasedPsiElement<T>, DNamedElement {
     default Set<NamedStubBase> getMembers() {
         final Set<NamedStubBase> res = new HashSet<>();
-        ((DlangFile) getContainingFile()).calcStubTree();
 
-        final StubElement greenStub = ((StubBasedPsiElementBase) this).getGreenStub();
+        final StubElement greenStub = ((StubBasedPsiElementBase<T>) this).getGreenStub();
         if (greenStub == null) {
             Logger.getInstance(this.getClass())
                 .warn("Green stub was null for file:" + getContainingFile());

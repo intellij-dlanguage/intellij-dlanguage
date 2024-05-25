@@ -8,10 +8,7 @@ import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.psi.tree.IStubFileElementType;
 import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.psi.DlangFile;
-import io.github.intellij.dlanguage.stubs.DlangFileStub;
-import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.psi.DlangFile;
+import io.github.intellij.dlanguage.psi.DlangPsiFileImpl;
 import io.github.intellij.dlanguage.stubs.DlangFileStub;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,8 +28,8 @@ public class DFileStubElementType extends IStubFileElementType<DlangFileStub> {
             @NotNull
             @Override
             protected StubElement createStubForFile(@NotNull final PsiFile file) {
-                if (file instanceof DlangFile) {
-                    return new DlangFileStub((DlangFile) file);
+                if (file instanceof DlangPsiFileImpl) {
+                    return new DlangFileStub((DlangPsiFileImpl) file);
                 }
                 return super.createStubForFile(file);
             }

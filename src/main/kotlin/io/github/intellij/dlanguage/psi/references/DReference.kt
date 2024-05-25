@@ -11,7 +11,7 @@ import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.processors.DCompletionProcessor
-import io.github.intellij.dlanguage.psi.DlangFile
+import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.resolve.DResolveUtil
@@ -119,7 +119,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
     }
 
     private fun addSymbolsFromImports(project: Project, result: MutableList<String>) {
-        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DlangFile).getFullyQualifiedModuleName(), project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
+        val decls = StubIndex.getElements(DTopLevelDeclarationsByModule.KEY, (element.containingFile as DlangPsiFile).getFullyQualifiedModuleName(), project, GlobalSearchScope.fileScope(element.containingFile), DNamedElement::class.java)
         for (decl in decls) {
             if (decl is FunctionDeclaration) {
                 result.add(decl.name + "(" + ")")

@@ -203,7 +203,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 return element is DlangModuleDeclaration
                     || element is io.github.intellij.dlanguage.psi.DLanguageImportDeclaration
                     || element is DLanguageDeclaration
-                    || element is DLanguageStatement && element.getParent() is io.github.intellij.dlanguage.psi.DlangFile
+                    || element is DLanguageStatement && element.getParent() is io.github.intellij.dlanguage.psi.DlangPsiFile
             }
 
             private fun lineBreak(keepLineBreaks: Boolean = true): Spacing {

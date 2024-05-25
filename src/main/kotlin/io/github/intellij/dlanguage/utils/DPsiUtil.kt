@@ -8,8 +8,8 @@ import com.intellij.psi.tree.IElementType
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.PsiTreeUtil.findChildrenOfType
 import io.github.intellij.dlanguage.psi.DLanguageDeclaration
-import io.github.intellij.dlanguage.psi.DlangFile
 import io.github.intellij.dlanguage.psi.DLanguageParameters
+import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport
 import io.github.intellij.dlanguage.resolve.ParameterCountRange
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
@@ -54,7 +54,7 @@ object DPsiUtil {
     }
 
     fun getParent(element: PsiElement, targetType: Set<IElementType>, excludedType: Set<IElementType>): PsiElement? {
-        if (element.parent == null || element is DlangFile) {
+        if (element.parent == null || element is DlangPsiFile) {
             return null
         }
 

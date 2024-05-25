@@ -22,7 +22,7 @@ import javax.swing.Icon
 
 // todo: consider making this class abstract so that there can be x2 classes that inherit from it.
 // One for .di files (interfaces) and another for regular .d source files
-class DlangFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, DLanguage), DlangPsiFile {
+class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, DLanguage), DlangPsiFile {
     override fun getFileType(): FileType = DlangFileType
 
     override fun toString(): String {

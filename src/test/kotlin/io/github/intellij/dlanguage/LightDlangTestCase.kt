@@ -7,7 +7,7 @@ import com.intellij.psi.FileViewProvider
 import com.intellij.psi.SingleRootFileViewProvider
 import com.intellij.testFramework.LightPlatform4TestCase
 import com.intellij.testFramework.LightVirtualFile
-import io.github.intellij.dlanguage.psi.DlangFile
+import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
 import com.intellij.testFramework.VfsTestUtil
 
 /**
@@ -20,12 +20,12 @@ abstract class LightDlangTestCase : LightPlatform4TestCase() {
         return VfsTestUtil.createFile(sourcesRoot, filename, content)
     }
 
-    fun virtualDlangPsiFile(filename: String, content: String): DlangFile {
+    fun virtualDlangPsiFile(filename: String, content: String): DlangPsiFileImpl {
         val provider: FileViewProvider = SingleRootFileViewProvider(
             MockPsiManager(project),
             addFileToModuleSource(filename, content)
         )
-        return DlangFile(provider)
+        return DlangPsiFileImpl(provider)
     }
 
     /**
@@ -44,12 +44,12 @@ abstract class LightDlangTestCase : LightPlatform4TestCase() {
      * @param content the file content (source code)
      * @return a Dlang Psi File from a single LightVirtualFile (In-memory implementation of [VirtualFile])
      */
-    fun lightDlangPsiFile(filename: String, content: String): DlangFile {
+    fun lightDlangPsiFile(filename: String, content: String): DlangPsiFileImpl {
         val provider: FileViewProvider = SingleRootFileViewProvider(
             MockPsiManager(project),
             lightDlangVirtualFile(filename, content)
         )
-        return DlangFile(provider)
+        return DlangPsiFileImpl(provider)
     }
 
 }

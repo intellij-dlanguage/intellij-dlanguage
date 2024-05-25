@@ -8,7 +8,7 @@ import com.intellij.psi.search.GlobalSearchScope.allScope
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.attributes.DNameScopeProcessor
 import io.github.intellij.dlanguage.index.DModuleIndex
-import io.github.intellij.dlanguage.psi.DlangFile
+import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.utils.Identifier
 
 
@@ -27,8 +27,8 @@ class BasicResolve private constructor(val project: Project, val profile: Boolea
         }
     }
 
-    val `object`: DlangFile?
-        get() = DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet().firstOrNull()?.containingFile as DlangFile?
+    val `object`: DlangPsiFile?
+        get() = DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet().firstOrNull()?.containingFile as DlangPsiFile?
 
     fun findDefinitionNode(e: PsiNamedElement): Set<PsiNamedElement> {
         //todo fix templated functions return type bug

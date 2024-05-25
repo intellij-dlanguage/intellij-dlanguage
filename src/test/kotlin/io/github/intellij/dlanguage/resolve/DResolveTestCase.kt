@@ -1,20 +1,16 @@
 package io.github.intellij.dlanguage.resolve
 
-import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.CharsetToolkit
-import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFileFilter
-import com.intellij.openapi.vfs.writeText
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.PsiManagerEx
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
-import com.intellij.testFramework.utils.vfs.createFile
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
 import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration
-import io.github.intellij.dlanguage.psi.DlangFile
+import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
 import io.github.intellij.dlanguage.psi.named.DlangConstructor
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier
@@ -163,8 +159,8 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         val element = referencedElement!!.resolve()
         if (resolvedFileName != null) {
             assertNotNull("Referenced not resolved", element)
-            assertInstanceOf(element!!, DlangFile::class.java)
-            assertEquals((element as DlangFile).name, resolvedFileName)
+            assertInstanceOf(element!!, DlangPsiFileImpl::class.java)
+            assertEquals((element as DlangPsiFileImpl).name, resolvedFileName)
         } else {
             assertNull(element)
         }

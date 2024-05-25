@@ -61,7 +61,7 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         }
 
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> {
-        if (root !is DlangFile)
+        if (root !is DlangPsiFile)
             return emptyArray()
 
         val descriptors: MutableList<FoldingDescriptor> = ArrayList()

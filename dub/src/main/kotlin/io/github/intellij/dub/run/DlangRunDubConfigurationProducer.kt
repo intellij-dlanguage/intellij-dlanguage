@@ -10,7 +10,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import io.github.intellij.dlanguage.DlangWritingAccessProvider
-import io.github.intellij.dlanguage.psi.DlangFile
+import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.utils.DUtil
 
 class DlangRunDubConfigurationProducer : LazyRunConfigurationProducer<DlangRunDubConfiguration>() {
@@ -20,7 +20,7 @@ class DlangRunDubConfigurationProducer : LazyRunConfigurationProducer<DlangRunDu
         val psiLocation = context.psiLocation
         val psiFile = psiLocation?.containingFile
         val virtualFile = getRealVirtualFile(psiFile)
-        return if (psiFile is DlangFile && virtualFile != null &&
+        return if (psiFile is DlangPsiFile && virtualFile != null &&
             ProjectRootManager.getInstance(context.project).fileIndex.isInContent(virtualFile) &&
             !DlangWritingAccessProvider.isInDLanguageSdkOrDLanguagePackagesFolder(psiFile.getProject(), virtualFile)
         ) {
@@ -39,7 +39,7 @@ class DlangRunDubConfigurationProducer : LazyRunConfigurationProducer<DlangRunDu
         val psiLocation = context.psiLocation
         val psiFile = psiLocation?.containingFile
         val virtualFile = getRealVirtualFile(psiFile)
-        return if (psiFile is DlangFile && virtualFile != null) virtualFile else null
+        return if (psiFile is DlangPsiFile && virtualFile != null) virtualFile else null
     }
 
     private fun getRealVirtualFile(psiFile: PsiFile?): VirtualFile? {

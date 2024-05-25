@@ -4,8 +4,8 @@ import com.intellij.ide.fileTemplates.FileTemplateDescriptor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
+import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAtAttribute;
-import io.github.intellij.dlanguage.psi.DlangFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,7 +68,7 @@ public class DUnitTestFramework extends DlangTestFramework {
     public boolean isTestMethod(final PsiElement element) {
         // TODO: However you determine whether a method is a test method.  For example, in mine they’re annotated with @Test or the testMethod modifier
 
-        if (element.getClass() == DlangFile.class) {
+        if (element.getLanguage() == DLanguage.INSTANCE) {
             final Collection<DLanguageAtAttribute> udas = PsiTreeUtil.findChildrenOfType(element, DLanguageAtAttribute.class);
             return !udas.isEmpty();
         } else {
