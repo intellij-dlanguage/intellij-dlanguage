@@ -20,9 +20,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>1.33</b><br/>
+        <b>1.34</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/56?closed=1">changelist</a>)<br/>
         <ul>
-            <li>Compatibility IntelliJ IDEA 2023.2.* - 2024.1.*</li>
+            <li>Supports IntelliJ IDEA 2023.2.* - 2024.1.*</li>
+            <li>overhaul the parser</li>
             <li>various bug fixes</li>
         </ul>
     ]]>
