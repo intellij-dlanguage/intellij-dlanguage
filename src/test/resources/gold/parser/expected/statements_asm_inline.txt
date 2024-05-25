@@ -29,7 +29,7 @@ D Language File
                             DLanguageAsmBrExpImpl(ASM_BR_EXP)
                               DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                 DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
-                                  DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
+                                  DLanguageRegisterImpl(REGISTER)
                                     IDENTIFIER
                                       PsiElement(DlangTokenType.ID)('EAX')
                           PsiElement(DlangTokenType.,)(',')
