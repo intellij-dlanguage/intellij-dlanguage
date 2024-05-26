@@ -240,10 +240,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitDeclarationOrStatement(@NotNull final DLanguageDeclarationOrStatementImpl o) {
-        visitPsiElement(o);
-    }
-
     /**
      * @param declarator an implementation of DlangDeclarator
      */

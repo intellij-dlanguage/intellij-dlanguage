@@ -17,6 +17,7 @@ import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.psi.interfaces.Statement
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
 import io.github.intellij.dlanguage.utils.DUtil.getPrevSiblingOfType
+import io.github.intellij.dlanguage.utils.Declaration
 import io.github.intellij.dlanguage.utils.DeclarationOrStatement
 import java.util.*
 
@@ -70,31 +71,31 @@ class DFormattingModelBuilder : FormattingModelBuilder {
         private fun calcIndent(child: ASTNode): Indent {
             val parentType = myNode.elementType
             val type = child.elementType
-            if (type == DECLARATION_OR_STATEMENT) {
-                if ((child.psi as DeclarationOrStatement).declaration?.oP_BRACES_LEFT != null) {
-                    return Indent.getNoneIndent()
-                }
-                if ((child.psi as DeclarationOrStatement).statement?.blockStatement != null) {
-                    return Indent.getNoneIndent()
-                }
-                if (parentType == IF_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-                } else if (parentType == FOREACH_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-                } else if (parentType == FOR_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-                } else if (parentType == WHILE_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-                } else if (parentType == CONDITIONAL_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-                }
-            } else if (type == DECLARATION) {
+
+            if (type == DECLARATION) {
                 if (parentType == CONDITIONAL_DECLARATION) {
                     return indentOfMultipleDeclarationChild(type, DECLARATION, LINE_COMMENT, BLOCK_COMMENT)
                 }
+                if ((child.psi as Declaration).oP_BRACES_LEFT != null) {
+                    return Indent.getNoneIndent()
+                }
+            }
+            /*if ((child.psi as DeclarationOrStatement).blockStatement != null) {
+                return Indent.getNoneIndent()
+            }*/
+            if (parentType == IF_STATEMENT) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+            } else if (parentType == FOREACH_STATEMENT) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+            } else if (parentType == FOR_STATEMENT) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+            } else if (parentType == WHILE_STATEMENT) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+            } else if (parentType == CONDITIONAL_STATEMENT) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
             }
             if (parentType == CASE_STATEMENT || parentType == CASE_RANGE_STATEMENT || parentType == DEFAULT_STATEMENT) {
-                return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
             }
             if (type == OP_BRACES_RIGHT || type == OP_BRACES_LEFT) {
                 return Indent.getNoneIndent()

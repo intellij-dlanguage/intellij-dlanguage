@@ -2761,17 +2761,13 @@ class DLangParser {
      * ;)
      */
     boolean parseDeclarationOrStatement() {
-        final Marker m = enter_section_modified(builder);
         // "Any ambiguities in the grammar between Statements and
         // Declarations are resolved by the declarations taking precedence."
         final Bookmark b = setBookmark();
         final boolean d = parseDeclaration(true, false);
         if (!d) {
             goToBookmark(b);
-            if (!parseStatement()) {
-                cleanup(m, DECLARATION_OR_STATEMENT);
-                return false;
-            }
+            return parseStatement();
         } else {
             // original comment from libdparse:
             // : Make this more efficient. Right now we parse the declaration
@@ -2780,7 +2776,6 @@ class DLangParser {
             goToBookmark(b);
             parseDeclaration(true, true);
         }
-        exit_section_modified(builder, m, DECLARATION_OR_STATEMENT, true);
         return true;
     }
 
