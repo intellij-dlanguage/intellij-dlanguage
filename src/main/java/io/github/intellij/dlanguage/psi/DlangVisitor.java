@@ -613,14 +613,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitStatement(@NotNull final DLanguageStatementImpl o) {
-        visitPsiElement(o);
-    }
-
-    public void visitStatementNoCaseNoDefault(@NotNull final DLanguageStatementNoCaseNoDefaultImpl o) {
-        visitPsiElement(o);
-    }
-
     public void visitStaticAssertDeclaration(@NotNull final DLanguageStaticAssertDeclarationImpl o) {
         visitPsiElement(o);
     }

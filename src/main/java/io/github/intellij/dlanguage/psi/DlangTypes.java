@@ -168,8 +168,6 @@ public interface DlangTypes {
     DlangElementType SHIFT_EXPRESSION = new DlangElementType("SHIFT_EXPRESSION");
     DlangElementType SHORTENED_FUNCTION_BODY = new DlangElementType("SHORTENED_FUNCTION_BODY");
     DlangElementType SPECIFIED_FUNCTION_BODY = new DlangElementType("SPECIFIED_FUNCTION_BODY");
-    DlangElementType STATEMENT = new DlangElementType("STATEMENT");
-    DlangElementType STATEMENT_NO_CASE_NO_DEFAULT = new DlangElementType("STATEMENT_NO_CASE_NO_DEFAULT");
     DlangElementType STATIC_ASSERT_DECLARATION = new DlangElementType("STATIC_ASSERT_DECLARATION");
     DlangElementType STATIC_ASSERT_STATEMENT = new DlangElementType("STATIC_ASSERT_STATEMENT");
     DlangElementType STATIC_IF_CONDITION = new DlangElementType("STATIC_IF_CONDITION");
@@ -719,10 +717,6 @@ public interface DlangTypes {
                 return new DLanguageSpecifiedFunctionBodyImpl(node);
             } else if (type == SINGLE_IMPORT) {
                 return new DlangSingleImportImpl(node);
-            } else if (type == STATEMENT) {
-                return new DLanguageStatementImpl(node);
-            } else if (type == STATEMENT_NO_CASE_NO_DEFAULT) {
-                return new DLanguageStatementNoCaseNoDefaultImpl(node);
             } else if (type == STATIC_ASSERT_DECLARATION) {
                 return new DLanguageStaticAssertDeclarationImpl(node);
             } else if (type == STATIC_ASSERT_STATEMENT) {

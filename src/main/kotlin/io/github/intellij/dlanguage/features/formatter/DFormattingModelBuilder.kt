@@ -12,8 +12,8 @@ import com.intellij.psi.tree.TokenSet
 import io.github.intellij.dlanguage.features.formatter.impl.createSpacingBuilder
 import io.github.intellij.dlanguage.psi.DLanguageDeclaration
 import io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements
-import io.github.intellij.dlanguage.psi.DLanguageStatement
 import io.github.intellij.dlanguage.psi.DlangTypes.*
+import io.github.intellij.dlanguage.psi.interfaces.Statement
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
 import io.github.intellij.dlanguage.utils.DUtil.getPrevSiblingOfType
 import io.github.intellij.dlanguage.utils.DeclarationOrStatement
@@ -73,7 +73,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 if ((child.psi as DeclarationOrStatement).declaration?.oP_BRACES_LEFT != null) {
                     return Indent.getNoneIndent()
                 }
-                if ((child.psi as DeclarationOrStatement).statement?.statementNoCaseNoDefault?.blockStatement != null) {
+                if ((child.psi as DeclarationOrStatement).statement?.blockStatement != null) {
                     return Indent.getNoneIndent()
                 }
                 if (parentType == IF_STATEMENT) {
@@ -149,7 +149,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 }
 
                 //
-                if (n1.elementType === OP_BRACES_LEFT && psi2 is DLanguageStatement) {
+                if (n1.elementType === OP_BRACES_LEFT && psi2 is Statement) {
                     return lineBreak()
                 }
 //
@@ -203,7 +203,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 return element is DlangModuleDeclaration
                     || element is io.github.intellij.dlanguage.psi.DLanguageImportDeclaration
                     || element is DLanguageDeclaration
-                    || element is DLanguageStatement && element.getParent() is io.github.intellij.dlanguage.psi.DlangPsiFile
+                    || element is Statement && element.getParent() is io.github.intellij.dlanguage.psi.DlangPsiFile
             }
 
             private fun lineBreak(keepLineBreaks: Boolean = true): Spacing {

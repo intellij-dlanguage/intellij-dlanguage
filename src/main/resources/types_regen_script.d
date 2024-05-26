@@ -15,6 +15,8 @@ string[][string] types_children;
 
 string[][string] stub_children;
 
+string[][string] types_extra_interfaces;
+
 /**
  * Contain the name of Psi elements that are named elements
  */
@@ -94,6 +96,7 @@ static this() {
     types_children["AsmRelExp"] = ["AsmRelExp", "AsmShiftExp","OP_GT_EQ","OP_GT","OP_LESS","OP_LESS_EQ"];
     types_children["AsmShiftExp"] = ["AsmShiftExp", "AsmAddExp","OP_SH_LEFT","OP_SH_RIGHT","OP_USH_RIGHT"];
     types_children["AsmStatement"] = ["KW_ASM", "OP_BRACES_LEFT", "OP_BRACES_RIGHT", "AsmInstruction*"];
+    types_extra_interfaces["AsmStatement"] = ["Statement"];
     types_children["AsmTypePrefix"] = ["Identifier*"];
     types_children["AsmUnaExp"] = ["AsmUnaExp","Identifier","AsmExp","OP_PLUS","OP_MINUS","OP_NOT","OP_TILDA","AsmPrimaryExp"];
     types_children["AsmXorExp"] = [/*"AsmPrimaryExp", "AsmTypePrefix", "AsmExp",*/ "AsmXorExp", "AsmAndExp", "OP_XOR"];
@@ -106,40 +109,50 @@ static this() {
     types_children["AttributeDeclaration"] = ["OP_COLON","Attribute"];
     types_children["AutoDeclaration"] = ["StorageClass*","OP_COMMA*","OP_SCOLON","AutoDeclarationPart*"];
     types_children["BlockStatement"] = ["DeclarationsAndStatements","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
+    types_extra_interfaces["BlockStatement"] = ["Statement"];
     types_children["BreakStatement"] = ["KW_BREAK","Identifier","OP_SCOLON"];
     types_children["BaseClass"] = ["TypeofExpression","OP_DOT","IdentifierOrTemplateChain"];
     types_children["BaseClassList"] = ["BaseClass*","OP_COMMA*"];
     types_children["BuiltinType"] = [/*todo add the types*/];  // UNUSED currently
     types_children["CaseRangeStatement"] = ["KW_CASE*","OP_TRIPLEDOT","OP_COLON*","AssignExpression", "DeclarationsAndStatements"];
+    types_extra_interfaces["CaseRangeStatement"] = ["Statement"];
     types_children["CaseStatement"] = ["KW_CASE","OP_COLON","ArgumentList","DeclarationsAndStatements"];
+    types_extra_interfaces["CaseRangeStatement"] = ["Statement"];
     types_children["CastExpression"] = ["CastQualifier", "Type","UnaryExpression","KW_CAST","OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_children["CastQualifier"] = ["KW_IMMUTABLE","KW_CONST","KW_SHARED","KW_INOUT"];
     types_children["Catches"] = ["LastCatch","Catch"];
     types_children["CompileCondition"] = [ "VersionCondition",  "DebugCondition",  "StaticIfCondition"];
     types_children["ConditionalDeclaration"] = ["CompileCondition", "Declaration*","OP_COLON","KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_children["ConditionalStatement"] = ["CompileCondition", "DeclarationOrStatement*", "KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
+    types_extra_interfaces["ConditionalStatement"] = ["Statement"];
     types_children["Constraint"] = ["KW_IF","AssignExpression*","OP_COMMA*", "OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["ContinueStatement"] = ["KW_CONTINUE", "Identifier", "OP_SCOLON"];
     types_children["DebugCondition"] = ["KW_DEBUG","INTEGER_LITERAL", "Identifier", "OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["DebugSpecification"] = ["KW_DEBUG","OP_EQ","Identifier", "INTEGER_LITERAL", "OP_SCOLON"];
     types_children["Declaration"] = ["AliasThisDeclaration","AliasDeclaration","ClassDeclaration","ConditionalDeclaration"/*,"Postblit"*/,"Constructor","Destructor","AnonymousEnumDeclaration","EponymousTemplateDeclaration","EnumDeclaration","ImportDeclaration","InterfaceDeclaration","MixinTemplateDeclaration","MixinDeclaration","PragmaDeclaration",  "SharedStaticConstructor", "SharedStaticDestructor","StaticConstructor","StaticDestructor","StaticAssertDeclaration","StructDeclaration","TemplateDeclaration","UnionDeclaration","Invariant","Unittest","VersionSpecification","DebugSpecification","Attribute*","Declaration*","OP_BRACES_RIGHT","OP_BRACES_LEFT","FunctionDeclaration","VariableDeclaration","AttributeDeclaration"];
-    types_children["DeclarationOrStatement"] = ["Statement","Declaration"];
+    types_children["DeclarationOrStatement"] = ["DefaultStatement","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","CaseStatement","CaseRangeStatement","Declaration"];
     types_children["DeclarationsAndStatements"] = ["DeclarationOrStatement*"];
     types_children["DefaultStatement"] = ["KW_DEFAULT","OP_COLON","DeclarationsAndStatements"];
+    types_extra_interfaces["DefaultStatement"] = ["Statement"];
     types_children["DeleteExpression"] = ["KW_DELETE","UnaryExpression"];
     types_children["DeleteStatement"] = ["KW_DELETE"];
     types_children["Deprecated"] = ["AssignExpression","Deprecated","OP_PAR_RIGHT","OP_PAR_LEFT"];
     //stub_children ["Destructor"] = ["FunctionBody","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT","KW_THIS","OP_TILDA","MemberFunctionAttribute*"];
-    types_children["DoStatement"] = ["KW_DO","KW_WHILE","StatementNoCaseNoDefault","AssignExpression*","OP_COMMA*","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT"];
+    types_children["DoStatement"] = ["KW_DO","KW_WHILE","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","AssignExpression*","OP_COMMA*","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT"];
+    types_extra_interfaces["DoStatement"] = ["Statement"];
     types_children["EnumBody"] = [ "Identifier","OP_BRACES_RIGHT", "OP_BRACES_LEFT", "EnumMember*","OP_COMMA*","OP_SCOLON"];
     types_children["EnumMemberAttribute"] = ["Attribute","Deprecated"];
     stub_children ["EponymousTemplateDeclaration"] = ["Identifier", "TemplateParameters", "OP_EQ", "Type", "OP_SCOLON", "KW_ENUM", "KW_ALIAS"];
     types_children["EqualExpression"] = ["ShiftExpression*","OP_EQ_EQ","OP_NOT_EQ"];
     types_children["ExpressionStatement"] = ["AssignExpression*","OP_COMMA*","OP_SCOLON"];
+    types_extra_interfaces["ExpressionStatement"] = ["Statement"];
     types_children["Finally"] = ["KW_FINALLY", "DeclarationOrStatement"];
     types_children["FinalSwitchStatement"] = ["KW_FINAL", "SwitchStatement"];
+    types_extra_interfaces["FinalSwitchStatement"] = ["Statement"];
     types_children["ForStatement"] = ["DeclarationOrStatement*", "AssignExpression*","OP_BRACES_RIGHT","OP_BRACES_LEFT","KW_FOR","OP_SCOLON"];
+    types_extra_interfaces["ForStatement"] = ["Statement"];
     types_children["ForeachStatement"] = ["KW_FOREACH","KW_FOREACH_REVERSE","DeclarationOrStatement", "AssignExpression*","OP_BRACES_RIGHT","OP_BRACES_LEFT","OP_DDOT","ForeachType","ForeachTypeList","OP_SCOLON"];
+    types_extra_interfaces["ForeachStatement"] = ["Statement"];
     types_children["ForeachTypeList"] = ["ForeachType*","OP_COMMA*"];
     types_children["FunctionAttribute"] = ["AtAttribute","KW_PURE","KW_NOTHROW"];
     types_children["FunctionBody"] = ["SpecifiedFunctionBody","MissingFunctionBody","ShortenedFunctionBody"];
@@ -147,15 +160,18 @@ static this() {
     types_children["FunctionContract"] = ["OP_BRACES_LEFT", "InOutStatement", "OP_PAR_LEFT", "InOutContractExpression"];
     types_children["FunctionLiteralExpression"] = ["Type","KW_FUNCTION","KW_DELEGATE","KW_REF","Parameters","FunctionAttribute*","SpecifiedFunctionBody","Identifier"];
     types_children["GotoStatement"] = ["Identifier","AssignExpression*","OP_COMMA*","KW_DEFAULT","KW_CASE","KW_GOTO","OP_SCOLON"];
+    types_extra_interfaces["GotoStatement"] = ["Statement"];
     types_children["IdentifierChain"] = ["Identifier*", "OP_DOT*"];
     types_children["IdentifierOrTemplateChain"] = ["OP_DOT*","IdentifierOrTemplateInstance*"];
     types_children["IdentifierOrTemplateInstance"] = ["Identifier","TemplateInstance"];
     types_children["IdentityExpression"] = ["ShiftExpression*","KW_IS","OP_NOT"];
     stub_children ["IfCondition"] = ["Identifier",  "AssignExpression*","OP_COMMA*", "KW_AUTO", "KW_SCOPE","Type", "OP_EQ"];
     types_children["IfStatement"] = [/*"Identifier","AssignExpression*","OP_COMMA*",*/"DeclarationOrStatement*","KW_ELSE","KW_IF","OP_PAR_LEFT","OP_PAR_RIGHT"/*,"KW_AUTO","Type","OP_EQ"*/,"IfCondition"];
+    types_extra_interfaces["IfStatement"] = ["Statement"];
     types_children["ImportBind"] = ["Identifier","NamedImportBind"];
     types_children["ImportBindings"] = ["OP_COMMA*","ImportBind*","SingleImport","OP_COLON"];
     types_children["ImportDeclaration"] = ["KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
+    types_extra_interfaces["ImportDeclaration"] = ["Statement"];
     types_children["ImportExpression"] = ["ImportExpression","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["Index"] = ["AssignExpression"];
     types_children["IndexExpression"] = ["OP_BRACKET_LEFT","OP_BRACKET_RIGHT","ArgumentList","UnaryExpression"];
@@ -171,8 +187,9 @@ static this() {
     types_children["KeyValuePair"] = ["AssignExpression*","OP_COLON"];
     types_children["KeyValuePairs"] = ["OP_COMMA*","KeyValuePair*"];
     stub_children ["LabeledStatement"] = ["Identifier", "OP_COLON","DeclarationOrStatement"];
+    types_extra_interfaces["LabeledStatement"] = ["Statement"];
     types_children["LambdaExpression"] = ["Identifier","KW_FUNCTION","KW_DELEGATE","OP_LAMBDA_ARROW","AssignExpression","Parameters","FunctionAttribute*"];
-    types_children["LastCatch"] = ["KW_CATCH","StatementNoCaseNoDefault"];
+    types_children["LastCatch"] = ["KW_CATCH","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement"];
     types_children["LinkageAttribute"] = ["IdentifierChain","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT","OP_PLUS_PLUS","KW_EXTERN","OP_COMMA"];
     types_children["MemberFunctionAttribute"] = [ "FunctionAttribute","KW_IMMUTABLE","KW_INOUT","KW_SHARED","KW_CONST"];
     types_children["MissingFunctionBody"] = ["FunctionContract*","OP_SCOLON"];
@@ -197,21 +214,21 @@ static this() {
     types_children["PowExpression"] = ["PowExpression","UnaryExpression","OP_POW"];
     types_children["PragmaDeclaration"] = ["PragmaExpression", "OP_SCOLON"];
     types_children["PragmaExpression"] = ["Identifier","ArgumentList","OP_PAR_LEFT","OP_PAR_RIGHT","OP_COMMA","KW_PRAGMA"];
-    types_children["PragmaStatement"] = ["PragmaExpression", "BlockStatement", "OP_SCOLON", "Statement"];
+    types_children["PragmaStatement"] = ["PragmaExpression", "OP_SCOLON", "DefaultStatement","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","CaseStatement","CaseRangeStatement"];
     types_children["PrimaryExpression"] = ["Type","Arguments","FunctionLiteralExpression","TypeofExpression",
         "TypeidExpression","Vector","AssocArrayLiteral","ArrayLiteral","AssignExpression","OP_PAR_LEFT","OP_PAR_RIGHT","IsExpression","LambdaExpression","TraitsExpression","MixinExpression","ImportExpression","KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW_REF","KW___DATE__","KW___EOF__","KW___FILE__","KW___FILE_FULL_PATH__","KW___FUNCTION__","KW___GSHARED","KW___LINE__","KW___MODULE__","KW___PARAMETERS","KW___PRETTY_FUNCTION__","KW___TIME__","KW___TIMESTAMP__","KW___TRAITS","KW___VECTOR","KW___VENDOR__","KW___VERSION__","INTEGER_LITERAL","FLOAT_LITERAL","DOUBLE_QUOTED_STRING*","DELIMITED_STRING*","CHARACTER_LITERAL","IdentifierOrTemplateInstance","OP_DOT","TypeConstructor"/*todo add basicTypes*/];
     types_children["Register"] = ["Identifier","INTEGER_LITERAL", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
     types_children["RelExpression"] = ["RelExpression", "ShiftExpression","OP_GT","OP_GT_EQ","OP_LESS","OP_LESS_EQ","OP_NOT_GR","OP_NOT_GR_EQ","OP_NOT_LESS","OP_NOT_LESS_EQ"];
     types_children["ReturnStatement"] = ["KW_RETURN","AssignExpression*","OP_COMMA*","OP_SCOLON"];
-    types_children["ScopeGuardStatement"] = ["KW_SCOPE","Identifier","StatementNoCaseNoDefault","OP_PAR_LEFT","OP_PAR_RIGHT"];
+    types_extra_interfaces["ReturnStatement"] = ["Statement"];
+    types_children["ScopeGuardStatement"] = ["KW_SCOPE","Identifier","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","OP_PAR_LEFT","OP_PAR_RIGHT"];
+    types_extra_interfaces["ScopeGuardStatement"] = ["Statement"];
     stub_children ["SharedStaticConstructor"] = ["KW_STATIC","KW_SHARED","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     stub_children ["SharedStaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_SHARED","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_children["ShiftExpression"] = ["ShiftExpression","AddExpression","OP_SH_RIGHT","OP_SH_LEFT","OP_USH_RIGHT"];
     types_children["SliceExpression"] = ["UnaryExpression","AssignExpression*","OP_BRACKET_LEFT","OP_BRACKET_RIGHT","OP_DDOT"];
     types_children["ShortenedFunctionBody"] = ["FunctionContract*", "OP_LAMBDA_ARROW", "AssignExpression", "OP_SCOLON"];
     types_children["SpecifiedFunctionBody"] = ["FunctionContract*", "KW_DO", "BlockStatement"];
-    types_children["Statement"] = ["DefaultStatement","StatementNoCaseNoDefault","CaseStatement","CaseRangeStatement"];
-    types_children["StatementNoCaseNoDefault"] = ["LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement"];
     types_children["StaticAssertDeclaration"] = ["StaticAssertStatement"];
     types_children["StaticAssertStatement"] = ["KW_STATIC","AssertExpression","OP_SCOLON"];
     types_children["StaticCtorDtorCommon"] = ["FunctionBody"];
@@ -219,6 +236,7 @@ static this() {
     stub_children ["StaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_children["StaticForeachDeclaration"] = ["KW_FOREACH", "KW_FOREACH_REVERSE", "Declaration", "AssignExpression*", "OP_BRACES_RIGHT", "OP_BRACES_LEFT", "OP_DDOT", "ForeachType", "ForeachTypeList", "OP_SCOLON", "KW_STATIC"];
     types_children["StaticForeachStatement"] = ["KW_STATIC", "ForeachStatement"];
+    types_extra_interfaces["StaticForeachStatement"] = ["Statement"];
     types_children["StaticIfCondition"] = ["StaticIfCondition","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["StorageClass"] = ["AtAttribute","Deprecated","AlignAttribute","LinkageAttribute",   "KW_SYNCHRONIZED","TypeConstructor","KW_ABSTRACT","KW_CONST","KW_IMMUTABLE","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC","KW_THROW"];
     types_children["StructBody"] = ["OP_BRACES_RIGHT","OP_BRACES_LEFT","Declaration*"];
@@ -227,9 +245,11 @@ static this() {
     types_children["StructMemberInitializer"] = ["Identifier","OP_COLON","NonVoidInitializer"];
     types_children["StructMemberInitializers"] = ["StructMemberInitializer*","OP_COMMA*"];
 //    types_children["String"] = ["DOUBLE_QUOTED_STRING*"];
-    types_children["SwitchStatement"] = ["KW_SWITCH","OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","Statement"];
+    types_children["SwitchStatement"] = ["KW_SWITCH","OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","DefaultStatement","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","CaseStatement","CaseRangeStatement"];
+    types_extra_interfaces["SwitchStatement"] = ["Statement"];
     types_children["Symbol"] = ["OP_DOT","IdentifierOrTemplateChain"];
-    types_children["SynchronizedStatement"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","StatementNoCaseNoDefault","KW_SYNCHRONIZED"];
+    types_children["SynchronizedStatement"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","KW_SYNCHRONIZED"];
+    types_extra_interfaces["SynchronizedStatement"] = ["Statement"];
     types_children["TemplateAliasParameter"] = ["KW_ALIAS","Identifier","Type*","AssignExpression*","OP_COLON","OP_EQ"];
     types_children["TemplateArgument"] = ["Type","AssignExpression"];
     types_children["TemplateArgumentList"] = ["OP_COMMA*","TemplateArgument*"];
@@ -253,6 +273,7 @@ static this() {
     types_children["ThrowExpression"] = ["KW_THROW","AssignExpression","OP_SCOLON"];
     types_children["TraitsExpression"] = ["KW___TRAITS","TemplateArgumentList","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["TryStatement"] = ["KW_TRY","DeclarationOrStatement","Catches","Finally"];
+    types_extra_interfaces["TryStatement"] = ["Statement"];
     types_children["Type"] = ["Attribute","Type_2","TypeSuffix*"];
     types_children["Type_2"] = ["Type","TypeofExpression","TypeConstructor","TraitsExpression","MixinExpression","Vector","BuiltinType","IdentifierOrTemplateChain","TypeIdentifierPart","OP_DOT","OP_PAR_RIGHT","OP_PAR_LEFT","KW_SUPER","KW_THIS","KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED"];
     types_children["TypeConstructor"] = ["KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED","KW_SCOPE"];
@@ -272,7 +293,9 @@ static this() {
     types_children["VersionCondition"] = ["KW_VERSION","KW_UNITTEST","KW_ASSERT","INTEGER_LITERAL","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT"];
     //types_children["VersionSpecification"] = ["KW_VERSION","OP_EQ","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT","INTEGER_LITERAL","OP_SCOLON"];
     types_children["WhileStatement"] = ["KW_WHILE","IfCondition","DeclarationOrStatement","OP_PAR_RIGHT","OP_PAR_LEFT"];
-    types_children["WithStatement"] = ["KW_WITH","AssignExpression*","OP_COMMA*","OP_PAR_RIGHT","OP_PAR_LEFT","StatementNoCaseNoDefault"];
+    types_extra_interfaces["WhileStatement"] = ["Statement"];
+    types_children["WithStatement"] = ["KW_WITH","AssignExpression*","OP_COMMA*","OP_PAR_RIGHT","OP_PAR_LEFT","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement"];
+    types_extra_interfaces["WithStatement"] = ["Statement"];
     types_children["XorExpression"] = ["XorExpression", "AndExpression", "OP_XOR"];
 
 
@@ -428,8 +451,6 @@ static this() {
 //    has_processDeclaration["SingleImport"] = false;
     has_processDeclaration["SliceExpression"] = false;
     has_processDeclaration["UnaryExpression"] = false;
-    has_processDeclaration["Statement"] = false;
-    has_processDeclaration["StatementNoCaseNoDefault"] = false;
     has_processDeclaration["StaticAssertDeclaration"] = false;
     has_processDeclaration["StaticAssertStatement"] = false;
     has_processDeclaration["StaticConstructor"] = false;
@@ -496,6 +517,7 @@ static this() {
 }
 
 enum psiDlangImportTemplate = "import io.github.intellij.dlanguage.psi.DLanguage%s;";
+enum psiDlangExtraInterfaceImportTemplate = "import io.github.intellij.dlanguage.psi.interfaces.%s;";
 enum psiDlangNamedImportTemplate = "import io.github.intellij.dlanguage.psi.named.DLanguage%s;";
 
 static immutable string[] defaultInterfaceImports = [
@@ -591,11 +613,11 @@ string interfaceFileTemplate(string[] interfaces = []) {
 %s
 
 
-public interface %s extends PsiElement `;
+public interface %s extends PsiElement`;
     foreach(string interface_; interfaces) {
         base ~= (", " ~ interface_);
     }
-    base ~= "{\n";
+    base ~= " {\n";
     return base;
 }
 
@@ -603,9 +625,14 @@ bool isToken(string toget) {
     return toget.canFind("OP") || toget.canFind("KW") || toget.canFind("LITERAL") || toget.canFind("STRING") || toget.canFind("ID");
 }
 
-string[] getExtraImport(string[][string] children, string key) {
+bool isExtraInterface(string toget) {
+    import std.algorithm : canFind;
+    return toget !in types_children && toget !in stub_children && !named_children.canFind(toget);
+}
+
+string[] getExtraImport(string[] elements, string key) {
     string[] normalImports;
-    if(children[key].canFind!(a => (a.canFind("*"))))
+    if(elements.canFind!(a => (a.canFind("*"))))
         normalImports ~= "import java.util.List;";
     import std.array;
     import std.algorithm;
@@ -618,7 +645,7 @@ string[] getExtraImport(string[][string] children, string key) {
     return normalImports;
 }
 
-string getNonTokenImport(string toget) {
+string getNonTokenImport(string toget, string key) {
     import std.array;
     string import_;
     if (toget.canFind("*")) {
@@ -627,31 +654,35 @@ string getNonTokenImport(string toget) {
             import_ = psiDlangNamedImportTemplate.format(toget);
         else if ((named_children.canFind(toget) && toget !in stub_children))
             import_ = "import io.github.intellij.dlanguage.psi.named.DLanguage%s;".format(toget);
+        else if (isExtraInterface(toget))
+            import_ = psiDlangExtraInterfaceImportTemplate.format(toget);
         else
             import_ = psiDlangImportTemplate.format(toget);
     } else {
         if (toget == "Identifier" || (named_children.canFind(toget) && toget !in stub_children))
             import_ = psiDlangNamedImportTemplate.format(toget);
+        else if (isExtraInterface(toget))
+            import_ = psiDlangExtraInterfaceImportTemplate.format(toget);
         else
             import_ = psiDlangImportTemplate.format(toget);
     }
     return import_;
 }
 
-void getImplImportsElements(string[][string] children, string key, ref string[] staticImports, ref string[] normalImports) {
+void getImplImportsElements(string[] elements, string key, ref string[] staticImports, ref string[] normalImports) {
     import std.array;
     // By default import the base type
     normalImports ~= psiDlangImportTemplate.format(key);
-    foreach(string toget; children[key]) {
+    foreach(string toget; elements) {
         if (isToken(toget)) {
             toget = toget.replace("*", "");
             // tokens are imported statically
             staticImports ~= "import static io.github.intellij.dlanguage.psi.DlangTypes.%s;".format(toget);
         } else {
-            normalImports ~= getNonTokenImport(toget);
+            normalImports ~= getNonTokenImport(toget, key);
         }
     }
-    normalImports ~= getExtraImport(children, key);
+    normalImports ~= getExtraImport(elements, key);
 }
 
 string formatImplImports(const string[] staticImports, const string[] normalImports) {
@@ -663,26 +694,38 @@ string formatImplImports(const string[] staticImports, const string[] normalImpo
     return importString;
 }
 
-string getImplImports(string[][string] children, string key) {
+string getImplImports(string[] elements, string key) {
     string[] normalImports = defaultImplImports.dup;
     string[] staticImports;
-    getImplImportsElements(children, key, staticImports, normalImports);
+    getImplImportsElements(elements, key, staticImports, normalImports);
     return formatImplImports(staticImports, normalImports);
 }
 
-string getStubImplImports(string[][string] children, string key) {
+string getStubImplImports(string[][string] elements, string key) {
     string[] normalImports = defaultStubImplImports.dup;
     string[] staticImports;
     auto stubImport = key == "Unittest" ? "import io.github.intellij.dlanguage.stubs.interfaces.Dlang%sStub;".format(key) : "import io.github.intellij.dlanguage.stubs.Dlang%sStub;".format(key);
     normalImports ~= stubImport;
-    getImplImportsElements(children, key, staticImports, normalImports);
+    getImplImportsElements(elements[key], key, staticImports, normalImports);
     return formatImplImports(staticImports, normalImports);
 }
 
 string getterMethod(string toget) {
     import std.string;
-    if (toget.canFind("*")) {
-        toget = toget.replace("*", "");
+    bool hasMultiple = toget.canFind("*");
+    toget = toget.replace("*", "");
+
+    string type;
+    if (isToken(toget))
+        type = "PsiElement";
+    else if (toget == "Identifier")
+        type = "DlangIdentifier";
+    else if (isExtraInterface(toget))
+        type = toget;
+    else
+        type = "DLanguage" ~ toget;
+
+    if (hasMultiple) {
         if (isToken(toget)) {
             return `
     @NotNull
@@ -691,15 +734,17 @@ string getterMethod(string toget) {
     }
 `.format(toget,toget);
         }
-        else{
+        else {
             return `
     @NotNull
-    public List<DLanguage%s> get%ss() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguage%s.class);
-    }`.format(toget,toget,toget);
+    public List<%s> get%ss() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, %s.class);
+    }
+`.format(type,toget,type);
         }
     }
-    if(isToken(toget)){
+
+    if (isToken(toget)) {
         return `
     @Nullable
     public PsiElement get%s() {
@@ -707,47 +752,39 @@ string getterMethod(string toget) {
     }
 `.format(toget,toget);
     }
-    else{
-        if(toget != "Identifier")
-            return `
+    else {
+        return `
     @Nullable
-    public DLanguage%s get%s() {
-        return PsiTreeUtil.getChildOfType(this, DLanguage%s.class);
+    public %s get%s() {
+        return PsiTreeUtil.getChildOfType(this, %s.class);
     }
-`.format(toget,toget,toget);
-        else
-            return `
-    @Nullable
-    public Dlang%s get%s() {
-        return PsiTreeUtil.getChildOfType(this, Dlang%s.class);
-    }
-`.format(toget,toget,toget);
+`.format(type,toget,type);
     }
 }
 
-string[] getInterfaceImportElements(string[][string] children, string key) {
+string[] getInterfaceImportElements(string[] elements, string key) {
     string[] normalImports = defaultInterfaceImports.dup;
-    foreach(string toget; children[key]){
+    foreach(string toget; elements){
         if (isToken(toget))
             continue;
-        normalImports ~= getNonTokenImport(toget);
+        normalImports ~= getNonTokenImport(toget, key);
     }
-    if(children[key].canFind!(a => (a.canFind("*")))) {
+    if(elements.canFind!(a => (a.canFind("*")))) {
         normalImports ~= ["import java.util.List;", "import org.jetbrains.annotations.NotNull;" ];
     }
-    normalImports ~= getExtraImport(children, key);
+    normalImports ~= getExtraImport(elements, key);
     return normalImports;
 }
 
-string getInterfaceImports(string[][string] children, string key) {
+string getInterfaceImports(string[] elements, string key) {
     import std.array;
-    auto imports = getInterfaceImportElements(children, key);
+    auto imports = getInterfaceImportElements(elements, key);
     return imports.sort.uniq.join("\n");
 }
 
-string getStubInterfaceImports(string[][string] children, string key) {
+string getStubInterfaceImports(string[] elements, string key) {
     import std.array;
-    auto imports = getInterfaceImportElements(children, key);
+    auto imports = getInterfaceImportElements(elements, key);
     // unittest is a special case where it’s stored under another path
     auto stubImport = key == "Unittest" ? "import io.github.intellij.dlanguage.stubs.interfaces.Dlang%sStub;".format(key) : "import io.github.intellij.dlanguage.stubs.Dlang%sStub;".format(key);
     imports ~= [
@@ -760,19 +797,19 @@ string getStubInterfaceImports(string[][string] children, string key) {
     return imports.sort.uniq.join("\n");
 }
 
-string getStubImplImports(string key) {
+string getStubImplImports(string[] elements, string key) {
     import std.array;
     // By default import the base type
-    string[] staticImports = string[].init;
+    string[] staticImports;
     string[] normalImports = defaultStubImplImports.dup;
     normalImports ~= psiDlangImportTemplate.format(key);
-    foreach(string toget; types_children[key]){
+    foreach(string toget; elements){
         if (isToken(toget)) {
             continue;
         }
-        normalImports ~= getNonTokenImport(toget);
+        normalImports ~= getNonTokenImport(toget, key);
     }
-    normalImports ~= getExtraImport(types_children, key);
+    normalImports ~= getExtraImport(elements, key);
     string importString = staticImports.sort.uniq.join("\n");
     if (staticImports.length > 0)
         importString ~= "\n\n";
@@ -780,50 +817,39 @@ string getStubImplImports(string key) {
     return importString;
 }
 
-string getterMethodInterface(string toget){
+string getterMethodInterface(string toget) {
     import std.string;
-    if(toget.canFind("*")){
-        toget = toget.replace("*","");
-        if(isToken(toget)){
-            return `
-    @NotNull
-    List<PsiElement> get%ss();
-`.format(toget);
-        }
-        else{
-            return `
-    @NotNull
-    List<DLanguage%s> get%ss();
-`.format(toget,toget);
-        }
-    }
+    string type;
+    bool hasMultiple = toget.canFind("*");
+    toget = toget.replace("*","");
 
-    if(isToken(toget)){
+    if (isToken(toget))
+        type = "PsiElement";
+    else if (toget == "Identifier")
+        type = "DlangIdentifier";
+    else if (isExtraInterface(toget))
+        type = toget;
+    else
+        type = "DLanguage" ~ toget;
+
+    if (hasMultiple) {
         return `
-    @Nullable
-    PsiElement get%s();
-`.format(toget);
-
+    @NotNull
+    List<%s> get%ss();
+`.format(type, toget);
     }
-    else{
-        if(toget != "Identifier")
-            return `
+    return `
     @Nullable
-    DLanguage%s get%s();
-`.format(toget,toget);
-        else
-            return `
-    @Nullable
-    Dlang%s get%s();
-`.format(toget,toget);
-    }
+    %s get%s();
+`.format(type, toget);
 }
 
 
 
-int main(string[] args){
+int main(string[] args) {
     import std.file;
     import std.path;
+    import std.array;
     if (!exists("impl"))
         mkdir("impl");
     foreach(string key;types_children.keys){
@@ -831,7 +857,7 @@ int main(string[] args){
         import std.string;
         string interfaceClassName = "DLanguage" ~ key;
         string implClassName = "DLanguage" ~ key ~ "Impl";
-        string implFile = implFileTemplate.format(getImplImports(types_children, key), implClassName, interfaceClassName, implClassName, key);
+        string implFile = implFileTemplate.format(getImplImports(types_children[key], key), implClassName, interfaceClassName, implClassName, key);
         foreach(string toget; types_children[key]){
             implFile ~= getterMethod(toget);
         }
@@ -847,7 +873,8 @@ int main(string[] args){
 `;
         }
         implFile ~= "\n}\n";
-        string interfaceFile = interfaceFileTemplate.format(getInterfaceImports(types_children, key), interfaceClassName);
+        auto extraInterfaces = key in types_extra_interfaces ? types_extra_interfaces[key] : [];
+        string interfaceFile = interfaceFileTemplate(extraInterfaces).format(getInterfaceImports((types_children[key] ~ extraInterfaces).uniq.array, key), interfaceClassName);
         foreach(string toget; types_children[key]){
             interfaceFile ~= getterMethodInterface(toget);
         }
@@ -868,7 +895,8 @@ int main(string[] args){
         string[] interfaces = ["DCompositeElement","StubBasedPsiElement<Dlang%sStub>".format(key)];
         if (named_children.canFind(key))
             interfaces.insertInPlace(1, "DNamedElement");
-        string interfaceFile = interfaceFileTemplate(interfaces).format(getStubInterfaceImports(stub_children, key), interfaceClassName);
+        auto extraInterfaces = key in types_extra_interfaces ? types_extra_interfaces[key] : [];
+        string interfaceFile = interfaceFileTemplate(interfaces ~ extraInterfaces).format(getStubInterfaceImports((stub_children[key] ~ extraInterfaces).uniq.array, key), interfaceClassName);
         foreach (string toget; stub_children[key]) {
             interfaceFile ~= getterMethodInterface(toget);
         }

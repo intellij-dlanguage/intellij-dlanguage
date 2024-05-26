@@ -6504,10 +6504,8 @@ class DLangParser {
      * ;)
      */
     boolean parseStatement() {
-        final Marker m = enter_section_modified(builder);
         if (!moreTokens()) {
             error("Expected statement instead of EOF");
-            exit_section_modified(builder, m, STATEMENT, true);
             return false;
         }
         final IElementType i = current();
@@ -6517,33 +6515,18 @@ class DLangParser {
             final boolean argumentList = parseArgumentList();
             if (!argumentList) {
                 m_case.drop();
-                cleanup(m, STATEMENT);
                 return false;
             }
             if (startsWith(OP_COLON, OP_DDOT)) {
-                if (!parseCaseRangeStatement(m_case)) {
-                    cleanup(m, STATEMENT);
-                    return false;
-                }
+                return parseCaseRangeStatement(m_case);
             } else {
-                if (!parseCaseStatement(m_case)) {
-                    cleanup(m, STATEMENT);
-                    return false;
-                }
+                return parseCaseStatement(m_case);
             }
         } else if (i == KW_DEFAULT) {
-            if (!parseDefaultStatement()) {
-                cleanup(m, STATEMENT);
-                return false;
-            }
+            return parseDefaultStatement();
         } else {
-            if (!parseStatementNoCaseNoDefault()) {
-                cleanup(m, STATEMENT);
-                return false;
-            }
+            return parseStatementNoCaseNoDefault();
         }
-        exit_section_modified(builder, m, STATEMENT, true);
-        return true;
     }
 
     /**
@@ -6577,174 +6560,82 @@ class DLangParser {
      * ;)
      */
     boolean parseStatementNoCaseNoDefault() {
-        final Marker m = enter_section_modified(builder);
         if (!moreTokens()) {
             error("Expected statement instead of EOF");
-            exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
             return false;
         }
         final IElementType i = current();
         if (i == OP_BRACES_LEFT) {
-            if (!parseBlockStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseBlockStatement();
         } else if (i == KW_IF) {
-            if (!parseIfStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseIfStatement();
         } else if (i == KW_WHILE) {
-            if (!parseWhileStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseWhileStatement();
         } else if (i == KW_DO) {
-            if (!parseDoStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseDoStatement();
         } else if (i == KW_FOR) {
-            if (!parseForStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseForStatement();
         } else if (i == KW_FOREACH || i == KW_FOREACH_REVERSE) {
-            if (!parseForeachStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseForeachStatement();
         } else if (i == KW_SWITCH) {
-            if (!parseSwitchStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseSwitchStatement();
         } else if (i == KW_CONTINUE) {
-            if (!parseContinueStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseContinueStatement();
         } else if (i == KW_BREAK) {
-            if (!parseBreakStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseBreakStatement();
         } else if (i == KW_RETURN) {
-            if (!parseReturnStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseReturnStatement();
         } else if (i == KW_GOTO) {
-            if (!parseGotoStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseGotoStatement();
         } else if (i == KW_WITH) {
-            if (!parseWithStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseWithStatement();
         } else if (i == KW_SYNCHRONIZED) {
-            if (!parseSynchronizedStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseSynchronizedStatement();
         } else if (i == KW_TRY) {
-            if (!parseTryStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseTryStatement();
         } else if (i == KW_SCOPE) {
-            if (!parseScopeGuardStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseScopeGuardStatement();
         } else if (i == KW_ASM) {
-            if (!parseAsmStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseAsmStatement();
         } else if (i == KW_PRAGMA) {
-            if (!parsePragmaStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parsePragmaStatement();
         } else if (i == KW_FINAL) {
             if (peekIs(KW_SWITCH)) {
-
-                if (!parseFinalSwitchStatement()) {
-                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                    return false;
-                }
-                exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
-                return true;
+                return parseFinalSwitchStatement();
             } else {
                 error("`switch` expected");
-                exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
                 return false;
             }
         } else if (i == KW_DEBUG) {
             if (peekIs(OP_EQ)) {
-                if (!parseDebugSpecification()) {
-                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                    return false;
-                }
-            } else if (!parseConditionalStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
+                return parseDebugSpecification();
             }
+            return parseConditionalStatement();
         } else if (i == KW_VERSION) {
             if (peekIs(OP_EQ)) {
-                if (!parseVersionSpecification()) {
-                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                    return false;
-                }
-            } else if (!parseConditionalStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
+                return parseVersionSpecification();
             }
+            return parseConditionalStatement();
         } else if (i == KW_STATIC) {
-            if (peekIs(KW_IF)) {
-                if (!parseConditionalStatement()) {
-                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                    return false;
-                }
-            } else if (peekIs(KW_ASSERT)) {
-                if (!parseStaticAssertStatement()) {
-                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                    return false;
-                }
-            } else if (peekIs(KW_FOREACH) || peekIs(KW_FOREACH_REVERSE)) {
-                if (!parseStaticForeachStatement()) {
-                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                    return false;
-                }
+            IElementType next = builder.lookAhead(1);
+            if (next == KW_IF) {
+                return parseConditionalStatement();
+            } else if ( next == KW_ASSERT) {
+                return parseStaticAssertStatement();
+            } else if (next == KW_FOREACH || next == KW_FOREACH_REVERSE) {
+                return parseStaticForeachStatement();
             } else {
-                error("'if' or 'assert' expected.");
-                exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
+                error("'if', 'assert', 'foreach' or 'foreach_reverse' expected.");
                 return false;
             }
         } else if (i == ID) {
             if (peekIs(OP_COLON)) {
-                if (!parseLabeledStatement()) {
-                    cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                    return false;
-                }
-                exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
-                return true;
+                return parseLabeledStatement();
             }
-            if (!parseExpressionStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseExpressionStatement();
         } else {
-            if (!parseExpressionStatement()) {
-                cleanup(m, STATEMENT_NO_CASE_NO_DEFAULT);
-                return false;
-            }
+            return parseExpressionStatement();
         }
-        exit_section_modified(builder, m, STATEMENT_NO_CASE_NO_DEFAULT, true);
-        return true;
     }
 
     /**

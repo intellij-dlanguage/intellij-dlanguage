@@ -276,8 +276,8 @@ object ScopeProcessorImplUtil {
                     toContinue = false
                 }
             }
-            if (declarationOrStatement.statement?.statementNoCaseNoDefault?.labeledStatement != null) {
-                toContinue = declarationOrStatement.statement!!.statementNoCaseNoDefault!!.labeledStatement!!.processDeclarations(processor, state, lastParent, place)
+            if (declarationOrStatement.labeledStatement != null) {
+                toContinue = declarationOrStatement.labeledStatement!!.processDeclarations(processor, state, lastParent, place)
             }
         }
         return toContinue
