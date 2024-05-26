@@ -199,8 +199,6 @@ public class ParserWrapper implements LightPsiParser, PsiParser {
             result = parser.parseEnumBody();
         } else if (type == DlangTypes.EQUAL_EXPRESSION) {
             result = parser.parseEqualExpression() != null;
-        } else if (type == DlangTypes.EXPRESSION) {
-            result = parser.parseExpression();
         } else if (type == DlangTypes.EXPRESSION_STATEMENT) {
             result = false;
         } else if (type == DlangTypes.FINAL_SWITCH_STATEMENT) {

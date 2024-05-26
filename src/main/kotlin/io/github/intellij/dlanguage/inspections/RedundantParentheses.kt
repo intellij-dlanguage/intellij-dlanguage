@@ -19,23 +19,20 @@ class RedundantParentheses : LocalInspectionTool() {
  */
 class RedundantParenthesesVisitor(val holder: ProblemsHolder) : DlangVisitor() {
     override fun visitIfStatement(o: DLanguageIfStatementImpl) {
-        val expression = o.ifCondition?.expression
-        if (expression == null || expression.assignExpressions.size != 1)
+        val expressions = o.ifCondition?.assignExpressions
+        if (expressions?.size != 1)
             return
-        if (expression.assignExpressions[0] == null)
+        if (expressions[0] == null)
             return
-        holder.registerProblem(expression, "Redundant parantheses")
+        holder.registerProblem(o.ifCondition!!, "Redundant parantheses")
     }
 
     override fun visitPrimaryExpression(o: DLanguagePrimaryExpressionImpl) {
-        val expression = o.expression
-        if (expression == null)
+        if (o.assignExpressions.isEmpty() || o.assignExpressions[0] == null)
             return
-        if (expression.assignExpressions.size == 0 || expression.assignExpressions[0] == null)
-            return
-        val unary = expression.assignExpressions[0]
+        val unary = o.assignExpressions[0]
         if (unary.assignExpression == null || unary.assignExpression!!.assignExpression == null)
             return
-        holder.registerProblem(expression, "Redundant parantheses")
+        holder.registerProblem(o, "Redundant parantheses")
     }
 }

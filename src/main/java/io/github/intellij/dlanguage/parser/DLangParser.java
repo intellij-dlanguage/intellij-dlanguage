@@ -3581,19 +3581,25 @@ class DLangParser {
      * ;)
      */
     boolean parseExpression() {
-        final Marker m = enter_section_modified(builder);
         if (suppressedErrorCount() > MAX_ERRORS) {
-            cleanup(m, EXPRESSION);
             return false;
         }
         if (!moreTokens()) {
             error("Expected expression instead of EOF");
-            exit_section_modified(builder, m, EXPRESSION, true);
             return false;
         }
-        final boolean result = parseCommaSeparatedRule("Expression", "AssignExpression", true);
-        exit_section_modified(builder, m, EXPRESSION, result);
-        return result;
+        while (moreTokens()) {
+            if (!parseAssignExpression()) {
+                return false;
+            }
+            if (currentIs(OP_COMMA)) {
+                advance();
+                if (currentIsOneOf(OP_PAR_RIGHT, OP_BRACES_RIGHT, OP_BRACKET_RIGHT))
+                    break;
+            } else
+                break;
+        }
+        return true;
     }
 
     /**

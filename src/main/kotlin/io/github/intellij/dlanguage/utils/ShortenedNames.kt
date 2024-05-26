@@ -97,7 +97,6 @@ typealias EnumBody = io.github.intellij.dlanguage.psi.DLanguageEnumBody
 typealias EnumMemberAttribute = io.github.intellij.dlanguage.psi.DLanguageEnumMemberAttribute
 typealias EponymousTemplateDeclaration = io.github.intellij.dlanguage.psi.DLanguageEponymousTemplateDeclaration
 typealias EqualExpression = io.github.intellij.dlanguage.psi.DLanguageEqualExpression
-typealias Expression = io.github.intellij.dlanguage.psi.DLanguageExpression
 typealias ExpressionStatement = io.github.intellij.dlanguage.psi.DLanguageExpressionStatement
 typealias FinalSwitchStatement = io.github.intellij.dlanguage.psi.DLanguageFinalSwitchStatement
 typealias Finally = io.github.intellij.dlanguage.psi.DLanguageFinally

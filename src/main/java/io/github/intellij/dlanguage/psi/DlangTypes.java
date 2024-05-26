@@ -103,7 +103,6 @@ public interface DlangTypes {
     DlangElementType ENUM_BODY = new DlangElementType("ENUM_BODY");
     DlangElementType ENUM_MEMBER_ATTRIBUTE = new DlangElementType("ENUM_MEMBER_ATTRIBUTE");
     DlangElementType EQUAL_EXPRESSION = new DlangElementType("EQUAL_EXPRESSION");
-    DlangElementType EXPRESSION = new DlangElementType("EXPRESSION");
     DlangElementType EXPRESSION_STATEMENT = new DlangElementType("EXPRESSION_STATEMENT");
     DlangElementType FINAL_SWITCH_STATEMENT = new DlangElementType("FINAL_SWITCH_STATEMENT");
     DlangElementType FINALLY = new DlangElementType("FINALLY");
@@ -584,8 +583,6 @@ public interface DlangTypes {
                 return new DLanguageEponymousTemplateDeclarationImpl(node);
             } else if (type == EQUAL_EXPRESSION) {
                 return new DLanguageEqualExpressionImpl(node);
-            } else if (type == EXPRESSION) {
-                return new DLanguageExpressionImpl(node);
             } else if (type == EXPRESSION_STATEMENT) {
                 return new DLanguageExpressionStatementImpl(node);
             } else if (type == FINAL_SWITCH_STATEMENT) {
