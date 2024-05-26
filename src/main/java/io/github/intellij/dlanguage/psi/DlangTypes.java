@@ -86,7 +86,6 @@ public interface DlangTypes {
     DlangElementType CAST_EXPRESSION = new DlangElementType("CAST_EXPRESSION");
     DlangElementType CAST_QUALIFIER = new DlangElementType("CAST_QUALIFIER");
     DlangElementType CATCHES = new DlangElementType("CATCHES");
-    DlangElementType CMP_EXPRESSION = new DlangElementType("CMP_EXPRESSION");
     DlangElementType COMPILE_CONDITION = new DlangElementType("COMPILE_CONDITION");
     DlangElementType CONDITIONAL_DECLARATION = new DlangElementType("CONDITIONAL_DECLARATION");
     DlangElementType CONDITIONAL_STATEMENT = new DlangElementType("CONDITIONAL_STATEMENT");
@@ -549,8 +548,6 @@ public interface DlangTypes {
                 return new DLanguageCatchImpl(node);
             } else if (type == CATCHES) {
                 return new DLanguageCatchesImpl(node);
-            } else if (type == CMP_EXPRESSION) {
-                return new DLanguageCmpExpressionImpl(node);
             } else if (type == COMPILE_CONDITION) {
                 return new DLanguageCompileConditionImpl(node);
             } else if (type == CONDITIONAL_DECLARATION) {

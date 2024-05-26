@@ -72,7 +72,7 @@ static this() {
     types_children["AliasThisDeclaration"] = ["KW_ALIAS", "Identifier", "KW_THIS", "OP_SCOLON"];
     types_children["AlignAttribute"] = ["KW_ALIGN", "AssignExpression", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
     types_children["AndAndExpression"] = ["AndAndExpression", "OrExpression", "OP_BOOL_AND"];
-    types_children["AndExpression"] = ["AndExpression", "CmpExpression", "OP_AND"];
+    types_children["AndExpression"] = ["AndExpression", "EqualExpression", "IdentityExpression", "RelExpression", "InExpression", "ShiftExpression", "OP_AND"];
     types_children["AnonymousEnumDeclaration"] = ["AssignExpression","OP_COLON","KW_ENUM","OP_PAR_LEFT","OP_PAR_RIGHT","Type","EnumMember*"];
     types_children["AnonymousEnumMember"] = [];
     types_children["ArgumentList"] = ["AssignExpression*", "OP_COMMA*"];
@@ -115,7 +115,6 @@ static this() {
     types_children["CastExpression"] = ["CastQualifier", "Type","UnaryExpression","KW_CAST","OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_children["CastQualifier"] = ["KW_IMMUTABLE","KW_CONST","KW_SHARED","KW_INOUT"];
     types_children["Catches"] = ["LastCatch","Catch"];
-    types_children["CmpExpression"] = ["ShiftExpression","EqualExpression","IdentityExpression","RelExpression","InExpression"];
     types_children["CompileCondition"] = [ "VersionCondition",  "DebugCondition",  "StaticIfCondition"];
     types_children["ConditionalDeclaration"] = ["CompileCondition", "Declaration*","OP_COLON","KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_children["ConditionalStatement"] = ["CompileCondition", "DeclarationOrStatement*", "KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
@@ -332,7 +331,6 @@ static this() {
     has_processDeclaration["Catch"] = true;
     has_processDeclaration["Catches"] = false;
     //has_processDeclaration["ClassDeclaration"] = true;
-    has_processDeclaration["CmpExpression"] = false;
     has_processDeclaration["CompileCondition"] = false;
     has_processDeclaration["ConditionalDeclaration"] = true;
     has_processDeclaration["ConditionalStatement"] = false;

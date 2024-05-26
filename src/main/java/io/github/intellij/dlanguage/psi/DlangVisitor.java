@@ -204,10 +204,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitCmpExpression(@NotNull final DLanguageCmpExpressionImpl o) {
-        visitPsiElement(o);
-    }
-
     public void visitCompileCondition(@NotNull final DLanguageCompileConditionImpl o) {
         visitPsiElement(o);
     }

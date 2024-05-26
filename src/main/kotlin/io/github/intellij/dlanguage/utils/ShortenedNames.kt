@@ -77,7 +77,6 @@ typealias CastExpression = io.github.intellij.dlanguage.psi.DLanguageCastExpress
 typealias CastQualifier = io.github.intellij.dlanguage.psi.DLanguageCastQualifier
 typealias Catch = DlangCatch
 typealias Catches = io.github.intellij.dlanguage.psi.DLanguageCatches
-typealias CmpExpression = io.github.intellij.dlanguage.psi.DLanguageCmpExpression
 typealias CompileCondition = io.github.intellij.dlanguage.psi.DLanguageCompileCondition
 typealias ConditionalDeclaration = io.github.intellij.dlanguage.psi.DLanguageConditionalDeclaration
 typealias ConditionalStatement = io.github.intellij.dlanguage.psi.DLanguageConditionalStatement
