@@ -9,17 +9,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-import static com.intellij.lang.parser.GeneratedParserUtilBase.enter_section_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.exit_section_;
 import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
-/**
- * This parser is very closely based on libdparse, so that we can get bug fixes and new features from libdparse.
- * This means that some of the code can be a little bit messy because of this.
- */
 class DLangParser {
 
-    // This list MUST BE MAINTAINED IN SORTED ORDER.
+    // Please keep this list in order
     private static final String[] REGISTER_NAMES = {
         "AH", "AL", "AX", "BH", "BL", "BP", "BPL", "BX", "CH", "CL", "CR0", "CR2",
         "CR3", "CR4", "CS", "CX", "DH", "DI", "DIL", "DL", "DR0", "DR1", "DR2",
@@ -102,7 +96,7 @@ class DLangParser {
     private final Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
     private final Map<Integer, Boolean> cachedTypedChecks = new HashMap<>();
 
-    private final ArrayList<Integer> suppressMessages;
+    private final ArrayList<Integer> suppressMessages = new ArrayList<>();
 
 
     private int suppressedErrorCount() {
@@ -110,7 +104,6 @@ class DLangParser {
     }
 
     DLangParser(@NotNull final PsiBuilder builder) {
-        this.suppressMessages = new ArrayList<>();
         this.builder = builder;
     }
 
@@ -455,7 +448,7 @@ class DLangParser {
      * ;)
      */
     boolean parseArguments() {
-        final Marker m = enter_section_(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(OP_PAR_LEFT)) {
             cleanup(m, ARGUMENTS);
             return false;
@@ -1704,9 +1697,9 @@ class DLangParser {
      */
     private IElementType parseBuiltinType() {
         assert isBasicType(current());
-        final Marker marker = enter_section_(builder);
+        final Marker marker = builder.mark();
         final IElementType type = advance();
-        exit_section_(builder, marker, BUILTIN_TYPE, true);
+        marker.done(BUILTIN_TYPE);
         return type;
     }
 
@@ -1836,7 +1829,7 @@ class DLangParser {
         if (!moreTokens()) {
             return false;
         }
-        final Marker marker = enter_section_(builder);
+        final Marker marker = builder.mark();
         final IElementType i = current();
         if (i == KW_INOUT || i == KW_CONST) {
             advance();
@@ -1973,7 +1966,7 @@ class DLangParser {
     }
 
     private Marker enter_section_modified(final PsiBuilder builder) {
-        return enter_section_(builder);
+        return builder.mark();
     }
 
     /**
@@ -2759,8 +2752,7 @@ class DLangParser {
             // Attach documentations to their declarations
             m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         }
-        exit_section_(builder, m, type, true);
-
+        m.done(type);
     }
 
     /**
@@ -3193,7 +3185,7 @@ class DLangParser {
         }
         if (currentIs(OP_SCOLON)) {
             advance();
-            exit_section_(builder, m, ENUM_DECLARATION, true);
+            m.done(ENUM_DECLARATION);
             return true;
         }
         if (!parseEnumBody()) {
@@ -4257,7 +4249,7 @@ class DLangParser {
         //    `if (auto identifier = exp)`
         //    `if (scope identifier = exp)`
         if (currentIsOneOf(KW_AUTO, KW_SCOPE)) {
-            final Marker ifCondition = enter_section_(builder);
+            final Marker ifCondition = builder.mark();
             advance();
             final IElementType i = expect(ID);
             if (i != null)
@@ -4266,7 +4258,7 @@ class DLangParser {
                 cleanup(ifCondition, IF_CONDITION);
                 return false;
             }
-            exit_section_(builder, ifCondition, IF_CONDITION, true);
+            ifCondition.done(IF_CONDITION);
         } else {
             if (!moreTokens()) {
                 return false;
@@ -4298,7 +4290,7 @@ class DLangParser {
                 }
             } else {
                 abandonBookmark(b);
-                final Marker ifCondition = enter_section_(builder);
+                final Marker ifCondition = builder.mark();
                 if (!tokenCheck(ID)) {
                     cleanup(ifCondition, IF_CONDITION);
                     return false;
@@ -4311,7 +4303,7 @@ class DLangParser {
                     cleanup(ifCondition, IF_CONDITION);
                     return false;
                 }
-                exit_section_(builder, ifCondition, IF_CONDITION, true);
+                ifCondition.done(IF_CONDITION);
             }
         }
         return true;
@@ -8929,16 +8921,7 @@ class DLangParser {
      */
     private IElementType expect(final IElementType tok) {
         if (!builder.eof() && builder.getTokenType() == tok) {
-            Marker m = null;
-            if (currentIs(ID)) {
-                m = enter_section_(builder);
-            }
-            IElementType token = builder.getTokenType();
-            builder.advanceLexer();
-            if (m != null) {
-                exit_section_(builder, m, IDENTIFIER, true);
-            }
-            return token;
+            return advance();
         } else {
             final String tokenString = tok.getDebugName();
             final String token = (!builder.eof() ? (builder.getTokenType().toString()) : "EOF");
@@ -8966,12 +8949,12 @@ class DLangParser {
     private IElementType advance() {
         Marker identifierMarker = null;
         if (currentIs(ID)) {
-            identifierMarker = enter_section_(builder);
+            identifierMarker = builder.mark();
         }
         IElementType token = builder.getTokenType();
         builder.advanceLexer();
         if (identifierMarker != null) {
-            exit_section_(builder, identifierMarker, IDENTIFIER, true);
+            identifierMarker.done(IDENTIFIER);
         }
         return token;
     }
