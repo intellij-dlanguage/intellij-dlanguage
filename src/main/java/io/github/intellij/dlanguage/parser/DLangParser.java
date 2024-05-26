@@ -7880,7 +7880,7 @@ class DLangParser {
         final IElementType i = current();
         if (isTypeCtor(i)) {
             if (!peekIs(OP_PAR_LEFT))
-                if (parseTypeConstructors() == null) {
+                if (!parseTypeConstructors()) {
                     cleanup(m, TYPE);
                     return new Pair<>(false, m);
                 }
@@ -8042,20 +8042,14 @@ class DLangParser {
      * $(RULE typeConstructor)+
      * ;)
      */
-    IElementType[] parseTypeConstructors() {
-        final List<IElementType> r = new LinkedList<>();
+    boolean parseTypeConstructors() {
+        boolean containsConstructors = false;
         while (moreTokens()) {
-            final IElementType type = parseTypeConstructor(false);
-            if (type == null)
+            if(parseTypeConstructor(false) == null)
                 break;
-            else
-                r.add(type);
+            containsConstructors = true;
         }
-        if (r.isEmpty())
-            return null;
-        final IElementType[] res = new IElementType[r.size()];
-        r.toArray(res);
-        return res;
+        return containsConstructors;
     }
 
     /**
@@ -8969,7 +8963,7 @@ class DLangParser {
         skip(OP_BRACKET_LEFT, OP_BRACKET_RIGHT);
     }
 
-    private IElementType peekPast(final IElementType o, final IElementType c)//(alias O, alias C)
+    private IElementType peekPast(final IElementType o, final IElementType c)
     {
         if (builder.eof())
             return null;
@@ -9646,7 +9640,7 @@ class DLangParser {
             case "ExpressionStatement":
                 return parseExpressionStatement();
             case "TypeConstructors":
-                return parseTypeConstructors() != null;
+                return parseTypeConstructors();
             case "AliasDeclaration":
                 return parseAliasDeclaration();
             default:
