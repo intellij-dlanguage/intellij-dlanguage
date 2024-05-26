@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
 import com.intellij.psi.tree.IElementType;
-import kotlin.jvm.internal.Ref;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -113,292 +112,6 @@ class DLangParser {
     DLangParser(@NotNull final PsiBuilder builder) {
         this.suppressMessages = new ArrayList<>();
         this.builder = builder;
-    }
-
-    private static IElementType nodeTypeToIElementType(final String nodeType) {
-        switch (nodeType) {
-            case "AlignAttribute":
-                return ALIGN_ATTRIBUTE;
-            case "ArgumentList":
-                return ARGUMENT_LIST;
-            case "ArrayInitializer":
-                return ARRAY_INITIALIZER;
-            case "ArrayLiteral":
-                return ARRAY_LITERAL;
-            case "ArrayMemberInitialization":
-                return ARRAY_MEMBER_INITIALIZATION;
-            case "AsmInstruction":
-                return ASM_INSTRUCTION;
-            case "AsmPrimaryExp":
-                return ASM_PRIMARY_EXP;
-            case "AsmStatement":
-                return ASM_STATEMENT;
-            case "AsmTypePrefix":
-                return ASM_TYPE_PREFIX;
-            case "AssocArrayLiteral":
-                return ASSOC_ARRAY_LITERAL;
-            case "Attribute":
-                return ATTRIBUTE;
-            case "AutoDeclaration":
-                return AUTO_DECLARATION;
-            case "BlockStatement":
-                return BLOCK_STATEMENT;
-            case "BreakStatement":
-                return BREAK_STATEMENT;
-            case "BaseClassList":
-                return BASE_CLASS_LIST;
-            case "CastExpression":
-                return CAST_EXPRESSION;
-            case "Catch":
-                return CATCH;
-            case "Catches":
-                return CATCHES;
-            case "ConditionalStatement":
-                return CONDITIONAL_STATEMENT;
-            case "Constraint":
-                return CONSTRAINT;
-            case "Constructor":
-                return CONSTRUCTOR;
-            case "ContinueStatement":
-                return CONTINUE_STATEMENT;
-            case "DebugCondition":
-                return DEBUG_CONDITION;
-            case "DebugSpecification":
-                return DEBUG_SPECIFICATION;
-            case "Declaration":
-                return DECLARATION;
-            case "Declarator":
-                return DECLARATOR;
-            case "DeclaratorIdentifierList":
-                return DECLARATOR_IDENTIFIER;
-            case "DefaultStatement":
-                return DEFAULT_STATEMENT;
-            case "Destructor":
-                return DESTRUCTOR;
-            case "DoStatement":
-                return DO_STATEMENT;
-            case "EnumBody":
-                return ENUM_BODY;
-            case "AnonymousEnumMember":
-                return ANONYMOUS_ENUM_DECLARATION;
-            case "AnonymousEnumDeclaration":
-                return ANONYMOUS_ENUM_DECLARATION;
-            case "EnumDeclaration":
-                return ENUM_DECLARATION;
-            case "EnumMember":
-                return ENUM_MEMBER;
-            case "FinalSwitchStatement":
-                return FINAL_SWITCH_STATEMENT;
-            case "ForStatement":
-                return FOR_STATEMENT;
-            case "ForeachStatement":
-                return FOREACH_STATEMENT;
-            case "ForeachType":
-                return FOREACH_TYPE;
-            case "ForeachTypeList":
-                return FOREACH_TYPE_LIST;
-            case "FunctionBody":
-                return FUNCTION_BODY;
-            case "GotoStatement":
-                return GOTO_STATEMENT;
-            case "IfStatement":
-                return IF_STATEMENT;
-            case "ImportBind":
-                return IMPORT_BIND;
-            case "ImportDeclaration":
-                return IMPORT_DECLARATION;
-            case "InStatement":
-                return IN_STATEMENT;
-            case "Initializer":
-                return INITIALIZER;
-            case "Invariant":
-                return INVARIANT;
-            case "KeyValuePair":
-                return KEY_VALUE_PAIR;
-            case "KeyValuePairs":
-                return KEY_VALUE_PAIRS;
-            case "LabeledStatement":
-                return LABELED_STATEMENT;
-            case "LastCatch":
-                return LAST_CATCH;
-            case "LinkageAttribute":
-                return LINKAGE_ATTRIBUTE;
-            case "MemberFunctionAttribute":
-                return MEMBER_FUNCTION_ATTRIBUTE;
-            case "MixinDeclaration":
-                return MIXIN_DECLARATION;
-            case "ModuleDeclaration":
-                return MODULE_DECLARATION;
-            case "NonVoidInitializer":
-                return NON_VOID_INITIALIZER;
-            case "Operands":
-                return OPERANDS;
-            case "OutStatement":
-                return OUT_STATEMENT;
-            case "Parameter":
-                return PARAMETER;
-            case "Parameters":
-                return PARAMETERS;
-            case "Postblit":
-                return POSTBLIT;
-            case "Register":
-                return REGISTER;
-            case "ReturnStatement":
-                return RETURN_STATEMENT;
-            case "ScopeGuardStatement":
-                return SCOPE_GUARD_STATEMENT;
-            case "SharedStaticConstructor":
-                return SHARED_STATIC_CONSTRUCTOR;
-            case "SharedStaticDestructor":
-                return SHARED_STATIC_DESTRUCTOR;
-            case "Statement":
-                return STATEMENT;
-            case "StatementNoCaseNoDefault":
-                return STATEMENT_NO_CASE_NO_DEFAULT;
-            case "StaticConstructor":
-                return STATIC_CONSTRUCTOR;
-            case "StaticDestructor":
-                return STATIC_DESTRUCTOR;
-            case "StaticIfCondition":
-                return STATIC_IF_CONDITION;
-            case "StorageClass":
-                return STORAGE_CLASS;
-            case "StructDeclaration":
-                return STRUCT_DECLARATION;
-            case "StructInitializer":
-                return STRUCT_INITIALIZER;
-            case "StructMemberInitializer":
-                return STRUCT_MEMBER_INITIALIZER;
-            case "StructMemberInitializers":
-                return STRUCT_MEMBER_INITIALIZERS;
-            case "SwitchStatement":
-                return SWITCH_STATEMENT;
-            case "Symbol":
-                return SYMBOL;
-            case "SynchronizedStatement":
-                return SYNCHRONIZED_STATEMENT;
-            case "TemplateAliasParameter":
-                return TEMPLATE_ALIAS_PARAMETER;
-            case "TemplateArgument":
-                return TEMPLATE_ARGUMENT;
-            case "TemplateArgumentList":
-                return TEMPLATE_ARGUMENT_LIST;
-            case "TemplateArguments":
-                return TEMPLATE_ARGUMENTS;
-            case "TemplateDeclaration":
-                return TEMPLATE_DECLARATION;
-            case "TemplateInstance":
-                return TEMPLATE_INSTANCE;
-            case "TemplateParameter":
-                return TEMPLATE_PARAMETER;
-            case "TemplateParameterList":
-                return TEMPLATE_PARAMETER_LIST;
-            case "TemplateParameters":
-                return TEMPLATE_PARAMETERS;
-            case "TemplateSingleArgument":
-                return TEMPLATE_SINGLE_ARGUMENT;
-            case "TemplateThisParameter":
-                return TEMPLATE_THIS_PARAMETER;
-            case "TemplateTupleParameter":
-                return TEMPLATE_TUPLE_PARAMETER;
-            case "TemplateTypeParameter":
-                return TEMPLATE_TYPE_PARAMETER;
-            case "TemplateValueParameter":
-                return TEMPLATE_VALUE_PARAMETER;
-            case "ThrowExpression":
-                return THROW_EXPRESSION;
-            case "TryStatement":
-                return TRY_STATEMENT;
-            case "Type":
-                return TYPE;
-            case "TypeIdentifierPart":
-                return TYPE_IDENTIFIER_PART;
-            case "TypeSpecialization":
-                return TYPE_SPECIALIZATION;
-            case "UnionDeclaration":
-                return UNION_DECLARATION;
-            case "VersionCondition":
-                return VERSION_CONDITION;
-            case "VersionSpecification":
-                return VERSION_SPECIFICATION;
-            case "WhileStatement":
-                return WHILE_STATEMENT;
-            case "WithStatement":
-                return WITH_STATEMENT;
-            case "AsmAddExp":
-                return ASM_ADD_EXP;
-            case "AsmAndExp":
-                return ASM_AND_EXP;
-            case "AsmBrExp":
-                return ASM_BR_EXP;
-            case "AsmExp":
-                return ASM_EXP;
-            case "AsmEqualExp":
-                return ASM_EQUAL_EXP;
-            case "AsmLogAndExp":
-                return ASM_LOG_AND_EXP;
-            case "AsmLogOrExp":
-                return ASM_LOG_OR_EXP;
-            case "AsmMulExp":
-                return ASM_MUL_EXP;
-            case "AsmOrExp":
-                return ASM_OR_EXP;
-            case "AsmRelExp":
-                return ASM_REL_EXP;
-            case "AsmUnaExp":
-                return ASM_UNA_EXP;
-            case "AsmShiftExp":
-                return ASM_SHIFT_EXP;
-            case "AsmXorExp":
-                return ASM_XOR_EXP;
-            case "AssertExpression":
-                return ASSERT_EXPRESSION;
-            case "AssignExpression":
-                return ASSIGN_EXPRESSION;
-            case "DeleteExpression":
-                return DELETE_EXPRESSION;
-            case "IdentityExpression":
-                return IDENTITY_EXPRESSION;
-            case "ImportExpression":
-                return IMPORT_EXPRESSION;
-            case "IndexExpression":
-                return INDEX_EXPRESSION;
-            case "IsExpression":
-                return IS_EXPRESSION;
-            case "MixinExpression":
-                return MIXIN_EXPRESSION;
-            case "NewAnonClassExpression":
-                return NEW_ANON_CLASS_EXPRESSION;
-            case "NewExpression":
-                return NEW_EXPRESSION;
-            case "OrExpression":
-            case "PrimaryExpression":
-                return PRIMARY_EXPRESSION;
-            case "PragmaDeclaration":
-                return PRAGMA_DECLARATION;
-            case "RelExpression":
-                return REL_EXPRESSION;
-            case "StaticAssertStatement":
-                return STATIC_ASSERT_STATEMENT;
-            case "StaticAssertDeclaration":
-                return STATIC_ASSERT_DECLARATION;
-            case "TraitsExpression":
-                return TRAITS_EXPRESSION;
-            case "TypeidExpression":
-                return TYPEID_EXPRESSION;
-            case "Unittest":
-                return UNITTEST;
-            case "Vector":
-                return VECTOR;
-            case "StaticForeachStatement":
-                return STATIC_FOREACH_STATEMENT;
-            case "StaticForeachDeclaration":
-                return STATIC_FOREACH_DECLARATION;
-            case "AliasAssign":
-                return ALIAS_ASSIGN;
-            default:
-                throw new IllegalArgumentException("unrecognized thing to parse:" + nodeType);
-        }
     }
 
     private void cleanup(@NotNull final Marker marker, final IElementType element) {
@@ -882,15 +595,21 @@ class DLangParser {
      */
     boolean parseAsmAddExp() {
         final Marker m = enter_section_modified(builder);
-        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
-        toParseExpression.element = false;
-        final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmAddExp", "AsmMulExp", OP_PLUS, OP_MINUS);
-        if (!toParseExpression.element) {
+        final boolean node;
+        node = parseAsmMulExp();
+        if (!node) {
             m.drop();
-            return result;
+            return false;
         }
-        exit_section_modified(builder, m, ASM_ADD_EXP, result);
-        return result;
+        while (currentIsOneOf(OP_PLUS, OP_MINUS)) {
+            advance();
+            if (!parseAsmMulExp()) {
+                cleanup(m, ASM_ADD_EXP);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, ASM_ADD_EXP, true);
+        return true;
     }
 
     /**
@@ -903,15 +622,21 @@ class DLangParser {
      */
     boolean parseAsmAndExp() {
         final Marker m = enter_section_modified(builder);
-        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
-        toParseExpression.element = false;
-        final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmAndExp", "AsmEqualExp", OP_AND);
-        if (!toParseExpression.element) {
+        final boolean node;
+        node = parseAsmEqualExp();
+        if (!node) {
             m.drop();
-            return result;
+            return false;
         }
-        exit_section_modified(builder, m, ASM_AND_EXP, result);
-        return result;
+        while (currentIs(OP_AND)) {
+            advance();
+            if (!parseAsmEqualExp()) {
+                cleanup(m, ASM_AND_EXP);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, ASM_AND_EXP, true);
+        return true;
     }
 
     /**
@@ -984,15 +709,21 @@ class DLangParser {
      */
     boolean parseAsmEqualExp() {
         final Marker m = enter_section_modified(builder);
-        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
-        toParseExpression.element = false;
-        final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmEqualExp", "AsmRelExp", OP_EQ_EQ, OP_NOT_EQ);
-        if (!toParseExpression.element) {
+        final boolean node;
+        node = parseAsmRelExp();
+        if (!node) {
             m.drop();
-            return result;
+            return false;
         }
-        exit_section_modified(builder, m, ASM_EQUAL_EXP, result);
-        return result;
+        while (currentIsOneOf(OP_EQ_EQ, OP_NOT_EQ)) {
+            advance();
+            if (!parseAsmRelExp()) {
+                cleanup(m, ASM_EQUAL_EXP);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, ASM_EQUAL_EXP, true);
+        return true;
     }
 
     /**
@@ -1045,7 +776,6 @@ class DLangParser {
     boolean parseAsmInstruction() {
         final Marker m = enter_section_modified(builder);
         if (currentIs(OP_SCOLON)) {
-            warn("Empty asm instruction");
             exit_section_modified(builder, m, ASM_INSTRUCTION, true);
             return true;
         }
@@ -1097,15 +827,21 @@ class DLangParser {
      */
     boolean parseAsmLogAndExp() {
         final Marker m = enter_section_modified(builder);
-        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
-        toParseExpression.element = false;
-        final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmLogAndExp", "AsmOrExp", OP_BOOL_AND);
-        if (!toParseExpression.element) {
+        final boolean node;
+        node = parseAsmOrExp();
+        if (!node) {
             m.drop();
-            return result;
+            return false;
         }
-        exit_section_modified(builder, m, ASM_LOG_AND_EXP, result);
-        return result;
+        while (currentIs(OP_BOOL_AND)) {
+            advance();
+            if (!parseAsmOrExp()) {
+                cleanup(m, ASM_LOG_AND_EXP);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, ASM_LOG_AND_EXP, true);
+        return true;
     }
 
     /**
@@ -1118,15 +854,21 @@ class DLangParser {
      */
     boolean parseAsmLogOrExp() {
         final Marker m = enter_section_modified(builder);
-        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
-        toParseExpression.element = false;
-        final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmLogOrExp", "AsmLogAndExp", OP_BOOL_OR);
-        if (!toParseExpression.element) {
+        final boolean node;
+        node = parseAsmLogAndExp();
+        if (!node) {
             m.drop();
-            return result;
+            return false;
         }
-        exit_section_modified(builder, m, ASM_LOG_OR_EXP, result);
-        return result;
+        while (currentIs(OP_BOOL_OR)) {
+            advance();
+            if (!parseAsmLogAndExp()) {
+                cleanup(m, ASM_LOG_OR_EXP);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, ASM_LOG_OR_EXP, true);
+        return true;
     }
 
     /**
@@ -1139,15 +881,21 @@ class DLangParser {
      */
     boolean parseAsmMulExp() {
         final Marker m = enter_section_modified(builder);
-        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
-        toParseExpression.element = false;
-        final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmMulExp", "AsmBrExp", OP_ASTERISK, OP_DIV, OP_MOD);
-        if (!toParseExpression.element) {
+        final boolean node;
+        node = parseAsmBrExp();
+        if (!node) {
             m.drop();
-            return result;
+            return false;
         }
-        exit_section_modified(builder, m, ASM_MUL_EXP, result);
-        return result;
+        while (currentIsOneOf(OP_ASTERISK, OP_DIV, OP_MOD)) {
+            advance();
+            if (!parseAsmBrExp()) {
+                cleanup(m, ASM_MUL_EXP);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, ASM_MUL_EXP, true);
+        return true;
     }
 
     /**
@@ -1160,15 +908,21 @@ class DLangParser {
      */
     boolean parseAsmOrExp() {
         final Marker m = enter_section_modified(builder);
-        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
-        toParseExpression.element = false;
-        final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmOrExp", "AsmXorExp", OP_OR);
-        if (!toParseExpression.element) {
+        final boolean node;
+        node = parseAsmXorExp();
+        if (!node) {
             m.drop();
-            return result;
+            return false;
         }
-        exit_section_modified(builder, m, ASM_OR_EXP, result);
-        return result;
+        while (currentIs(OP_OR)) {
+            advance();
+            if (!parseAsmXorExp()) {
+                cleanup(m, ASM_OR_EXP);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, ASM_OR_EXP, true);
+        return true;
     }
 
     /**
@@ -1229,15 +983,21 @@ class DLangParser {
      */
     boolean parseAsmRelExp() {
         final Marker m = enter_section_modified(builder);
-        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
-        toParseExpression.element = false;
-        final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmRelExp", "AsmShiftExp", OP_LESS, OP_LESS_EQ, OP_GT, OP_GT_EQ);//todo refactor this to make this shorter
-        if (!toParseExpression.element) {
+        final boolean node;
+        node = parseAsmShiftExp();
+        if (!node) {
             m.drop();
-            return result;
+            return false;
         }
-        exit_section_modified(builder, m, ASM_REL_EXP, result);
-        return result;
+        while (currentIsOneOf(OP_LESS, OP_LESS_EQ, OP_GT, OP_GT_EQ)) {
+            advance();
+            if (!parseAsmShiftExp()) {
+                cleanup(m, ASM_REL_EXP);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, ASM_REL_EXP, true);
+        return true;
     }
 
     /**
@@ -1250,15 +1010,21 @@ class DLangParser {
      */
     boolean parseAsmShiftExp() {
         final Marker m = enter_section_modified(builder);
-        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
-        toParseExpression.element = false;
-        final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmShiftExp", "AsmAddExp", OP_SH_LEFT, OP_SH_RIGHT, OP_USH_RIGHT);
-        if (!toParseExpression.element) {
+        final boolean node;
+        node = parseAsmAddExp();
+        if (!node) {
             m.drop();
-            return result;
+            return false;
         }
-        exit_section_modified(builder, m, ASM_SHIFT_EXP, result);
-        return result;
+        while (currentIsOneOf(OP_SH_LEFT, OP_SH_RIGHT, OP_USH_RIGHT)) {
+            advance();
+            if (!parseAsmAddExp()) {
+                cleanup(m, ASM_SHIFT_EXP);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, ASM_SHIFT_EXP, true);
+        return true;
     }
 
     /**
@@ -1429,15 +1195,21 @@ class DLangParser {
      */
     boolean parseAsmXorExp() {
         final Marker m = enter_section_modified(builder);
-        final Ref.BooleanRef toParseExpression = new Ref.BooleanRef();
-        toParseExpression.element = false;
-        final boolean result = parseLeftAssocBinaryExpression(toParseExpression, "AsmXorExp", "AsmAndExp", OP_XOR);
-        if (!toParseExpression.element) {
+        final boolean node;
+        node = parseAsmAndExp();
+        if (!node) {
             m.drop();
-            return result;
+            return false;
         }
-        exit_section_modified(builder, m, ASM_XOR_EXP, result);
-        return result;
+        while (currentIs(OP_XOR)) {
+            advance();
+            if (!parseAsmAndExp()) {
+                cleanup(m, ASM_XOR_EXP);
+                return false;
+            }
+        }
+        exit_section_modified(builder, m, ASM_XOR_EXP, true);
+        return true;
     }
 
     /**
@@ -1549,50 +1321,20 @@ class DLangParser {
      */
     boolean parseAssocArrayLiteral() {
         final Marker m = enter_section_modified(builder);
-        final boolean result = simpleParse("AssocArrayLiteral", OP_BRACKET_LEFT, "keyValuePairs|parseKeyValuePairs", OP_BRACKET_RIGHT);// todo refactor to simplify this
-        exit_section_modified(builder, m, ASSOC_ARRAY_LITERAL, result);
-        return result;
-    }
-
-    private boolean simpleParse(final String nodeType, final Object... parts) {
-        //open marker for type
-        final Marker m = enter_section_modified(builder);
-        final boolean result = simpleParseItems(parts);
-        exit_section_modified(builder, m, nodeTypeToIElementType(nodeType), result);
-        return result;
-    }
-
-    private boolean simpleParseItems(final Object... items) {
-        for (final Object item : items) {
-            if (item instanceof IElementType) {
-                if (!simpleParseItemsSingle((IElementType) item)) {
-                    return false;
-                }
-            } else if (item instanceof String) {
-                if (!simpleParseItemsSingle((String) item)) {
-                    return false;
-                }
-            } else {
-                throw new IllegalArgumentException();
-            }
-
+        if (expect(OP_BRACKET_LEFT) == null) {
+            cleanup(m, ASSOC_ARRAY_LITERAL);
+            return false;
         }
+        if(!parseKeyValuePairs()) {
+            cleanup(m, ASSOC_ARRAY_LITERAL);
+            return false;
+        }
+        if (expect(OP_BRACKET_RIGHT) == null) {
+            cleanup(m, ASSOC_ARRAY_LITERAL);
+            return false;
+        }
+        exit_section_modified(builder, m, ASSOC_ARRAY_LITERAL, true);
         return true;
-
-
-    }
-
-    private boolean simpleParseItemsSingle(final String item) {
-        final int i = item.indexOf("|");
-        final String first = item.substring(0, i);//unneeded, libdparse uses for building it's ast, but we don't need to
-        final String second = item.substring(i + 1);
-        final String name = second.replace("parse", "");
-        return parseName(name);
-
-    }
-
-    private boolean simpleParseItemsSingle(final IElementType item) {
-        return expect(item) != null;
     }
 
     /**
@@ -1899,7 +1641,6 @@ class DLangParser {
             return false;
         }
         if (isProtection(current())) {
-            warn("Use of base class protection is deprecated.");
             advance();
         }
         if (!parseType2()) {
@@ -1919,9 +1660,18 @@ class DLangParser {
      */
     boolean parseBaseClassList() {
         final Marker m = enter_section_modified(builder);
-        final boolean result = parseCommaSeparatedRule("BaseClassList", "BaseClass");
-        exit_section_modified(builder, m, BASE_CLASS_LIST, result);
-        return result;
+        while (moreTokens()) {
+            if (!parseBaseClass()) {
+                cleanup(m, BASE_CLASS_LIST);
+                return false;
+            }
+            if (currentIs(OP_COMMA)) {
+                advance();
+            } else
+                break;
+        }
+        exit_section_modified(builder, m, BASE_CLASS_LIST, true);
+        return true;
     }
 
     /**
@@ -2659,7 +2409,6 @@ class DLangParser {
                 return declarationDefault(m);
             } else if (idType == OP_SCOLON) {
                 // http://d.magic.com/issues/show_bug.cgi?id=4559
-                warn("Empty declaration");
                 advance();
             } else if (idType == OP_BRACES_LEFT) {
                 if (!nodeAttributes) {
@@ -3064,7 +2813,6 @@ class DLangParser {
         }
         if (currentIs(OP_BRACKET_LEFT)) // dmd doesn't accept pointer after identifier
         {
-            warn("C-style array declaration.");
             while (moreTokens() && currentIs(OP_BRACKET_LEFT))
                 if (!parseTypeSuffix()) {
                     cleanup(m, DECLARATOR);
@@ -3635,9 +3383,16 @@ class DLangParser {
      */
     boolean parseFinalSwitchStatement() {
         final Marker m = enter_section_modified(builder);
-        final boolean result = simpleParse("FinalSwitchStatement", KW_FINAL, "switchStatement|parseSwitchStatement");
-        exit_section_modified(builder, m, FINAL_SWITCH_STATEMENT, result);
-        return result;
+        if (expect(KW_FINAL) == null) {
+            cleanup(m, FINAL_SWITCH_STATEMENT);
+            return false;
+        }
+        if(!parseSwitchStatement()) {
+            cleanup(m, FINAL_SWITCH_STATEMENT);
+            return false;
+        }
+        exit_section_modified(builder, m, FINAL_SWITCH_STATEMENT, true);
+        return true;
     }
 
     /**
@@ -3755,8 +3510,16 @@ class DLangParser {
     }
 
     boolean parseStaticForeachStatement() {
-        return simpleParse("StaticForeachStatement", KW_STATIC,
-            "foreachStatement|parseForeachStatement");
+        Marker m = enter_section_modified(builder);
+        if (expect(KW_STATIC) == null) {
+            cleanup(m, ASSOC_ARRAY_LITERAL);
+            return false;
+        }
+        if(!parseForeachStatement()) {
+            cleanup(m, ASSOC_ARRAY_LITERAL);
+            return false;
+        }
+        return true;
     }
 
     boolean parseForeach(IElementType elementType, final boolean declOnly) {
@@ -3897,11 +3660,20 @@ class DLangParser {
      */
     Pair<Boolean, Integer> parseForeachTypeList() {
         final Marker marker = enter_section_modified(builder);
-        final Ref.IntRef foreachTypeRefLength = new Ref.IntRef();
-        foreachTypeRefLength.element = 0;
-        final boolean b = parseCommaSeparatedRule(foreachTypeRefLength, "ForeachTypeList", "ForeachType");
-        exit_section_modified(builder, marker, FOREACH_TYPE_LIST, b);
-        return new Pair<Boolean, Integer>(b, foreachTypeRefLength.element);
+        Integer count = 0;
+        while (moreTokens()) {
+            if (!parseForeachType()) {
+                cleanup(marker, FOREACH_TYPE_LIST);
+                return new Pair<>(false, count);
+            }
+            count++;
+            if (currentIs(OP_COMMA)) {
+                advance();
+            } else
+                break;
+        }
+        exit_section_modified(builder, marker, FOREACH_TYPE_LIST, true);
+        return new Pair<>(true, count);
     }
 
     /**
@@ -4693,10 +4465,24 @@ class DLangParser {
      */
     boolean parseImportExpression() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = simpleParse("ImportExpression", KW_IMPORT, OP_PAR_LEFT,
-            "assignExpression|parseAssignExpression", OP_PAR_RIGHT);
-        exit_section_modified(builder, marker, IMPORT_EXPRESSION, b);
-        return b;
+        if (expect(KW_IMPORT) == null) {
+            cleanup(marker, IMPORT_EXPRESSION);
+            return false;
+        }
+        if (expect(OP_PAR_LEFT) == null) {
+            cleanup(marker, IMPORT_EXPRESSION);
+            return false;
+        }
+        if(!parseAssignExpression()) {
+            cleanup(marker, IMPORT_EXPRESSION);
+            return false;
+        }
+        if (expect(OP_PAR_RIGHT) == null) {
+            cleanup(marker, IMPORT_EXPRESSION);
+            return false;
+        }
+        exit_section_modified(builder, marker, IMPORT_EXPRESSION, true);
+        return true;
     }
 
     /**
@@ -6052,9 +5838,16 @@ class DLangParser {
      */
     boolean parsePragmaDeclaration() {
         final Marker marker = enter_section_modified(builder);
-        final boolean res = simpleParse("PragmaDeclaration", "pragmaExpression|parsePragmaExpression", OP_SCOLON);
+        if(!parsePragmaExpression()) {
+            cleanup(marker, PRAGMA_DECLARATION);
+            return false;
+        }
+        if (expect(OP_SCOLON) == null) {
+            cleanup(marker, PRAGMA_DECLARATION);
+            return false;
+        }
         exit_section_modified(builder, marker, PRAGMA_DECLARATION, true);
-        return res;
+        return true;
     }
 
     /**
@@ -6189,12 +5982,7 @@ class DLangParser {
         if (isLiteral(i)) {
             if (currentIsOneOf(stringLiteralsArray)) {
                 advance();
-                boolean alreadyWarned = false;
                 while (currentIsOneOf(stringLiteralsArray)) {
-                    if (!alreadyWarned) {
-                        warn("Implicit concatenation of String literals");
-                        alreadyWarned = true;
-                    }
                     advance();
                 }
             } else {
@@ -6977,10 +6765,12 @@ class DLangParser {
      */
     boolean parseStaticAssertDeclaration() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = simpleParse("StaticAssertDeclaration",
-            "staticAssertStatement|parseStaticAssertStatement");
-        exit_section_modified(builder, marker, STATIC_ASSERT_DECLARATION, b);
-        return b;
+        if (!parseStaticAssertStatement()) {
+            cleanup(marker, STATIC_ASSERT_DECLARATION);
+            return false;
+        }
+        exit_section_modified(builder, marker, STATIC_ASSERT_DECLARATION, true);
+        return true;
     }
 
     /**
@@ -6992,10 +6782,20 @@ class DLangParser {
      */
     boolean parseStaticAssertStatement() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = simpleParse("StaticAssertStatement",
-            KW_STATIC, "assertExpression|parseAssertExpression", OP_SCOLON);
-        exit_section_modified(builder, marker, STATIC_ASSERT_STATEMENT, b);
-        return b;
+        if (expect(KW_STATIC) == null) {
+            cleanup(marker, STATIC_ASSERT_STATEMENT);
+            return false;
+        }
+        if(!parseAssertExpression()) {
+            cleanup(marker, STATIC_ASSERT_STATEMENT);
+            return false;
+        }
+        if (expect(OP_SCOLON) == null) {
+            cleanup(marker, STATIC_ASSERT_STATEMENT);
+            return false;
+        }
+        exit_section_modified(builder, marker, STATIC_ASSERT_STATEMENT, true);
+        return true;
     }
 
     /**
@@ -7047,10 +6847,28 @@ class DLangParser {
      */
     boolean parseStaticIfCondition() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = simpleParse("StaticIfCondition", KW_STATIC, KW_IF, OP_PAR_LEFT,
-            "assignExpression|parseAssignExpression", OP_PAR_RIGHT);
-        exit_section_modified(builder, marker, STATIC_IF_CONDITION, b);
-        return b;
+        if (expect(KW_STATIC) == null) {
+            cleanup(marker, STATIC_IF_CONDITION);
+            return false;
+        }
+        if (expect(KW_IF) == null) {
+            cleanup(marker, STATIC_IF_CONDITION);
+            return false;
+        }
+        if (expect(OP_PAR_LEFT) == null) {
+            cleanup(marker, STATIC_IF_CONDITION);
+            return false;
+        }
+        if(!parseAssignExpression()) {
+            cleanup(marker, STATIC_IF_CONDITION);
+            return false;
+        }
+        if (expect(OP_PAR_RIGHT) == null) {
+            cleanup(marker, STATIC_IF_CONDITION);
+            return false;
+        }
+        exit_section_modified(builder, marker, STATIC_IF_CONDITION, true);
+        return true;
     }
 
     /**
@@ -7427,9 +7245,20 @@ class DLangParser {
      */
     boolean parseTemplateArgumentList() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = parseCommaSeparatedRule("TemplateArgumentList", "TemplateArgument", true);
-        exit_section_modified(builder, marker, TEMPLATE_ARGUMENT_LIST, b);
-        return b;
+        while (moreTokens()) {
+            if (!parseTemplateArgument()) {
+                cleanup(marker, TEMPLATE_ARGUMENT_LIST);
+                return false;
+            }
+            if (currentIs(OP_COMMA)) {
+                advance();
+                if (currentIsOneOf(OP_PAR_RIGHT))
+                    break;
+            } else
+                break;
+        }
+        exit_section_modified(builder, marker, TEMPLATE_ARGUMENT_LIST, true);
+        return true;
     }
 
     /**
@@ -7610,9 +7439,20 @@ class DLangParser {
      */
     boolean parseTemplateParameterList() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = parseCommaSeparatedRule("TemplateParameterList", "TemplateParameter", true);
-        exit_section_modified(builder, marker, TEMPLATE_PARAMETER_LIST, b);
-        return b;
+        while (moreTokens()) {
+            if (!parseTemplateParameter()) {
+                cleanup(marker, TEMPLATE_PARAMETER_LIST);
+                return false;
+            }
+            if (currentIs(OP_COMMA)) {
+                advance();
+                if (currentIsOneOf(OP_PAR_RIGHT, OP_BRACES_RIGHT, OP_BRACKET_RIGHT))
+                    break;
+            } else
+                break;
+        }
+        exit_section_modified(builder, marker, TEMPLATE_PARAMETER_LIST, true);
+        return true;
     }
 
     /**
@@ -8513,9 +8353,16 @@ class DLangParser {
      */
     boolean parseUnittest() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = simpleParse("Unittest", KW_UNITTEST, "blockStatement|parseBlockStatement");
-        exit_section_modified(builder, marker, UNITTEST, b);
-        return b;
+        if (expect(KW_UNITTEST) == null) {
+            cleanup(marker, UNITTEST);
+            return false;
+        }
+        if(!parseBlockStatement()) {
+            cleanup(marker, UNITTEST);
+            return false;
+        }
+        exit_section_modified(builder, marker, UNITTEST, true);
+        return true;
     }
 
     boolean parseVariableDeclaration() {
@@ -8597,9 +8444,24 @@ class DLangParser {
      */
     boolean parseVector() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = simpleParse("Vector", KW___VECTOR, OP_PAR_LEFT, "type|parseType", OP_PAR_RIGHT);
-        exit_section_modified(builder, marker, VECTOR, b);
-        return b;
+        if (expect(KW___VECTOR) == null) {
+            cleanup(marker, VECTOR);
+            return false;
+        }
+        if (expect(OP_PAR_LEFT) == null) {
+            cleanup(marker, VECTOR);
+            return false;
+        }
+        if(!parseType().first) {
+            cleanup(marker, VECTOR);
+            return false;
+        }
+        if (expect(OP_PAR_RIGHT) == null) {
+            cleanup(marker, VECTOR);
+            return false;
+        }
+        exit_section_modified(builder, marker, VECTOR, true);
+        return true;
     }
 
     /**
@@ -8707,9 +8569,28 @@ class DLangParser {
      */
     boolean parseWithStatement() {
         final Marker marker = enter_section_modified(builder);
-        final boolean b = simpleParse("WithStatement", KW_WITH, OP_PAR_LEFT, "expression|parseExpression", OP_PAR_RIGHT, "declarationOrStatement|parseDeclarationOrStatement");
-        exit_section_modified(builder, marker, WITH_STATEMENT, b);
-        return b;
+        if (expect(KW_WITH) == null) {
+            cleanup(marker, WITH_STATEMENT);
+            return false;
+        }
+        if (expect(OP_PAR_LEFT) == null) {
+            cleanup(marker, WITH_STATEMENT);
+            return false;
+        }
+        if(!parseExpression()) {
+            cleanup(marker, WITH_STATEMENT);
+            return false;
+        }
+        if (expect(OP_PAR_RIGHT) == null) {
+            cleanup(marker, WITH_STATEMENT);
+            return false;
+        }
+        if(!parseDeclarationOrStatement()) {
+            cleanup(marker, WITH_STATEMENT);
+            return false;
+        }
+        exit_section_modified(builder, marker, WITH_STATEMENT, true);
+        return true;
     }
 
     /**
@@ -8918,68 +8799,6 @@ class DLangParser {
 
     private boolean currentIsMemberFunctionAttribute() {
         return moreTokens() && isMemberFunctionAttribute(current());
-    }
-
-    private boolean parseLeftAssocBinaryExpression(final Ref.BooleanRef operatorWasMatched,
-                                                   final String ExpressionType, final String ExpressionPartType,
-                                                   @NotNull final IElementType... operators) {
-        return parseLeftAssocBinaryExpression(operatorWasMatched, ExpressionType, ExpressionPartType, false, operators);
-    }
-
-    private boolean parseLeftAssocBinaryExpression(final Ref.BooleanRef operatorWasMatched,
-                                                   final String ExpressionType, final String ExpressionPartType, final boolean part,
-                                                   @NotNull final IElementType... operators)//(alias ExpressionType, alias ExpressionPartType, Operators ...)(ExpressionNode part = null)
-    {
-        operatorWasMatched.element = false;
-        final boolean node;
-        if (!part) {
-            node = parseName(ExpressionPartType);
-            if (!node)
-                return false;
-        }
-        while (currentIsOneOf(operators)) {
-            operatorWasMatched.element = true;
-            advance();
-            if (!parseNodeQ(ExpressionPartType)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean parseCommaSeparatedRule(final String listType, final String itemType) {
-        return parseCommaSeparatedRule(listType, itemType, false);
-    }
-
-    private boolean parseCommaSeparatedRule(final String listType, final String itemType, boolean allowTrailingComma) {
-        return parseCommaSeparatedRule(new Ref.IntRef(), listType, itemType, allowTrailingComma);
-    }
-
-    private boolean parseCommaSeparatedRule(final Ref.IntRef foreachTypeRefLength, final String listType, final String itemType) {
-        return parseCommaSeparatedRule(foreachTypeRefLength, listType, itemType, false);
-    }
-
-    private boolean parseCommaSeparatedRule(final Ref.IntRef foreachTypeRefLength, final String listType, final String itemType, boolean allowTrailingComma)//(alias ListType, alias ItemType,)
-    {
-        foreachTypeRefLength.element = 0;
-        while (moreTokens()) {
-            if (!parseName(itemType)) {
-                return false;
-            }
-            foreachTypeRefLength.element++;
-            if (currentIs(OP_COMMA)) {
-                advance();
-                if (allowTrailingComma && currentIsOneOf(OP_PAR_RIGHT, OP_BRACES_RIGHT, OP_BRACKET_RIGHT))
-                    break;
-            } else
-                break;
-        }
-        return true;
-    }
-
-    private void warn(final String message) {
-        if (!suppressMessages.isEmpty())
-            return;
     }
 
     private void error(final String message) {
@@ -9209,10 +9028,6 @@ class DLangParser {
         bookmark.dropped = true;
     }
 
-    private boolean parseNodeQ(final String NodeName) {
-        return parseName(NodeName);
-    }
-
     private boolean tokenCheck(final IElementType tok) {
         return expect(tok) != null;
     }
@@ -9313,349 +9128,6 @@ class DLangParser {
             return baseClassList();
         }
         return parseStructBody();
-    }
-
-    private boolean parseName(final String NodeName) {
-        switch (NodeName) {
-            case "AliasThisDeclaration":
-                return parseAliasThisDeclaration();
-            case "AlignAttribute":
-                return parseAlignAttribute();
-            case "ArgumentList":
-                return parseArgumentList();
-            case "Arguments":
-                return parseArguments();
-            case "ArrayInitializer":
-                return parseArrayInitializer();
-            case "ArrayLiteral":
-                return parseArrayLiteral();
-            case "ArrayMemberInitialization":
-                return parseArrayMemberInitialization();
-            case "AsmInstruction":
-                return parseAsmInstruction();
-            case "AsmPrimaryExp":
-                return parseAsmPrimaryExp();
-            case "AsmStatement":
-                return parseAsmStatement();
-            case "AsmTypePrefix":
-                return parseAsmTypePrefix();
-            case "AssocArrayLiteral":
-                return parseAssocArrayLiteral();
-            case "AtAttribute":
-                return parseAtAttribute();
-            case "Attribute":
-                return parseAttribute();
-            case "AttributeDeclaration":
-                return parseAttributeDeclaration();
-            case "AutoDeclaration":
-                return parseAutoDeclaration();
-            case "AutoDeclarationPart":
-                return parseAutoDeclarationPart();
-            case "BlockStatement":
-                return parseBlockStatement();
-            case "BreakStatement":
-                return parseBreakStatement();
-            case "BaseClass":
-                return parseBaseClass();
-            case "BaseClassList":
-                return parseBaseClassList();
-            case "CastQualifier":
-                return parseCastQualifier();
-            case "Catch":
-                return parseCatch();
-            case "Catches":
-                return parseCatches();
-            case "ClassDeclaration":
-                return parseClassDeclaration();
-            case "CompileCondition":
-                return parseCompileCondition();
-            case "ConditionalStatement":
-                return parseConditionalStatement();
-            case "Constraint":
-                return parseConstraint();
-            case "Constructor":
-                return parseConstructor();
-            case "ContinueStatement":
-                return parseContinueStatement();
-            case "DebugCondition":
-                return parseDebugCondition();
-            case "DebugSpecification":
-                return parseDebugSpecification();
-            case "Declaration":
-                return parseDeclaration();
-            case "DeclarationsAndStatements":
-                return parseDeclarationsAndStatements();
-            case "DeclarationOrStatement":
-                return parseDeclarationOrStatement();
-            case "Declarator":
-                return parseDeclarator();
-            case "DeclaratorIdentifierList":
-                return parseDeclaratorIdentifierList();
-            case "DefaultStatement":
-                return parseDefaultStatement();
-            case "Deprecated":
-                return parseDeprecated();
-            case "Destructor":
-                return parseDestructor();
-            case "DoStatement":
-                return parseDoStatement();
-            case "EnumBody":
-                return parseEnumBody();
-            case "AnonymousEnumMember":
-                return parseAnonymousEnumMember();
-            case "AnonymousEnumDeclaration":
-                return parseAnonymousEnumDeclaration();
-            case "EnumDeclaration":
-                return parseEnumDeclaration();
-            case "EnumMember":
-                return parseEnumMember();
-            case "EponymousTemplateDeclaration":
-                return parseEponymousTemplateDeclaration();
-            case "FinalSwitchStatement":
-                return parseFinalSwitchStatement();
-            case "Finally":
-                return parseFinally();
-            case "ForStatement":
-                return parseForStatement();
-            case "ForeachStatement":
-                return parseForeachStatement();
-            case "ForeachType":
-                return parseForeachType();
-            case "ForeachTypeList":
-                return parseForeachTypeList().first;
-            case "FunctionBody":
-                return parseFunctionBody();
-            case "GotoStatement":
-                return parseGotoStatement();
-            case "IdentifierChain":
-                return parseIdentifierChain();
-            case "IdentifierOrTemplateChain":
-                return parseIdentifierOrTemplateChain();
-            case "IdentifierOrTemplateInstance":
-                return parseIdentifierOrTemplateInstance();
-            case "IfStatement":
-                return parseIfStatement();
-            case "ImportBind":
-                return parseImportBind();
-            case "ImportDeclaration":
-                return parseImportDeclaration();
-            case "InStatement":
-                return parseInStatement();
-            case "Initializer":
-                return parseInitializer();
-            case "InterfaceDeclaration":
-                return parseInterfaceDeclaration();
-            case "Invariant":
-                return parseInvariant();
-            case "KeyValuePair":
-                return parseKeyValuePair();
-            case "KeyValuePairs":
-                return parseKeyValuePairs();
-            case "LabeledStatement":
-                return parseLabeledStatement();
-            case "LastCatch":
-                return parseLastCatch();
-            case "LinkageAttribute":
-                return parseLinkageAttribute();
-            case "MemberFunctionAttribute":
-                return parseMemberFunctionAttribute();
-            case "MixinDeclaration":
-                return parseMixinDeclaration();
-            case "MixinTemplateDeclaration":
-                return parseMixinTemplateDeclaration();
-            case "MixinTemplateName":
-                return parseMixinTemplateName();
-            case "Module":
-                return parseModule();
-            case "ModuleDeclaration":
-                return parseModuleDeclaration();
-            case "NonVoidInitializer":
-                return parseNonVoidInitializer();
-            case "Operands":
-                return parseOperands();
-            case "OutStatement":
-                return parseOutStatement();
-            case "Parameter":
-                return parseParameter();
-            case "Parameters":
-                return parseParameters();
-            case "Postblit":
-                return parsePostblit();
-            case "PragmaDeclaration":
-                return parsePragmaDeclaration();
-            case "Register":
-                return parseRegister();
-            case "ReturnStatement":
-                return parseReturnStatement();
-            case "ScopeGuardStatement":
-                return parseScopeGuardStatement();
-            case "SharedStaticConstructor":
-                return parseSharedStaticConstructor();
-            case "SharedStaticDestructor":
-                return parseSharedStaticDestructor();
-            case "SingleImport":
-                return parseSingleImport();
-            case "Statement":
-                return parseStatement();
-            case "StatementNoCaseNoDefault":
-                return parseStatementNoCaseNoDefault();
-            case "StaticAssertDeclaration":
-                return parseStaticAssertDeclaration();
-            case "StaticAssertStatement":
-                return parseStaticAssertStatement();
-            case "StaticConstructor":
-                return parseStaticConstructor();
-            case "StaticDestructor":
-                return parseStaticDestructor();
-            case "StaticIfCondition":
-                return parseStaticIfCondition();
-            case "StorageClass":
-                return parseStorageClass();
-            case "StructBody":
-                return parseStructBody();
-            case "StructDeclaration":
-                return parseStructDeclaration();
-            case "StructInitializer":
-                return parseStructInitializer();
-            case "StructMemberInitializer":
-                return parseStructMemberInitializer();
-            case "StructMemberInitializers":
-                return parseStructMemberInitializers();
-            case "SwitchStatement":
-                return parseSwitchStatement();
-            case "Symbol":
-                return parseSymbol();
-            case "SynchronizedStatement":
-                return parseSynchronizedStatement();
-            case "TemplateAliasParameter":
-                return parseTemplateAliasParameter();
-            case "TemplateArgument":
-                return parseTemplateArgument();
-            case "TemplateArgumentList":
-                return parseTemplateArgumentList();
-            case "TemplateArguments":
-                return parseTemplateArguments();
-            case "TemplateDeclaration":
-                return parseTemplateDeclaration();
-            case "TemplateInstance":
-                return parseTemplateInstance();
-            case "TemplateParameter":
-                return parseTemplateParameter();
-            case "TemplateParameterList":
-                return parseTemplateParameterList();
-            case "TemplateParameters":
-                return parseTemplateParameters();
-            case "TemplateSingleArgument":
-                return parseTemplateSingleArgument();
-            case "TemplateThisParameter":
-                return parseTemplateThisParameter();
-            case "TemplateTupleParameter":
-                return parseTemplateTupleParameter();
-            case "TemplateTypeParameter":
-                return parseTemplateTypeParameter();
-            case "TemplateValueParameter":
-                return parseTemplateValueParameter();
-            case "TemplateValueParameterDefault":
-                return parseTemplateValueParameterDefault();
-            case "TryStatement":
-                return parseTryStatement();
-            case "Type":
-                return parseType().first;
-            case "Type2":
-                return parseType2();
-            case "TypeIdentifierChain":
-                return parseIdentifierChain();
-            case "TypeSpecialization":
-                return parseTypeSpecialization();
-            case "TypeSuffix":
-                return parseTypeSuffix();
-            case "UnionDeclaration":
-                return parseUnionDeclaration();
-            case "Unittest":
-                return parseUnittest();
-            case "VariableDeclaration":
-                return parseVariableDeclaration();
-            case "Vector":
-                return parseVector();
-            case "VersionCondition":
-                return parseVersionCondition();
-            case "VersionSpecification":
-                return parseVersionSpecification();
-            case "WhileStatement":
-                return parseWhileStatement();
-            case "WithStatement":
-                return parseWithStatement();
-            case "AsmAddExp":
-                return parseAsmAddExp();
-            case "AsmAndExp":
-                return parseAsmAndExp();
-            case "AsmBrExp":
-                return parseAsmBrExp();
-            case "AsmExp":
-                return parseAsmExp();
-            case "AsmEqualExp":
-                return parseAsmEqualExp();
-            case "AsmLogAndExp":
-                return parseAsmLogAndExp();
-            case "AsmLogOrExp":
-                return parseAsmLogOrExp();
-            case "AsmMulExp":
-                return parseAsmMulExp();
-            case "AsmOrExp":
-                return parseAsmOrExp();
-            case "AsmRelExp":
-                return parseAsmRelExp();
-            case "AsmUnaExp":
-                return parseAsmUnaExp();
-            case "AsmShiftExp":
-                return parseAsmShiftExp();
-            case "AsmXorExp":
-                return parseAsmXorExp();
-            case "AssertExpression":
-                return parseAssertExpression();
-            case "AssignExpression":
-                return parseAssignExpression();
-            case "Expression":
-                return parseExpression();
-            case "FunctionCallExpression":
-                return parseFunctionCallExpression();
-            case "FunctionLiteralExpression":
-                return parseFunctionLiteralExpression();
-            case "ImportExpression":
-                return parseImportExpression();
-            case "IndexExpression":
-                return parseIndexExpression();
-            case "IsExpression":
-                return parseIsExpression();
-            case "MixinExpression":
-                return parseMixinExpression();
-            case "NewAnonClassExpression":
-                return parseNewAnonClassExpression();
-            case "NewExpression":
-                return parseNewExpression();
-            case "PragmaExpression":
-                return parsePragmaExpression();
-            case "Index":
-                return parseIndex();
-            case "TemplateMixinExpression":
-                return parseTemplateMixinExpression();
-            case "TraitsExpression":
-                return parseTraitsExpression();
-            case "TypeidExpression":
-                return parseTypeidExpression();
-            case "TypeofExpression":
-                return parseTypeofExpression();
-            case "AliasInitializer":
-                return parseAliasInitializer();
-            case "ExpressionStatement":
-                return parseExpressionStatement();
-            case "TypeConstructors":
-                return parseTypeConstructors();
-            case "AliasDeclaration":
-                return parseAliasDeclaration();
-            default:
-                throw new IllegalArgumentException("unrecognized thing to parse:" + NodeName);
-        }
     }
 
     private boolean parseExpressionStatement() {
