@@ -153,8 +153,6 @@ class DLangParser {
                 return AUTO_DECLARATION;
             case "BlockStatement":
                 return BLOCK_STATEMENT;
-            case "BodyStatement":
-                return BODY_STATEMENT;
             case "BreakStatement":
                 return BREAK_STATEMENT;
             case "BaseClassList":
