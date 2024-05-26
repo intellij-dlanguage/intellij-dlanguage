@@ -4379,14 +4379,13 @@ class DLangParser {
         int identifiersOrTemplateInstancesLength = 0;
         while (moreTokens()) {
             if (!parseIdentifierOrTemplateInstance()) {
-                // TODO handle
-                identifiersOrTemplateInstancesLength++;
                 if (identifiersOrTemplateInstancesLength == 0) {
                     cleanup(m, IDENTIFIER_OR_TEMPLATE_CHAIN);
                     return false;
                 } else
                     break;
             }
+            identifiersOrTemplateInstancesLength++;
             if (!currentIs(OP_DOT))
                 break;
             else
