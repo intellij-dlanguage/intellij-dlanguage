@@ -4959,7 +4959,7 @@ class DLangParser {
      */
     boolean parseInitializer() {
         final Marker m = enter_section_modified(builder);
-        if (currentIs(KW_VOID) && peekIsOneOf(OP_COMMA, OP_SCOLON))
+        if (currentIs(KW_VOID))
             advance();
         else if (!parseNonVoidInitializer()) {
             cleanup(m, INITIALIZER);
