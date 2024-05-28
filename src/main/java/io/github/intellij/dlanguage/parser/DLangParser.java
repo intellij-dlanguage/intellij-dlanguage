@@ -3341,15 +3341,13 @@ class DLangParser {
      * $(RULE expression) $(LITERAL ';')
      * ;)
      */
-    boolean parseExpressionStatement(final boolean parseExpression) {
+    boolean parseExpressionStatement() {
         final Marker m = enter_section_modified(builder);
-        if (parseExpression) {
-            final boolean b = parseExpression();
-            if (!b) {
+        final boolean b = parseExpression();
+        if (!b) {
                 cleanup(m, EXPRESSION_STATEMENT);
                 return false;
             }
-        }
         if (expect(OP_SCOLON) == null) {
             cleanup(m, EXPRESSION_STATEMENT);
             return false;
@@ -8993,10 +8991,6 @@ class DLangParser {
             return baseClassList();
         }
         return parseStructBody();
-    }
-
-    private boolean parseExpressionStatement() {
-        return parseExpressionStatement(true);
     }
 
     enum DecType {
