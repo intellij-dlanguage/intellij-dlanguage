@@ -153,8 +153,6 @@ class DLangParser {
                 return AUTO_DECLARATION;
             case "BlockStatement":
                 return BLOCK_STATEMENT;
-            case "BodyStatement":
-                return BODY_STATEMENT;
             case "BreakStatement":
                 return BREAK_STATEMENT;
             case "BaseClassList":
@@ -4381,14 +4379,13 @@ class DLangParser {
         int identifiersOrTemplateInstancesLength = 0;
         while (moreTokens()) {
             if (!parseIdentifierOrTemplateInstance()) {
-                // TODO handle
-                identifiersOrTemplateInstancesLength++;
                 if (identifiersOrTemplateInstancesLength == 0) {
                     cleanup(m, IDENTIFIER_OR_TEMPLATE_CHAIN);
                     return false;
                 } else
                     break;
             }
+            identifiersOrTemplateInstancesLength++;
             if (!currentIs(OP_DOT))
                 break;
             else
@@ -4962,7 +4959,7 @@ class DLangParser {
      */
     boolean parseInitializer() {
         final Marker m = enter_section_modified(builder);
-        if (currentIs(KW_VOID) && peekIsOneOf(OP_COMMA, OP_SCOLON))
+        if (currentIs(KW_VOID))
             advance();
         else if (!parseNonVoidInitializer()) {
             cleanup(m, INITIALIZER);
@@ -7882,7 +7879,7 @@ class DLangParser {
         final IElementType i = current();
         if (isTypeCtor(i)) {
             if (!peekIs(OP_PAR_LEFT))
-                if (parseTypeConstructors() == null) {
+                if (!parseTypeConstructors()) {
                     cleanup(m, TYPE);
                     return new Pair<>(false, m);
                 }
@@ -8044,20 +8041,14 @@ class DLangParser {
      * $(RULE typeConstructor)+
      * ;)
      */
-    IElementType[] parseTypeConstructors() {
-        final List<IElementType> r = new LinkedList<>();
+    boolean parseTypeConstructors() {
+        boolean containsConstructors = false;
         while (moreTokens()) {
-            final IElementType type = parseTypeConstructor(false);
-            if (type == null)
+            if(parseTypeConstructor(false) == null)
                 break;
-            else
-                r.add(type);
+            containsConstructors = true;
         }
-        if (r.isEmpty())
-            return null;
-        final IElementType[] res = new IElementType[r.size()];
-        r.toArray(res);
-        return res;
+        return containsConstructors;
     }
 
     /**
@@ -8971,7 +8962,7 @@ class DLangParser {
         skip(OP_BRACKET_LEFT, OP_BRACKET_RIGHT);
     }
 
-    private IElementType peekPast(final IElementType o, final IElementType c)//(alias O, alias C)
+    private IElementType peekPast(final IElementType o, final IElementType c)
     {
         if (builder.eof())
             return null;
@@ -9648,7 +9639,7 @@ class DLangParser {
             case "ExpressionStatement":
                 return parseExpressionStatement();
             case "TypeConstructors":
-                return parseTypeConstructors() != null;
+                return parseTypeConstructors();
             case "AliasDeclaration":
                 return parseAliasDeclaration();
             default:

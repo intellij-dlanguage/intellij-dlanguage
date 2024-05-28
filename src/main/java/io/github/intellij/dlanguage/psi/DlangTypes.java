@@ -79,7 +79,6 @@ public interface DlangTypes {
     DlangElementType BASE_CLASS = new DlangElementType("BASE_CLASS");
     DlangElementType BASE_CLASS_LIST = new DlangElementType("BASE_CLASS_LIST");
     DlangElementType BLOCK_STATEMENT = new DlangElementType("BLOCK_STATEMENT");
-    DlangElementType BODY_STATEMENT = new DlangElementType("BODY_STATEMENT");
     DlangElementType BREAK_STATEMENT = new DlangElementType("BREAK_STATEMENT");
     DlangElementType CASE_RANGE_STATEMENT = new DlangElementType("CASE_RANGE_STATEMENT");
     DlangElementType CASE_STATEMENT = new DlangElementType("CASE_STATEMENT");
@@ -412,8 +411,6 @@ public interface DlangTypes {
     DlangTokenType KW___VECTOR = new DlangTokenType("__vector");
     DlangTokenType KW___VENDOR__ = new DlangTokenType("__VENDOR__");
     DlangTokenType KW___VERSION__ = new DlangTokenType("__VERSION__");
-
-    DlangTokenType SPECIAL_EMPTY_TOKEN = new DlangTokenType("SPECIAL_EMPTY_TOKEN");
 
     // Highlighting specific
     DlangElementType VALID_NAMED_CHARACTER_ENTITY = new DlangElementType("VALID_NAMED_CHARACTER_ENTITY");
