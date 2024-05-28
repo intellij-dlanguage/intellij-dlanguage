@@ -6628,6 +6628,17 @@ class DLangParser {
         }
     }
 
+    boolean parseEmptyStatement() {
+        Marker marker = builder.mark();
+        if(expect(OP_SCOLON) == null) {
+            marker.done(EMPTY_STATEMENT);
+            return false;
+        }
+        marker.done(EMPTY_STATEMENT);
+        return true;
+    }
+
+
     /**
      * Parses a StaticAssertDeclaration
      * <p>

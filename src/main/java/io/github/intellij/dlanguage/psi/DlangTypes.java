@@ -98,6 +98,7 @@ public interface DlangTypes {
     DlangElementType DELETE_EXPRESSION = new DlangElementType("DELETE_EXPRESSION");
     DlangElementType DEPRECATED = new DlangElementType("DEPRECATED");
     DlangElementType DO_STATEMENT = new DlangElementType("DO_STATEMENT");
+    DlangElementType EMPTY_STATEMENT = new DlangElementType("EMPTY_STATEMENT");
     DlangElementType ENUM_BODY = new DlangElementType("ENUM_BODY");
     DlangElementType ENUM_MEMBER_ATTRIBUTE = new DlangElementType("ENUM_MEMBER_ATTRIBUTE");
     DlangElementType EQUAL_EXPRESSION = new DlangElementType("EQUAL_EXPRESSION");
@@ -569,6 +570,8 @@ public interface DlangTypes {
                 return new DLanguageDeprecatedImpl(node);
             } else if (type == DO_STATEMENT) {
                 return new DLanguageDoStatementImpl(node);
+            } else if (type == EMPTY_STATEMENT) {
+                return new DLanguageEmptyStatementImpl(node);
             } else if (type == ENUM_BODY) {
                 return new DLanguageEnumBodyImpl(node);
             } else if (type == EPONYMOUS_TEMPLATE_DECLARATION) {

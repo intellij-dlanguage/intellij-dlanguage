@@ -138,6 +138,8 @@ static this() {
     //stub_children ["Destructor"] = ["FunctionBody","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT","KW_THIS","OP_TILDA","MemberFunctionAttribute*"];
     types_children["DoStatement"] = ["KW_DO","KW_WHILE","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","AssignExpression*","OP_COMMA*","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_extra_interfaces["DoStatement"] = ["Statement"];
+    types_children["EmptyStatement"] = ["OP_SCOLON"];
+    types_extra_interfaces["EmptyStatement"] = ["Statement"];
     types_children["EnumBody"] = [ "Identifier","OP_BRACES_RIGHT", "OP_BRACES_LEFT", "EnumMember*","OP_COMMA*","OP_SCOLON"];
     types_children["EnumMemberAttribute"] = ["Attribute","Deprecated"];
     stub_children ["EponymousTemplateDeclaration"] = ["Identifier", "TemplateParameters", "OP_EQ", "Type", "OP_SCOLON", "KW_ENUM", "KW_ALIAS"];
@@ -368,6 +370,7 @@ static this() {
     has_processDeclaration["Deprecated"] = false;
     has_processDeclaration["Destructor"] = false;
     has_processDeclaration["DoStatement"] = false;
+    has_processDeclaration["EmptyStatement"] = false;
     has_processDeclaration["EnumBody"] = false;
 //    has_processDeclaration["EnumDeclaration"] = true;
     has_processDeclaration["EnumMember"] = false;

@@ -280,6 +280,10 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitEmptyStatement(@NotNull final DLanguageEmptyStatementImpl o) {
+        visitPsiElement(o);
+    }
+
     public void visitEnumBody(@NotNull final DLanguageEnumBodyImpl o) {
         visitPsiElement(o);
     }
