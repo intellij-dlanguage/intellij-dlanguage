@@ -2767,7 +2767,7 @@ class DLangParser {
         final boolean d = parseDeclaration(true, false);
         if (!d) {
             goToBookmark(b);
-            return parseStatement();
+            return parseNonEmptyStatement();
         } else {
             // original comment from libdparse:
             // : Make this more efficient. Right now we parse the declaration
@@ -5882,7 +5882,7 @@ class DLangParser {
         } else if (current() == OP_SCOLON) {
             advance();
         } else {
-            if (!parseStatement()) {
+            if (!parseNonEmptyStatement()) {
                 cleanup(m, PRAGMA_STATEMENT);
                 return false;
             }
@@ -6484,16 +6484,16 @@ class DLangParser {
     }
 
     /**
-     * Parses a Statement
+     * Parses a Non Empty Statement
      * <p>
-     * $(GRAMMAR $(RULEDEF statement):
+     * $(GRAMMAR $(RULEDEF nonEmptyStatement):
      * $(RULE statementNoCaseNoDefault)
      * | $(RULE caseStatement)
      * | $(RULE caseRangeStatement)
      * | $(RULE defaultStatement)
      * ;)
      */
-    boolean parseStatement() {
+    boolean parseNonEmptyStatement() {
         if (!moreTokens()) {
             error("Expected statement instead of EOF");
             return false;
@@ -6948,7 +6948,7 @@ class DLangParser {
             return false;
         }
         expect(OP_PAR_RIGHT);
-        if (!parseStatement()) {
+        if (!parseNonEmptyStatement()) {
             cleanup(m, SWITCH_STATEMENT);
             return false;
         }
