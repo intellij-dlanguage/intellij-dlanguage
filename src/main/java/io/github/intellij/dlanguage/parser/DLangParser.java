@@ -6483,6 +6483,18 @@ class DLangParser {
         return true;
     }
 
+    boolean parseStatement() {
+        IElementType i = builder.getTokenType();
+        if (i == OP_SCOLON) {
+            return parseEmptyStatement();
+        }
+        else if (i == OP_BRACES_LEFT) {
+            return parseScopeBlockStatement();
+        } else {
+            return parseNonEmptyStatement();
+        }
+    }
+
     /**
      * Parses a Non Empty Statement
      * <p>
@@ -6638,6 +6650,46 @@ class DLangParser {
         return true;
     }
 
+    boolean parseScopeBlockStatement() {
+        return parseBlockStatement();
+    }
+
+    boolean parseScopeStatementList() {
+        while (builder.eof()) {
+            if(parseStatementNoCaseNoDefault()) {
+                break;
+            }
+        }
+        return true;
+    }
+
+    boolean parseStatementNoCaseNoDefault() {
+        IElementType i = builder.getTokenType();
+        if (i == OP_SCOLON) {
+            return parseEmptyStatement();
+        }
+        else if (i == OP_BRACES_LEFT) {
+            return parseScopeBlockStatement();
+        } else {
+            return parseNonEmptyStatementNoCaseNoDefault();
+        }
+    }
+
+    boolean parseNoScopeNonEmptyStatement() {
+        if (builder.getTokenType() == OP_BRACES_LEFT) {
+            return parseScopeBlockStatement();
+        } else {
+            return parseNonEmptyStatement();
+        }
+    }
+
+    boolean parseScopeStatement() {
+        if (builder.getTokenType() == OP_BRACES_LEFT) {
+            return parseScopeBlockStatement();
+        } else {
+            return parseNonEmptyStatement();
+        }
+    }
 
     /**
      * Parses a StaticAssertDeclaration
