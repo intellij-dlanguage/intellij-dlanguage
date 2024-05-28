@@ -3356,6 +3356,13 @@ class DLangParser {
         return true;
     }
 
+    boolean parseDeclarationStatement() {
+        Marker marker = builder.mark();
+        parseDeclaration(true, true);
+        marker.done(DECLARATION_STATEMENT);
+        return true;
+    }
+
     /**
      * Parses a FinalSwitchStatement
      * <p>

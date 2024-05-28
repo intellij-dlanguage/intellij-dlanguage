@@ -130,6 +130,8 @@ static this() {
     types_children["DebugCondition"] = ["KW_DEBUG","INTEGER_LITERAL", "Identifier", "OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["DebugSpecification"] = ["KW_DEBUG","OP_EQ","Identifier", "INTEGER_LITERAL", "OP_SCOLON"];
     types_children["Declaration"] = ["AliasThisDeclaration","AliasDeclaration","ClassDeclaration","ConditionalDeclaration"/*,"Postblit"*/,"Constructor","Destructor","AnonymousEnumDeclaration","EponymousTemplateDeclaration","EnumDeclaration","ImportDeclaration","InterfaceDeclaration","MixinTemplateDeclaration","MixinDeclaration","PragmaDeclaration",  "SharedStaticConstructor", "SharedStaticDestructor","StaticConstructor","StaticDestructor","StaticAssertDeclaration","StructDeclaration","TemplateDeclaration","UnionDeclaration","Invariant","Unittest","VersionSpecification","DebugSpecification","Attribute*","Declaration*","OP_BRACES_RIGHT","OP_BRACES_LEFT","FunctionDeclaration","VariableDeclaration","AttributeDeclaration"];
+    types_children["DeclarationStatement"] = ["Declaration"];
+    types_extra_interfaces["DeclarationStatement"] = ["Statement"];
     types_children["DefaultStatement"] = ["KW_DEFAULT","OP_COLON","DeclarationOrStatement*"];
     types_extra_interfaces["DefaultStatement"] = ["Statement"];
     types_children["DeleteExpression"] = ["KW_DELETE","UnaryExpression"];

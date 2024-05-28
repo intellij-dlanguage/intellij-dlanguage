@@ -94,6 +94,7 @@ public interface DlangTypes {
     DlangElementType DEBUG_CONDITION = new DlangElementType("DEBUG_CONDITION");
     DlangElementType DEBUG_SPECIFICATION = new DlangElementType("DEBUG_SPECIFICATION");
     DlangElementType DECLARATION = new DlangElementType("DECLARATION");
+    DlangElementType DECLARATION_STATEMENT = new DlangElementType("DECLARATION_STATEMENT");
     DlangElementType DEFAULT_STATEMENT = new DlangElementType("DEFAULT_STATEMENT");
     DlangElementType DELETE_EXPRESSION = new DlangElementType("DELETE_EXPRESSION");
     DlangElementType DEPRECATED = new DlangElementType("DEPRECATED");
@@ -560,6 +561,8 @@ public interface DlangTypes {
                 return new DLanguageDebugSpecificationImpl(node);
             } else if (type == DECLARATION) {
                 return new DLanguageDeclarationImpl(node);
+            } else if (type == DECLARATION_STATEMENT) {
+                return new DLanguageDeclarationStatementImpl(node);
             } else if (type == DECLARATOR) {
                 return new DLanguageDeclaratorImpl(node);
             } else if (type == DEFAULT_STATEMENT) {
