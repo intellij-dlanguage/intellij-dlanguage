@@ -1563,7 +1563,7 @@ class DLangParser {
      * Parses a BlockStatement
      * <p>
      * $(GRAMMAR $(RULEDEF blockStatement):
-     * $(LITERAL '{') $(RULE declarationsAndStatements)? $(LITERAL '}')
+     * $(LITERAL '{') $(RULE statement)* $(LITERAL '}')
      * ;)
      */
     boolean parseBlockStatement() {
@@ -1573,13 +1573,12 @@ class DLangParser {
             cleanup(m, BLOCK_STATEMENT);
             return false;
         }
-        if (!currentIs(OP_BRACES_RIGHT)) {
-            if (!parseDeclarationsAndStatements()) {
-                cleanup(m, BLOCK_STATEMENT);
-                return false;
-            }
+        while (!builder.eof()) {
+            if (currentIs(OP_BRACES_RIGHT))
+                break;
+            parseStatement();
         }
-        final IElementType closeBrace = expect(OP_BRACES_RIGHT);
+        expect(OP_BRACES_RIGHT);
         exit_section_modified(builder, m, BLOCK_STATEMENT, true);
         return true;
     }
@@ -1707,7 +1706,7 @@ class DLangParser {
      * Parses a CaseRangeStatement
      * <p>
      * $(GRAMMAR $(RULEDEF caseRangeStatement):
-     * $(LITERAL 'case') $(RULE assignExpression) $(LITERAL ':') $(LITERAL '...') $(LITERAL 'case') $(RULE assignExpression) $(LITERAL ':') $(RULE declarationsAndStatements)
+     * $(LITERAL 'case') $(RULE assignExpression) $(LITERAL ':') $(LITERAL '...') $(LITERAL 'case') $(RULE assignExpression) $(LITERAL ':') $(RULE scopeStatementList)?
      * ;)
      */
     boolean parseCaseRangeStatement(Marker m) {
@@ -1729,7 +1728,7 @@ class DLangParser {
             cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
-        if (!parseDeclarationsAndStatements(false)) {
+        if (!parseScopeStatementList()) {
             cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
@@ -1746,7 +1745,7 @@ class DLangParser {
      * Parses an CaseStatement
      * <p>
      * $(GRAMMAR $(RULEDEF caseStatement):
-     * $(LITERAL 'case') $(RULE argumentList) $(LITERAL ':') $(RULE declarationsAndStatements)
+     * $(LITERAL 'case') $(RULE argumentList) $(LITERAL ':') $(RULE scopeArgumentList)?
      * ;)
      */
     boolean parseCaseStatement(Marker m) {
@@ -1755,7 +1754,7 @@ class DLangParser {
             cleanup(m, CASE_STATEMENT);
             return false;
         }
-        if (!parseDeclarationsAndStatements(false)) {
+        if (!parseScopeStatementList()) {
             cleanup(m, CASE_STATEMENT);
             return false;
         }
@@ -1766,10 +1765,6 @@ class DLangParser {
     boolean parseCaseStatement() {
         final Marker m = enter_section_modified(builder);
         return parseCaseStatement(m);
-    }
-
-    private boolean parseDeclarationsAndStatements() {
-        return parseDeclarationsAndStatements(true);
     }
 
     /**
@@ -1874,7 +1869,7 @@ class DLangParser {
             cleanup(m, CATCH);
             return false;
         }
-        if (!parseDeclarationOrStatement()) {
+        if (!parseNoScopeNonEmptyStatement()) {
             cleanup(m, CATCH);
             return false;
         }
@@ -2087,7 +2082,7 @@ class DLangParser {
      * Parses a ConditionalStatement
      * <p>
      * $(GRAMMAR $(RULEDEF conditionalStatement):
-     * $(RULE compileCondition) $(RULE declarationOrStatement) ($(LITERAL 'else') $(RULE declarationOrStatement))?
+     * $(RULE compileCondition) $(RULE noScopeNonEmptyStatement) ($(LITERAL 'else') $(RULE noScopeNonEmptyStatement))?
      * ;)
      */
     boolean parseConditionalStatement() {
@@ -2096,13 +2091,13 @@ class DLangParser {
             cleanup(m, CONDITIONAL_STATEMENT);
             return false;
         }
-        if (!parseDeclarationOrStatement()) {
+        if (!parseNoScopeNonEmptyStatement()) {
             cleanup(m, CONDITIONAL_STATEMENT);
             return false;
         }
         if (currentIs(KW_ELSE)) {
             advance();
-            if (!parseDeclarationOrStatement()) {
+            if (!parseNoScopeNonEmptyStatement()) {
                 cleanup(m, CONDITIONAL_STATEMENT);
                 return false;
             }
@@ -2710,73 +2705,12 @@ class DLangParser {
         return true;
     }
 
-    /**
-     * Parses DeclarationsAndStatements
-     * <p>
-     * $(GRAMMAR $(RULEDEF declarationsAndStatements):
-     * $(RULE declarationOrStatement)+
-     * ;)
-     */
-    boolean parseDeclarationsAndStatements(final boolean includeCases) {
-        while (!currentIsOneOf(OP_BRACES_RIGHT, KW_ELSE) && moreTokens() && suppressedErrorCount() <= MAX_ERRORS) {
-            if (currentIsOneOf(KW_CASE, KW_DEFAULT) && !includeCases) {
-                break;
-            }
-            if (currentIs(KW_WHILE)) {
-                final Bookmark b = setBookmark();
-                advance();
-                if (currentIs(OP_PAR_LEFT)) {
-                    final IElementType p = peekPastParens();
-                    if (p == OP_SCOLON) {
-                        goToBookmark(b);
-                        break;
-                    }
-                    goToBookmark(b);
-                } else
-                    abandonBookmark(b);
-            }
-            if (!parseDeclarationOrStatement()) {
-                if (!suppressMessages.isEmpty()) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     private void exit_section_modified(final PsiBuilder builder, final Marker m, final IElementType type, final boolean b) {
         if (type == DECLARATION || type == MODULE_DECLARATION) {
             // Attach documentations to their declarations
             m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         }
         m.done(type);
-    }
-
-    /**
-     * Parses a DeclarationOrStatement
-     * <p>
-     * $(GRAMMAR $(RULEDEF declarationOrStatement):
-     *   $(RULE declaration)
-     * | $(RULE statement)
-     * ;)
-     */
-    boolean parseDeclarationOrStatement() {
-        // "Any ambiguities in the grammar between Statements and
-        // Declarations are resolved by the declarations taking precedence."
-        final Bookmark b = setBookmark();
-        final boolean d = parseDeclaration(true, false);
-        if (!d) {
-            goToBookmark(b);
-            return parseNonEmptyStatement();
-        } else {
-            // original comment from libdparse:
-            // : Make this more efficient. Right now we parse the declaration
-            // twice, once with errors and warnings ignored, and once with them
-            // printed. Maybe store messages to then be abandoned or written later?
-            goToBookmark(b);
-            parseDeclaration(true, true);
-        }
-        return true;
     }
 
     /**
@@ -2857,7 +2791,7 @@ class DLangParser {
      * Parses a DefaultStatement
      * <p>
      * $(GRAMMAR $(RULEDEF defaultStatement):
-     * $(LITERAL 'default') $(LITERAL ':') $(RULE declarationsAndStatements)
+     * $(LITERAL 'default') $(LITERAL ':') $(RULE scopeStatementList)?
      * ;)
      */
     boolean parseDefaultStatement() {
@@ -2871,7 +2805,7 @@ class DLangParser {
             cleanup(m, DEFAULT_STATEMENT);
             return false;
         }
-        if (!parseDeclarationsAndStatements()) {
+        if (!parseScopeStatementList()) {
             cleanup(m, DEFAULT_STATEMENT);
             return false;
         }
@@ -3385,10 +3319,10 @@ class DLangParser {
     }
 
     /**
-     * Parses a Finally
+     * Parses a Finally statement
      * <p>
-     * $(GRAMMAR $(RULEDEF finally):
-     * $(LITERAL 'finally') $(RULE declarationOrStatement)
+     * $(GRAMMAR $(RULEDEF finallyStatement):
+     * $(LITERAL 'finally') $(RULE noScopeNonEmptyStatement)
      * ;)
      */
     boolean parseFinally() {
@@ -3397,7 +3331,7 @@ class DLangParser {
             cleanup(m, FINALLY);
             return false;
         }
-        if (!parseDeclarationOrStatement()) {
+        if (!parseNoScopeNonEmptyStatement()) {
             cleanup(m, FINALLY);
             return false;
         }
@@ -3409,7 +3343,7 @@ class DLangParser {
      * Parses a ForStatement
      * <p>
      * $(GRAMMAR $(RULEDEF forStatement):
-     * $(LITERAL 'for') $(LITERAL '$(LPAREN)') ($(RULE declaration) | $(RULE statementNoCaseNoDefault)) $(RULE expression)? $(LITERAL ';') $(RULE expression)? $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement)
+     * $(LITERAL 'for') $(LITERAL '$(LPAREN)') ($LITERAL ';') | $(RULE noScopeNonEmptyStatement)) $(RULE expression)? $(LITERAL ';') $(RULE expression)? $(LITERAL '$(RPAREN)') $(RULE scopeStatement)
      * ;)
      */
     boolean parseForStatement() {
@@ -3424,7 +3358,7 @@ class DLangParser {
         }
         if (currentIs(OP_SCOLON))
             advance();
-        else if (!parseDeclarationOrStatement()) {
+        else if (!parseNoScopeNonEmptyStatement()) {
             cleanup(m, FOR_STATEMENT);
             return false;
         }
@@ -3454,7 +3388,7 @@ class DLangParser {
             return true;
         }
 
-        if (!parseDeclarationOrStatement()) {
+        if (!parseScopeStatement()) {
             cleanup(m, FOR_STATEMENT);
             return false;
         }
@@ -3490,8 +3424,8 @@ class DLangParser {
      * Parses a ForeachStatement
      * <p>
      * $(GRAMMAR $(RULEDEF foreachStatement):
-     * ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachTypeList) $(LITERAL ';') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement)
-     * | ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachType) $(LITERAL ';') $(RULE expression) $(LITERAL '..') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement)
+     * ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachTypeList) $(LITERAL ';') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE NoScopeNonEmptyStatement)
+     * | ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachType) $(LITERAL ';') $(RULE expression) $(LITERAL '..') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE NoScopeNonEmptyStatement)
      * ;)
      */
     boolean parseForeachStatement() {
@@ -3589,7 +3523,7 @@ class DLangParser {
             }
         }
         else {
-            if (!parseDeclarationOrStatement()) {
+            if (!parseNoScopeNonEmptyStatement()) {
                 cleanup(m, elementType);
                 return false;
             }
@@ -4187,7 +4121,7 @@ class DLangParser {
      * Parses an IfStatement
      * <p>
      * $(GRAMMAR $(RULEDEF ifStatement):
-     * $(LITERAL 'if') $(LITERAL '$(LPAREN)') $(RULE ifCondition) $(LITERAL '$(RPAREN)') $(RULE declarationOrStatement) ($(LITERAL 'else') $(RULE declarationOrStatement))?
+     * $(LITERAL 'if') $(LITERAL '$(LPAREN)') $(RULE ifCondition) $(LITERAL '$(RPAREN)') $(RULE ifStatement) ($(LITERAL 'else') $(RULE elseStatement))?
      * ;)
      */
     boolean parseIfStatement() {
@@ -4214,13 +4148,13 @@ class DLangParser {
             exit_section_modified(builder, m, IF_STATEMENT, true);
             return true; // this line makes DCD better
         }
-        if (!parseDeclarationOrStatement()) {
+        if (!parseThenStatement()) {
             cleanup(m, IF_STATEMENT);
             return false;
         }
         if (currentIs(KW_ELSE)) {
             advance();
-            if (!parseDeclarationOrStatement()) {
+            if (!parseElseStatement()) {
                 cleanup(m, IF_STATEMENT);
                 return false;
             }
@@ -4304,6 +4238,14 @@ class DLangParser {
             }
         }
         return true;
+    }
+
+    boolean parseThenStatement() {
+        return parseScopeStatement();
+    }
+
+    boolean parseElseStatement() {
+        return parseScopeStatement();
     }
 
 
@@ -4885,7 +4827,7 @@ class DLangParser {
      * Parses a LabeledStatement
      * <p>
      * $(GRAMMAR $(RULEDEF labeledStatement):
-     * $(LITERAL Identifier) $(LITERAL ':') $(RULE declarationOrStatement)?
+     * $(LITERAL Identifier) $(LITERAL ':') $(RULE Statement)?
      * ;)
      */
     boolean parseLabeledStatement() {
@@ -4897,7 +4839,7 @@ class DLangParser {
         }
         expect(OP_COLON);
         if (!currentIs(OP_BRACES_RIGHT))
-            if (!parseDeclarationOrStatement()) {
+            if (!parseStatement()) {
                 cleanup(m, LABELED_STATEMENT);
                 return false;
             }
@@ -6543,7 +6485,6 @@ class DLangParser {
      * <p>
      * $(GRAMMAR $(RULEDEF statementNoCaseNoDefault):
      *   $(RULE labeledStatement)
-     * | $(RULE blockStatement)
      * | $(RULE ifStatement)
      * | $(RULE whileStatement)
      * | $(RULE doStatement)
@@ -6566,6 +6507,7 @@ class DLangParser {
      * | $(RULE versionSpecification)
      * | $(RULE debugSpecification)
      * | $(RULE expressionStatement)
+     * | $(Rule importDeclation)
      * ;)
      */
     boolean parseNonEmptyStatementNoCaseNoDefault() {
@@ -6603,7 +6545,10 @@ class DLangParser {
         } else if (i == KW_TRY) {
             return parseTryStatement();
         } else if (i == KW_SCOPE) {
-            return parseScopeGuardStatement();
+            if (peekIs(OP_PAR_LEFT))
+                return parseScopeGuardStatement();
+            else
+                return parseDeclarationStatement();
         } else if (i == KW_ASM) {
             return parseAsmStatement();
         } else if (i == KW_PRAGMA) {
@@ -6633,17 +6578,32 @@ class DLangParser {
                 return parseStaticAssertStatement();
             } else if (next == KW_FOREACH || next == KW_FOREACH_REVERSE) {
                 return parseStaticForeachStatement();
-            } else {
-                error("'if', 'assert', 'foreach' or 'foreach_reverse' expected.");
+            } else if (next == KW_IMPORT) {
+                return parseImportDeclaration();
+            }
+            else {
+                Marker m = builder.mark();
+                if (parseDeclarationStatement()) {
+                    m.drop();
+                    return true;
+                }
+                m.rollbackTo();
+                error("'if', 'assert', 'foreach', 'foreach_reverse' or 'import' expected.");
                 return false;
             }
-        } else if (i == ID) {
-            if (peekIs(OP_COLON)) {
-                return parseLabeledStatement();
-            }
-            return parseExpressionStatement();
+        } else if (i == ID && peekIs(OP_COLON)) {
+            return parseLabeledStatement();
+        } else if (i == KW_IMPORT && !peekIs(OP_PAR_LEFT)) {
+            return parseImportDeclaration();
         } else {
-            return parseExpressionStatement();
+            Marker marker = builder.mark();
+            if (parseExpressionStatement()) {
+                marker.drop();
+                return true;
+            } else {
+                marker.rollbackTo();
+                return parseDeclarationStatement();
+            }
         }
     }
 
@@ -7050,7 +7010,7 @@ class DLangParser {
      * Parses a SynchronizedStatement
      * <p>
      * $(GRAMMAR $(RULEDEF synchronizedStatement):
-     * $(LITERAL 'synchronized') ($(LITERAL '$(LPAREN)') $(RULE expression) $(LITERAL '$(RPAREN)'))? $(RULE statementNoCaseNoDefault)
+     * $(LITERAL 'synchronized') ($(LITERAL '$(LPAREN)') $(RULE expression) $(LITERAL '$(RPAREN)'))? $(RULE scopeStatement)
      * ;)
      */
     boolean parseSynchronizedStatement() {
@@ -7064,7 +7024,7 @@ class DLangParser {
             }
             expect(OP_PAR_RIGHT);
         }
-        if (!parseNonEmptyStatementNoCaseNoDefault()) {
+        if (!parseScopeStatement()) {
             cleanup(m, SYNCHRONIZED_STATEMENT);
             return false;
         }
@@ -7704,13 +7664,13 @@ class DLangParser {
      * Parses a TryStatement
      * <p>
      * $(GRAMMAR $(RULEDEF tryStatement):
-     * $(LITERAL 'try') $(RULE declarationOrStatement) ($(RULE catches) | $(RULE catches) $(RULE finally) | $(RULE finally))
+     * $(LITERAL 'try') $(RULE scopeStatement) ($(RULE catches) | $(RULE catches) $(RULE finally) | $(RULE finally))
      * ;)
      */
     boolean parseTryStatement() {
         final Marker m = enter_section_modified(builder);
         expect(KW_TRY);
-        if (!parseDeclarationOrStatement()) {
+        if (!parseScopeStatement()) {
             cleanup(m, TRY_STATEMENT);
             return false;
         }
@@ -8494,7 +8454,7 @@ class DLangParser {
             exit_section_modified(builder, m, WHILE_STATEMENT, true);
             return true; // this line makes DCD better
         }
-        if (!parseDeclarationOrStatement()) {
+        if (!parseScopeStatement()) {
             cleanup(m, WHILE_STATEMENT);
             return false;
         }
@@ -8527,7 +8487,7 @@ class DLangParser {
             cleanup(marker, WITH_STATEMENT);
             return false;
         }
-        if(!parseDeclarationOrStatement()) {
+        if(!parseScopeStatement()) {
             cleanup(marker, WITH_STATEMENT);
             return false;
         }
