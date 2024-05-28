@@ -2992,7 +2992,7 @@ class DLangParser {
             cleanup(m, DO_STATEMENT);
             return false;
         }
-        if (!parseStatementNoCaseNoDefault()) {
+        if (!parseNonEmptyStatementNoCaseNoDefault()) {
             cleanup(m, DO_STATEMENT);
             return false;
         }
@@ -4912,7 +4912,7 @@ class DLangParser {
             cleanup(m, LAST_CATCH);
             return false;
         }
-        if (!parseStatementNoCaseNoDefault()) {
+        if (!parseNonEmptyStatementNoCaseNoDefault()) {
             cleanup(m, LAST_CATCH);
             return false;
         }
@@ -6309,7 +6309,7 @@ class DLangParser {
             return false;
         }
         expect(OP_PAR_RIGHT);
-        if (!parseStatementNoCaseNoDefault()) {
+        if (!parseNonEmptyStatementNoCaseNoDefault()) {
             cleanup(m, SCOPE_GUARD_STATEMENT);
             return false;
         }
@@ -6515,7 +6515,7 @@ class DLangParser {
         } else if (i == KW_DEFAULT) {
             return parseDefaultStatement();
         } else {
-            return parseStatementNoCaseNoDefault();
+            return parseNonEmptyStatementNoCaseNoDefault();
         }
     }
 
@@ -6549,7 +6549,7 @@ class DLangParser {
      * | $(RULE expressionStatement)
      * ;)
      */
-    boolean parseStatementNoCaseNoDefault() {
+    boolean parseNonEmptyStatementNoCaseNoDefault() {
         if (!moreTokens()) {
             error("Expected statement instead of EOF");
             return false;
@@ -7005,7 +7005,7 @@ class DLangParser {
             }
             expect(OP_PAR_RIGHT);
         }
-        if (!parseStatementNoCaseNoDefault()) {
+        if (!parseNonEmptyStatementNoCaseNoDefault()) {
             cleanup(m, SYNCHRONIZED_STATEMENT);
             return false;
         }
