@@ -147,7 +147,8 @@ class DLangParser {
     boolean parseAliasDeclaration() {
         if (builder.getTokenType() != KW_ALIAS)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (startsWith(ID, OP_EQ) || startsWith(ID, OP_PAR_LEFT)) {
             do {
@@ -227,7 +228,8 @@ class DLangParser {
     {
         if (builder.getTokenType() != ID)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         advance();
         if (!tokenCheck(OP_EQ)) {
             cleanup(m, ALIAS_ASSIGN);
@@ -309,7 +311,8 @@ class DLangParser {
     boolean parseAliasThisDeclaration() {
         if (builder.getTokenType() != KW_ALIAS)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (!tokenCheck(ID)) {
             m.rollbackTo();
@@ -1869,7 +1872,8 @@ class DLangParser {
     boolean parseClassDeclaration() {
         if (builder.getTokenType() != KW_CLASS)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         parseInterfaceOrClass();
         m.done(CLASS_DECLARATION);
@@ -1960,7 +1964,8 @@ class DLangParser {
      * ;)
      */
     boolean parseConditionalDeclaration() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         if (!parseCompileCondition()) {
             m.rollbackTo();
             return false;
@@ -2175,7 +2180,8 @@ class DLangParser {
     boolean parseDebugSpecification() {
         if (builder.getTokenType() != KW_DEBUG)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (!tokenCheck(OP_EQ)) {
             m.rollbackTo();
@@ -2238,6 +2244,7 @@ class DLangParser {
 
     boolean parseAttributeSpecifier() {
         Marker marker = builder.mark();
+        marker.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         if (!parseAttribute()) {
             marker.rollbackTo();
             return false;
@@ -2273,6 +2280,7 @@ class DLangParser {
 
     boolean parseEmptyDeclaration() {
         Marker marker = builder.mark();
+        marker.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         if (expect(OP_SCOLON) == null) {
             cleanup(marker, EMPTY_STATEMENT);
             return false;
@@ -2325,10 +2333,6 @@ class DLangParser {
     }
 
     private void exit_section_modified(final PsiBuilder builder, final Marker m, final IElementType type, final boolean b) {
-        if (type == MODULE_DECLARATION) {
-            // Attach documentations to their declarations
-            m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
-        }
         m.done(type);
     }
 
@@ -2491,39 +2495,40 @@ class DLangParser {
     boolean parseDestructor() {
         if (!currentIs(OP_TILDA))
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (!moreTokens()) {
             error("`this` expected");
-            exit_section_modified(builder, m, DESTRUCTOR, true);
-            return false;
+            m.done(DESTRUCTOR);
+            return true;
         }
         if (!tokenCheck(KW_THIS)) {
-            cleanup(m, DESTRUCTOR);
-            return false;
+            m.done(DESTRUCTOR);
+            return true;
         }
         if (!tokenCheck(OP_PAR_LEFT)) {
-            cleanup(m, DESTRUCTOR);
-            return false;
+            m.done(DESTRUCTOR);
+            return true;
         }
         if (!tokenCheck(OP_PAR_RIGHT)) {
-            cleanup(m, DESTRUCTOR);
-            return false;
+            m.done(DESTRUCTOR);
+            return true;
         }
         if (currentIs(OP_SCOLON))
             advance();
         else {
             while (moreTokens() && currentIsMemberFunctionAttribute())
                 if (!parseMemberFunctionAttribute()) {
-                    cleanup(m, DESTRUCTOR);
-                    return false;
+                    m.done(DESTRUCTOR);
+                    return true;
                 }
             if (!parseFunctionBody()) {
-                cleanup(m, DESTRUCTOR);
-                return false;
+                m.done(DESTRUCTOR);
+                return true;
             }
         }
-        exit_section_modified(builder, m, DESTRUCTOR, true);
+        m.done(DESTRUCTOR);
         return true;
     }
 
@@ -2697,7 +2702,8 @@ class DLangParser {
     boolean parseEnumDeclaration() {
         if (builder.getTokenType() != KW_ENUM)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (!tokenCheck(ID)) {
             parseAnonymousEnumDeclaration();
@@ -3358,7 +3364,8 @@ class DLangParser {
      * ;)
      */
     boolean parseFunctionDeclaration() {
-        Marker m = enter_section_modified(builder);
+        Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         boolean hasStorageClass = false;
         while (builder.eof()) {
             if (!parseStorageClass())
@@ -3938,12 +3945,13 @@ class DLangParser {
      * Parses an ImportDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF importDeclaration):
-     *   $(LITERAL 'static') $(LITERAL 'import') $(RULE import) ($(LITERAL ',') $(RULE import))* ($(LITERAL ',') $(RULE importBindings))? $(LITERAL ';')
-     * | $(LITERAL 'static') $(LITERAL 'import') $(RULE importBindings) $(LITERAL ';')
+     *   $(LITERAL 'static')? $(LITERAL 'import') $(RULE import) ($(LITERAL ',') $(RULE import))* ($(LITERAL ',') $(RULE importBindings))? $(LITERAL ';')
+     * | $(LITERAL 'static')? $(LITERAL 'import') $(RULE importBindings) $(LITERAL ';')
      * ;)
      */
     boolean parseImportDeclaration() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         if (builder.getTokenType() == KW_STATIC)
             builder.advanceLexer();
         if (!tokenCheck(KW_IMPORT)) {
@@ -4263,7 +4271,8 @@ class DLangParser {
     boolean parseInterfaceDeclaration() {
         if (builder.getTokenType() != KW_INTERFACE)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         parseInterfaceOrClass();
         m.done(INTERFACE_DECLARATION);
@@ -4282,7 +4291,8 @@ class DLangParser {
         if (builder.getTokenType() != KW_INVARIANT)
             return false;
 
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (currentIs(OP_PAR_LEFT)) {
             builder.advanceLexer();
@@ -4591,7 +4601,8 @@ class DLangParser {
     boolean parseMixinDeclaration() {
         if (builder.getTokenType() != KW_MIXIN)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         expect(OP_PAR_LEFT);
         if (!parseArgumentList()) {
@@ -4710,29 +4721,30 @@ class DLangParser {
      * ;)
      */
     boolean parseModuleDeclaration() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         while (currentIs(OP_AT)) {
             parseAttribute();
         }
         if (currentIs(KW_DEPRECATED))
             if (!parseDeprecated()) {
-                cleanup(m, MODULE_DECLARATION);
-                return false;
+                m.done(MODULE_DECLARATION);
+                return true;
             }
         while (currentIs(OP_AT)) {
             parseAttribute();
         }
         final IElementType start = expect(KW_MODULE);
         if (start == null) {
-            cleanup(m, MODULE_DECLARATION);
-            return false;
+            m.done(MODULE_DECLARATION);
+            return true;
         }
         if (!parseIdentifierChain()) {
-            cleanup(m, MODULE_DECLARATION);
-            return false;
+            m.done(MODULE_DECLARATION);
+            return true;
         }
-        final IElementType end = expect(OP_SCOLON);
-        exit_section_modified(builder, m, MODULE_DECLARATION, true);
+        expect(OP_SCOLON);
+        m.done(MODULE_DECLARATION);
         return true;
     }
 
@@ -5297,7 +5309,8 @@ class DLangParser {
     boolean parsePostblit() {
         if (builder.getTokenType() != KW_THIS)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         advance();
         if (builder.getTokenType() != OP_PAR_LEFT) {
             m.rollbackTo();
@@ -5310,21 +5323,21 @@ class DLangParser {
         }
         advance();
         if (builder.getTokenType() != OP_PAR_RIGHT) {
-            cleanup(m, POSTBLIT);
+            m.done(POSTBLIT);
             return true;
         }
         while (currentIsMemberFunctionAttribute())
             if (!parseMemberFunctionAttribute()) {
-                cleanup(m, POSTBLIT);
+                m.done(POSTBLIT);
                 return true;
             }
         if (currentIs(OP_SCOLON))
             advance();
         else if (!parseFunctionBody()) {
-            cleanup(m, POSTBLIT);
+            m.done(POSTBLIT);
             return true;
         }
-        exit_section_modified(builder, m, POSTBLIT, true);
+        m.done(POSTBLIT);
         return true;
     }
 
@@ -6474,7 +6487,8 @@ class DLangParser {
     boolean parseStructDeclaration() {
         if (builder.getTokenType() != KW_STRUCT)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (currentIs(ID))
             advance();
@@ -7830,7 +7844,8 @@ class DLangParser {
     boolean parseUnionDeclaration() {
         if (builder.getTokenType() != KW_UNION)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (currentIs(ID)) {
             advance();
@@ -7866,12 +7881,10 @@ class DLangParser {
     boolean parseUnittest() {
         if (builder.getTokenType() != KW_UNITTEST)
             return false;
-        final Marker marker = enter_section_modified(builder);
+        final Marker marker = builder.mark();
+        marker.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
-        if(!parseBlockStatement()) {
-            marker.done(UNITTEST);
-            return true;
-        }
+        parseBlockStatement();
         marker.done(UNITTEST);
         return true;
     }
@@ -7888,7 +7901,8 @@ class DLangParser {
      */
     boolean parseVariableDeclaration()
     {
-        Marker m = enter_section_modified(builder);
+        Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         boolean hasStorageClass = false;
         while (!builder.eof()) {
             if (!parseStorageClass())
@@ -7991,7 +8005,8 @@ class DLangParser {
     boolean parseVersionSpecification() {
         if (builder.getTokenType() != KW_VERSION)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (!tokenCheck(OP_EQ)) {
             m.rollbackTo();
