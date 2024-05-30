@@ -8,6 +8,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
@@ -59,8 +60,8 @@ public class DlangTemplateDeclarationImpl extends
 
     @NotNull
     @Override
-    public List<DLanguageDeclaration> getDeclarations() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageDeclaration.class);
+    public List<Declaration> getDeclarations() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, Declaration.class);
     }
 
     @Nullable

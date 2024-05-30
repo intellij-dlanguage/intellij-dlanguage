@@ -10,6 +10,7 @@ import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageParameters;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangConstructorStub;
 import java.util.List;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DlangConstructor extends PsiElement, DNamedElement,
+public interface DlangConstructor extends PsiElement, DNamedElement, Declaration,
     StubBasedPsiElement<DlangConstructorStub> {
 
     @Nullable

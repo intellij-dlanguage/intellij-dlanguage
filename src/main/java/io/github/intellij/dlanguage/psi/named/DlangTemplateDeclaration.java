@@ -5,10 +5,10 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import io.github.intellij.dlanguage.psi.DLanguageConstraint;
-import io.github.intellij.dlanguage.psi.DLanguageDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageEponymousTemplateDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangTemplateDeclarationStub;
@@ -18,7 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
-public interface DlangTemplateDeclaration extends PsiElement, DNamedElement, StubBasedPsiElement<DlangTemplateDeclarationStub>, HasMembers<DlangTemplateDeclarationStub> {
+public interface DlangTemplateDeclaration extends PsiElement, DNamedElement, Declaration,
+    StubBasedPsiElement<DlangTemplateDeclarationStub>, HasMembers<DlangTemplateDeclarationStub> {
     @Nullable
     PsiElement getKW_TEMPLATE();
 
@@ -38,7 +39,7 @@ public interface DlangTemplateDeclaration extends PsiElement, DNamedElement, Stu
     PsiElement getOP_BRACES_LEFT();
 
     @NotNull
-    List<DLanguageDeclaration> getDeclarations();
+    List<Declaration> getDeclarations();
 
     @Nullable
     DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();

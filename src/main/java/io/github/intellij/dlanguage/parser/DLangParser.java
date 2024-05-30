@@ -145,11 +145,10 @@ class DLangParser {
      * ;)
      */
     boolean parseAliasDeclaration() {
-        final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_ALIAS)) {
-            cleanup(m, ALIAS_DECLARATION);
+        if (builder.getTokenType() != KW_ALIAS)
             return false;
-        }
+        final Marker m = enter_section_modified(builder);
+        builder.advanceLexer();
         if (startsWith(ID, OP_EQ) || startsWith(ID, OP_PAR_LEFT)) {
             do {
                 if (!parseAliasInitializer()) {
@@ -191,11 +190,8 @@ class DLangParser {
                 }
             }
         }
-        if (expect(OP_SCOLON) == null) {
-            cleanup(m, ALIAS_DECLARATION);
-            return false;
-        }
-        exit_section_modified(builder, m, ALIAS_DECLARATION, true);
+        expect(OP_SCOLON);
+        m.done(ALIAS_DECLARATION);
         return true;
     }
 
@@ -229,25 +225,20 @@ class DLangParser {
      */
     boolean parseAliasAssign()
     {
-        final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(ID)) {
-            cleanup(m, ALIAS_ASSIGN);
+        if (builder.getTokenType() != ID)
             return false;
-        }
+        final Marker m = enter_section_modified(builder);
+        advance();
         if (!tokenCheck(OP_EQ)) {
             cleanup(m, ALIAS_ASSIGN);
-            return false;
+            return true;
         }
         if (!parseType().first) {
             cleanup(m, ALIAS_ASSIGN);
-            return false;
+            return true;
         }
-        final IElementType semi = expect(OP_SCOLON);
-        if (semi == null) {
-            cleanup(m, ALIAS_ASSIGN);
-            return false;
-        }
-        exit_section_modified(builder, m, ALIAS_ASSIGN, true);
+        expect(OP_SCOLON);
+        m.done(ALIAS_ASSIGN);
         return true;
     }
 
@@ -316,24 +307,23 @@ class DLangParser {
      * ;)
      */
     boolean parseAliasThisDeclaration() {
-        final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_ALIAS)) {
-            cleanup(m, ALIAS_THIS_DECLARATION);
+        if (builder.getTokenType() != KW_ALIAS)
             return false;
-        }
+        final Marker m = enter_section_modified(builder);
+        builder.advanceLexer();
         if (!tokenCheck(ID)) {
-            cleanup(m, ALIAS_THIS_DECLARATION);
+            m.rollbackTo();
             return false;
         }
         if (!tokenCheck(KW_THIS)) {
-            cleanup(m, ALIAS_THIS_DECLARATION);
+            m.rollbackTo();
             return false;
         }
         if (expect(OP_SCOLON) == null) {
-            cleanup(m, ALIAS_THIS_DECLARATION);
-            return false;
+            m.done(ALIAS_THIS_DECLARATION);
+            return true;
         }
-        exit_section_modified(builder, m, ALIAS_THIS_DECLARATION, true);
+        m.done(ALIAS_THIS_DECLARATION);
         return true;
     }
 
@@ -1464,67 +1454,25 @@ class DLangParser {
         } else if (i == KW_PRIVATE || i == KW_PROTECTED || i == KW_PUBLIC || i == KW_EXPORT || i == KW_STATIC || i == KW_ABSTRACT || i == KW_FINAL || i == KW_OVERRIDE || i == KW_SYNCHRONIZED || i == KW_AUTO || i == KW_SCOPE || i == KW_CONST || i == KW_IMMUTABLE || i == KW_INOUT || i == KW_SHARED || i == KW___GSHARED || i == KW_NOTHROW || i == KW_PURE || i == KW_REF || i == KW_THROW) {
             advance();
         } else {
-            cleanup(m, ATTRIBUTE);
+            m.drop();
             return false;
         }
         exit_section_modified(builder, m, ATTRIBUTE, true);
         return true;
     }
 
-    boolean parseAttributeDeclaration() {
-        return parseAttributeDeclaration(true);
-    }
-
-    /**
-     * Parses an AttributeDeclaration
-     * <p>
-     * $(GRAMMAR $(RULEDEF attributeDeclaration):
-     * $(RULE attribute) $(LITERAL ':')
-     * ;)
-     */
-    private boolean parseAttributeDeclaration(final boolean parseAttribute)
-    {
-        final Marker m = enter_section_modified(builder);
-        if (parseAttribute) {
-            parseAttribute();
-        }
-        expect(OP_COLON);
-        exit_section_modified(builder, m, ATTRIBUTE_DECLARATION, true);
-        return true;
-    }
-
-    /**
-     * Parses an AutoDeclaration
-     * <p>
-     * $(GRAMMAR $(RULEDEF autoDeclaration):
-     * $(RULE storageClass)+  $(RULE autoDeclarationPart) ($(LITERAL ',') $(RULE autoDeclarationPart))* $(LITERAL ';')
-     * ;)
-     */
-    boolean parseAutoDeclaration() {
-        final Marker m = enter_section_modified(builder);
-        while (isStorageClass()) {
-            if (!parseStorageClass()) {
-                cleanup(m, AUTO_DECLARATION);
-                return false;
-            }
-        }
+    void parseAutoAssignments() {
         do {
             if (!parseAutoDeclarationPart()) {
-                cleanup(m, AUTO_DECLARATION);
-                return false;
+                return;
             }
             if (currentIs(OP_COMMA))
                 advance();
             else
                 break;
         } while (moreTokens());
-        final IElementType semi = expect(OP_SCOLON);
-        if (semi == null) {
-            cleanup(m, AUTO_DECLARATION);
-            return false;
-        }
-        exit_section_modified(builder, m, AUTO_DECLARATION, true);
-        return true;
+        expect(OP_SCOLON);
+        return;
     }
 
     /**
@@ -1919,11 +1867,13 @@ class DLangParser {
      * ;)
      */
     boolean parseClassDeclaration() {
+        if (builder.getTokenType() != KW_CLASS)
+            return false;
         final Marker m = enter_section_modified(builder);
-        expect(KW_CLASS);
-        final boolean result = parseInterfaceOrClass();
-        exit_section_modified(builder, m, CLASS_DECLARATION, result);
-        return result;
+        builder.advanceLexer();
+        parseInterfaceOrClass();
+        m.done(CLASS_DECLARATION);
+        return true;
     }
 
     /**
@@ -1975,10 +1925,6 @@ class DLangParser {
      */
     boolean parseCompileCondition() {
         final Marker m = enter_section_modified(builder);
-        if (!moreTokens()) {
-            cleanup(m, COMPILE_CONDITION);
-            return false;
-        }
         final IElementType i = current();
         if (i == KW_VERSION) {
             if (!parseVersionCondition()) {
@@ -1996,8 +1942,7 @@ class DLangParser {
                 return false;
             }
         } else {
-            error("`version`, `debug`, or `static` expected");
-            exit_section_modified(builder, m, COMPILE_CONDITION, true);
+            m.drop();
             return false;
         }
         exit_section_modified(builder, m, COMPILE_CONDITION, true);
@@ -2008,73 +1953,45 @@ class DLangParser {
      * Parses a ConditionalDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF conditionalDeclaration):
-     *   $(RULE compileCondition) $(RULE declaration)
-     * | $(RULE compileCondition) $(LITERAL '{') $(RULE declaration)* $(LITERAL '}')
-     * | $(RULE compileCondition) $(LITERAL ':') $(RULE declaration)+
-     * | $(RULE compileCondition) $(RULE declaration) $(LITERAL 'else') $(LITERAL ':') $(RULE declaration)*
-     * | $(RULE compileCondition) $(RULE declaration) $(LITERAL 'else') $(RULE declaration)
-     * | $(RULE compileCondition) $(RULE declaration) $(LITERAL 'else') $(LITERAL '{') $(RULE declaration)* $(LITERAL '}')
-     * | $(RULE compileCondition) $(LITERAL '{') $(RULE declaration)* $(LITERAL '}') $(LITERAL 'else') $(RULE declaration)
-     * | $(RULE compileCondition) $(LITERAL '{') $(RULE declaration)* $(LITERAL '}') $(LITERAL 'else') $(LITERAL '{') $(RULE declaration)* $(LITERAL '}')
-     * | $(RULE compileCondition) $(LITERAL '{') $(RULE declaration)* $(LITERAL '}') $(LITERAL 'else') $(LITERAL ':') $(RULE declaration)*
-     * | $(RULE compileCondition) $(LITERAL ':') $(RULE declaration)+ $(LITERAL 'else') $(RULE declaration)
-     * | $(RULE compileCondition) $(LITERAL ':') $(RULE declaration)+ $(LITERAL 'else') $(LITERAL '{') $(RULE declaration)* $(LITERAL '}')
-     * | $(RULE compileCondition) $(LITERAL ':') $(RULE declaration)+ $(LITERAL 'else') $(LITERAL ':') $(RULE declaration)*
+     *   $(RULE compileCondition) $(RULE declarationBlock)
+     * | $(RULE compileCondition) $(RULE declarationBlock) $(LITERAL 'else') $(RULE declarationBlock)
+     * | $(RULE compileCondition) $(RULE declarationBlock) $(LITERAL 'else') $(LITERAL ':') $(RULE declDefs)*
+     * | $(RULE compileCondition) $(LITERAL ':') $(RULE declDefs)+
      * ;)
      */
-    boolean parseConditionalDeclaration(final boolean strict, boolean inTemplateDeclaration) {
+    boolean parseConditionalDeclaration() {
         final Marker m = enter_section_modified(builder);
         if (!parseCompileCondition()) {
-            cleanup(m, CONDITIONAL_DECLARATION);
+            m.rollbackTo();
             return false;
         }
-        if (currentIs(OP_COLON) || currentIs(OP_BRACES_LEFT)) {
-            final boolean brace = advance() == OP_BRACES_LEFT;
-            while (moreTokens() && !currentIs(OP_BRACES_RIGHT) && !currentIs(KW_ELSE)) {
-                final Bookmark b = setBookmark();
-                if (parseDeclaration(strict, true, inTemplateDeclaration)) {
-                    abandonBookmark(b);
-                } else {
-                    goToBookmark(b);
-                    cleanup(m, CONDITIONAL_DECLARATION);
-                    return false;
-                }
+        if (currentIs(OP_COLON)) {
+            builder.advanceLexer();
+            while (!builder.eof()) {
+                parseDeclDef();
             }
-            if (brace)
-                if (!tokenCheck(OP_BRACES_RIGHT)) {
-                    cleanup(m, CONDITIONAL_DECLARATION);
-                    return false;
-                }
-        } else if (!parseDeclaration(strict, true, inTemplateDeclaration)) {
-            cleanup(m, CONDITIONAL_DECLARATION);
-            return false;
-        }
-        if (currentIs(KW_ELSE)) {
-            advance();
-        } else {
-            exit_section_modified(builder, m, CONDITIONAL_DECLARATION, true);
+            m.done(CONDITIONAL_DECLARATION);
             return true;
         }
-        if (currentIs(OP_COLON) || currentIs(OP_BRACES_LEFT)) {
-            final boolean brace = currentIs(OP_BRACES_LEFT);
-            advance();
-            while (moreTokens() && !currentIs(OP_BRACES_RIGHT))
-                if (!parseDeclaration(strict, true, inTemplateDeclaration)) {
-                    cleanup(m, CONDITIONAL_DECLARATION);
-                    return false;
-                }
-            if (brace)
-                if (!tokenCheck(OP_BRACES_RIGHT)) {
-                    cleanup(m, CONDITIONAL_DECLARATION);
-                    return false;
-                }
-        } else {
-            if (!parseDeclaration(strict, true, inTemplateDeclaration)) {
-                cleanup(m, CONDITIONAL_DECLARATION);
-                return false;
-            }
+        if (!parseDeclarationBlock()) {
+            m.done(CONDITIONAL_DECLARATION);
+            return true;
         }
-        exit_section_modified(builder, m, CONDITIONAL_DECLARATION, true);
+
+        if (builder.getTokenType() != KW_ELSE) {
+            m.done(CONDITIONAL_DECLARATION);
+            return true;
+        }
+        builder.advanceLexer();
+
+        if (currentIs(OP_COLON)) {
+            while(!builder.eof()) {
+                parseDeclDef();
+            }
+        } else {
+            parseDeclarationBlock();
+        }
+        m.done(CONDITIONAL_DECLARATION);
         return true;
     }
 
@@ -2144,12 +2061,10 @@ class DLangParser {
      * ;)
      */
     boolean parseConstructor() {
-        final Marker m = enter_section_modified(builder);
-        final IElementType t = expect(KW_THIS);
-        if (t == null) {
-            cleanup(m, CONSTRUCTOR);
+        if (builder.getTokenType() != KW_THIS)
             return false;
-        }
+        final Marker m = enter_section_modified(builder);
+        builder.advanceLexer();
         final IElementType p = peekPastParens();
         boolean isTemplate = false;
         if (p == OP_PAR_LEFT) {
@@ -2258,455 +2173,159 @@ class DLangParser {
      * ;)
      */
     boolean parseDebugSpecification() {
+        if (builder.getTokenType() != KW_DEBUG)
+            return false;
         final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_DEBUG)) {
-            cleanup(m, DEBUG_SPECIFICATION);
-            return false;
-        }
+        builder.advanceLexer();
         if (!tokenCheck(OP_EQ)) {
-            cleanup(m, DEBUG_SPECIFICATION);
+            m.rollbackTo();
             return false;
         }
-        if (currentIsOneOf(ID, INTEGER_LITERAL)) {
+        if (currentIsOneOf(ID, INTEGER_LITERAL)) { // Note: that using integer for version is deprecated since 2.101.0
             advance();
         } else {
             error("Integer literal or identifier expected");
-            exit_section_modified(builder, m, DEBUG_SPECIFICATION, true);
+            m.done(DEBUG_SPECIFICATION);
+            return true;
+        }
+        tokenCheck(OP_SCOLON);
+        m.done(DEBUG_SPECIFICATION);
+        return true;
+    }
+
+    /**
+     * Parses a DeclDef
+     * $(GRAMMAR $(RULEDEF declDef):
+     * | $(RULE attributeSpecifier)
+     * | $(RULE declaration)
+     * | $(RULE constructor)
+     * | $(RULE destructor)
+     * | $(RULE postblit)
+     * | $(RULE invariant)
+     * | $(RULE unittest)
+     * | $(RULE aliasThisDeclaration)
+     * | $(RULE staticConstructor)
+     * | $(RULE staticDestructor)
+     * | $(RULE sharedStaticConstructor)
+     * | $(RULE sharedStaticDestructor)
+     * | $(RULE conditionalDeclaration)
+     * | $(RULE debugSpecification)
+     * | $(RULE versionSpecification)
+     * | $(RULE mixinDeclaration)
+     * | $(RULE emptyDeclaration)
+     * ;)
+     */
+    boolean parseDeclDef() {
+        boolean result = parseAttributeSpecifier();
+        result = result || parseDestructor();
+        result = result || parsePostblit();
+        result = result || parseInvariant();
+        result = result || parseUnittest();
+        result = result || parseDebugSpecification();
+        result = result || parseVersionSpecification();
+        result = result || parseAliasThisDeclaration();
+        result = result || parseDeclaration();
+        result = result || parseConstructor();
+        result = result || parseStaticConstructor();
+        result = result || parseStaticDestructor();
+        result = result || parseSharedStaticConstructor();
+        result = result || parseSharedStaticDestructor();
+        result = result || parseConditionalDeclaration();
+        result = result || parseMixinDeclaration();
+        result = result || parseEmptyDeclaration();
+        return result;
+    }
+
+    boolean parseAttributeSpecifier() {
+        Marker marker = builder.mark();
+        if (!parseAttribute()) {
+            marker.rollbackTo();
             return false;
         }
-        if (!tokenCheck(OP_SCOLON)) {
-            cleanup(m, DEBUG_SPECIFICATION);
+        if (currentIs(OP_COLON)) {
+            advance();
+            marker.done(ATTRIBUTE_SPECIFIER);
+            return true;
+        }
+        if (!parseDeclarationBlock()) {
+            marker.rollbackTo();
             return false;
         }
-        exit_section_modified(builder, m, DEBUG_SPECIFICATION, true);
+        marker.done(ATTRIBUTE_SPECIFIER);
+        return true;
+    }
+
+    boolean parseDeclarationBlock() {
+        if (!currentIs(OP_BRACES_LEFT)) {
+            return parseDeclDef();
+        }
+        Marker marker = builder.mark();
+        builder.advanceLexer();
+        while (!builder.eof()) {
+            if (builder.getTokenType() == OP_BRACES_RIGHT)
+                break;
+            parseDeclDef();
+        }
+        expect(OP_BRACES_RIGHT);
+        marker.done(DECLARATION_BLOCK);
+        return true;
+    }
+
+    boolean parseEmptyDeclaration() {
+        Marker marker = builder.mark();
+        if (expect(OP_SCOLON) == null) {
+            cleanup(marker, EMPTY_STATEMENT);
+            return false;
+        }
+        marker.done(EMPTY_DECLARATION);
         return true;
     }
 
     /**
      * Parses a Declaration
-     * <p>
-     * Params:
-     *   strict = if true, do not return partial AST nodes on errors.
-     *   mustBeDeclaration = do not parse as a declaration if it could be parsed as a function call
-     *   inTemplateDeclaration = if this function is called from a templated context
-     * <p>
      * $(GRAMMAR $(RULEDEF declaration):
-     *   $(RULE attribute)* $(RULE declaration2)
-     * | $(RULE attribute)+ $(LITERAL '{') $(RULE declaration)* $(LITERAL '}')
-     * ;
-     * $(RULEDEF declaration2):
-     *   $(RULE aliasDeclaration)
-     * | $(RULE aliasThisDeclaration)
-     * | $(RULE anonymousEnumDeclaration)
-     * | $(RULE attributeDeclaration)
-     * | $(RULE classDeclaration)
-     * | $(RULE conditionalDeclaration)
-     * | $(RULE constructor)
-     * | $(RULE debugSpecification)
-     * | $(RULE destructor)
-     * | $(RULE enumDeclaration)
-     * | $(RULE eponymousTemplateDeclaration)
-     * | $(RULE functionDeclaration)
-     * | $(RULE importDeclaration)
-     * | $(RULE interfaceDeclaration)
-     * | $(RULE invariant)
-     * | $(RULE mixinDeclaration)
-     * | $(RULE mixinTemplateDeclaration)
-     * | $(RULE pragmaDeclaration)
-     * | $(RULE sharedStaticConstructor)
-     * | $(RULE sharedStaticDestructor)
-     * | $(RULE staticAssertDeclaration)
-     * | $(RULE staticForeachDeclaration)
-     * | $(RULE staticConstructor)
-     * | $(RULE staticDestructor)
-     * | $(RULE structDeclaration)
-     * | $(RULE templateDeclaration)
-     * | $(RULE unionDeclaration)
-     * | $(RULE unittest)
+     *   $(RULE functionDeclaration)
      * | $(RULE variableDeclaration)
-     * | $(RULE versionSpecification)
+     * | $(RULE aliasDeclaration)
+     * | $(RULE aliasAssign)
+     * | $(RULE aggregateDeclaration)
+     * | $(RULE enumDeclaration)
+     * | $(RULE importDeclaration)
+     * | $(RULE conditionalDeclaration)
+     * | $(RULE staticForeachDeclaration)
+     * | $(RULE staticAssertDeclaration)
+     * | $(RULE templateDeclaration)
+     * | $(RULE templateMixinDeclaration)
+     * | $(RULE templateMixin)
      * ;)
      */
     boolean parseDeclaration() {
-        return parseDeclaration(false, false, false);
+        boolean result = parseFunctionDeclaration();
+        result = result || parseVariableDeclaration();
+        result = result || parseAliasDeclaration();
+        result = result || parseAliasAssign();
+        result = result || parseAggregateDeclaration();
+        result = result || parseEnumDeclaration();
+        result = result || parseImportDeclaration();
+        result = result || parseConditionalDeclaration();
+        result = result || parseStaticForeachDeclaration();
+        result = result || parseStaticAssertDeclaration();
+        result = result || parseTemplateDeclaration();
+        result = result || parseTemplateMixinDeclaration();
+        result = result || parseTemplateMixin();
+        return result;
     }
 
-    boolean parseDeclaration(final boolean strict, final boolean mustBeDeclaration) {
-        return parseDeclaration(strict, mustBeDeclaration, false);
-    }
-
-    boolean parseDeclaration(final boolean strict, final boolean mustBeDeclaration, boolean inTemplateDeclaration) {
-        final Marker m = enter_section_modified(builder);
-        if (!moreTokens()) {
-            error("declaration expected instead of EOF");
-            exit_section_modified(builder, m, DECLARATION, true);
-            return false;
-        }
-        boolean nodeAttributes = false;
-        DecType isAuto;
-        do {
-            final Pair<DecType, Integer> pair = isAutoDeclaration();
-            final int autoStorageClassStart = pair.second;
-            isAuto = pair.first;
-            if (isAuto != DecType.other && builder.getCurrentOffset() == autoStorageClassStart)
-                break;
-            if (!isAttribute())
-                break;
-            final boolean attr = parseAttribute();
-            if (!attr) {
-                break;
-            }
-            if (currentIs(OP_COLON)) {
-                if (!parseAttributeDeclaration(false)) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-                exit_section_modified(builder, m, DECLARATION, true);
-                return true;
-            } else
-                nodeAttributes = true;
-        } while (moreTokens());
-
-        if (!moreTokens()) {
-            error("declaration expected instead of EOF");
-            exit_section_modified(builder, m, DECLARATION, true);
-            return false;
-        }
-
-        if (!currentIs(KW_ENUM)) {  // #165: handle enums separatly b/c of EponymousTemplateDeclaration
-            if (isAuto == DecType.autoVar) {
-                if (!parseVariableDeclaration(null, true)) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-                exit_section_modified(builder, m, DECLARATION, true);
-                return true;
-            } else if (isAuto == DecType.autoFun) {
-                if (!parseFunctionDeclaration(null, true)) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-                exit_section_modified(builder, m, DECLARATION, true);
-                return true;
-            }
-        }
-
-        final IElementType idType = current();
-        {
-            if (idType == KW_ASM || idType == KW_BREAK || idType == KW_CASE || idType == KW_CONTINUE || idType == KW_DEFAULT || idType == KW_DO || idType == KW_FOR || idType == KW_FOREACH || idType == KW_FOREACH_REVERSE || idType == KW_GOTO || idType == KW_IF || idType == KW_RETURN || idType == KW_SWITCH || idType == KW_THROW || idType == KW_TRY || idType == KW_WHILE || idType == KW_ASSERT) {
-                return declarationDefault(m);
-            } else if (idType == OP_SCOLON) {
-                // http://d.magic.com/issues/show_bug.cgi?id=4559
-                advance();
-            } else if (idType == OP_BRACES_LEFT) {
-                if (!nodeAttributes) {
-                    error("declaration expected instead of `{`");
-                    exit_section_modified(builder, m, DECLARATION, true);
-                    return false;
-                }
-                advance();
-                while (moreTokens() && !currentIs(OP_BRACES_RIGHT)) {
-                    if (!parseDeclaration(strict, false, inTemplateDeclaration)) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                }
-                if (!tokenCheck(OP_BRACES_RIGHT)) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == KW_ALIAS) {
-                if (startsWith(KW_ALIAS, ID, KW_THIS)) {
-                    if (!parseAliasThisDeclaration()) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else if (!parseAliasDeclaration()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == KW_CLASS) {
-                if (!parseClassDeclaration()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == KW_THIS) {
-                if (!mustBeDeclaration && peekIs(OP_PAR_LEFT)) {
-                    // Do not parse as a declaration if we could parse as a function call.
-                    final Bookmark b = setBookmark();
-                    final IElementType past = peekPastParens();
-                    goToBookmark(b);
-                    if (past == OP_SCOLON) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                }
-                if (startsWith(KW_THIS, OP_PAR_LEFT, KW_THIS, OP_PAR_RIGHT)) {
-                    if (!parsePostblit()) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else if (!parseConstructor()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == OP_TILDA) {
-                if (!parseDestructor()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == KW_ENUM) {
-                final Bookmark b = setBookmark();
-                advance(); // enum
-                if (currentIsOneOf(OP_COLON, OP_BRACES_LEFT)) {
-                    goToBookmark(b);
-                    if (!parseAnonymousEnumDeclaration()) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else if (currentIs(ID)) {
-                    advance();
-                    if (currentIs(OP_PAR_LEFT)) {
-                        skipParens(); // ()
-                        if (currentIs(OP_PAR_LEFT))
-                            skipParens();
-                        if (!currentIs(OP_EQ)) {
-                            goToBookmark(b);
-                            final boolean nodeFunctionDeclaration = parseFunctionDeclaration(null, true);
-                            if (!nodeFunctionDeclaration) {
-                                cleanup(m, DECLARATION);
-                                return false;
-                            }
-                        } else {
-                            goToBookmark(b);
-                            if (!parseEponymousTemplateDeclaration()) {
-                                cleanup(m, DECLARATION);
-                                return false;
-                            }
-                        }
-                    } else if (currentIsOneOf(OP_COLON, OP_BRACES_LEFT, OP_SCOLON)) {
-                        goToBookmark(b);
-                        if (!parseEnumDeclaration()) {
-                            cleanup(m, DECLARATION);
-                            return false;
-                        }
-                    } else {
-                        final boolean eq = currentIs(OP_EQ);
-                        goToBookmark(b);
-                        if (!parseVariableDeclaration(null, eq)) {
-                            cleanup(m, DECLARATION);
-                            return false;
-                        }
-                    }
-                } else {
-                    final boolean s = isStorageClass();
-                    goToBookmark(b);
-                    if (!parseVariableDeclaration(null, s)) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                }
-            } else if (idType == KW_IMPORT) {
-                if (!parseImportDeclaration()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == KW_INTERFACE) {
-                if (!parseInterfaceDeclaration()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == KW_MIXIN) {
-                if (peekIs(KW_TEMPLATE)) {
-                    if (!parseMixinTemplateDeclaration()) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else {
-                    final Bookmark b = setBookmark();
-                    advance();
-                    if (currentIs(OP_PAR_LEFT)) {
-                        final IElementType t = peekPastParens();
-                        if (t == OP_SCOLON) {
-                            goToBookmark(b);
-                            if (!parseMixinDeclaration()) {
-                                cleanup(m, DECLARATION);
-                                return false;
-                            }
-                        } else {
-                            goToBookmark(b);
-                            return declarationDefault(m);
-                        }
-                    } else {
-                        goToBookmark(b);
-                        if (!parseMixinDeclaration()) {
-                            cleanup(m, DECLARATION);
-                            return false;
-                        }
-                    }
-                }
-            } else if (idType == KW_PRAGMA) {
-                if (!parsePragmaDeclaration()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == KW_SHARED) {
-                if (startsWith(KW_SHARED, KW_STATIC, KW_THIS)) {
-                    if (!parseSharedStaticConstructor()) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else if (startsWith(KW_SHARED, KW_STATIC, OP_TILDA)) {
-                    if (!parseSharedStaticDestructor()) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else {
-                    if (!type(m)) {
-//                        cleanup(m);//already done
-                        return false;
-                    }
-                }
-            } else if (idType == KW_STATIC) {
-                if (peekIs(KW_THIS)) {
-                    if (!parseStaticConstructor()) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else if (peekIs(OP_TILDA)) {
-                    if (!parseStaticDestructor()) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else if (peekIs(KW_IF)) {
-                    if (!parseConditionalDeclaration(strict, inTemplateDeclaration)) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else if (peekIs(KW_ASSERT)) {
-                    if (!parseStaticAssertDeclaration()) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else if (peekIs(KW_FOREACH) || peekIs(KW_FOREACH_REVERSE)) {
-                    if (!parseStaticForeachDeclaration(inTemplateDeclaration)) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else {
-                    if (!type(m)) {
-//                        cleanup(m);//already done by type
-                        return false;
-                    }
-                }
-
-            } else if (idType == KW_STRUCT) {
-                if (!parseStructDeclaration()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == KW_TEMPLATE) {
-                if (!parseTemplateDeclaration()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == KW_UNION) {
-                if (!parseUnionDeclaration()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == KW_INVARIANT) {
-                if (!parseInvariant()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == KW_UNITTEST) {
-                if (!parseUnittest()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == ID && inTemplateDeclaration && peekIs(OP_EQ)) {
-                if (!parseAliasAssign()) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else if (idType == ID || idType == OP_DOT || idType == KW_CONST || idType == KW_IMMUTABLE || idType == KW_INOUT || idType == KW_SCOPE || idType == KW_TYPEOF || idType == KW___VECTOR || idType == KW___TRAITS || idType == KW_INT || idType == KW_BOOL || idType == KW_BYTE || idType == KW_CDOUBLE || idType == KW_CENT || idType == KW_CFLOAT || idType == KW_CHAR || idType == KW_CREAL || idType == KW_DCHAR || idType == KW_DOUBLE || idType == KW_FLOAT || idType == KW_IDOUBLE || idType == KW_IFLOAT || idType == KW_IREAL || idType == KW_LONG || idType == KW_REAL || idType == KW_SHORT || idType == KW_UBYTE || idType == KW_UCENT || idType == KW_UINT || idType == KW_ULONG || idType == KW_USHORT || idType == KW_VOID || idType == KW_WCHAR) {
-                if (!type(m)) {
-                    return false;//no cleanup needed already done in type
-                }
-            } else if (idType == KW_VERSION) {
-                if (peekIs(OP_PAR_LEFT)) {
-                    if (!parseConditionalDeclaration(strict, inTemplateDeclaration)) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else if (peekIs(OP_EQ)) {
-                    if (!parseVersionSpecification()) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else {
-                    error("`=` or `(` expected following `version`");
-                    exit_section_modified(builder, m, DECLARATION, true);
-                    return false;
-                }
-            } else if (idType == KW_DEBUG) {
-                if (peekIs(OP_EQ)) {
-                    if (!parseDebugSpecification()) {
-                        cleanup(m, DECLARATION);
-                        return false;
-                    }
-                } else if (!parseConditionalDeclaration(strict, inTemplateDeclaration)) {
-                    cleanup(m, DECLARATION);
-                    return false;
-                }
-            } else {
-                return declarationDefault(m);
-            }
-        }
-        exit_section_modified(builder, m, DECLARATION, true);
-        return true;
-    }
-
-    private boolean declarationDefault(final Marker m) {
-        error("Declaration expected");
-        exit_section_modified(builder, m, DECLARATION, true);
-        return false;
-    }
-
-    private boolean type(@NotNull final Marker m) {
-        final Pair<Boolean, Marker> t = parseType();
-        if ((!t.first) || !currentIs(ID)) {
-            if (t.first)
-                error("no identifier for declarator");
-            cleanup(m, DECLARATION);
-            return false;
-        }
-        Bookmark b = setBookmark();
-        b.m.done(DECLARATION); // must `done()` marker here to keep be able to allow use t.second.precede()
-        if (!parseVariableDeclaration(t.second, false)) {
-            goToBookmark(b);
-            if (!parseFunctionDeclaration(t.second, false)) {
-                cleanup(m, DECLARATION);
-                return false;
-            }
-        } else {
-            abandonBookmark(b);
-        }
-        /*if (peekIs(OP_PAR_LEFT)) {
-           if (!parseFunctionDeclaration(t.second, false)) {
-               cleanup(m, DECLARATION);
-               return false;
-           }
-        } else if (!parseVariableDeclaration(t.second, false)) {
-                cleanup(m, DECLARATION);
-                return false;
-        }*/
-        return true;
+    boolean parseAggregateDeclaration() {
+        boolean result = parseClassDeclaration();
+        result = result || parseInterfaceDeclaration();
+        result = result || parseStructDeclaration();
+        result = result || parseUnionDeclaration();
+        return result;
     }
 
     private void exit_section_modified(final PsiBuilder builder, final Marker m, final IElementType type, final boolean b) {
-        if (type == DECLARATION || type == MODULE_DECLARATION) {
+        if (type == MODULE_DECLARATION) {
             // Attach documentations to their declarations
             m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         }
@@ -2870,11 +2489,10 @@ class DLangParser {
      * ;)
      */
     boolean parseDestructor() {
-        final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(OP_TILDA)) {
-            cleanup(m, DESTRUCTOR);
+        if (!currentIs(OP_TILDA))
             return false;
-        }
+        final Marker m = enter_section_modified(builder);
+        builder.advanceLexer();
         if (!moreTokens()) {
             error("`this` expected");
             exit_section_modified(builder, m, DESTRUCTOR, true);
@@ -2991,19 +2609,14 @@ class DLangParser {
         return true;
     }
 
-    boolean parseAnonymousEnumMember() {
-        return parseAnonymousEnumMember(false);
-    }
-
     /**
-     * $(GRAMMAR $(RULEDEF anonymousEnumMember):
-     *   $(RULE type) $(LITERAL identifier) $(LITERAL '=') $(RULE assignExpression)
-     * | $(LITERAL identifier) $(LITERAL '=') $(RULE assignExpression)
-     * | $(LITERAL identifier)
+     * $(GRAMMAR $(RULEDEF enumMember):
+     *   $(RULE enumMemberAttributes) $(RULE type)? $(LITERAL identifier) ($(LITERAL '=') $(RULE assignExpression))?
      * ;)
      */
-    boolean parseAnonymousEnumMember(final boolean typeAllowed) {
+    boolean parseEnumMember(final boolean typeAllowed) {
         final Marker m = enter_section_modified(builder);
+        // TODO parseEnumMemberAttributes
         if (currentIs(ID) && peekIsOneOf(OP_COMMA, OP_EQ, OP_BRACES_RIGHT)) {
             if (!tokenCheck(ID)) {
                 cleanup(m, ENUM_MEMBER);
@@ -3044,28 +2657,17 @@ class DLangParser {
         return true;
     }
 
-    /**
-     * $(GRAMMAR $(RULEDEF anonymousEnumDeclaration):
-     * $(LITERAL 'enum') ($(LITERAL ':') $(RULE type))? $(LITERAL '{') $(RULE anonymousEnumMember)+ $(LITERAL '}')
-     * ;)
-     */
-    boolean parseAnonymousEnumDeclaration() {
-        final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_ENUM)) {
-            cleanup(m, ANONYMOUS_ENUM_DECLARATION);
-            return false;
-        }
-        final boolean hasBaseType = currentIs(OP_COLON);
-        if (hasBaseType) {
+    void parseAnonymousEnumDeclaration() {
+        boolean hasBaseType = false;
+        if (currentIs(OP_COLON)) {
             advance();
             if (!parseType().first) {
-                cleanup(m, ANONYMOUS_ENUM_DECLARATION);
-                return false;
+                return;
             }
+            hasBaseType = true;
         }
         if (!tokenCheck(OP_BRACES_LEFT)) {
-            cleanup(m, ANONYMOUS_ENUM_DECLARATION);
-            return false;
+            return;
         }
         while (moreTokens()) {
             if (currentIs(OP_COMMA)) {
@@ -3073,15 +2675,13 @@ class DLangParser {
             } else if (currentIs(OP_BRACES_RIGHT)) {
                 break;
             } else {
-                parseAnonymousEnumMember(!hasBaseType);
+                parseEnumMember(!hasBaseType);
             }
         }
         if (!tokenCheck(OP_BRACES_RIGHT)) {
-            cleanup(m, ANONYMOUS_ENUM_DECLARATION);
-            return false;
+            return;
         }
-        exit_section_modified(builder, m, ANONYMOUS_ENUM_DECLARATION, true);
-        return true;
+        return;
     }
 
     /**
@@ -3090,23 +2690,25 @@ class DLangParser {
      * $(GRAMMAR $(RULEDEF enumDeclaration):
      *   $(LITERAL 'enum') $(LITERAL Identifier) ($(LITERAL ':') $(RULE type))? $(LITERAL ';')
      * | $(LITERAL 'enum') $(LITERAL Identifier) ($(LITERAL ':') $(RULE type))? $(RULE enumBody)
+     * $(GRAMMAR $(RULEDEF anonymousEnumDeclaration):
+     * $(LITERAL 'enum') ($(LITERAL ':') $(RULE type))? $(LITERAL '{') $(RULE anonymousEnumMember)+ $(LITERAL '}')
      * ;)
      */
     boolean parseEnumDeclaration() {
+        if (builder.getTokenType() != KW_ENUM)
+            return false;
         final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_ENUM)) {
-            cleanup(m, ENUM_DECLARATION);
-            return false;
-        }
+        builder.advanceLexer();
         if (!tokenCheck(ID)) {
-            cleanup(m, ENUM_DECLARATION);
-            return false;
+            parseAnonymousEnumDeclaration();
+            m.done(ANONYMOUS_ENUM_DECLARATION);
+            return true;
         }
         if (currentIs(OP_COLON)) {
             advance(); // skip ':'
             if (!parseType().first) {
                 cleanup(m, ENUM_DECLARATION);
-                return false;
+                return true;
             }
         }
         if (currentIs(OP_SCOLON)) {
@@ -3114,11 +2716,8 @@ class DLangParser {
             m.done(ENUM_DECLARATION);
             return true;
         }
-        if (!parseEnumBody()) {
-            cleanup(m, ENUM_DECLARATION);
-            return false;
-        }
-        exit_section_modified(builder, m, ENUM_DECLARATION, true);
+        parseEnumBody();
+        m.done(ENUM_DECLARATION);
         return true;
     }
 
@@ -3292,7 +2891,7 @@ class DLangParser {
 
     boolean parseDeclarationStatement() {
         Marker marker = builder.mark();
-        parseDeclaration(true, true);
+        parseDeclaration();
         marker.done(DECLARATION_STATEMENT);
         return true;
     }
@@ -3405,14 +3004,17 @@ class DLangParser {
      *     | $(LITERAL 'static') ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachType) $(LITERAL ';') $(RULE expression) $(LITERAL '..') $(RULE expression) $(LITERAL '$(RPAREN)') ($(RULE declaration) | $(LITERAL '{') $(RULE declaration)* $(LITERAL '}'))
      *     ;)
      */
-    boolean parseStaticForeachDeclaration(final boolean inTemplateDeclaration)
+    boolean parseStaticForeachDeclaration()
     {
+        if (builder.getTokenType() != KW_STATIC)
+            return false;
         final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_STATIC)) {
-            cleanup(m, STATIC_FOREACH_DECLARATION);
+        builder.advanceLexer();
+        if (currentIsOneOf(KW_FOREACH, KW_FOREACH_REVERSE)) {
+            m.rollbackTo();
             return false;
         }
-        if (!parseForeach(STATIC_FOREACH_DECLARATION, true, inTemplateDeclaration)) {
+        if (!parseForeach(STATIC_FOREACH_DECLARATION, true)) {
             cleanup(m, STATIC_FOREACH_DECLARATION);
             return false;
         }
@@ -3445,11 +3047,7 @@ class DLangParser {
         return true;
     }
 
-    boolean parseForeach(IElementType elementType, final boolean declOnly) {
-        return parseForeach(elementType, declOnly, false);
-    }
-
-    boolean parseForeach(IElementType elementType, boolean declOnly, boolean inTemplateDeclaration) {
+    boolean parseForeach(IElementType elementType, boolean declOnly) {
         final Marker m = enter_section_modified(builder);
         if (currentIsOneOf(KW_FOREACH, KW_FOREACH_REVERSE)) {
             advance();
@@ -3504,7 +3102,7 @@ class DLangParser {
                 advance();
                 while (moreTokens() && !currentIs(OP_BRACES_RIGHT)) {
                     Bookmark b = setBookmark();
-                    if (parseDeclaration(true, true, inTemplateDeclaration)) {
+                    if (parseDeclaration()) {
                         abandonBookmark(b);
                     } else {
                         goToBookmark(b);
@@ -3517,7 +3115,7 @@ class DLangParser {
                     return false;
                 }
             }
-            else if (!parseDeclaration(true, true, inTemplateDeclaration)) {
+            else if (!parseDeclaration()) {
                 cleanup(m, elementType);
                 return false;
             }
@@ -3550,7 +3148,7 @@ class DLangParser {
                 advance();
             } else if (currentIs(KW_ENUM)) {
                 advance();
-            } else if (parseTypeConstructor(false) != null) {
+            } else if (parseTypeConstructor()) {
                 // do nothing
             } else {
                 break;
@@ -3751,10 +3349,6 @@ class DLangParser {
         return true;
     }
 
-    boolean parseFunctionDeclaration() {
-        return parseFunctionDeclaration(null, false);
-    }
-
     /**
      * Parses a FunctionDeclaration
      * <p>
@@ -3763,69 +3357,71 @@ class DLangParser {
      * | ($(RULE storageClass)+ | $(RULE _type)) $(LITERAL Identifier) $(RULE templateParameters) $(RULE parameters) $(RULE memberFunctionAttribute)* $(RULE constraint)? ($(RULE functionBody) | $(LITERAL ';'))
      * ;)
      */
-    boolean parseFunctionDeclaration(final Marker type, final boolean isAuto)
-    {
-        Marker m = null;
-        if (type == null) {
-            m = enter_section_modified(builder);
-        } else
-            m = type.precede();
-        if (isAuto) {
-            while (isStorageClass())
-                if (!parseStorageClass()) {
-                    cleanup(m, FUNCTION_DECLARATION);
-                    return false;
-                }
-        } else {
-            while (moreTokens() && currentIsMemberFunctionAttribute())
-                if (!parseMemberFunctionAttribute()) {
-                    cleanup(m, FUNCTION_DECLARATION);
-                    return false;
-                }
-            if (type == null) {
-                if (!parseType().first) {
-                    cleanup(m, FUNCTION_DECLARATION);
-                    return false;
-                }
-            }
+    boolean parseFunctionDeclaration() {
+        Marker m = enter_section_modified(builder);
+        boolean hasStorageClass = false;
+        while (builder.eof()) {
+            if (!parseStorageClass())
+                break;
+            hasStorageClass = true;
         }
-        if (!tokenCheck(ID)) {
-            cleanup(m, FUNCTION_DECLARATION);
+        Marker bookmark = builder.mark();
+        if (!parseType2()) {
+            bookmark.rollbackTo();
+            if (hasStorageClass && builder.getTokenType() == ID) {
+                // it’s an auto function declaration
+                advance();
+                if (!parseFunctionDeclaratorSuffix()) {
+                    m.rollbackTo();
+                    return false;
+                }
+                parseFunctionBody();
+                m.done(FUNCTION_DECLARATION);
+                return true;
+            }
+            m.rollbackTo();
             return false;
         }
+        bookmark.drop();
+        if (!parseFunctionDeclarator()) {
+            m.rollbackTo();
+            return false;
+        }
+        parseFunctionBody();
+        m.done(FUNCTION_DECLARATION);
+        return true;
+    }
+
+    boolean parseFunctionDeclarator() {
+        parseTypeSuffixes();
+        if (!tokenCheck(ID)) {
+            return false;
+        }
+        return parseFunctionDeclaratorSuffix();
+    }
+
+    boolean parseFunctionDeclaratorSuffix() {
         if (!currentIs(OP_PAR_LEFT)) {
             error("`(` expected");
-            exit_section_modified(builder, m, FUNCTION_DECLARATION, true);
             return false;
         }
         final IElementType p = peekPastParens();
         final boolean isTemplate = p == OP_PAR_LEFT;
         if (isTemplate) {
             if (!parseTemplateParameters()) {
-                cleanup(m, FUNCTION_DECLARATION);
                 return false;
             }
         }
         if (!parseParameters()) {
-            cleanup(m, FUNCTION_DECLARATION);
             return false;
         }
         while (moreTokens() && currentIsMemberFunctionAttribute())
             if (!parseMemberFunctionAttribute()) {
-                cleanup(m, FUNCTION_DECLARATION);
                 return false;
             }
         if (isTemplate && currentIs(KW_IF)) {
-            if (!parseConstraint()) {
-                cleanup(m, FUNCTION_DECLARATION);
-                return false;
-            }
+            return parseConstraint();
         }
-        if (!parseFunctionBody()) {
-            cleanup(m, FUNCTION_DECLARATION);
-            return false;
-        }
-        exit_section_modified(builder, m, FUNCTION_DECLARATION, true);
         return true;
     }
 
@@ -4313,6 +3909,7 @@ class DLangParser {
      */
     boolean parseImportBindings(final boolean parseSingleImport) {
         final Marker m = enter_section_modified(builder);
+        builder.advanceLexer();
         if (parseSingleImport) {
             if (!parseSingleImport()) {
                 cleanup(m, IMPORT_BINDINGS);
@@ -4320,8 +3917,8 @@ class DLangParser {
             }
         }
         if (!tokenCheck(OP_COLON)) {
-            cleanup(m, IMPORT_BINDINGS);
-            return false;
+            m.done(IMPORT_BINDINGS);
+            return true;
         }
         while (moreTokens()) {
             if (parseImportBind()) {
@@ -4341,14 +3938,16 @@ class DLangParser {
      * Parses an ImportDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF importDeclaration):
-     * $(LITERAL 'import') $(RULE import) ($(LITERAL ',') $(RULE import))* ($(LITERAL ',') $(RULE importBindings))? $(LITERAL ';')
-     * | $(LITERAL 'import') $(RULE importBindings) $(LITERAL ';')
+     *   $(LITERAL 'static') $(LITERAL 'import') $(RULE import) ($(LITERAL ',') $(RULE import))* ($(LITERAL ',') $(RULE importBindings))? $(LITERAL ';')
+     * | $(LITERAL 'static') $(LITERAL 'import') $(RULE importBindings) $(LITERAL ';')
      * ;)
      */
     boolean parseImportDeclaration() {
         final Marker m = enter_section_modified(builder);
+        if (builder.getTokenType() == KW_STATIC)
+            builder.advanceLexer();
         if (!tokenCheck(KW_IMPORT)) {
-            cleanup(m, IMPORT_DECLARATION);
+            m.rollbackTo();
             return false;
         }
         final boolean si = parseSingleImport();
@@ -4357,15 +3956,14 @@ class DLangParser {
             return false;
         }
         if (currentIs(OP_COLON))
-            parseImportBindings(!si);
+            parseImportBindings(true);
         else {
             if (currentIs(OP_COMMA)) {
                 advance();
                 while (moreTokens()) {
                     final boolean single = parseSingleImport();
-                    if (!single) {
-                        cleanup(m, IMPORT_DECLARATION);
-                        return false;
+                    if (!parseSingleImport()) {
+                        return true;
                     }
                     if (currentIs(OP_COLON)) {
                         parseImportBindings(!single);
@@ -4663,11 +4261,13 @@ class DLangParser {
      * ;)
      */
     boolean parseInterfaceDeclaration() {
+        if (builder.getTokenType() != KW_INTERFACE)
+            return false;
         final Marker m = enter_section_modified(builder);
-        expect(KW_INTERFACE);
-        final boolean b = parseInterfaceOrClass();
-        exit_section_modified(builder, m, INTERFACE_DECLARATION, b);
-        return b;
+        builder.advanceLexer();
+        parseInterfaceOrClass();
+        m.done(INTERFACE_DECLARATION);
+        return true;
     }
 
     /**
@@ -4679,48 +4279,33 @@ class DLangParser {
      * ;)
      */
     boolean parseInvariant() {
+        if (builder.getTokenType() != KW_INVARIANT)
+            return false;
+
         final Marker m = enter_section_modified(builder);
-        boolean mustHaveBlock = false;
-        if (!tokenCheck(KW_INVARIANT)) {
-            cleanup(m, INVARIANT);
-            return false;
-        }
-        if (currentIs(OP_PAR_LEFT) && peekIs(OP_PAR_RIGHT)) {
-            mustHaveBlock = true;
-            advance();
-            advance();
-        }
-        if (currentIs(OP_BRACES_LEFT)) {
-            if (currentIs(OP_PAR_LEFT)) {
-                advance();
-                if (!tokenCheck(OP_PAR_RIGHT)) {
-                    cleanup(m, INVARIANT);
-                    return false;
+        builder.advanceLexer();
+        if (currentIs(OP_PAR_LEFT)) {
+            builder.advanceLexer();
+            if (builder.getTokenType() != OP_PAR_RIGHT) {
+                if (!parseAssertArguments()) {
+                    m.done(INVARIANT);
+                    return true;
                 }
+                if (!tokenCheck(OP_PAR_RIGHT)) {
+                    m.done(INVARIANT);
+                    return true;
+                }
+                if (!tokenCheck(OP_SCOLON)) {
+                    m.done(INVARIANT);
+                    return true;
+                }
+                m.done(INVARIANT);
+                return true;
             }
-            if (!parseBlockStatement()) {
-                cleanup(m, INVARIANT);
-                return false;
-            }
-        } else if (!mustHaveBlock && currentIs(OP_PAR_LEFT)) {
-            advance();
-            if (!parseAssertArguments()) {
-                cleanup(m, INVARIANT);
-                return false;
-            }
-            if (!tokenCheck(OP_PAR_RIGHT)) {
-                cleanup(m, INVARIANT);
-                return false;
-            }
-            if (!tokenCheck(OP_SCOLON)) {
-                cleanup(m, INVARIANT);
-                return false;
-            }
-        } else {
-            cleanup(m, INVARIANT);
-            return false;
+            builder.advanceLexer();
         }
-        exit_section_modified(builder, m, INVARIANT, true);
+        parseBlockStatement();
+        m.done(INVARIANT);
         return true;
     }
 
@@ -4927,7 +4512,7 @@ class DLangParser {
      * Parses a MemberFunctionAttribute
      * <p>
      * $(GRAMMAR $(RULEDEF memberFunctionAttribute):
-     * $(RULE functionAttribute)
+     *   $(RULE functionAttribute)
      * | $(LITERAL 'immutable')
      * | $(LITERAL 'inout')
      * | $(LITERAL 'shared')
@@ -5000,34 +4585,27 @@ class DLangParser {
      * Parses a MixinDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF mixinDeclaration):
-     *   $(RULE mixinExpression) $(LITERAL ';')
-     * | $(RULE templateMixinExpression) $(LITERAL ';')
+     * $(LITERAL 'mixin') $(LITERAL '$(LPAREN)') $(RULE argumentList) $(LITERAL '$(RPAREN)')
      * ;)
      */
     boolean parseMixinDeclaration() {
+        if (builder.getTokenType() != KW_MIXIN)
+            return false;
         final Marker m = enter_section_modified(builder);
-        if (peekIsOneOf(ID, KW_TYPEOF, OP_DOT)) {
-            if (!parseTemplateMixinExpression()) {
-                cleanup(m, MIXIN_DECLARATION);
-                return false;
-            }
-        } else if (peekIs(OP_PAR_LEFT)) {
-            if (!parseMixinExpression()) {
-                cleanup(m, MIXIN_DECLARATION);
-                return false;
-            }
-        } else {
-            error("`(` or identifier expected");
-            exit_section_modified(builder, m, MIXIN_DECLARATION, true);
+        builder.advanceLexer();
+        expect(OP_PAR_LEFT);
+        if (!parseArgumentList()) {
+            cleanup(m, MIXIN_EXPRESSION);
             return false;
         }
+        expect(OP_PAR_RIGHT);
         expect(OP_SCOLON);
-        exit_section_modified(builder, m, MIXIN_DECLARATION, true);
+        exit_section_modified(builder, m, MIXIN_EXPRESSION, true);
         return true;
     }
 
     /**
-     * Parses a MixinExpression
+     * Parses a MixinExpriession
      * <p>
      * $(GRAMMAR $(RULEDEF mixinExpression):
      * $(LITERAL 'mixin') $(LITERAL '$(LPAREN)') $(RULE argumentList) $(LITERAL '$(RPAREN)')
@@ -5053,17 +4631,21 @@ class DLangParser {
      * $(LITERAL 'mixin') $(RULE templateDeclaration)
      * ;)
      */
-    boolean parseMixinTemplateDeclaration() {
+    boolean parseTemplateMixinDeclaration() {
+        if (builder.getTokenType() != KW_MIXIN) {
+            return false;
+        }
         final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_MIXIN)) {
-            cleanup(m, MIXIN_TEMPLATE_DECLARATION);
+        builder.advanceLexer();
+        if (builder.getTokenType() != KW_TEMPLATE) {
+            m.rollbackTo();
             return false;
         }
-        if (!parseTemplateDeclaration()) {
-            cleanup(m, MIXIN_TEMPLATE_DECLARATION);
+        if (!parseTemplateDeclarationCommon()) {
+            m.rollbackTo();
             return false;
         }
-        exit_section_modified(builder, m, MIXIN_TEMPLATE_DECLARATION, true);
+        exit_section_modified(builder, m, TEMPLATE_MIXIN_DECLARATION, true);
         return true;
     }
 
@@ -5116,7 +4698,7 @@ class DLangParser {
             parseModuleDeclaration();
         }
         while (moreTokens()) {
-            parseDeclaration(true, true);
+            parseDeclDef();
         }
     }
 
@@ -5713,21 +5295,34 @@ class DLangParser {
      * ;)
      */
     boolean parsePostblit() {
+        if (builder.getTokenType() != KW_THIS)
+            return false;
         final Marker m = enter_section_modified(builder);
         advance();
+        if (builder.getTokenType() != OP_PAR_LEFT) {
+            m.rollbackTo();
+            return false;
+        }
         advance();
+        if (builder.getTokenType() != KW_THIS) {
+            m.rollbackTo();
+            return false;
+        }
         advance();
-        advance();
+        if (builder.getTokenType() != OP_PAR_RIGHT) {
+            cleanup(m, POSTBLIT);
+            return true;
+        }
         while (currentIsMemberFunctionAttribute())
             if (!parseMemberFunctionAttribute()) {
                 cleanup(m, POSTBLIT);
-                return false;
+                return true;
             }
         if (currentIs(OP_SCOLON))
             advance();
         else if (!parseFunctionBody()) {
             cleanup(m, POSTBLIT);
-            return false;
+            return true;
         }
         exit_section_modified(builder, m, POSTBLIT, true);
         return true;
@@ -6102,13 +5697,13 @@ class DLangParser {
             return m;
         }
 
-         if (i == KW___TRAITS) {
+        if (i == KW___TRAITS) {
             if (!parseTraitsExpression()) {
                 cleanup(m, PRIMARY_EXPRESSION);
                 return null;
             }
-             exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-             return m;
+            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
+            return m;
         }
 
         error("Primary expression expected");
@@ -6274,18 +5869,22 @@ class DLangParser {
      * ;)
      */
     boolean parseSharedStaticConstructor() {
+        if (builder.getTokenType() != KW_SHARED)
+            return false;
         final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_SHARED)) {
-            cleanup(m, SHARED_STATIC_CONSTRUCTOR);
+        builder.advanceLexer();
+        if (builder.getTokenType() != KW_SHARED) {
+            m.rollbackTo();
             return false;
         }
-        if (!tokenCheck(KW_STATIC)) {
-            cleanup(m, SHARED_STATIC_CONSTRUCTOR);
-            return false;
-        }
+        builder.advanceLexer();
         final boolean b = parseStaticCtorDtorCommon();
-        exit_section_modified(builder, m, SHARED_STATIC_CONSTRUCTOR, b);
-        return b;
+        if (!b) {
+            m.rollbackTo();
+            return false;
+        }
+        m.done(SHARED_STATIC_CONSTRUCTOR);
+        return true;
     }
 
     /**
@@ -6296,22 +5895,21 @@ class DLangParser {
      * ;)
      */
     boolean parseSharedStaticDestructor() {
-        final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_SHARED)) {
-            cleanup(m, SHARED_STATIC_DESTRUCTOR);
+        if (builder.getTokenType() != KW_SHARED)
             return false;
-        }
-        if (!tokenCheck(KW_STATIC)) {
-            cleanup(m, SHARED_STATIC_DESTRUCTOR);
+        final Marker m = enter_section_modified(builder);
+        builder.advanceLexer();
+        if (builder.getTokenType() != KW_STATIC) {
+            m.rollbackTo();
             return false;
         }
         if (!tokenCheck(OP_TILDA)) {
-            cleanup(m, SHARED_STATIC_DESTRUCTOR);
+            m.rollbackTo();
             return false;
         }
-        final boolean b = parseStaticCtorDtorCommon();
-        exit_section_modified(builder, m, SHARED_STATIC_DESTRUCTOR, b);
-        return b;
+        parseStaticCtorDtorCommon();
+        m.done(SHARED_STATIC_DESTRUCTOR);
+        return true;
     }
 
     /**
@@ -6610,7 +6208,7 @@ class DLangParser {
     boolean parseEmptyStatement() {
         Marker marker = builder.mark();
         if(expect(OP_SCOLON) == null) {
-            marker.done(EMPTY_STATEMENT);
+            marker.drop();
             return false;
         }
         marker.done(EMPTY_STATEMENT);
@@ -6667,11 +6265,21 @@ class DLangParser {
      */
     boolean parseStaticAssertDeclaration() {
         final Marker marker = enter_section_modified(builder);
-        if (!parseStaticAssertStatement()) {
-            cleanup(marker, STATIC_ASSERT_DECLARATION);
+        if (builder.getTokenType() != KW_STATIC) {
+            marker.rollbackTo();
             return false;
         }
-        exit_section_modified(builder, marker, STATIC_ASSERT_DECLARATION, true);
+        builder.advanceLexer();
+        if (builder.getTokenType() != KW_ASSERT) {
+            marker.rollbackTo();
+            return false;
+        }
+        if(!parseAssertExpression()) {
+            marker.done(STATIC_ASSERT_DECLARATION);
+            return true;
+        }
+        expect(OP_SCOLON);
+        marker.done(STATIC_ASSERT_DECLARATION);
         return true;
     }
 
@@ -6708,11 +6316,10 @@ class DLangParser {
      * ;)
      */
     boolean parseStaticConstructor() {
-        final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_STATIC)) {
-            cleanup(m, STATIC_CONSTRUCTOR);
+        if (builder.getTokenType() != KW_STATIC)
             return false;
-        }
+        final Marker m = enter_section_modified(builder);
+        builder.advanceLexer();
         final boolean b = parseStaticCtorDtorCommon();
         exit_section_modified(builder, m, STATIC_CONSTRUCTOR, b);
         return b;
@@ -6726,18 +6333,17 @@ class DLangParser {
      * ;)
      */
     boolean parseStaticDestructor() {
+        if (builder.getTokenType() != KW_STATIC)
+            return false;
         final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_STATIC)) {
-            cleanup(m, STATIC_DESTRUCTOR);
-            return false;
-        }
+        builder.advanceLexer();
         if (!tokenCheck(OP_TILDA)) {
-            cleanup(m, STATIC_DESTRUCTOR);
+            m.rollbackTo();
             return false;
         }
-        final boolean b = parseStaticCtorDtorCommon();
-        exit_section_modified(builder, m, STATIC_DESTRUCTOR, b);
-        return b;
+        parseStaticCtorDtorCommon();
+        m.done(STATIC_DESTRUCTOR);
+        return true;
     }
 
     /**
@@ -6828,9 +6434,12 @@ class DLangParser {
                 advance();
         } else if (i == KW_CONST || i == KW_IMMUTABLE || i == KW_INOUT || i == KW_SHARED || i == KW_ABSTRACT || i == KW_AUTO || i == KW_ENUM || i == KW_FINAL || i == KW_NOTHROW || i == KW_OVERRIDE || i == KW_PURE || i == KW_REF || i == KW___GSHARED || i == KW_SCOPE || i == KW_STATIC || i == KW_SYNCHRONIZED || i == KW_THROW) {
             advance();
+            if (builder.getTokenType() == OP_PAR_LEFT) {
+                m.rollbackTo();
+                return false;
+            }
         } else {
-            error("Storage class expected");
-            exit_section_modified(builder, m, STORAGE_CLASS, true);
+            m.rollbackTo();
             return false;
         }
         exit_section_modified(builder, m, STORAGE_CLASS, true);
@@ -6848,7 +6457,7 @@ class DLangParser {
         final Marker m = enter_section_modified(builder);
         final IElementType start = expect(OP_BRACES_LEFT);
         while (!currentIs(OP_BRACES_RIGHT) && moreTokens()) {
-            parseDeclaration(true, true);
+            parseDeclDef();
         }
         final IElementType end = expect(OP_BRACES_RIGHT);
         exit_section_modified(builder, m, STRUCT_BODY, true);
@@ -6863,34 +6472,34 @@ class DLangParser {
      * ;)
      */
     boolean parseStructDeclaration() {
+        if (builder.getTokenType() != KW_STRUCT)
+            return false;
         final Marker m = enter_section_modified(builder);
-        final IElementType t = expect(KW_STRUCT);
+        builder.advanceLexer();
         if (currentIs(ID))
             advance();
         if (currentIs(OP_PAR_LEFT)) {
             if (!parseTemplateParameters()) {
-                cleanup(m, STRUCT_DECLARATION);
-                return false;
+                m.done(STRUCT_DECLARATION);
+                return true;
             }
             if (currentIs(KW_IF))
                 if (!parseConstraint()) {
-                    cleanup(m, STRUCT_DECLARATION);
-                    return false;
+                    m.done(STRUCT_DECLARATION);
+                    return true;
                 }
         }
         if (currentIs(OP_BRACES_LEFT)) {
             if (!parseStructBody()) {
-                cleanup(m, STRUCT_DECLARATION);
-                return false;
+                m.done(STRUCT_DECLARATION);
+                return true;
             }
         } else if (currentIs(OP_SCOLON))
             advance();
         else {
             error("Template Parameters, Struct Body, or Semicolon expected");
-            exit_section_modified(builder, m, STRUCT_DECLARATION, true);
-            return false;
         }
-        exit_section_modified(builder, m, STRUCT_DECLARATION, true);
+        m.done(STRUCT_DECLARATION);
         return true;
     }
 
@@ -7200,32 +6809,39 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateDeclaration() {
+        if (builder.getTokenType() != KW_TEMPLATE)
+            return false;
         final Marker m = enter_section_modified(builder);
-        expect(KW_TEMPLATE);
-        final IElementType ident = expect(ID);
-        if (ident == null) {
-            cleanup(m, TEMPLATE_DECLARATION);
+        if (!parseTemplateDeclarationCommon()) {
+            m.rollbackTo();
             return false;
         }
-        if (!parseTemplateParameters()) {
-            cleanup(m, TEMPLATE_DECLARATION);
+        m.done(TEMPLATE_DECLARATION);
+        return true;
+    }
+
+    private boolean parseTemplateDeclarationCommon() {
+        assert builder.getTokenType() == KW_TEMPLATE;
+        builder.advanceLexer();
+        if (builder.getTokenType() != ID) {
             return false;
+        }
+        advance();
+        if (!parseTemplateParameters()) {
+            return true;
         }
         if (currentIs(KW_IF))
             if (!parseConstraint()) {
-                cleanup(m, TEMPLATE_DECLARATION);
-                return false;
+                return true;
             }
         final IElementType start = expect(OP_BRACES_LEFT);
         if (start == null) {
-            cleanup(m, TEMPLATE_DECLARATION);
-            return false;
+            return true;
         }
         while (moreTokens() && !currentIs(OP_BRACES_RIGHT)) {
-            parseDeclaration(true, true, true);
+            parseDeclDef();
         }
         expect(OP_BRACES_RIGHT);
-        exit_section_modified(builder, m, TEMPLATE_DECLARATION, true);
         return true;
     }
 
@@ -7256,30 +6872,29 @@ class DLangParser {
     }
 
     /**
-     * Parses a TemplateMixinExpression
+     * Parses a TemplateMixin
      * <p>
      * $(GRAMMAR $(RULEDEF templateMixinExpression):
      * $(LITERAL 'mixin') $(RULE mixinTemplateName) $(RULE templateArguments)? $(LITERAL Identifier)?
      * ;)
      */
-    boolean parseTemplateMixinExpression() {
-        final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_MIXIN)) {
-            cleanup(m, TEMPLATE_MIXIN_EXPRESSION);
+    boolean parseTemplateMixin() {
+        if (builder.getTokenType() != KW_MIXIN)
             return false;
-        }
+        final Marker m = enter_section_modified(builder);
+        builder.advanceLexer();
         if (!parseMixinTemplateName()) {
-            cleanup(m, TEMPLATE_MIXIN_EXPRESSION);
+            cleanup(m, TEMPLATE_MIXIN);
             return false;
         }
         if (currentIs(OP_NOT))
             if (!parseTemplateArguments()) {
-                cleanup(m, TEMPLATE_MIXIN_EXPRESSION);
-                return false;
+                m.done(TEMPLATE_MIXIN);
+                return true;
             }
         if (currentIs(ID))
             advance();
-        exit_section_modified(builder, m, TEMPLATE_MIXIN_EXPRESSION, true);
+        m.done(TEMPLATE_MIXIN);
         return true;
     }
 
@@ -7741,6 +7356,13 @@ class DLangParser {
         return new Pair<>(true, m);
     }
 
+    void parseTypeSuffixes() {
+        while (!builder.eof()) {
+            if (!parseTypeSuffix())
+                return;
+        }
+    }
+
     /**
      * Parses a Type2
      * <p>
@@ -7843,21 +7465,15 @@ class DLangParser {
      * | $(LITERAL 'shared')
      * ;)
      */
-    IElementType parseTypeConstructor(final boolean validate) {
+    boolean parseTypeConstructor() {
         final IElementType i = current();
         if (i == KW_CONST || i == KW_IMMUTABLE || i == KW_INOUT || i == KW_SHARED) {
-            if (!peekIs(OP_PAR_LEFT))
-                return advance();
-            if (validate) {
-                error("`const`, `immutable`, `inout`, or `shared` expected");
+            if (!peekIs(OP_PAR_LEFT)) {
+                advance();
+                return true;
             }
-            return null;
-        } else {
-            if (validate) {
-                error("`const`, `immutable`, `inout`, or `shared` expected");
-            }
-            return null;
         }
+        return false;
     }
 
     /**
@@ -7870,7 +7486,7 @@ class DLangParser {
     boolean parseTypeConstructors() {
         boolean containsConstructors = false;
         while (moreTokens()) {
-            if(parseTypeConstructor(false) == null)
+            if(!parseTypeConstructor())
                 break;
             containsConstructors = true;
         }
@@ -7986,8 +7602,7 @@ class DLangParser {
             exit_section_modified(builder, m, TYPE_SUFFIX, true);
             return true;
         } else {
-            error("`*`, `[`, `delegate`, or `function` expected.");
-            exit_section_modified(builder, m, TYPE_SUFFIX, true);
+            m.drop();
             return false;
         }
     }
@@ -8213,36 +7828,31 @@ class DLangParser {
      * ;)
      */
     boolean parseUnionDeclaration() {
+        if (builder.getTokenType() != KW_UNION)
+            return false;
         final Marker m = enter_section_modified(builder);
-        final IElementType t = expect(KW_UNION);
+        builder.advanceLexer();
         if (currentIs(ID)) {
             advance();
             if (currentIs(OP_PAR_LEFT)) {
                 if (!parseTemplateParameters()) {
-                    cleanup(m, UNION_DECLARATION);
-                    return false;
+                    m.done(UNION_DECLARATION);
+                    return true;
                 }
                 if (currentIs(KW_IF))
                     if (!parseConstraint()) {
-                        cleanup(m, UNION_DECLARATION);
-                        return false;
+                        m.done(UNION_DECLARATION);
+                        return true;
                     }
             }
-            if (currentIs(OP_SCOLON))
-                advance();
-            else if (!parseStructBody()) {
-                cleanup(m, UNION_DECLARATION);
-                return false;
-            }
-        } else {
-            if (currentIs(OP_SCOLON))
-                advance();
-            else if (!parseStructBody()) {
-                cleanup(m, UNION_DECLARATION);
-                return false;
-            }
         }
-        exit_section_modified(builder, m, UNION_DECLARATION, true);
+        if (currentIs(OP_SCOLON))
+            advance();
+        else if (!parseStructBody()) {
+            m.done(UNION_DECLARATION);
+            return true;
+        }
+        m.done(UNION_DECLARATION);
         return true;
     }
 
@@ -8254,21 +7864,16 @@ class DLangParser {
      * ;)
      */
     boolean parseUnittest() {
+        if (builder.getTokenType() != KW_UNITTEST)
+            return false;
         final Marker marker = enter_section_modified(builder);
-        if (expect(KW_UNITTEST) == null) {
-            cleanup(marker, UNITTEST);
-            return false;
-        }
+        builder.advanceLexer();
         if(!parseBlockStatement()) {
-            cleanup(marker, UNITTEST);
-            return false;
+            marker.done(UNITTEST);
+            return true;
         }
-        exit_section_modified(builder, marker, UNITTEST, true);
+        marker.done(UNITTEST);
         return true;
-    }
-
-    boolean parseVariableDeclaration() {
-        return parseVariableDeclaration(null, false);
     }
 
     /**
@@ -8277,63 +7882,43 @@ class DLangParser {
      * $(GRAMMAR $(RULEDEF variableDeclaration):
      *   $(RULE storageClass)* $(RULE type) $(RULE declarator) ($(LITERAL ',') $(RULE declarator))* $(LITERAL ';')
      * | $(RULE autoDeclaration)
+     * $(GRAMMAR $(RULEDEF autoDeclaration):
+     * $(RULE storageClass)+  $(RULE autoDeclarationPart) ($(LITERAL ',') $(RULE autoDeclarationPart))* $(LITERAL ';')
      * ;)
      */
-    boolean parseVariableDeclaration(final Marker type, final boolean isAuto)
+    boolean parseVariableDeclaration()
     {
-        final Marker m;
-        if (type == null) {
-            m = enter_section_modified(builder);
-        } else {
-            m = type.precede();
-        }
-        if (isAuto) {
-            if (!parseAutoDeclaration()) {
-                if (type != null)
-                    m.drop();
-                else
-                    cleanup(m, VARIABLE_DECLARATION);
-                return false;
-            }
-            exit_section_modified(builder, m, VARIABLE_DECLARATION, true);
-            return true;
-        }
-        while (isStorageClass())
-            if (!parseStorageClass()) {
-                if (type != null)
-                    m.drop();
-                else
-                    cleanup(m, VARIABLE_DECLARATION);
-                return false;
-            }
-        if (type == null) {
-            parseType();
-        }
-        //original comment from libdparse:
-        //  handle function bodies correctly
-        while (true) {
-            final boolean declarator = parseDeclarator();
-            if (!declarator) {
-                if (type != null)
-                    m.drop();
-                else
-                    cleanup(m, VARIABLE_DECLARATION);
-                return false;
-            }
-            if (moreTokens() && currentIs(OP_COMMA)) {
-                advance();
-            } else
+        Marker m = enter_section_modified(builder);
+        boolean hasStorageClass = false;
+        while (!builder.eof()) {
+            if (!parseStorageClass())
                 break;
+            hasStorageClass = true;
         }
-        final IElementType semicolon = expect(OP_SCOLON);
-        if (semicolon == null) {
-            if (type != null)
-                m.drop();
-            else
-                cleanup(m, VARIABLE_DECLARATION);
+        Marker bookmark = builder.mark();
+        if (!parseType2()) {
+            bookmark.rollbackTo();
+            if (hasStorageClass && builder.getTokenType() == ID) {
+                // it’s an auto variable declaration
+                parseAutoAssignments();
+                m.done(AUTO_DECLARATION);
+                return true;
+            }
+            m.rollbackTo();
             return false;
         }
-        exit_section_modified(builder, m, VARIABLE_DECLARATION, true);
+        bookmark.drop();
+        parseTypeSuffixes();
+        while (!builder.eof()) {
+            if(!parseDeclarator())
+                break;
+            if (currentIs(OP_COMMA))
+                advance();
+            else
+                break;
+        }
+        expect(OP_SCOLON);
+        m.done(VARIABLE_DECLARATION);
         return true;
     }
 
@@ -8404,23 +7989,22 @@ class DLangParser {
      * ;)
      */
     boolean parseVersionSpecification() {
+        if (builder.getTokenType() != KW_VERSION)
+            return false;
         final Marker m = enter_section_modified(builder);
-        if (!tokenCheck(KW_VERSION)) {
-            cleanup(m, VERSION_SPECIFICATION);
-            return false;
-        }
+        builder.advanceLexer();
         if (!tokenCheck(OP_EQ)) {
-            cleanup(m, VERSION_SPECIFICATION);
+            m.rollbackTo();
             return false;
         }
-        if (!currentIsOneOf(ID, INTEGER_LITERAL)) {
+        if (!currentIsOneOf(ID, INTEGER_LITERAL)) { // Note: that using integer for version is deprecated since 2.101.0
             error("Identifier or integer literal expected");
-            exit_section_modified(builder, m, VERSION_SPECIFICATION, true);
-            return false;
+            m.done(VERSION_SPECIFICATION);
+            return true;
         }
         advance();
         expect(OP_SCOLON);
-        exit_section_modified(builder, m, VERSION_SPECIFICATION, true);
+        m.done(VERSION_SPECIFICATION);
         return true;
     }
 
@@ -8930,15 +8514,15 @@ class DLangParser {
             return false;
         }
         if (!tokenCheck(OP_PAR_LEFT)) {
-            return false;
+            return true;
         }
         if (!tokenCheck(OP_PAR_RIGHT)) {
-            return false;
+            return true;
         }
         while (moreTokens() && !currentIsOneOf(OP_BRACES_LEFT, KW_IN, KW_OUT,
             KW_DO, OP_SCOLON)) {
             if (!(parseMemberFunctionAttribute())) {
-                return false;
+                return true;
             }
         }
         if (currentIs(OP_SCOLON))
@@ -8949,31 +8533,35 @@ class DLangParser {
         return true;
     }
 
-    boolean parseInterfaceOrClass() {
+    void parseInterfaceOrClass() {
         final IElementType ident = expect(ID);
         if (ident == null) {
-            return false;
+            return;
         }
         if (currentIs(OP_SCOLON)) {
-            return emptyBody();
+            advance();
+            return;
         }
         if (currentIs(OP_BRACES_LEFT)) {
-            return parseStructBody();
+            parseStructBody();
+            return;
         }
         if (currentIs(OP_PAR_LEFT)) {
             if (!parseTemplateParameters()) {
-                return false;
+                return;
             }
             if (currentIs(OP_SCOLON)) {
-                return emptyBody();
+                advance();
+                return;
             }
-            return constraint(false);
+            constraint(false);
+            return;
         }
         if (currentIs(OP_COLON)) {
-            return baseClassList();
+            baseClassList();
+            return;
         }
-        return parseStructBody();
-
+        parseStructBody();
     }
 
     private boolean emptyBody() {

@@ -75,7 +75,7 @@ public interface DlangTypes {
     DlangElementType ASSOC_ARRAY_LITERAL = new DlangElementType("ASSOC_ARRAY_LITERAL");
     DlangElementType AT_ATTRIBUTE = new DlangElementType("AT_ATTRIBUTE");
     DlangElementType ATTRIBUTE = new DlangElementType("ATTRIBUTE");
-    DlangElementType ATTRIBUTE_DECLARATION = new DlangElementType("ATTRIBUTE_DECLARATION");
+    DlangElementType ATTRIBUTE_SPECIFIER = new DlangElementType("ATTRIBUTE_SPECIFIER");
     DlangElementType AUTO_DECLARATION = new DlangElementType("AUTO_DECLARATION");
     DlangElementType BASE_CLASS = new DlangElementType("BASE_CLASS");
     DlangElementType BASE_CLASS_LIST = new DlangElementType("BASE_CLASS_LIST");
@@ -93,12 +93,13 @@ public interface DlangTypes {
     DlangElementType CONTINUE_STATEMENT = new DlangElementType("CONTINUE_STATEMENT");
     DlangElementType DEBUG_CONDITION = new DlangElementType("DEBUG_CONDITION");
     DlangElementType DEBUG_SPECIFICATION = new DlangElementType("DEBUG_SPECIFICATION");
-    DlangElementType DECLARATION = new DlangElementType("DECLARATION");
+    DlangElementType DECLARATION_BLOCK = new DlangElementType("DECLARATION_BLOCK");
     DlangElementType DECLARATION_STATEMENT = new DlangElementType("DECLARATION_STATEMENT");
     DlangElementType DEFAULT_STATEMENT = new DlangElementType("DEFAULT_STATEMENT");
     DlangElementType DELETE_EXPRESSION = new DlangElementType("DELETE_EXPRESSION");
     DlangElementType DEPRECATED = new DlangElementType("DEPRECATED");
     DlangElementType DO_STATEMENT = new DlangElementType("DO_STATEMENT");
+    DlangElementType EMPTY_DECLARATION = new DlangElementType("EMPTY_DECLARATION");
     DlangElementType EMPTY_STATEMENT = new DlangElementType("EMPTY_STATEMENT");
     DlangElementType ENUM_BODY = new DlangElementType("ENUM_BODY");
     DlangElementType ENUM_MEMBER_ATTRIBUTE = new DlangElementType("ENUM_MEMBER_ATTRIBUTE");
@@ -142,7 +143,7 @@ public interface DlangTypes {
     DlangElementType MISSING_FUNCTION_BODY = new DlangElementType("MISSING_FUNCTION_BODY");
     DlangElementType MIXIN_DECLARATION = new DlangElementType("MIXIN_DECLARATION");
     DlangElementType MIXIN_EXPRESSION = new DlangElementType("MIXIN_EXPRESSION");
-    DlangElementType MIXIN_TEMPLATE_DECLARATION = new DlangElementType("MIXIN_TEMPLATE_DECLARATION");
+    DlangElementType TEMPLATE_MIXIN_DECLARATION = new DlangElementType("TEMPLATE_MIXIN_DECLARATION");
     DlangElementType MIXIN_TEMPLATE_NAME = new DlangElementType("MIXIN_TEMPLATE_NAME");
     DlangElementType MUL_EXPRESSION = new DlangElementType("MUL_EXPRESSION");
     DlangElementType NAMESPACE_LIST = new DlangElementType("NAMESPACE_LIST");
@@ -184,7 +185,7 @@ public interface DlangTypes {
     DlangElementType TEMPLATE_ARGUMENT_LIST = new DlangElementType("TEMPLATE_ARGUMENT_LIST");
     DlangElementType TEMPLATE_ARGUMENTS = new DlangElementType("TEMPLATE_ARGUMENTS");
     DlangElementType TEMPLATE_INSTANCE = new DlangElementType("TEMPLATE_INSTANCE");
-    DlangElementType TEMPLATE_MIXIN_EXPRESSION = new DlangElementType("TEMPLATE_MIXIN_EXPRESSION");
+    DlangElementType TEMPLATE_MIXIN = new DlangElementType("TEMPLATE_MIXIN");
     DlangElementType TEMPLATE_PARAMETER_LIST = new DlangElementType("TEMPLATE_PARAMETER_LIST");
     DlangElementType TEMPLATE_PARAMETERS = new DlangElementType("TEMPLATE_PARAMETERS");
     DlangElementType TEMPLATE_SINGLE_ARGUMENT = new DlangElementType("TEMPLATE_SINGLE_ARGUMENT");
@@ -519,8 +520,8 @@ public interface DlangTypes {
                 return new DLanguageAtAttributeImpl(node);
             } else if (type == ATTRIBUTE) {
                 return new DLanguageAttributeImpl(node);
-            } else if (type == ATTRIBUTE_DECLARATION) {
-                return new DLanguageAttributeDeclarationImpl(node);
+            } else if (type == ATTRIBUTE_SPECIFIER) {
+                return new DLanguageAttributeSpecifierImpl(node);
             } else if (type == AUTO_DECLARATION) {
                 return new DLanguageAutoDeclarationImpl(node);
             } else if (type == AUTO_DECLARATION_PART) {
@@ -559,8 +560,8 @@ public interface DlangTypes {
                 return new DLanguageDebugConditionImpl(node);
             } else if (type == DEBUG_SPECIFICATION) {
                 return new DLanguageDebugSpecificationImpl(node);
-            } else if (type == DECLARATION) {
-                return new DLanguageDeclarationImpl(node);
+            } else if (type == DECLARATION_BLOCK) {
+                return new DLanguageDeclarationBlockImpl(node);
             } else if (type == DECLARATION_STATEMENT) {
                 return new DLanguageDeclarationStatementImpl(node);
             } else if (type == DECLARATOR) {
@@ -573,6 +574,8 @@ public interface DlangTypes {
                 return new DLanguageDeprecatedImpl(node);
             } else if (type == DO_STATEMENT) {
                 return new DLanguageDoStatementImpl(node);
+            } else if (type == EMPTY_DECLARATION) {
+                return new DLanguageEmptyDeclarationImpl(node);
             } else if (type == EMPTY_STATEMENT) {
                 return new DLanguageEmptyStatementImpl(node);
             } else if (type == ENUM_BODY) {
@@ -661,10 +664,6 @@ public interface DlangTypes {
                 return new DLanguageMissingFunctionBodyImpl(node);
             } else if (type == MIXIN_DECLARATION) {
                 return new DLanguageMixinDeclarationImpl(node);
-            } else if (type == MIXIN_EXPRESSION) {
-                return new DLanguageMixinExpressionImpl(node);
-            } else if (type == MIXIN_TEMPLATE_DECLARATION) {
-                return new DLanguageMixinTemplateDeclarationImpl(node);
             } else if (type == MIXIN_TEMPLATE_NAME) {
                 return new DLanguageMixinTemplateNameImpl(node);
             } else if (type == MUL_EXPRESSION) {
@@ -749,8 +748,10 @@ public interface DlangTypes {
                 return new DLanguageTemplateArgumentsImpl(node);
             } else if (type == TEMPLATE_INSTANCE) {
                 return new DLanguageTemplateInstanceImpl(node);
-            } else if (type == TEMPLATE_MIXIN_EXPRESSION) {
+            } else if (type == TEMPLATE_MIXIN) {
                 return new DLanguageTemplateMixinExpressionImpl(node);
+            } else if (type == TEMPLATE_MIXIN_DECLARATION) {
+                return new DLanguageTemplateMixinDeclarationImpl(node);
             } else if (type == TEMPLATE_PARAMETER_LIST) {
                 return new DLanguageTemplateParameterListImpl(node);
             } else if (type == TEMPLATE_PARAMETERS) {
