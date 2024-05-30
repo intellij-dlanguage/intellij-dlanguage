@@ -850,7 +850,7 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(identifier);
     }
 
-    public void visitType_2(@NotNull final DLanguageType_2Impl o) {
+    public void visitBasicType(@NotNull final DLanguageBasicTypeImpl o) {
         visitPsiElement(o);
     }
 

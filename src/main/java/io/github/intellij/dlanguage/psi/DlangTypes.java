@@ -79,6 +79,7 @@ public interface DlangTypes {
     DlangElementType AUTO_DECLARATION = new DlangElementType("AUTO_DECLARATION");
     DlangElementType BASE_CLASS = new DlangElementType("BASE_CLASS");
     DlangElementType BASE_CLASS_LIST = new DlangElementType("BASE_CLASS_LIST");
+    DlangElementType BASIC_TYPE = new DlangElementType("BASIC_TYPE");
     DlangElementType BLOCK_STATEMENT = new DlangElementType("BLOCK_STATEMENT");
     DlangElementType BREAK_STATEMENT = new DlangElementType("BREAK_STATEMENT");
     DlangElementType CASE_RANGE_STATEMENT = new DlangElementType("CASE_RANGE_STATEMENT");
@@ -199,7 +200,6 @@ public interface DlangTypes {
     DlangElementType TRAITS_EXPRESSION = new DlangElementType("TRAITS_EXPRESSION");
     DlangElementType TRY_STATEMENT = new DlangElementType("TRY_STATEMENT");
     DlangElementType TYPE = new DlangElementType("TYPE");
-    DlangElementType TYPE_2 = new DlangElementType("TYPE_2");
     DlangElementType TYPE_IDENTIFIER_PART = new DlangElementType("TYPE_IDENTIFIER_PART");
     DlangElementType TYPE_SPECIALIZATION = new DlangElementType("TYPE_SPECIALIZATION");
     DlangElementType TYPE_SUFFIX = new DlangElementType("TYPE_SUFFIX");
@@ -530,6 +530,8 @@ public interface DlangTypes {
                 return new DLanguageBaseClassImpl(node);
             } else if (type == BASE_CLASS_LIST) {
                 return new DLanguageBaseClassListImpl(node);
+            } else if (type == BASIC_TYPE) {
+                return new DLanguageBasicTypeImpl(node);
             } else if (type == BLOCK_STATEMENT) {
                 return new DLanguageBlockStatementImpl(node);
             } else if (type == BREAK_STATEMENT) {
@@ -778,8 +780,6 @@ public interface DlangTypes {
                 return new DLanguageTryStatementImpl(node);
             } else if (type == TYPE) {
                 return new DLanguageTypeImpl(node);
-            } else if (type == TYPE_2) {
-                return new DLanguageType_2Impl(node);
             } else if (type == TYPE_IDENTIFIER_PART) {
                 return new DLanguageTypeIdentifierPartImpl(node);
             } else if (type == TYPE_SPECIALIZATION) {

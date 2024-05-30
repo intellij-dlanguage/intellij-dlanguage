@@ -1586,7 +1586,7 @@ class DLangParser {
         if (isProtection(current())) {
             advance();
         }
-        if (!parseType2()) {
+        if (!parseBasicType()) {
             cleanup(m, BASE_CLASS);
             return false;
         }
@@ -3373,7 +3373,7 @@ class DLangParser {
             hasStorageClass = true;
         }
         Marker bookmark = builder.mark();
-        if (!parseType2()) {
+        if (!parseBasicType()) {
             bookmark.rollbackTo();
             if (hasStorageClass && builder.getTokenType() == ID) {
                 // it’s an auto function declaration
@@ -7339,7 +7339,7 @@ class DLangParser {
                     return new Pair<>(false, m);
                 }
         }
-        if (!parseType2()) {
+        if (!parseBasicType()) {
             cleanup(m, TYPE);
             return new Pair<>(false, m);
         }
@@ -7392,17 +7392,17 @@ class DLangParser {
      * | $(RULE mixinExpression)
      * ;)
      */
-    boolean parseType2() {
+    boolean parseBasicType() {
         final Marker m = enter_section_modified(builder);
         if (!moreTokens()) {
-            error("type2 expected instead of EOF");
-            exit_section_modified(builder, m, TYPE_2, true);
+            error("basic type expected instead of EOF");
+            exit_section_modified(builder, m, BASIC_TYPE, true);
             return false;
         }
         final IElementType i = current();
         if (i == ID || i == OP_DOT) {
             if (!parseTypeIdentifierPart()) {
-                cleanup(m, TYPE_2);
+                cleanup(m, BASIC_TYPE);
                 return false;
             }
         } else if (isBasicType(i)) {
@@ -7411,61 +7411,61 @@ class DLangParser {
             // note: super can be removed but `this` can be an alias to an instance.
             advance();
             if (!tokenCheck(OP_DOT)) {
-                cleanup(m, TYPE_2);
+                cleanup(m, BASIC_TYPE);
                 return false;
             }
             advance();
             if (!parseTypeIdentifierPart()) {
-                cleanup(m, TYPE_2);
+                cleanup(m, BASIC_TYPE);
                 return false;
             }
         } else if (i == KW___TRAITS) {
             if (!parseTraitsExpression()) {
-                cleanup(m, TYPE_2);
+                cleanup(m, BASIC_TYPE);
                 return false;
             }
         } else if (i == KW_TYPEOF) {
             if (!parseTypeofExpression()) {
-                cleanup(m, TYPE_2);
+                cleanup(m, BASIC_TYPE);
                 return false;
             }
             if (currentIs(OP_DOT)) {
                 advance();
                 if (!parseTypeIdentifierPart()) {
-                    cleanup(m, TYPE_2);
+                    cleanup(m, BASIC_TYPE);
                     return false;
                 }
             }
         } else if (i == KW_MIXIN) {
             if (!parseMixinExpression()) {
-                cleanup(m, TYPE_2);
+                cleanup(m, BASIC_TYPE);
                 return false;
             }
         } else if (i == KW_CONST || i == KW_IMMUTABLE || i == KW_INOUT || i == KW_SHARED) {
             advance();
             if (!tokenCheck(OP_PAR_LEFT)) {
-                cleanup(m, TYPE_2);
+                cleanup(m, BASIC_TYPE);
                 return false;
             }
             if (!(parseType().first)) {
-                cleanup(m, TYPE_2);
+                cleanup(m, BASIC_TYPE);
                 return false;
             }
             if (!tokenCheck(OP_PAR_RIGHT)) {
-                cleanup(m, TYPE_2);
+                cleanup(m, BASIC_TYPE);
                 return false;
             }
         } else if (i == KW___VECTOR) {
             if (!(parseVector())) {
-                cleanup(m, TYPE_2);
+                cleanup(m, BASIC_TYPE);
                 return false;
             }
         } else {
             error("Basic type, type constructor, symbol, `typeof`, `__traits`, `__vector` or `mixin` expected");
-            exit_section_modified(builder, m, TYPE_2, true);
+            exit_section_modified(builder, m, BASIC_TYPE, true);
             return false;
         }
-        exit_section_modified(builder, m, TYPE_2, true);
+        exit_section_modified(builder, m, BASIC_TYPE, true);
         return true;
     }
 
@@ -7727,7 +7727,7 @@ class DLangParser {
         if (isTypeCtor(i)) {
             m = enter_section_modified(builder);
             builder.advanceLexer();
-            parseType2();
+            parseBasicType();
             if (expect(OP_PAR_LEFT) == null) {
                 m.rollbackTo();
                 return null;
@@ -7910,7 +7910,7 @@ class DLangParser {
             hasStorageClass = true;
         }
         Marker bookmark = builder.mark();
-        if (!parseType2()) {
+        if (!parseBasicType()) {
             bookmark.rollbackTo();
             if (hasStorageClass && builder.getTokenType() == ID) {
                 // it’s an auto variable declaration
