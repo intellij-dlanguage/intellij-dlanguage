@@ -171,6 +171,7 @@ public interface DlangTypes {
     DlangElementType REGISTER = new DlangElementType("REGISTER");
     DlangElementType REL_EXPRESSION = new DlangElementType("REL_EXPRESSION");
     DlangElementType RETURN_STATEMENT = new DlangElementType("RETURN_STATEMENT");
+    DlangElementType SCOPE_BLOCK_STATEMENT = new DlangElementType("SCOPE_BLOCK_STATEMENT");
     DlangElementType SCOPE_GUARD_STATEMENT = new DlangElementType("SCOPE_GUARD_STATEMENT");
     DlangElementType SHIFT_EXPRESSION = new DlangElementType("SHIFT_EXPRESSION");
     DlangElementType SHORTENED_FUNCTION_BODY = new DlangElementType("SHORTENED_FUNCTION_BODY");
@@ -681,6 +682,8 @@ public interface DlangTypes {
                 return new DLanguageMissingFunctionBodyImpl(node);
             } else if (type == MIXIN_DECLARATION) {
                 return new DLanguageMixinDeclarationImpl(node);
+            } else if (type == MIXIN_EXPRESSION) {
+                return new DLanguageMixinExpressionImpl(node);
             } else if (type == MIXIN_TEMPLATE_NAME) {
                 return new DLanguageMixinTemplateNameImpl(node);
             } else if (type == MUL_EXPRESSION) {
@@ -725,6 +728,8 @@ public interface DlangTypes {
                 return new DLanguageRelExpressionImpl(node);
             } else if (type == RETURN_STATEMENT) {
                 return new DLanguageReturnStatementImpl(node);
+            } else if (type == SCOPE_BLOCK_STATEMENT) {
+                return new DLanguageScopeBlockStatementImpl(node);
             } else if (type == SCOPE_GUARD_STATEMENT) {
                 return new DLanguageScopeGuardStatementImpl(node);
             } else if (type == SHIFT_EXPRESSION) {
@@ -814,7 +819,7 @@ public interface DlangTypes {
             } else if (type == UNARY_EXPRESSION) {
                 return new DLanguageUnaryExpressionImpl(node);
             } else if (type == VARIABLE_DECLARATION) {
-                return new DLanguageVariableDeclarationImpl(node);
+                return new DLanguageSpecifiedVariableDeclarationImpl(node);
             } else if (type == VARIADIC_ARGUMENTS_ATTRIBUTE) {
                 return new DLanguageVariadicArgumentsAttributeImpl(node);
             } else if (type == VARIADIC_ARGUMENTS_ATTRIBUTES) {

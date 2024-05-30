@@ -613,6 +613,10 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitScopeBlockStatement(@NotNull final DLanguageScopeBlockStatementImpl o) {
+        visitPsiElement(o);
+    }
+
     public void visitScopeGuardStatement(@NotNull final DLanguageScopeGuardStatementImpl o) {
         visitPsiElement(o);
     }
@@ -634,6 +638,10 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitSpecifiedFunctionBody(@NotNull final DLanguageSpecifiedFunctionBodyImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitSpecifiedVariableDeclaration(@NotNull final DLanguageSpecifiedVariableDeclarationImpl o) {
         visitPsiElement(o);
     }
 
@@ -819,10 +827,6 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitVector(@NotNull final DLanguageVectorImpl o) {
-        visitPsiElement(o);
-    }
-
-    public void visitVariableDeclaration(@NotNull final DLanguageVariableDeclarationImpl o) {
         visitPsiElement(o);
     }
 
