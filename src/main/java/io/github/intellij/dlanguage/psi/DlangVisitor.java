@@ -485,7 +485,7 @@ public class DlangVisitor extends PsiElementVisitor {
         visitElement(o);
     }
 
-        public void visitMixinTemplateDeclaration(@NotNull final DLanguageMixinTemplateDeclarationImpl o) {
+    public void visitMixinTemplateDeclaration(@NotNull final DLanguageMixinTemplateDeclarationImpl o) {
         visitPsiElement(o);
     }
 
@@ -514,10 +514,6 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitNewExpression(@NotNull final DLanguageNewExpressionImpl o) {
-        visitPsiElement(o);
-    }
-
-    public void visitNonVoidInitializer(@NotNull final DLanguageNonVoidInitializerImpl o) {
         visitPsiElement(o);
     }
 
@@ -550,6 +546,10 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitPostblit(@NotNull final DLanguagePostblitImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitPostfixExpression(@NotNull final DLanguagePostfixExpressionImpl o) {
         visitPsiElement(o);
     }
 

@@ -143,7 +143,6 @@ typealias NamedImportBind = io.github.intellij.dlanguage.psi.DLanguageNamedImpor
 typealias NamespaceList = io.github.intellij.dlanguage.psi.DLanguageNamespaceList
 typealias NewAnonClassExpression = io.github.intellij.dlanguage.psi.DLanguageNewAnonClassExpression
 typealias NewExpression = io.github.intellij.dlanguage.psi.DLanguageNewExpression
-typealias NonVoidInitializer = io.github.intellij.dlanguage.psi.DLanguageNonVoidInitializer
 typealias Operands = io.github.intellij.dlanguage.psi.DLanguageOperands
 typealias OrExpression = io.github.intellij.dlanguage.psi.DLanguageOrExpression
 typealias OrOrExpression = io.github.intellij.dlanguage.psi.DLanguageOrOrExpression

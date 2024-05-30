@@ -150,7 +150,6 @@ public interface DlangTypes {
     DlangElementType NAMESPACE_LIST = new DlangElementType("NAMESPACE_LIST");
     DlangElementType NEW_ANON_CLASS_EXPRESSION = new DlangElementType("NEW_ANON_CLASS_EXPRESSION");
     DlangElementType NEW_EXPRESSION = new DlangElementType("NEW_EXPRESSION");
-    DlangElementType NON_VOID_INITIALIZER = new DlangElementType("NON_VOID_INITIALIZER");
     DlangElementType OPERANDS = new DlangElementType("OPERANDS");
     DlangElementType OR_EXPRESSION = new DlangElementType("OR_EXPRESSION");
     DlangElementType OR_OR_EXPRESSION = new DlangElementType("OR_OR_EXPRESSION");
@@ -158,6 +157,7 @@ public interface DlangTypes {
     DlangElementType OUT_STATEMENT = new DlangElementType("OUT_STATEMENT");
     DlangElementType PARAMETERS = new DlangElementType("PARAMETERS");
     DlangElementType POSTBLIT = new DlangElementType("POSTBLIT");
+    DlangElementType POSTFIX_EXPRESSION = new DlangElementType("POSTFIX_EXPRESSION");
     DlangElementType POW_EXPRESSION = new DlangElementType("POW_EXPRESSION");
     DlangElementType PRAGMA_DECLARATION = new DlangElementType("PRAGMA_DECLARATION");
     DlangElementType PRAGMA_EXPRESSION = new DlangElementType("PRAGMA_EXPRESSION");
@@ -676,8 +676,6 @@ public interface DlangTypes {
                 return new DLanguageNewAnonClassExpressionImpl(node);
             } else if (type == NEW_EXPRESSION) {
                 return new DLanguageNewExpressionImpl(node);
-            } else if (type == NON_VOID_INITIALIZER) {
-                return new DLanguageNonVoidInitializerImpl(node);
             } else if (type == OPERANDS) {
                 return new DLanguageOperandsImpl(node);
             } else if (type == OR_EXPRESSION) {
@@ -692,6 +690,8 @@ public interface DlangTypes {
                 return new DLanguageParametersImpl(node);
             } else if (type == POSTBLIT) {
                 return new DLanguagePostblitImpl(node);
+            } else if (type == POSTFIX_EXPRESSION) {
+                return new DLanguagePostfixExpressionImpl(node);
             } else if (type == POW_EXPRESSION) {
                 return new DLanguagePowExpressionImpl(node);
             } else if (type == PRAGMA_DECLARATION) {

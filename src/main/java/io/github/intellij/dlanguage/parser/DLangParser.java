@@ -4875,35 +4875,18 @@ class DLangParser {
      * ;)
      */
     boolean parseNonVoidInitializer() {
-        final Marker m = enter_section_modified(builder);
-        boolean assignExpressionParsed = false;
-        boolean arrayInitializerParsed = false;
-        boolean structInitializerParsed = false;
         if (currentIs(OP_BRACES_LEFT)) {
             final IElementType b = peekPastBraces();
             if (b == OP_PAR_LEFT) {
-                if (!parseAssignExpression()) {
-                    cleanup(m, NON_VOID_INITIALIZER);
-                    return false;
-                }
-                assignExpressionParsed = true;
-            } else {
-                assignExpressionParsed = true;
-                assert (currentIs(OP_BRACES_LEFT));
-                final Bookmark bookmark = setBookmark();
-                final boolean initializer = parseStructInitializer();
-                if (initializer) {
-                    structInitializerParsed = true;
-                    abandonBookmark(bookmark);
-                } else {
-                    goToBookmark(bookmark);
-                    if (!parseAssignExpression()) {
-                        cleanup(m, NON_VOID_INITIALIZER);
-                        return false;
-                    }
-                    assignExpressionParsed = true;
-                }
+                return parseAssignExpression();
             }
+            final Bookmark bookmark = setBookmark();
+            final boolean initializer = parseStructInitializer();
+            if (initializer) {
+                abandonBookmark(bookmark);
+                return true;
+            }
+            goToBookmark(bookmark);
         } else if (currentIs(OP_BRACKET_LEFT)) {
             boolean isAA = false;
             Bookmark bk = setBookmark();
@@ -4920,29 +4903,10 @@ class DLangParser {
                 || b == OP_BRACKET_RIGHT
                 || b == OP_BRACES_RIGHT
                 || b == OP_SCOLON)) {
-                if (!parseArrayLiteral()) {
-                    cleanup(m, NON_VOID_INITIALIZER);
-                    return false;
-                }
-                arrayInitializerParsed = true;
-            } else if (!parseAssignExpression()) {
-                cleanup(m, NON_VOID_INITIALIZER);
-                return false;
-            } else {
-                assignExpressionParsed = true;
+                return parseArrayLiteral();
             }
-        } else if (!parseAssignExpression()) {
-            cleanup(m, NON_VOID_INITIALIZER);
-            return false;
-        } else {
-            assignExpressionParsed = true;
         }
-        if (!assignExpressionParsed && !structInitializerParsed && !arrayInitializerParsed) {
-            cleanup(m, NON_VOID_INITIALIZER);
-            return false;
-        }
-        exit_section_modified(builder, m, NON_VOID_INITIALIZER, true);
-        return true;
+        return parseAssignExpression();
     }
 
     /**
@@ -5492,11 +5456,6 @@ class DLangParser {
      */
     Marker parsePrimaryExpression() {
         final Marker m = enter_section_modified(builder);
-        if (!moreTokens()) {
-            error("Expected primary statement instead of EOF");
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return null;
-        }
         final IElementType i = current();
         // [.] (Identifier|TemplateInstance)
         if (i == OP_DOT) {
@@ -5519,10 +5478,9 @@ class DLangParser {
         // LiteralExpression
         if (isLiteral(i)) {
             if (currentIsOneOf(stringLiteralsArray)) {
-                advance();
-                while (currentIsOneOf(stringLiteralsArray)) {
+                do {
                     advance();
-                }
+                } while (currentIsOneOf(stringLiteralsArray));
             } else {
                 advance();
             }
@@ -7734,7 +7692,7 @@ class DLangParser {
             }
             parseArgumentList();
             expect(OP_PAR_RIGHT);
-            m.done(UNARY_EXPRESSION);
+            m.done(POSTFIX_EXPRESSION);
             return m;
         }
         return m;
