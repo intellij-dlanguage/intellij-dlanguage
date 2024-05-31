@@ -7,7 +7,6 @@ import com.intellij.psi.scope.PsiScopeProcessor
 import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
-import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclarationsOrStatements
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processTemplateParameters
 import io.github.intellij.dlanguage.utils.*
@@ -271,9 +270,9 @@ object ScopeProcessorImpl {
             }
         }
         if (element.functionBody?.specifiedFunctionBody?.blockStatement != null) {
-           if (!processDeclarationsOrStatements(element.functionBody!!.specifiedFunctionBody!!.blockStatement!!.declarationOrStatements, processor, state, lastParent, place)) {
+           /*if (!processDeclarationsOrStatements(element.functionBody!!.specifiedFunctionBody!!.blockStatement!!.declarationOrStatements, processor, state, lastParent, place)) {
                return false
-           }
+           }*/
         }
         return true
     }
@@ -345,10 +344,10 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-        if (element.declarationOrStatement?.declaration != null) {
+        /*if (element.declarationOrStatement?.declaration != null) {
             if (!ScopeProcessorImplUtil.processDeclaration(element.declarationOrStatement!!.declaration!!, processor, state, lastParent, place))
                 return false
-        }
+        }*/
         return processor.execute(element, state)
     }
 
@@ -360,7 +359,7 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         //todo handle place
-        if (element.declarationOrStatements.size == 0) {
+        /*if (element.declarationOrStatements.size == 0) {
             //this for statement is incomplete/malformed
             logger.debug("bad for statement: " + element.text)
             return true
@@ -382,7 +381,8 @@ object ScopeProcessorImpl {
             }
         }
         //init.statement.statementNoCaseNoDefault//check that no var declarations could be in statement
-        return shouldContinue
+        return shouldContinue*/
+        return true
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -407,9 +407,9 @@ object ScopeProcessorImpl {
                 toContinue = false
             }
         }
-        if (!ScopeProcessorImplUtil.processDeclarationsOrStatements(element.declarationOrStatements, processor, state, lastParent, place)) {
+        /*if (!ScopeProcessorImplUtil.processDeclarationsOrStatements(element.declarationOrStatements, processor, state, lastParent, place)) {
             toContinue = false
-        }
+        }*/
         return toContinue
     }
 
@@ -523,13 +523,13 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
         var toContinue = true
-        for (declarationOrStatement in element.declarationOrStatements) {
+        /*for (declarationOrStatement in element.declarationOrStatements) {
             if (declarationOrStatement.declaration != null) {
                 if (!processDeclaration(declarationOrStatement.declaration!!, processor, state, lastParent, place)) {
                     toContinue = false
                 }
             }
-        }
+        }*/
         return toContinue
     }
 

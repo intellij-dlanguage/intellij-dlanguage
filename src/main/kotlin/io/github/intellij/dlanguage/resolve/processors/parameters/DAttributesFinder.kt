@@ -11,6 +11,7 @@ import com.intellij.psi.stubs.StubOutputStream
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport
 import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration
@@ -134,7 +135,7 @@ class DAttributesFinder {
 
     private fun handleAliasInit(aliasInit: AliasInitializer): DirectApplication {
         val aliasDecl = aliasInit.parent as AliasDeclaration
-        val attribs = updateFromParentDecl(aliasDecl.parent as Declaration)
+        val attribs = updateFromParentDecl(aliasDecl)
         for (storageClasss in aliasInit.storageClasss) {
             updateFromStorageClass(storageClasss, attribs)
         }
@@ -177,12 +178,10 @@ class DAttributesFinder {
     private fun handleSingleImport(startingPoint: SingleImport): DirectApplication {
         val decl: Declaration
         if (startingPoint.parent is ImportDeclaration) {
-            val importDecl = startingPoint.parent as ImportDeclaration
-            decl = importDecl.parent as Declaration
+            decl = startingPoint.parent as ImportDeclaration
         } else {
             val bind = startingPoint.parent as ImportBindings
-            val importDecl = bind.parent as ImportDeclaration
-            decl = importDecl.parent as Declaration
+            decl = bind.parent as ImportDeclaration
         }
         return updateFromParentDecl(decl)
     }
@@ -319,14 +318,7 @@ class DAttributesFinder {
         if (element is Attribute) {
             updateFromAttribute(element)
         }
-        if (element is Declaration) {
-            if (element.attributeDeclaration != null) {
-                for (attribute in element.attributes) {
-                    updateFromAttribute(attribute)
-                }
-            }
-        }
-        if (element is AttributeDeclaration) {
+        if (element is AttributeSpecifier) {
             updateFromAttribute(element.attribute!!)
         }
         return true
@@ -390,8 +382,7 @@ class DAttributesFinder {
 
 
     fun handleConstructor(constructor: Constructor): DirectApplication {
-        val decl = constructor.parent as Declaration
-        return updateFromParentDecl(decl)
+        return updateFromParentDecl(constructor)
     }
 
     //todo at some later date maybe make these members of there respective functions to make things more object -oriented
@@ -412,8 +403,7 @@ class DAttributesFinder {
     }
 
     fun handleFunctionDeclaration(function: FunctionDeclaration): DirectApplication {
-        val decl = function.parent as Declaration
-        val attribs = updateFromParentDecl(decl)
+        val attribs = updateFromParentDecl(function)
         handle(function.memberFunctionAttributes, attribs)
         return attribs
     }
@@ -457,7 +447,7 @@ class DAttributesFinder {
 
     private fun updateFromParentDecl(decl: Declaration): DirectApplication {
         val attribs = DirectApplication()
-        for (attribute in decl.attributes) {
+        /*for (attribute in decl.attributes) {
             if (attribute.kW_ENUM != null) {
                 attribs.enum = true
             }
@@ -485,18 +475,16 @@ class DAttributesFinder {
             if (attribute.kW_STATIC != null) {
                 attribs.static = true
             }
-        }
+        }*/
         return attribs
     }
 
     fun handleClassDeclaration(classDeclaration: ClassDeclaration): DirectApplication {
-        val decl = classDeclaration.parent as Declaration
-        return updateFromParentDecl(decl)
+        return updateFromParentDecl(classDeclaration)
     }
 
     fun handleInterfaceDeclaration(interfaceDeclaration: InterfaceDeclaration): DirectApplication {
-        val decl = interfaceDeclaration.parent as Declaration
-        return updateFromParentDecl(decl)
+        return updateFromParentDecl(interfaceDeclaration)
     }
 
     fun defaultClassDeclaration(classDeclaration: ClassDeclaration): DefaultAttributes {
@@ -530,8 +518,7 @@ class DAttributesFinder {
     }
 
     fun handleUnionDeclaration(union: UnionDeclaration): DirectApplication {
-        val decl = union.parent as Declaration
-        return updateFromParentDecl(decl)
+        return updateFromParentDecl(union)
     }
 
     fun defaultUnionDeclaration(union: UnionDeclaration): DefaultAttributes {
@@ -550,8 +537,7 @@ class DAttributesFinder {
     }
 
     fun handleStructDeclaration(struct: StructDeclaration): DirectApplication {
-        val decl = struct.parent as Declaration
-        return updateFromParentDecl(decl)
+        return updateFromParentDecl(struct)
     }
 
     fun defaultStructDeclaration(struct: StructDeclaration): DefaultAttributes {
@@ -592,13 +578,8 @@ class DAttributesFinder {
 
     fun handleAutoDeclarationPart(autoDeclPart: AutoDeclarationPart): DirectApplication {
         val autoDecl = autoDeclPart.parent as AutoDeclaration
-        val varDecl = autoDecl.parent as VariableDeclaration
-        val decl = varDecl.parent as Declaration
-        val attribs = updateFromParentDecl(decl)
+        val attribs = updateFromParentDecl(autoDecl)
         for (storageClasss in autoDecl.storageClasss) {
-            updateFromStorageClass(storageClasss, attribs)
-        }
-        for (storageClasss in varDecl.storageClasss) {
             updateFromStorageClass(storageClasss, attribs)
         }
         return attribs
@@ -642,7 +623,7 @@ class DAttributesFinder {
     }
 
     fun handleEnumDeclaration(enumDecl: EnumDeclaration): DirectApplication {
-        return updateFromParentDecl(enumDecl.parent as Declaration)
+        return updateFromParentDecl(enumDecl)
     }
 
     fun defaultEnumDeclaration(enumDecl: EnumDeclaration): DefaultAttributes {
@@ -675,7 +656,7 @@ class DAttributesFinder {
     }
 
     fun handleDeclarator(decl: Declarator): DirectApplication {
-        val varDecls = decl.parent as VariableDeclaration
+        val varDecls = decl.parent as SpecifiedVariableDeclaration
         val attribs = DirectApplication()
         for (storageClasss in varDecls.storageClasss) {
             updateFromStorageClass(storageClasss, attribs)

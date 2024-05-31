@@ -5,7 +5,6 @@ import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.testFramework.UsefulTestCase
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration
-import io.github.intellij.dlanguage.psi.DLanguageDeclaration
 import io.github.intellij.dlanguage.psi.named.DlangAliasInitializer
 import io.github.intellij.dlanguage.utils.StructBody
 import org.mockito.kotlin.mock
@@ -36,14 +35,12 @@ class ScopeProcessorTest : UsefulTestCase() {
         val alias = mock<DLanguageAliasDeclaration>()
         val aliasInitializer: DlangAliasInitializer = mock<DlangAliasInitializer>()
         whenever(alias.aliasInitializers).thenReturn(listOf(aliasInitializer))
-        val declaration = mock<DLanguageDeclaration>()
-        whenever(declaration.aliasDeclaration).thenReturn(alias)
 
         val element = mock<StructBody>()
-        whenever(element.declarations).thenReturn(listOf(declaration))
+        whenever(element.declarations).thenReturn(listOf(aliasInitializer))
         val processor = mock<PsiScopeProcessor>()
         val state = mock<ResolveState>()
-        whenever(processor.execute(declaration, state)).thenReturn(false)
+        whenever(processor.execute(aliasInitializer, state)).thenReturn(false)
         val lastParent = mock<PsiElement>()
         val place = mock<PsiElement>()
 

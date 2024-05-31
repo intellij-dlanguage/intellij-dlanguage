@@ -21,8 +21,8 @@ import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.psi.ext.*
 import io.github.intellij.dlanguage.psi.impl.*
 import io.github.intellij.dlanguage.psi.impl.named.DlangTemplateDeclarationImpl
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration
-import io.github.intellij.dlanguage.utils.DeclarationOrStatement
 import io.github.intellij.dlanguage.utils.FunctionBody
 import java.util.ArrayList
 
@@ -122,7 +122,7 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
         override fun visitLinkageAttribute(o: DLanguageLinkageAttributeImpl) {
             if (o.isExternal) {
-                val decl = o.parent.parent as? DLanguageDeclaration ?: return
+                val decl = o.parent as? Declaration ?: return
                 foldBetween(o, decl.leftBraces, decl.rightBraces)
             }
         }
@@ -153,8 +153,7 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         }
 
         override fun visitImportDeclaration(importDecl: DLanguageImportDeclarationImpl) {
-            val decl = importDecl.parent as? DLanguageDeclaration ?: return
-            val insideBody = decl.parent is DeclarationOrStatement
+            /*val insideBody = decl.parent is DeclarationOrStatement
 
             // Skip if previous line is import declaration
             val prevSibling = if (insideBody) {
@@ -197,7 +196,7 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             if (startOffset + 1 >= endOffset) return
             val range = TextRange(startOffset + 1, endOffset)
             assert(!range.isEmpty)
-            descriptors += FoldingDescriptor(importDecl, range)
+            descriptors += FoldingDescriptor(importDecl, range)*/
         }
 
         private fun tryFoldBlockWhitespaces(block: DLanguageBlockStatement): Boolean {
@@ -218,7 +217,8 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
             /// Get previous  whitespace if exist as start region
             val leftEl = leftBrace.parent?.parent?.prevSibling as? PsiWhiteSpace ?: leftBrace
-            val body = block.declarationOrStatements ?: return false
+            val body = block.statements
+            if (body.isEmpty()) return false
 
             val range1 = TextRange(leftEl.textOffset, body.first().textOffset)
             val range2 = TextRange(body.last().textRange.endOffset, rightBrace.textRange.endOffset)

@@ -13,8 +13,8 @@ import com.intellij.usageView.UsageViewNodeTextLocation;
 import io.github.intellij.dlanguage.DLanguageLexerAdapter;
 import io.github.intellij.dlanguage.psi.DLanguageIfCondition;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameter;
-import io.github.intellij.dlanguage.psi.DLanguageVariableDeclaration;
 import io.github.intellij.dlanguage.psi.DTokenSets;
+import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration;
 import io.github.intellij.dlanguage.psi.named.*;
 import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration;
 import io.github.intellij.dlanguage.psi.DlangTypes;
@@ -75,7 +75,7 @@ public class DFindUsagesProvider implements FindUsagesProvider {
             return "Variable";
         } else if (element instanceof DlangCatch) {
             return "Catch";
-        } else if (element instanceof DLanguageVariableDeclaration) {
+        } else if (element instanceof VariableDeclaration) {
             return "Variable";
         } else {
             return "";

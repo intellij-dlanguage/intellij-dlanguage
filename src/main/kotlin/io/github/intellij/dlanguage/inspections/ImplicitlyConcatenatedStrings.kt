@@ -4,7 +4,7 @@ import com.intellij.codeInspection.*
 import com.intellij.psi.PsiElementVisitor
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.impl.DLanguagePrimaryExpressionImpl
+import io.github.intellij.dlanguage.psi.impl.DLanguageLiteralExpressionImpl
 import io.github.intellij.dlanguage.quickfix.ExplicitlyConcatenateStrings
 
 /**
@@ -22,8 +22,8 @@ class ImplicitlyConcatenatedStrings : LocalInspectionTool() {
 }
 
 class ImplicitlyConcatenatedStringsVisitor(val holder: ProblemsHolder) : DlangVisitor() {
-    override fun visitPrimaryExpression(o: DLanguagePrimaryExpressionImpl) {
-        if (o.doublE_QUOTED_STRINGs.size + o.delimiteD_STRINGs.size > 1)
+    override fun visitLiteralExpression(o: DLanguageLiteralExpressionImpl) {
+        if (o.doublE_QUOTED_STRINGs.size + o.delimiteD_STRINGs.size + o.alternatE_WYSIWYG_STRINGs.size + o.wysiwyG_STRINGs.size > 1)
             holder.registerProblem(o, "Implicitly concatenated strings", ExplicitlyConcatenateStrings(o))
     }
 }

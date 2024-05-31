@@ -5,7 +5,6 @@ import com.intellij.codeInspection.ProblemsHolder
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.psi.impl.DLanguageIfStatementImpl
-import io.github.intellij.dlanguage.psi.impl.DLanguagePrimaryExpressionImpl
 
 class RedundantParentheses : LocalInspectionTool() {
     override fun getDescriptionFileName(): String = "RedundantParentheses.html"
@@ -27,12 +26,12 @@ class RedundantParenthesesVisitor(val holder: ProblemsHolder) : DlangVisitor() {
         holder.registerProblem(o.ifCondition!!, "Redundant parantheses")
     }
 
-    override fun visitPrimaryExpression(o: DLanguagePrimaryExpressionImpl) {
-        if (o.assignExpressions.isEmpty() || o.assignExpressions[0] == null)
+    /*override fun visitPrimaryExpression(o: DLanguagePrimaryExpressionImpl) {
+        /*if (o.assignExpressions.isEmpty() || o.assignExpressions[0] == null)
             return
         val unary = o.assignExpressions[0]
         if (unary.assignExpression == null || unary.assignExpression!!.assignExpression == null)
             return
-        holder.registerProblem(o, "Redundant parantheses")
-    }
+        holder.registerProblem(o, "Redundant parantheses")*/
+    }*/
 }

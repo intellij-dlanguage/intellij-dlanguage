@@ -66,7 +66,7 @@ class DResolveUtil private constructor(val project: Project) {
                 return result
             }
             // If it was a class definition, search for his constructors if any
-            val constructors = (result.first() as ClassDeclaration).structBody?.declarations?.mapNotNull { it.constructor }
+            val constructors = (result.first() as ClassDeclaration).structBody?.declarations?.filterIsInstance<Constructor>()
             return if (constructors?.isNotEmpty() == true) constructors.toSet() else result
         }
 
@@ -85,11 +85,11 @@ class DResolveUtil private constructor(val project: Project) {
 
     fun resolvingConstructorCall(e: PsiElement): Boolean {
         return e.parent is IdentifierOrTemplateInstance && e.parent.parent is TypeIdentifierPart
-            && DPsiUtil.getParent(e, setOf(NEW_EXPRESSION), setOf(BLOCK_STATEMENT, STRUCT_BODY, DECLARATION)) is NewExpression
+            && DPsiUtil.getParent(e, setOf(NEW_EXPRESSION), setOf(BLOCK_STATEMENT, STRUCT_BODY)) is NewExpression
     }
 
     fun isModuleScopeOperator(e: PsiElement): Boolean {
-        return e.parent is IdentifierOrTemplateInstance && e.parent.parent is PrimaryExpression && (e.parent.parent as PrimaryExpression).oP_DOT != null
+        return e is ReferenceExpression && e.oP_DOT != null
     }
 
     val versionIdentifiers = setOf("DigitalMars", "GNU", "LDC", "SDC", "Windows", "Win32", "Win64", "linux", "OSX", "FreeBSD", "OpenBSD", "NetBSD", "DragonFlyBSD", "BSD", "Solaris", "Posix", "AIX", "Haiku", "SkyOS", "SysV3", "SysV4", "Hurd", "Android", "PlayStation", "PlayStation4", "Cygwin", "MinGW", "FreeStanding", "CRuntime_Bionic", "CRuntime_DigitalMars", "CRuntime_Glibc", "CRuntime_Microsoft", "CRuntime_Musl", "CRuntime_UClibc", "X86", "X86_64", "ARM", "ARM_Thumb", "ARM_SoftFloat", "ARM_SoftFP", "ARM_HardFloat", "AArch64", "Epiphany", "PPC", "PPC_SoftFloat", "PPC_HardFloat", "PPC64", "IA64", "MIPS32", "MIPS64", "MIPS_O32", "MIPS_N32", "MIPS_O64", "MIPS_N64", "MIPS_EABI", "MIPS_SoftFloat", "MIPS_HardFloat", "NVPTX", "NVPTX64", "RISCV32", "RISCV64", "SPARC", "SPARC_V8Plus", "SPARC_SoftFloat", "SPARC_HardFloat", "SPARC64", "S390", "SystemZ", "HPPA", "HPPA64", "SH", "Alpha", "Alpha_SoftFloat", "Alpha_HardFloat", "LittleEndian", "BigEndian", "ELFv1", "ELFv2", "D_Coverage", "D_Ddoc", "D_InlineAsm_X86", "D_InlineAsm_X86_64", "D_LP64", "D_X32", "D_HardFloat", "D_SoftFloat", "D_PIC", "D_SIMD", "D_AVX", "D_AVX2", "D_Version2", "D_NoBoundsChecks", "D_ObjectiveC", "unittest", "assert", "none", "all","None")

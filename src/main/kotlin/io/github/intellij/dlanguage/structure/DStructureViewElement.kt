@@ -10,6 +10,8 @@ import com.intellij.psi.PsiElement
 import com.intellij.ui.RowIcon
 import com.intellij.util.PlatformIcons
 import io.github.intellij.dlanguage.presentation.*
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
+import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration
 import io.github.intellij.dlanguage.utils.*
 import java.util.*
 import javax.swing.Icon
@@ -19,8 +21,8 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
     private fun variableDeclarationAttributes(element: VariableDeclaration): String? {
         val allowedAttributes = arrayOf("const", "enum", "immutable")
 
-        if (element.autoDeclaration != null) {
-            val attributes = element.autoDeclaration?.storageClasss!!
+        if (element is AutoDeclaration) {
+            val attributes = element.storageClasss
 
             for (attribute in attributes) {
                 if (attribute.text in allowedAttributes) {
@@ -31,11 +33,11 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
         } else {
             var attributes = ""
 
-            (element.parent as? Declaration)?.attributes?.forEach {
+            /*(element.parent as? Declaration)?.attributes?.forEach {
                 if (it.text in allowedAttributes) {
                     attributes += it.text + " "
                 }
-            }
+            }*/
 
             return attributes.trim()
         }
@@ -89,25 +91,24 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                     val parametersNode = element.parameters
                     appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
                 }
-                is VariableDeclaration -> {
-                    if (element.autoDeclaration == null) {
-                        append(" : ${element.type?.text}")
+                is SpecifiedVariableDeclaration -> {
+                    append(" : ${element.type?.text}")
 
-                        val initializer = element.declarators.firstOrNull()?.initializer
+                    val initializer = element.declarators.firstOrNull()?.initializer
+
+                    if (initializer != null) {
+                        append(" = ${psiElementShortText(initializer)}")
+                    }
+                }
+                is AutoDeclaration -> {
+                    val parts = element.autoDeclarationParts
+                    val declPart = parts.firstOrNull()
+
+                    if (declPart != null) {
+                        val initializer = declPart.initializer
 
                         if (initializer != null) {
                             append(" = ${psiElementShortText(initializer)}")
-                        }
-                    } else {
-                        val parts = element.autoDeclaration?.autoDeclarationParts
-                        val declPart = parts?.firstOrNull()
-
-                        if (declPart != null) {
-                            val initializer = declPart.initializer
-
-                            if (initializer != null) {
-                                append(" = ${psiElementShortText(initializer)}")
-                            }
                         }
                     }
                 }
@@ -154,15 +155,6 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
     override fun canNavigateToSource(): Boolean = (element is Navigatable) && element.canNavigateToSource()
 
     private fun findContentNode(psi: PsiElement?): List<PsiElement?> = when (psi) {
-        is Declaration -> {
-            val res = ArrayList<PsiElement?>()
-
-            psi.children.forEach {
-                res.addAll(findContentNode(it).filterNotNull())
-            }
-
-            res
-        }
         is ClassDeclaration -> listOf(psi.structBody)
         is InterfaceDeclaration -> listOf(psi.structBody)
         is FunctionDeclaration -> listOf(psi)

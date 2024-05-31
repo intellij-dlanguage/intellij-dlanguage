@@ -10,15 +10,12 @@ import com.intellij.psi.formatter.common.AbstractBlock
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.TokenSet
 import io.github.intellij.dlanguage.features.formatter.impl.createSpacingBuilder
-import io.github.intellij.dlanguage.psi.DLanguageDeclaration
-import io.github.intellij.dlanguage.psi.DLanguageDeclarationOrStatement
-import io.github.intellij.dlanguage.psi.DLanguageStatement
 import io.github.intellij.dlanguage.psi.DlangTypes.*
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.interfaces.Statement
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
 import io.github.intellij.dlanguage.utils.DUtil.getPrevSiblingOfType
-import io.github.intellij.dlanguage.utils.Declaration
-import io.github.intellij.dlanguage.utils.DeclarationOrStatement
+import io.github.intellij.dlanguage.utils.DeclarationBlock
 import java.util.*
 
 
@@ -72,13 +69,11 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             val parentType = myNode.elementType
             val type = child.elementType
 
-            if (type == DECLARATION) {
-                if (parentType == CONDITIONAL_DECLARATION) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION, LINE_COMMENT, BLOCK_COMMENT)
-                }
-                if ((child.psi as Declaration).oP_BRACES_LEFT != null) {
-                    return Indent.getNoneIndent()
-                }
+            if (parentType == CONDITIONAL_DECLARATION) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+            }
+            if ((child.psi as? DeclarationBlock)?.oP_BRACES_LEFT != null) {
+                return Indent.getNoneIndent()
             }
             /*if ((child.psi as DeclarationOrStatement).blockStatement != null) {
                 return Indent.getNoneIndent()
@@ -134,17 +129,15 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 val psi1 = n1.psi
                 val psi2 = n2.psi
 
-                if (psi1 is DLanguageDeclaration && psi2 is DLanguageDeclaration) {
+                if (psi1 is Declaration && psi2 is Declaration) {
                     return lineBreak()
-                } else if (psi1.text == "{" && psi2 is DLanguageDeclarationOrStatement) {
+                } else if (psi1.text == "{" && psi2 is Statement) {
                     return lineBreak()
-                } else if (psi1.text == "{" && psi2 is DLanguageDeclaration) {
+                } else if (psi1.text == "{" && psi2 is Declaration) {
                     return lineBreak()
-                } else if (psi2.text == "}" && psi1 is DLanguageDeclarationOrStatement) {
+                } else if (psi2.text == "}" && psi1 is Statement) {
                     return lineBreak()
-                } else if (psi2.text == "}" && psi1 is DLanguageDeclaration) {
-                    return lineBreak()
-                } else if (psi1 is DlangModuleDeclaration && psi2 is DLanguageDeclaration) {
+                } else if (psi2.text == "}" && psi1 is Declaration) {
                     return lineBreak()
                 }
 
@@ -200,9 +193,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             )
 
             private fun isTopLevelDeclaration(element: PsiElement): Boolean {
-                return element is DlangModuleDeclaration
-                    || element is io.github.intellij.dlanguage.psi.DLanguageImportDeclaration
-                    || element is DLanguageDeclaration
+                return element is Declaration
                     || element is Statement && element.getParent() is io.github.intellij.dlanguage.psi.DlangPsiFile
             }
 

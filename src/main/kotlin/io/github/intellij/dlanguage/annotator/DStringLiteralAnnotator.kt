@@ -6,7 +6,7 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.refactoring.suggested.startOffset
-import io.github.intellij.dlanguage.utils.PrimaryExpression
+import io.github.intellij.dlanguage.utils.LiteralExpression
 import io.github.intellij.dlanguage.utils.getCorrespondingClosingDelimiter
 import io.github.intellij.dlanguage.utils.getOpeningDelimiter
 import org.apache.commons.lang3.StringUtils
@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils
 class DStringLiteralAnnotator : Annotator {
 
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
-        if (element !is PrimaryExpression) return
+        if (element !is LiteralExpression) return
         if (element.delimiteD_STRINGs.isNotEmpty()) {
             for (elem in element.delimiteD_STRINGs) {
                 val endPos = if (elem.text[elem.textLength - 1] == '"')  1 else 2;

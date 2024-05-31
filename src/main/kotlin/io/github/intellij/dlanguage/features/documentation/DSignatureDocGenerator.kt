@@ -43,7 +43,7 @@ class DSignatureDocGenerator {
             is ClassDeclaration -> appendClassSignature(builder, element)
             is Parameter -> appendParameterSignature(builder, element)
             is Declarator -> {
-                appendType(builder, (element.parent as VariableDeclaration).type)
+                appendType(builder, (element.parent as SpecifiedVariableDeclaration).type)
                 builder.append(" ").append(element.identifier?.text)}
             is AutoDeclarationPart -> appendAutoDeclarationPartSignature(builder, element)
             is AliasInitializer -> appendAliasInitializerSignature(builder, element)
@@ -375,28 +375,28 @@ class DSignatureDocGenerator {
     private fun appendType(builder: StringBuilder, element: Type?): StringBuilder {
         element?:return builder
 
-        if (element.type_2 != null) {
+        if (element.basicType != null) {
             // Prefix keywords
-            if (element.type_2!!.kW_CONST != null) {
+            if (element.basicType!!.kW_CONST != null) {
                 HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, "const", highlightingSaturation)
             }
-            if (element.type_2!!.kW_INOUT != null) {
+            if (element.basicType!!.kW_INOUT != null) {
                 HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, "inout", highlightingSaturation)
             }
-            if(element.type_2!!.oP_PAR_LEFT != null) {
+            if(element.basicType!!.oP_PAR_LEFT != null) {
                 builder.append("(")
             }
 
             // type itself
-            if (element.type_2!!.builtinType != null) {
-                HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, element.type_2!!.builtinType!!.text, highlightingSaturation)
-            } else if (element.type_2!!.type != null) {
-                appendType(builder, element.type_2!!.type)
-            } else if (element.type_2!!.typeIdentifierPart != null) {
-                appendTypeIdentifierPart(builder, element.type_2!!.typeIdentifierPart!!)
+            if (element.basicType!!.builtinType != null) {
+                HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, element.basicType!!.builtinType!!.text, highlightingSaturation)
+            } else if (element.basicType!!.type != null) {
+                appendType(builder, element.basicType!!.type)
+            } else if (element.basicType!!.typeIdentifierPart != null) {
+                appendTypeIdentifierPart(builder, element.basicType!!.typeIdentifierPart!!)
             }
 
-            if(element.type_2!!.oP_PAR_RIGHT != null) {
+            if(element.basicType!!.oP_PAR_RIGHT != null) {
                 builder.append(")")
             }
 
@@ -425,7 +425,7 @@ class DSignatureDocGenerator {
                 })
             }
         } else {
-            builder.append(element.type_2!!.text)
+            builder.append(element.basicType!!.text)
             if (element.typeSuffixs.isNotEmpty()) {
                 builder.append(element.typeSuffixs.joinToString("") { it.text })
             }

@@ -10,6 +10,7 @@ import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangFileType
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
@@ -107,13 +108,13 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
     ): Boolean {
         var toContinue = true
         for (element in children) {
-            if (element is DLanguageDeclaration) {
-                if (!processDeclaration(element, processor, state, lastParent, place)) {
+            if (element is DlangModuleDeclaration) {
+                if (!processor.execute(element, state)) {
                     toContinue = false
                 }
             }
-            if (element is DlangModuleDeclaration) {
-                if (!processor.execute(element, state)) {
+            if (element is Declaration) {
+                if (!processDeclaration(element, processor, state, lastParent, place)) {
                     toContinue = false
                 }
             }

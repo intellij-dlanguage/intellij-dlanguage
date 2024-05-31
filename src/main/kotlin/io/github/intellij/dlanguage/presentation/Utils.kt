@@ -4,6 +4,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.psi.*
+import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration
 import io.github.intellij.dlanguage.structure.Visibility
 import io.github.intellij.dlanguage.structure.fromPsiAttribute
 import io.github.intellij.dlanguage.utils.*
@@ -12,27 +13,25 @@ import javax.swing.Icon
 fun presentableName(psi: PsiElement?): String? = when (psi) {
     is Constructor -> "this"
     is PsiNamedElement -> psi.name
-    is Declaration -> presentableName(psi.functionDeclaration)
     is StructBody -> presentableName(psi.parent)
-    is VariableDeclaration -> {
-        if (psi.autoDeclaration == null) {
-            psi.declarators.firstOrNull()?.identifier?.name
-        } else {
-            psi.autoDeclaration?.autoDeclarationParts?.firstOrNull()?.name
-        }
+    is AutoDeclaration -> {
+        psi.autoDeclarationParts.firstOrNull()?.name
+    }
+    is SpecifiedVariableDeclaration -> {
+        psi.declarators.firstOrNull()?.identifier?.name
     }
     is AliasDeclaration -> {
         psi.aliasInitializers.joinToString(", ") { it.name }
     }
     is Type -> {
-        if (psi.type_2?.typeIdentifierPart != null)
+        if (psi.basicType?.typeIdentifierPart != null)
             if (psi.typeSuffixs.isNotEmpty())
                 if (psi.typeSuffixs.first().kW_DELEGATE != null || psi.typeSuffixs.first().kW_FUNCTION != null)
-                    psi.type_2?.typeIdentifierPart?.text + " " +  presentableName(psi.typeSuffixs.first())
+                    psi.basicType?.typeIdentifierPart?.text + " " +  presentableName(psi.typeSuffixs.first())
                 else
-                    psi.type_2?.typeIdentifierPart?.text +  presentableName(psi.typeSuffixs.first())
+                    psi.basicType?.typeIdentifierPart?.text +  presentableName(psi.typeSuffixs.first())
             else
-                psi.type_2?.typeIdentifierPart?.text
+                psi.basicType?.typeIdentifierPart?.text
         else
             psi.text
     }
@@ -73,12 +72,11 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
 }
 
 fun psiElementIsProperty(psi: FunctionDeclaration): Boolean {
-    val parent = psi.parent as? DLanguageDeclaration ?: return false
 
-    parent.attributes.forEach {
+    /*parent.attributes.forEach {
         if (it.atAttribute?.identifier?.name == "property")
             return true
-    }
+    }*/
 
     return false
 }
@@ -140,7 +138,7 @@ fun psiElementGetVisibility(psi: PsiElement?): Visibility {
             is StructDeclaration -> return Visibility.PUBLIC
             is EnumDeclaration -> return Visibility.PUBLIC
             is UnionDeclaration -> return Visibility.PUBLIC
-            is Declaration -> {
+            /*is Declaration -> {
                 psi.attributes
                     .map { fromPsiAttribute(it) }
                     .filter { it != Visibility.NONE }
@@ -160,7 +158,7 @@ fun psiElementGetVisibility(psi: PsiElement?): Visibility {
                 }
 
                 return extractNodeVisibility(psi.parent)
-            }
+            }*/
             else -> return extractNodeVisibility(psi.parent)
         }
     }

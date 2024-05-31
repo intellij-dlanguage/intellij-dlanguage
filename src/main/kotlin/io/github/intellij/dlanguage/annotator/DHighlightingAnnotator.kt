@@ -7,7 +7,8 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.colors.DColor
-import io.github.intellij.dlanguage.psi.DLanguageType_2
+import io.github.intellij.dlanguage.psi.DLanguageBasicType
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.utils.*
 
@@ -65,7 +66,7 @@ class DHighlightingAnnotator : Annotator {
             parent is TemplateDeclaration -> DColor.FUNCTION_DEFINITION
             parent is TemplateInstance -> {
                 // don’t colorize templated class/struct/union instantiations as function calls
-                if (PsiTreeUtil.getParentOfType(parent, Type_2::class.java, true, Declaration::class.java) == null)
+                if (PsiTreeUtil.getParentOfType(parent, DLanguageBasicType::class.java, true, Declaration::class.java) == null)
                     DColor.FUNCTION_CALL
                 else
                     null
