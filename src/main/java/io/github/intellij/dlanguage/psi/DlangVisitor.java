@@ -577,10 +577,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitPragmaDeclaration(@NotNull final DLanguagePragmaDeclarationImpl o) {
-        visitPsiElement(o);
-    }
-
     public void visitPragmaExpression(@NotNull final DLanguagePragmaExpressionImpl o) {
         visitPsiElement(o);
     }
@@ -644,10 +640,6 @@ public class DlangVisitor extends PsiElementVisitor {
 //    public void visitSingleImport(@NotNull DlangSingleImportImpl o) {
 //        visitPsiElement(o);
 //    }
-
-    public void visitIndex(@NotNull final DLanguageIndexImpl o) {
-        visitPsiElement(o);
-    }
 
     public void visitStaticAssertDeclaration(@NotNull final DLanguageStaticAssertDeclarationImpl o) {
         visitPsiElement(o);

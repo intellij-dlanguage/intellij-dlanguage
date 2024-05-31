@@ -132,7 +132,6 @@ public interface DlangTypes {
     DlangElementType IN_OUT_CONTRACT_EXPRESSION = new DlangElementType("IN_OUT_CONTRACT_EXPRESSION");
     DlangElementType IN_OUT_STATEMENT = new DlangElementType("IN_OUT_STATEMENT");
     DlangElementType IN_STATEMENT = new DlangElementType("IN_STATEMENT");
-    DlangElementType INDEX = new DlangElementType("INDEX");
     DlangElementType INDEX_EXPRESSION = new DlangElementType("INDEX_EXPRESSION");
     DlangElementType INITIALIZER = new DlangElementType("INITIALIZER");
     DlangElementType INVARIANT = new DlangElementType("INVARIANT");
@@ -163,7 +162,6 @@ public interface DlangTypes {
     DlangElementType POSTBLIT = new DlangElementType("POSTBLIT");
     DlangElementType POSTFIX_EXPRESSION = new DlangElementType("POSTFIX_EXPRESSION");
     DlangElementType POW_EXPRESSION = new DlangElementType("POW_EXPRESSION");
-    DlangElementType PRAGMA_DECLARATION = new DlangElementType("PRAGMA_DECLARATION");
     DlangElementType PRAGMA_EXPRESSION = new DlangElementType("PRAGMA_EXPRESSION");
     DlangElementType PRAGMA_STATEMENT = new DlangElementType("PRAGMA_STATEMENT");
     DlangElementType REFERENCE_EXPRESSION = new DlangElementType("REFERENCE_EXPRESSION");
@@ -651,8 +649,6 @@ public interface DlangTypes {
                 return new DLanguageInOutStatementImpl(node);
             } else if (type == IN_STATEMENT) {
                 return new DLanguageInStatementImpl(node);
-            } else if (type == INDEX) {
-                return new DLanguageIndexImpl(node);
             } else if (type == INDEX_EXPRESSION) {
                 return new DLanguageIndexExpressionImpl(node);
             } else if (type == INITIALIZER) {
@@ -711,8 +707,6 @@ public interface DlangTypes {
                 return new DLanguagePostfixExpressionImpl(node);
             } else if (type == POW_EXPRESSION) {
                 return new DLanguagePowExpressionImpl(node);
-            } else if (type == PRAGMA_DECLARATION) {
-                return new DLanguagePragmaDeclarationImpl(node);
             } else if (type == PRAGMA_EXPRESSION) {
                 return new DLanguagePragmaExpressionImpl(node);
             } else if (type == PRAGMA_STATEMENT) {

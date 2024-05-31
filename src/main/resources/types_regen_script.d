@@ -185,7 +185,6 @@ static this() {
     types_children["ImportDeclaration"] = ["KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
     types_extra_interfaces["ImportDeclaration"] = ["Statement", "Declaration"];
     types_children["ImportExpression"] = ["ImportExpression","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
-    types_children["Index"] = ["AssignExpression"];
     types_children["IndexExpression"] = ["OP_BRACKET_LEFT","OP_BRACKET_RIGHT","ArgumentList","UnaryExpression"];
     types_children["InExpression"] = ["ShiftExpression*","KW_IN","OP_NOT"];
     types_children["Initializer"] = ["KW_VOID","AssignExpression", "ArrayLiteral", "StructInitializer"];
@@ -231,7 +230,6 @@ static this() {
     types_extra_interfaces["Postblit"] = ["Declaration"];
     types_children["PostfixExpression"] = [/*"PrimaryExpression",*/"BasicType", "ArgumentList","OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_children["PowExpression"] = ["PowExpression","UnaryExpression","OP_POW"];
-    types_children["PragmaDeclaration"] = ["PragmaExpression", "OP_SCOLON"];
     types_children["PragmaExpression"] = ["Identifier","ArgumentList","OP_PAR_LEFT","OP_PAR_RIGHT","OP_COMMA","KW_PRAGMA"];
     types_children["PragmaStatement"] = ["PragmaExpression", "OP_SCOLON", "DefaultStatement","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","CaseStatement","CaseRangeStatement"];
     types_children["ReferenceExpression"] = ["OP_DOT", "Identifier", "TemplateInstance"];
@@ -465,7 +463,6 @@ static this() {
     has_processDeclaration["Parameters"] = false;
     has_processDeclaration["Postblit"] = false;
     has_processDeclaration["PowExpression"] = false;
-    has_processDeclaration["PragmaDeclaration"] = false;
     has_processDeclaration["PragmaExpression"] = false;
     has_processDeclaration["Register"] = false;
     has_processDeclaration["RelExpression"] = false;

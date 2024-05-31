@@ -30,8 +30,6 @@ class DLangParser {
         "YMM3", "YMM4", "YMM5", "YMM6", "YMM7", "YMM8", "YMM9"
     };
 
-    final int MAX_ERRORS = 200;
-
     private static final IElementType[] stringLiteralsArray = new IElementType[] {
         ALTERNATE_WYSIWYG_STRING,
         DOUBLE_QUOTED_STRING,
@@ -95,13 +93,6 @@ class DLangParser {
     private final PsiBuilder builder;
     private final Map<Integer, Boolean> cachedAAChecks = new HashMap<>();
     private final Map<Integer, Boolean> cachedTypedChecks = new HashMap<>();
-
-    private final ArrayList<Integer> suppressMessages = new ArrayList<>();
-
-
-    private int suppressedErrorCount() {
-        return suppressMessages.isEmpty() ? 0 : suppressMessages.get(suppressMessages.size()-1);
-    }
 
     DLangParser(@NotNull final PsiBuilder builder) {
         this.builder = builder;
@@ -170,7 +161,7 @@ class DLangParser {
                     return false;
                 }
             }
-            if (!parseType().first) {
+            if (!parseType()) {
                 cleanup(m, ALIAS_DECLARATION);
                 return false;
             }
@@ -201,7 +192,7 @@ class DLangParser {
             return true;
         if (startsWith(ID, OP_LAMBDA_ARROW))
             return true;
-        Bookmark b = setBookmark();
+        Marker bookmark = builder.mark();
         if (currentIs(OP_PAR_LEFT) || currentIs(KW_REF) && peekIs(OP_PAR_LEFT)) {
             if (currentIs(KW_REF))
                 advance();
@@ -209,12 +200,12 @@ class DLangParser {
             if (t != null) {
                 if (t == OP_LAMBDA_ARROW || t == OP_BRACES_LEFT
                     || isMemberFunctionAttribute(t)) {
-                    goToBookmark(b);
+                    bookmark.rollbackTo();
                     return true;
                 }
             }
         }
-        goToBookmark(b);
+        bookmark.rollbackTo();
         return false;
     }
 
@@ -235,7 +226,7 @@ class DLangParser {
             m.rollbackTo();
             return false;
         }
-        if (!parseType().first) {
+        if (!parseType()) {
             cleanup(m, ALIAS_ASSIGN);
             return false;
         }
@@ -258,7 +249,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAliasInitializer() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(ID)) {
             cleanup(m, ALIAS_INITIALIZER);
             return false;
@@ -285,7 +276,7 @@ class DLangParser {
                     return false;
                 }
             }
-            if (!parseType().first) {
+            if (!parseType()) {
                 cleanup(m, ALIAS_INITIALIZER);
                 return false;
             }
@@ -350,7 +341,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAlignAttribute() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_ALIGN);
         if (currentIs(OP_PAR_LEFT)) {
             if (!tokenCheck(OP_PAR_LEFT)) {
@@ -479,7 +470,7 @@ class DLangParser {
      * ;)
      */
     boolean parseArrayInitializer() {
-        final Marker arrayInit = enter_section_modified(builder);
+        final Marker arrayInit = builder.mark();
         while (moreTokens()) {
             if (currentIs(OP_BRACKET_RIGHT))
                 break;
@@ -504,7 +495,7 @@ class DLangParser {
      * ;)
      */
     Marker parseArrayLiteral() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType open = expect(OP_BRACKET_LEFT);
         if (open == null) {
             cleanup(m, ARRAY_LITERAL);
@@ -533,28 +524,25 @@ class DLangParser {
      * ;)
      */
     boolean parseArrayMemberInitialization() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (currentIs(OP_BRACKET_LEFT)) {
-            final Bookmark b = setBookmark();
+            Marker bookmark = builder.mark();
             skipBrackets();
             if (currentIs(OP_COLON)) {
-                goToBookmark(b);
+                bookmark.rollbackTo();
                 if (!parseAssignExpression()) {
-                    abandonBookmark(b);
                     cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                     return false;
                 }
                 advance(); // :
                 if (!parseNonVoidInitializer()) {
-                    abandonBookmark(b);
                     cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                     return false;
                 }
-                abandonBookmark(b);
                 exit_section_modified(builder, m, ARRAY_MEMBER_INITIALIZATION, true);
                 return true;
             } else {
-                goToBookmark(b);
+                bookmark.rollbackTo();
             }
         }
         if (currentIs(OP_BRACES_LEFT)) {
@@ -562,8 +550,6 @@ class DLangParser {
                 cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                 return false;
             }
-            exit_section_modified(builder, m, ARRAY_MEMBER_INITIALIZATION, true);
-            return true;
         } else {
             final boolean assignExpression = parseAssignExpression();
             if (!assignExpression) {
@@ -577,9 +563,9 @@ class DLangParser {
                     return false;
                 }
             }
-            exit_section_modified(builder, m, ARRAY_MEMBER_INITIALIZATION, true);
-            return true;
         }
+        exit_section_modified(builder, m, ARRAY_MEMBER_INITIALIZATION, true);
+        return true;
 
     }
 
@@ -592,7 +578,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmAddExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final boolean node;
         node = parseAsmMulExp();
         if (!node) {
@@ -619,7 +605,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmAndExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final boolean node;
         node = parseAsmEqualExp();
         if (!node) {
@@ -646,7 +632,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmBrExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!moreTokens())
         {
             error("Found end-of-file when expecting an AsmBrExp"/*, false*/);
@@ -706,7 +692,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmEqualExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final boolean node;
         node = parseAsmRelExp();
         if (!node) {
@@ -732,7 +718,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!parseAsmLogOrExp()) {
             cleanup(m, ASM_EXP);
             return false;
@@ -772,7 +758,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmInstruction() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (currentIs(OP_SCOLON)) {
             exit_section_modified(builder, m, ASM_INSTRUCTION, true);
             return true;
@@ -824,7 +810,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmLogAndExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final boolean node;
         node = parseAsmOrExp();
         if (!node) {
@@ -851,7 +837,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmLogOrExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final boolean node;
         node = parseAsmLogAndExp();
         if (!node) {
@@ -878,7 +864,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmMulExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final boolean node;
         node = parseAsmBrExp();
         if (!node) {
@@ -905,7 +891,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmOrExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final boolean node;
         node = parseAsmXorExp();
         if (!node) {
@@ -939,12 +925,12 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmPrimaryExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = current();
         if (i == FLOAT_LITERAL || i == INTEGER_LITERAL || i == DOUBLE_QUOTED_STRING || i == OP_DOLLAR || i == KW_THIS) {
             advance();
         } else if (i == ID) {
-            if ((Sets.newHashSet(Arrays.asList(REGISTER_NAMES))).contains(currentText())) {
+            if ((Sets.newHashSet(Arrays.asList(REGISTER_NAMES))).contains(builder.getTokenText())) {
                 if (!parseRegister()) {
                     cleanup(m, ASM_PRIMARY_EXP);
                     return false;
@@ -980,7 +966,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmRelExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final boolean node;
         node = parseAsmShiftExp();
         if (!node) {
@@ -1007,7 +993,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmShiftExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final boolean node;
         node = parseAsmAddExp();
         if (!node) {
@@ -1033,10 +1019,10 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         advance(); // asm
         while (isAttribute()) {
-            if (!parseFunctionAttribute(true)) {
+            if (!parseFunctionAttribute()) {
                 error("Function attribute or '{' expected");
                 cleanup(m, ASM_STATEMENT);
                 return false;
@@ -1075,7 +1061,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmTypePrefix() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = current();
         if (i == ID || i == KW_BYTE || i == KW_SHORT || i == KW_INT || i == KW_FLOAT || i == KW_DOUBLE || i == KW_REAL) {
             final String tokenText = builder.getTokenText();
@@ -1121,7 +1107,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmUnaExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = current();
         if (i == OP_PLUS || i == OP_MINUS || i == OP_NOT || i == OP_TILDA) {
             advance();
@@ -1192,7 +1178,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAsmXorExp() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final boolean node;
         node = parseAsmAndExp();
         if (!node) {
@@ -1218,7 +1204,7 @@ class DLangParser {
      *     ;)
      */
     public boolean parseAssertArguments() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!parseAssignExpression()) {
             cleanup(m, ASSERT_ARGUMENTS);
             return false;
@@ -1251,7 +1237,7 @@ class DLangParser {
      * ;)
      */
     Marker parseAssertExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         advance(); // "assert"
         if (!tokenCheck(OP_PAR_LEFT)) {
             cleanup(m, ASSERT_EXPRESSION);
@@ -1318,7 +1304,7 @@ class DLangParser {
      * ;)
      */
     Marker parseAssocArrayLiteral() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (expect(OP_BRACKET_LEFT) == null) {
             cleanup(m, ASSOC_ARRAY_LITERAL);
             return null;
@@ -1346,7 +1332,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAtAttribute() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType start = expect(OP_AT);
         if (start == null) {
             cleanup(m, AT_ATTRIBUTE);
@@ -1426,7 +1412,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAttribute() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = current();
         if (i == KW_PRAGMA) {
             if (!parsePragmaExpression()) {
@@ -1501,7 +1487,7 @@ class DLangParser {
      * ;)
      */
     boolean parseAutoDeclarationPart() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = expect(ID);
         if (i == null) {
             cleanup(m, AUTO_DECLARATION_PART);
@@ -1533,7 +1519,7 @@ class DLangParser {
      * ;)
      */
     boolean parseBlockStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType openBrace = expect(OP_BRACES_LEFT);
         if (openBrace == null) {
             cleanup(m, BLOCK_STATEMENT);
@@ -1566,7 +1552,7 @@ class DLangParser {
      * ;)
      */
     boolean parseBreakStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_BREAK);
         if (!moreTokens()) {
             cleanup(m, BREAK_STATEMENT);
@@ -1602,7 +1588,7 @@ class DLangParser {
      * ;)
      */
     boolean parseBaseClass() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!moreTokens()) {
             cleanup(m, BASE_CLASS);
             return false;
@@ -1626,7 +1612,7 @@ class DLangParser {
      * ;)
      */
     boolean parseBaseClassList() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         while (moreTokens()) {
             if (!parseBaseClass()) {
                 cleanup(m, BASE_CLASS_LIST);
@@ -1712,7 +1698,7 @@ class DLangParser {
     }
 
     boolean parseCaseRangeStatement() {
-        Marker m = enter_section_modified(builder);
+        Marker m = builder.mark();
         return parseCaseRangeStatement(m);
     }
 
@@ -1745,7 +1731,7 @@ class DLangParser {
      * ;)
      */
     Marker parseCastExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_CAST);
         if (!tokenCheck(OP_PAR_LEFT)) {
             cleanup(m, CAST_EXPRESSION);
@@ -1758,7 +1744,7 @@ class DLangParser {
                     return null;
                 }
             } else {
-                if (!parseType().first) {
+                if (!parseType()) {
                     cleanup(m, CAST_EXPRESSION);
                     return null;
                 }
@@ -1822,13 +1808,13 @@ class DLangParser {
      * ;)
      */
     boolean parseCatch() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_CATCH);
         if (!tokenCheck(OP_PAR_LEFT)) {
             cleanup(m, CATCH);
             return false;
         }
-        if (!parseType().first) {
+        if (!parseType()) {
             cleanup(m, CATCH);
             return false;
         }
@@ -1856,7 +1842,7 @@ class DLangParser {
      * ;)
      */
     boolean parseCatches() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         while (moreTokens()) {
             if (!currentIs(KW_CATCH))
                 break;
@@ -1933,10 +1919,6 @@ class DLangParser {
         return shift;
     }
 
-    private Marker enter_section_modified(final PsiBuilder builder) {
-        return builder.mark();
-    }
-
     /**
      * Parses a CompileCondition
      * <p>
@@ -1947,7 +1929,7 @@ class DLangParser {
      * ;)
      */
     boolean parseCompileCondition() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = current();
         if (i == KW_VERSION) {
             if (!parseVersionCondition()) {
@@ -2042,7 +2024,7 @@ class DLangParser {
      * ;)
      */
     boolean parseConditionalStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!parseCompileCondition()) {
             cleanup(m, CONDITIONAL_STATEMENT);
             return false;
@@ -2070,7 +2052,7 @@ class DLangParser {
      * ;)
      */
     boolean parseConstraint() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType ifToken = expect(KW_IF);
         if (ifToken == null) {
             cleanup(m, CONSTRAINT);
@@ -2102,7 +2084,7 @@ class DLangParser {
     boolean parseConstructor() {
         if (builder.getTokenType() != KW_THIS)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         builder.advanceLexer();
         final IElementType p = peekPastParens();
         boolean isTemplate = false;
@@ -2145,7 +2127,7 @@ class DLangParser {
      * ;)
      */
     boolean parseContinueStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_CONTINUE)) {
             cleanup(m, CONTINUE_STATEMENT);
             return false;
@@ -2180,7 +2162,7 @@ class DLangParser {
      * ;)
      */
     boolean parseDebugCondition() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType d = expect(KW_DEBUG);
         if (d == null) {
             cleanup(m, DEBUG_CONDITION);
@@ -2386,7 +2368,7 @@ class DLangParser {
      * ;)
      */
     boolean parseIdentifierInitializer() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType id = expect(ID);
         if (id == null) {
             cleanup(m, IDENTIFIER_INITIALIZER);
@@ -2433,7 +2415,7 @@ class DLangParser {
      */
     boolean parseDeclaratorIdentifierList() {
         while (moreTokens()) {
-            Marker m = enter_section_modified(builder);
+            Marker m = builder.mark();
             final IElementType ident = expect(ID);
             if (ident == null) {
                 cleanup(m, DECLARATOR_IDENTIFIER);
@@ -2458,7 +2440,7 @@ class DLangParser {
      * ;)
      */
     boolean parseDefaultStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_DEFAULT)) {
             cleanup(m, DEFAULT_STATEMENT);
             return false;
@@ -2484,7 +2466,7 @@ class DLangParser {
      * ;)
      */
     Marker parseDeleteExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_DELETE)) {
             cleanup(m, DELETE_EXPRESSION);
             return null;
@@ -2505,7 +2487,7 @@ class DLangParser {
      * ;)
      */
     boolean parseDeprecated() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_DEPRECATED)) {
             cleanup(m, DEPRECATED);
             return false;
@@ -2580,7 +2562,7 @@ class DLangParser {
      * ;)
      */
     boolean parseDoStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_DO)) {
             cleanup(m, DO_STATEMENT);
             return false;
@@ -2628,7 +2610,7 @@ class DLangParser {
         if (builder.getTokenType() != OP_BRACES_LEFT) {
             return false;
         }
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         builder.advanceLexer();
         while (moreTokens()) {
             if (currentIsOneOf(ID, OP_AT, KW_DEPRECATED)) {
@@ -2659,7 +2641,7 @@ class DLangParser {
      * ;)
      */
     boolean parseEnumMember(final boolean typeAllowed) {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         // TODO parseEnumMemberAttributes
         if (currentIs(ID) && peekIsOneOf(OP_COMMA, OP_EQ, OP_BRACES_RIGHT)) {
             if (!tokenCheck(ID)) {
@@ -2671,7 +2653,7 @@ class DLangParser {
                 if (!assignAnonEnumMember(m)) return false;
             }
         } else if (typeAllowed) {
-            if (!parseType().first) {
+            if (!parseType()) {
                 cleanup(m, ENUM_MEMBER);
                 return false;
             }
@@ -2705,7 +2687,7 @@ class DLangParser {
         boolean hasBaseType = false;
         if (currentIs(OP_COLON)) {
             advance();
-            if (!parseType().first) {
+            if (!parseType()) {
                 return true;
             }
             hasBaseType = true;
@@ -2756,7 +2738,7 @@ class DLangParser {
         builder.advanceLexer();
         if (currentIs(OP_COLON)) {
             advance(); // skip ':'
-            if (!parseType().first) {
+            if (!parseType()) {
                 cleanup(m, ENUM_DECLARATION);
                 return true;
             }
@@ -2776,14 +2758,14 @@ class DLangParser {
 
     /**
      * Parses an EnumMemberAttribute
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF enumMemberAttribute):
      *       $(RULE atAttribute)
      *     | $(RULE deprecated)
      *     ;)
      */
     public boolean parseEnumMemberAttribute() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (currentIs(OP_AT)) {
             if (!parseAtAttribute()) {
                 cleanup(m, ENUM_MEMBER_ATTRIBUTE);
@@ -2810,7 +2792,7 @@ class DLangParser {
      * ;)
      */
     boolean parseEnumMember() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         while (moreTokens()) {
             if (!parseEnumMemberAttribute()) {
                 break;
@@ -2831,10 +2813,6 @@ class DLangParser {
         return true;
     }
 
-    Marker parseEqualExpression() {
-        return parseEqualExpression(null);
-    }
-
     /**
      * Parses an EqualExpression
      * <p>
@@ -2844,7 +2822,7 @@ class DLangParser {
      */
     Marker parseEqualExpression(Marker m) {
         if (m == null) {
-            m = enter_section_modified(builder);
+            m = builder.mark();
             if (parseShiftExpression() == null) {
                 cleanup(m, EQUAL_EXPRESSION);
                 return null;
@@ -2869,9 +2847,6 @@ class DLangParser {
      * ;)
      */
     boolean parseExpression() {
-        if (suppressedErrorCount() > MAX_ERRORS) {
-            return false;
-        }
         if (!moreTokens()) {
             error("Expected expression instead of EOF");
             return false;
@@ -2898,7 +2873,7 @@ class DLangParser {
      * ;)
      */
     boolean parseExpressionStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final boolean b = parseExpression();
         if (!b) {
                 cleanup(m, EXPRESSION_STATEMENT);
@@ -2920,7 +2895,7 @@ class DLangParser {
         }
         if (builder.getTokenType() == ID || builder.getTokenType() == OP_COLON || builder.getTokenType() == OP_BRACES_LEFT) {
             // Make the storage class belong to the variable declaration instead of the declaration statement
-            // nicer tree
+            // this produce a nicer tree
             marker.rollbackTo();
             marker = builder.mark();
         }
@@ -2940,7 +2915,7 @@ class DLangParser {
      * ;)
      */
     boolean parseFinalSwitchStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (expect(KW_FINAL) == null) {
             cleanup(m, FINAL_SWITCH_STATEMENT);
             return false;
@@ -2961,7 +2936,7 @@ class DLangParser {
      * ;)
      */
     boolean parseFinally() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_FINALLY)) {
             cleanup(m, FINALLY);
             return false;
@@ -2982,7 +2957,7 @@ class DLangParser {
      * ;)
      */
     boolean parseForStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_FOR)) {
             cleanup(m, FOR_STATEMENT);
             return false;
@@ -3015,14 +2990,6 @@ class DLangParser {
             cleanup(m, FOR_STATEMENT);
             return false;
         }
-        // Intentionally return an incomplete parse tree so that DCD will work
-        // more correctly.
-        if (currentIs(OP_BRACES_RIGHT)) {
-            error("Statement expected");
-            exit_section_modified(builder, m, FOR_STATEMENT, true);
-            return true;
-        }
-
         if (!parseScopeStatement()) {
             cleanup(m, FOR_STATEMENT);
             return false;
@@ -3034,7 +3001,7 @@ class DLangParser {
 
     /**
      * Parses a StaticForeachDeclaration
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF staticForeachDeclaration):
      *       $(LITERAL 'static') ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachTypeList) $(LITERAL ';') $(RULE expression) $(LITERAL '$(RPAREN)') ($(RULE declaration) | $(LITERAL '{') $(RULE declaration)* $(LITERAL '}'))
      *     | $(LITERAL 'static') ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachType) $(LITERAL ';') $(RULE expression) $(LITERAL '..') $(RULE expression) $(LITERAL '$(RPAREN)') ($(RULE declaration) | $(LITERAL '{') $(RULE declaration)* $(LITERAL '}'))
@@ -3044,7 +3011,7 @@ class DLangParser {
     {
         if (builder.getTokenType() != KW_STATIC)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         builder.advanceLexer();
         if (!currentIsOneOf(KW_FOREACH, KW_FOREACH_REVERSE)) {
             m.rollbackTo();
@@ -3071,7 +3038,7 @@ class DLangParser {
     }
 
     boolean parseStaticForeachStatement() {
-        Marker m = enter_section_modified(builder);
+        Marker m = builder.mark();
         if (expect(KW_STATIC) == null) {
             cleanup(m, ASSOC_ARRAY_LITERAL);
             return false;
@@ -3085,7 +3052,7 @@ class DLangParser {
     }
 
     boolean parseForeach(IElementType elementType, boolean declOnly) {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (currentIsOneOf(KW_FOREACH, KW_FOREACH_REVERSE)) {
             advance();
         } else {
@@ -3097,13 +3064,12 @@ class DLangParser {
             cleanup(m, elementType);
             return false;
         }
-        final Pair<Boolean, Integer> booleanLengthPair = parseForeachTypeList();
-        final boolean feType = booleanLengthPair.first;
-        if (!feType) {
+        final int types = parseForeachTypeList();
+        if (types < 0) {
             cleanup(m, elementType);
             return false;
         }
-        final boolean canBeRange = booleanLengthPair.second == 1;
+        final boolean canBeRange = types == 1;
         if (!tokenCheck(OP_SCOLON)) {
             cleanup(m, elementType);
             return false;
@@ -3132,7 +3098,7 @@ class DLangParser {
         if (currentIs(OP_BRACES_RIGHT)) {
             error("Statement expected");
             cleanup(m, elementType);
-            return true; // this line makes DCD better
+            return true;
         }
         if (declOnly) {
             if (currentIs(OP_BRACES_LEFT)) {
@@ -3176,7 +3142,7 @@ class DLangParser {
      * ;)
      */
     boolean parseForeachType() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         while (moreTokens()) {
             if (currentIs(KW_SCOPE)) {
                 advance();
@@ -3186,9 +3152,7 @@ class DLangParser {
                 advance();
             } else if (currentIs(KW_ENUM)) {
                 advance();
-            } else if (parseTypeConstructor()) {
-                // do nothing
-            } else {
+            } else if (!parseTypeConstructor()) {
                 break;
             }
         }
@@ -3197,7 +3161,7 @@ class DLangParser {
             exit_section_modified(builder, m, FOREACH_TYPE, true);
             return true;
         }
-        if (!parseType().first) {
+        if (!parseType()) {
             cleanup(m, FOREACH_TYPE);
             return false;
         }
@@ -3217,13 +3181,13 @@ class DLangParser {
      * $(RULE foreachType) ($(LITERAL ',') $(RULE foreachType))*
      * ;)
      */
-    Pair<Boolean, Integer> parseForeachTypeList() {
-        final Marker marker = enter_section_modified(builder);
-        Integer count = 0;
+    int parseForeachTypeList() {
+        final Marker marker = builder.mark();
+        int count = 0;
         while (moreTokens()) {
             if (!parseForeachType()) {
                 cleanup(marker, FOREACH_TYPE_LIST);
-                return new Pair<>(false, count);
+                return -1;
             }
             count++;
             if (currentIs(OP_COMMA)) {
@@ -3232,7 +3196,7 @@ class DLangParser {
                 break;
         }
         exit_section_modified(builder, marker, FOREACH_TYPE_LIST, true);
-        return new Pair<>(true, count);
+        return count;
     }
 
     /**
@@ -3244,8 +3208,8 @@ class DLangParser {
      * | $(LITERAL 'nothrow')
      * ;)
      */
-    boolean parseFunctionAttribute(final boolean validate) {
-        final Marker m = enter_section_modified(builder);
+    boolean parseFunctionAttribute() {
+        final Marker m = builder.mark();
         final IElementType i = current();
         if (i == OP_AT) {
             if (!parseAtAttribute()) {
@@ -3255,12 +3219,8 @@ class DLangParser {
         } else if (i == KW_PURE || i == KW_NOTHROW) {
             advance();
         } else {
-            if (validate) {
-                error("@attribute, `pure`, or `nothrow` expected");
-                exit_section_modified(builder, m, FUNCTION_ATTRIBUTE, true);
-                return false;
-            }
-            cleanup(m, FUNCTION_ATTRIBUTE);
+            error("@attribute, `pure`, or `nothrow` expected");
+            exit_section_modified(builder, m, FUNCTION_ATTRIBUTE, true);
             return false;
         }
         exit_section_modified(builder, m, FUNCTION_ATTRIBUTE, true);
@@ -3277,75 +3237,21 @@ class DLangParser {
      * ;)
      */
     boolean parseFunctionBody() {
-        Bookmark b = setBookmark();
+        Marker bookmark = builder.mark();
         if (parseMissingFunctionBody()) {
-            abandonBookmark(b);
+            bookmark.drop();
         } else {
-            goToBookmark(b);
-            b = setBookmark();
+            bookmark.rollbackTo();
+            bookmark = builder.mark();
             if (parseShortenedFunctionBody()) {
-                abandonBookmark(b);
+                bookmark.drop();
             } else {
-                goToBookmark(b);
+                bookmark.rollbackTo();
                 return parseSpecifiedFunctionBody();
             }
         }
         return true;
     }
-
-    boolean parseFunctionCallExpression() {
-        final Pair<Boolean, Marker> booleanMarkerPair = parseFunctionCallExpression(null);
-        return booleanMarkerPair.first;
-    }
-
-    /**
-     * Parses a FunctionCallExpression
-     * <p>
-     * $(GRAMMAR $(RULEDEF functionCallExpression):
-     *   $(RULE symbol) $(RULE arguments)
-     * | $(RULE unaryExpression) $(RULE arguments)
-     * | $(RULE type) $(RULE arguments)
-     * ;)
-     */
-    private Pair<Boolean, Marker> parseFunctionCallExpression(final Marker unary)
-    {
-        final Marker m;
-        if (unary != null) {
-            m = unary.precede();
-        } else {
-            m = enter_section_modified(builder);
-        }
-        final IElementType i = current();
-        if (i == KW_CONST || i == KW_IMMUTABLE || i == KW_INOUT || i == KW_SHARED || i == KW_SCOPE || i == KW_PURE || i == KW_NOTHROW) {
-            if (!parseType().first) {
-                cleanup(m, FUNCTION_CALL_EXPRESSION);
-                return new Pair<>(false, m);
-            }
-            if (!parseArguments()) {
-                cleanup(m, FUNCTION_CALL_EXPRESSION);
-                return new Pair<>(false, m);
-            }
-        } else {
-            if (unary != null) {
-            } else if (parseUnaryExpression() == null) {
-                cleanup(m, FUNCTION_CALL_EXPRESSION);
-                return new Pair<>(false, m);
-            }
-            if (currentIs(OP_NOT))
-                if (!parseTemplateArguments()) {
-                    cleanup(m, FUNCTION_CALL_EXPRESSION);
-                    return new Pair<>(false, m);
-                }
-            if (unary != null)
-                if (!parseArguments()) {
-                    cleanup(m, FUNCTION_CALL_EXPRESSION);
-                    return new Pair<>(false, m);
-                }
-        }
-        exit_section_modified(builder, m, FUNCTION_CALL_EXPRESSION, true);
-        return new Pair<>(true, m);
-    }
-
 
     boolean parseFunctionContract() {
         return parseFunctionContract(true);
@@ -3360,7 +3266,7 @@ class DLangParser {
      *     ;)
      */
     boolean parseFunctionContract(boolean allowStatement) {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (allowStatement && (peekIs(OP_BRACES_LEFT) || (currentIs(KW_OUT) && peekAre(OP_PAR_LEFT, ID, OP_PAR_RIGHT)))) {
             if (!parseInOutStatement()) {
                 cleanup(m, FUNCTION_CONTRACT);
@@ -3477,7 +3383,7 @@ class DLangParser {
      * ;)
      */
     Marker parseFunctionLiteralExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (currentIsOneOf(KW_FUNCTION, KW_DELEGATE)) {
             advance();
             if (currentIs(KW_AUTO)) {
@@ -3489,7 +3395,7 @@ class DLangParser {
             }
             if (!currentIsOneOf(OP_PAR_LEFT, KW_IN, KW_DO,
                 KW_OUT, OP_BRACES_LEFT, OP_LAMBDA_ARROW))
-                if (!parseType().first) {
+                if (!parseType()) {
                     cleanup(m, FUNCTION_LITERAL_EXPRESSION);
                     return null;
                 }
@@ -3545,13 +3451,8 @@ class DLangParser {
      * ;)
      */
     boolean parseGotoStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_GOTO)) {
-            cleanup(m, GOTO_STATEMENT);
-            return false;
-        }
-        if (!moreTokens()) {
-            error("Expected something after goto instead of EOF");
             cleanup(m, GOTO_STATEMENT);
             return false;
         }
@@ -3586,7 +3487,7 @@ class DLangParser {
      * ;)
      */
     boolean parseIdentifierChain() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         while (moreTokens()) {
             final IElementType ident = expect(ID);
             if (ident == null) {
@@ -3613,7 +3514,7 @@ class DLangParser {
      *     ;)
      */
     public boolean parseTypeIdentifierPart() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (currentIs(OP_DOT)) {
             advance();
         }
@@ -3627,22 +3528,22 @@ class DLangParser {
                 exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
                 return true;
             }
-            Bookmark b = setBookmark();
+            Marker bookmark = builder.mark();
             advance();
             // here we can have a type (AA key)
             if (!parseAssignExpression()) {
-                goToBookmark(b);
+                bookmark.rollbackTo();
                 exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
                 return true;
             }
             // indexer followed by ".." -> sliceExp -> type suffix
             else if (currentIs(OP_DDOT)) {
-                goToBookmark(b);
+                bookmark.rollbackTo();
                 exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
                 return true;
             }
             // otherwise either the index of a type list or a dim
-            abandonBookmark(b);
+            bookmark.drop();
             expect(OP_BRACKET_RIGHT);
             if (!currentIs(OP_DOT)) {
                 exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
@@ -3669,7 +3570,7 @@ class DLangParser {
      * ;)
      */
     boolean parseIdentifierOrTemplateChain() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         int identifiersOrTemplateInstancesLength = 0;
         while (moreTokens()) {
             if (!parseIdentifierOrTemplateInstance()) {
@@ -3698,7 +3599,7 @@ class DLangParser {
      * ;)
      */
     boolean parseIdentifierOrTemplateInstance() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (peekIs(OP_NOT) && !startsWith(ID, OP_NOT, KW_IS) && !startsWith(ID, OP_NOT, KW_IN)) {
             if (!parseTemplateInstance()) {
                 cleanup(m, IDENTIFIER_OR_TEMPLATE_INSTANCE);
@@ -3715,10 +3616,6 @@ class DLangParser {
         return true;
     }
 
-    Marker parseIdentityExpression() {
-        return parseIdentityExpression(null);
-    }
-
     /**
      * Parses an IdentityExpression
      * <p>
@@ -3729,7 +3626,7 @@ class DLangParser {
     Marker parseIdentityExpression(Marker m)
     {
         if (m == null) {
-            m = enter_section_modified(builder);
+            m = builder.mark();
             if (parseShiftExpression() == null) {
                 cleanup(m, IDENTITY_EXPRESSION);
                 return null;
@@ -3758,7 +3655,7 @@ class DLangParser {
      * ;)
      */
     boolean parseIfStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_IF)) {
             cleanup(m, IF_STATEMENT);
             return false;
@@ -3779,7 +3676,7 @@ class DLangParser {
         if (currentIs(OP_BRACES_RIGHT)) {
             error("Statement expected");
             exit_section_modified(builder, m, IF_STATEMENT, true);
-            return true; // this line makes DCD better
+            return true;
         }
         if (!parseThenStatement()) {
             cleanup(m, IF_STATEMENT);
@@ -3799,7 +3696,7 @@ class DLangParser {
 
     /**
      * Parse IfCondition
-     *
+     * <p>
      * $(RULEDEF ifCondition):
      *   $(LITERAL 'auto') $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
      *   $(LITERAL 'scope') $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
@@ -3824,36 +3721,31 @@ class DLangParser {
             }
             ifCondition.done(IF_CONDITION);
         } else {
-            if (!moreTokens()) {
+            if (builder.eof()) {
                 return false;
             }
             // consume for TypeCtors = identifier
             if (isTypeCtor(current())) {
-                Bookmark before_advance = null;
+                Marker before_advance = builder.mark();
                 while (isTypeCtor(current())) {
-                    if (before_advance != null) {
-                        abandonBookmark(before_advance);
-                    }
-                    before_advance = setBookmark();
+                    before_advance.drop();
+                    before_advance = builder.mark();
                     advance();
                 }
                 // goes back for TypeCtor(Type) = identifier
                 if (currentIs(OP_PAR_LEFT)) {
-                    goToBookmark(before_advance);
+                    before_advance.rollbackTo();
                 } else {
-                    abandonBookmark(before_advance);
+                    before_advance.drop();
                 }
             }
-            final Bookmark b = setBookmark();
-            final boolean type = parseType().first;
-            if (!type || !currentIs(ID)
-                || !peekIs(OP_EQ)) {
-                goToBookmark(b);
-                if (!parseExpression()) {
-                    return false;
-                }
+            Marker bookmark = builder.mark();
+            final boolean type = parseType();
+            if (!type || !currentIs(ID) || !peekIs(OP_EQ)) {
+                bookmark.rollbackTo();
+                return parseExpression();
             } else {
-                abandonBookmark(b);
+                bookmark.drop();
                 final Marker ifCondition = builder.mark();
                 if (!tokenCheck(ID)) {
                     cleanup(ifCondition, IF_CONDITION);
@@ -3890,12 +3782,12 @@ class DLangParser {
      * ;)
      */
     boolean parseImportBind() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         boolean isNamedBind = false;
-        final Bookmark bookmark = setBookmark();
+        Marker bookmark = builder.mark();
         IElementType ident = expect(ID);
         if (ident == null) {
-            abandonBookmark(bookmark);
+            bookmark.drop();
             cleanup(m, IMPORT_BIND);
             return false;
         }
@@ -3904,14 +3796,14 @@ class DLangParser {
             advance();
             final IElementType id = expect(ID);
             if (id == null) {
-                abandonBookmark(bookmark);
+                bookmark.drop();
                 cleanup(m, IMPORT_BIND);
                 return false;
             }
         }
-        goToBookmark(bookmark);
+        bookmark.rollbackTo();
         if (isNamedBind) {
-            final Marker namedImportBind = enter_section_modified(builder);
+            final Marker namedImportBind = builder.mark();
             ident = expect(ID);
             if (ident == null) {
                 cleanup(m, IMPORT_BIND);
@@ -3945,7 +3837,7 @@ class DLangParser {
      * ;)
      */
     boolean parseImportBindings() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         builder.advanceLexer();
         while (moreTokens()) {
             if (parseImportBind()) {
@@ -4021,7 +3913,7 @@ class DLangParser {
      * ;)
      */
     Marker parseImportExpression() {
-        final Marker marker = enter_section_modified(builder);
+        final Marker marker = builder.mark();
         if (expect(KW_IMPORT) == null) {
             cleanup(marker, IMPORT_EXPRESSION);
             return null;
@@ -4043,82 +3935,6 @@ class DLangParser {
     }
 
     /**
-     * Parses an Index
-     * <p>
-     * $(GRAMMAR $(RULEDEF index):
-     * $(RULE assignExpression) ($(LITERAL '..') $(RULE assignExpression))?
-     * ;
-     * )
-     */
-    boolean parseIndex() {
-        final Marker m = enter_section_modified(builder);
-        if (!parseAssignExpression()) {
-            cleanup(m, INDEX);
-            return false;
-        }
-        if (currentIs(OP_DDOT)) {
-            advance();
-            if (!parseAssignExpression()) {
-                cleanup(m, INDEX);
-                return false;
-            }
-        }
-        exit_section_modified(builder, m, INDEX, true);
-        return true;
-    }
-
-    boolean parseIndexExpression() {
-        return parseIndexExpression(true);
-    }
-
-    /**
-     * Parses an IndexExpression
-     * <p>
-     * $(GRAMMAR $(RULEDEF indexExpression):
-     * $(RULE unaryExpression) $(LITERAL '[') $(LITERAL ']')
-     * | $(RULE unaryExpression) $(LITERAL '[') $(RULE index) ($(LITERAL ',') $(RULE index))* $(LITERAL ']')
-     * ;
-     * )
-     */
-    boolean parseIndexExpression(final boolean parseUnary)//(UnaryExpression unaryExpression = null)
-    {
-        final Marker m = enter_section_modified(builder);
-        if (parseUnary) {
-            if (parseUnaryExpression() == null) {
-                cleanup(m, INDEX_EXPRESSION);
-                return false;
-            }
-        }
-        if (!tokenCheck(OP_BRACKET_LEFT)) {
-            cleanup(m, INDEX_EXPRESSION);
-            return false;
-        }
-        while (true) {
-            if (!moreTokens()) {
-                error("Expected unary expression instead of EOF");
-                exit_section_modified(builder, m, INDEX_EXPRESSION, true);
-                return false;
-            }
-            if (currentIs(OP_BRACKET_RIGHT))
-                break;
-            if (!(parseIndex())) {
-                cleanup(m, INDEX_EXPRESSION);
-                return false;
-            }
-            if (currentIs(OP_COMMA))
-                advance();
-            else
-                break;
-        }
-        if (!tokenCheck(OP_BRACKET_RIGHT)) {
-            cleanup(m, INDEX_EXPRESSION);
-            return false;
-        }
-        exit_section_modified(builder, m, INDEX_EXPRESSION, true);
-        return true;
-    }
-
-    /**
      * Parses an InContractExpression
      * <p>
      * $(GRAMMAR $(RULEDEF inContractExpression):
@@ -4126,7 +3942,7 @@ class DLangParser {
      *     ;)
      */
     public boolean parseInContractExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (expect(KW_IN) == null) {
             cleanup(m, IN_CONTRACT_EXPRESSION);
             return false;
@@ -4145,10 +3961,6 @@ class DLangParser {
         }
         exit_section_modified(builder, m, IN_CONTRACT_EXPRESSION, true);
         return true;
-    }
-
-    Marker parseInExpression() {
-        return parseInExpression(null);
     }
 
     /**
@@ -4184,14 +3996,14 @@ class DLangParser {
 
     /**
      * Parses an InOutContractExpression
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF inOutContractExpression):
      *       $(RULE inContractExpression)
      *     | $(RULE outContractExpression)
      *     ;)
      */
     public boolean parseInOutContractExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (currentIs(KW_IN)) {
             if (!parseInContractExpression()) {
                 cleanup(m, IN_OUT_CONTRACT_EXPRESSION);
@@ -4217,7 +4029,7 @@ class DLangParser {
      *     ;)
      */
     public boolean parseInOutStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (currentIs(KW_IN)) {
             if (!parseInStatement()) {
                 cleanup(m, IN_OUT_STATEMENT);
@@ -4244,7 +4056,7 @@ class DLangParser {
      * ;)
      */
     boolean parseInStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = expect(KW_IN);
         if (i == null) {
             cleanup(m, IN_STATEMENT);
@@ -4267,7 +4079,7 @@ class DLangParser {
      * ;)
      */
     boolean parseInitializer() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (currentIs(KW_VOID))
             advance();
         else if (!parseNonVoidInitializer()) {
@@ -4351,7 +4163,7 @@ class DLangParser {
      * ;)
      */
     Marker parseIsExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_IS)) {
             cleanup(m, IS_EXPRESSION);
             return null;
@@ -4360,7 +4172,7 @@ class DLangParser {
             cleanup(m, IS_EXPRESSION);
             return null;
         }
-        if (!parseType().first) {
+        if (!parseType()) {
             cleanup(m, IS_EXPRESSION);
             return null;
         }
@@ -4396,7 +4208,7 @@ class DLangParser {
      * ;)
      */
     boolean parseKeyValuePair() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!parseAssignExpression()) {
             cleanup(m, KEY_VALUE_PAIR);
             return false;
@@ -4421,7 +4233,7 @@ class DLangParser {
      * ;)
      */
     boolean parseKeyValuePairs() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         while (moreTokens()) {
             if (!parseKeyValuePair()) {
                 cleanup(m, KEY_VALUE_PAIRS);
@@ -4446,7 +4258,7 @@ class DLangParser {
      * ;)
      */
     boolean parseLabeledStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType ident = expect(ID);
         if (ident == null) {
             cleanup(m, LABELED_STATEMENT);
@@ -4470,7 +4282,7 @@ class DLangParser {
      * ;)
      */
     boolean parseLastCatch() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType t = expect(KW_CATCH);
         if (t == null) {
             cleanup(m, LAST_CATCH);
@@ -4494,7 +4306,7 @@ class DLangParser {
      * ;)
      */
     boolean parseLinkageAttribute() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_EXTERN)) {
             cleanup(m, LINKAGE_ATTRIBUTE);
             return false;
@@ -4553,7 +4365,7 @@ class DLangParser {
      * ;)
      */
     boolean parseMemberFunctionAttribute() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!moreTokens()) {
             cleanup(m, MEMBER_FUNCTION_ATTRIBUTE);
             return false;
@@ -4582,21 +4394,21 @@ class DLangParser {
      *     ;)
      */
     public boolean parseMissingFunctionBody() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         boolean haveContract = false;
         boolean lastIsOutContractExpression = false;
         while (currentIsOneOf(KW_IN, KW_OUT)) {
             boolean isOut = currentIs(KW_OUT);
-            Bookmark b = setBookmark();
+            Marker bookmark = builder.mark();
             if (parseFunctionContract(false)) {
                 lastIsOutContractExpression = isOut;
             } else {
                 lastIsOutContractExpression = false;
-                goToBookmark(b);
+                bookmark.rollbackTo();
                 if (parseFunctionContract())
                     haveContract = true;
             }
-            abandonBookmark(b);
+            bookmark.drop();
         }
         if (!haveContract || lastIsOutContractExpression) {
             if (expect(OP_SCOLON) == null) {
@@ -4643,7 +4455,7 @@ class DLangParser {
      * ;)
      */
     Marker parseMixinExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_MIXIN);
         if (builder.getTokenType() != OP_PAR_LEFT) {
             m.rollbackTo();
@@ -4670,7 +4482,7 @@ class DLangParser {
         if (builder.getTokenType() != KW_MIXIN) {
             return false;
         }
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         builder.advanceLexer();
         if (builder.getTokenType() != KW_TEMPLATE) {
             m.rollbackTo();
@@ -4693,7 +4505,7 @@ class DLangParser {
      * ;)
      */
     boolean parseMixinTemplateName() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (currentIs(KW_TYPEOF)) {
             if (parseTypeofExpression() != null) {
                 cleanup(m, MIXIN_TEMPLATE_NAME);
@@ -4723,12 +4535,12 @@ class DLangParser {
         if (currentIs(SHEBANG)) {
             advance();
         }
-        final Bookmark b = setBookmark();
+        Marker bookmark = builder.mark();
         while (currentIs(OP_AT) || currentIs(KW_DEPRECATED)) {
             parseAttribute();
         }
         boolean isModule = currentIs(KW_MODULE);
-        goToBookmark(b);
+        bookmark.rollbackTo();
         if (isModule) {
             parseModuleDeclaration();
         }
@@ -4751,7 +4563,7 @@ class DLangParser {
      * $(RULE atAttribute)* $(RULE deprecated)? $(RULE atAttribute)* $(LITERAL 'module') $(RULE identifierChain) $(LITERAL ';')
      * ;)
      */
-    boolean parseModuleDeclaration() {
+    void parseModuleDeclaration() {
         final Marker m = builder.mark();
         m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         while (currentIs(OP_AT)) {
@@ -4760,7 +4572,7 @@ class DLangParser {
         if (currentIs(KW_DEPRECATED))
             if (!parseDeprecated()) {
                 m.done(MODULE_DECLARATION);
-                return true;
+                return;
             }
         while (currentIs(OP_AT)) {
             parseAttribute();
@@ -4768,15 +4580,14 @@ class DLangParser {
         final IElementType start = expect(KW_MODULE);
         if (start == null) {
             m.done(MODULE_DECLARATION);
-            return true;
+            return;
         }
         if (!parseIdentifierChain()) {
             m.done(MODULE_DECLARATION);
-            return true;
+            return;
         }
         expect(OP_SCOLON);
         m.done(MODULE_DECLARATION);
-        return true;
     }
 
     /**
@@ -4812,7 +4623,7 @@ class DLangParser {
      *     ;)
      */
     public boolean parseNamespaceList() {
-        final Marker marker = enter_section_modified(builder);
+        final Marker marker = builder.mark();
         while (moreTokens()) {
             if (parseTernaryExpression() == null) {
                 marker.drop();
@@ -4837,7 +4648,7 @@ class DLangParser {
      * ;)
      */
     boolean parseNewAnonClassExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_NEW);
         expect(KW_CLASS);
         if (currentIs(OP_PAR_LEFT))
@@ -4867,7 +4678,7 @@ class DLangParser {
      * ;)
      */
     Marker parseNewExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (peekIs(KW_CLASS)) {
             if (!parseNewAnonClassExpression()) {
                 cleanup(m, NEW_EXPRESSION);
@@ -4875,7 +4686,7 @@ class DLangParser {
             }
         } else {
             expect(KW_NEW);
-            if (!parseType().first) {
+            if (!parseType()) {
                 cleanup(m, NEW_EXPRESSION);
                 return null;
             }
@@ -4911,23 +4722,23 @@ class DLangParser {
             if (b == OP_PAR_LEFT) {
                 return parseAssignExpression();
             }
-            final Bookmark bookmark = setBookmark();
+            Marker bookmark = builder.mark();
             final boolean initializer = parseStructInitializer();
             if (initializer) {
-                abandonBookmark(bookmark);
+                bookmark.drop();
                 return true;
             }
-            goToBookmark(bookmark);
+            bookmark.rollbackTo();
         } else if (currentIs(OP_BRACKET_LEFT)) {
             boolean isAA = false;
-            Bookmark bk = setBookmark();
+            Marker bookmark = builder.mark();
             advance();
             if (currentIs(OP_BRACKET_LEFT)) {
                 advance();
                 IElementType c = peekPastBrackets();
                 isAA = c == OP_COLON;
             }
-            goToBookmark(bk);
+            bookmark.rollbackTo();
             final IElementType b = peekPastBrackets();
             if (!isAA && (b == OP_COMMA
                 || b == OP_PAR_RIGHT
@@ -4949,7 +4760,7 @@ class DLangParser {
      * ;)
      */
     boolean parseOperands() {
-        final Marker marker = enter_section_modified(builder);
+        final Marker marker = builder.mark();
         while (true) {
             if (!(parseAsmExp())) {
                 cleanup(marker, OPERANDS);
@@ -5014,13 +4825,13 @@ class DLangParser {
 
     /**
      * Parses an OutContractExpression
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF outContractExpression):
      *     $(LITERAL 'out') $(LITERAL '$(LPAREN)') $(LITERAL Identifier)? $(LITERAL ';') $(RULE assertArguments) $(LITERAL '$(RPAREN)')
      *     ;)
      */
     public boolean parseOutContractExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType o = expect(KW_OUT);
         if (o == null) {
             cleanup(m, OUT_CONTRACT_EXPRESSION);
@@ -5057,7 +4868,7 @@ class DLangParser {
      * ;)
      */
     boolean parseOutStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType o = expect(KW_OUT);
         if (o == null) {
             cleanup(m, OUT_STATEMENT);
@@ -5090,10 +4901,9 @@ class DLangParser {
      * ;)
      */
     boolean parseParameter() {
-        final Marker m = enter_section_modified(builder);
-        while (moreTokens()) {
-            final IElementType type = parseParameterAttribute(false);
-            if (type == null)
+        final Marker m = builder.mark();
+        while (!builder.eof()) {
+            if (!parseParameterAttribute())
                 break;
         }
         // Parsed the attributes of the variadic attributes.
@@ -5103,7 +4913,7 @@ class DLangParser {
             return false;
         }
 
-        if (!parseType().first) {
+        if (!parseType()) {
             cleanup(m, PARAMETER);
             return false;
         }
@@ -5156,27 +4966,25 @@ class DLangParser {
      * | $(LITERAL 'return')
      * ;)
      */
-    IElementType parseParameterAttribute(final boolean validate) {
-        final IElementType i = current();
+    boolean parseParameterAttribute() {
+        final IElementType i = builder.getTokenType();
         if (i == OP_AT) {
             if (!parseAtAttribute()) {
                 error("Parameter attribute expected");
-                return null;
+                return false;
             }
-            return current(); // Hack because libdparse return the aa node
+            return true;
         } else if (i == KW_IMMUTABLE || i == KW_SHARED || i == KW_CONST || i == KW_INOUT) {
             if (peekIs(OP_PAR_LEFT))
-                return null;
+                return false;
             else
-                return advance();
+                builder.advanceLexer();
         } else if (i == KW_FINAL || i == KW_IN || i == KW_LAZY || i == KW_OUT || i == KW_REF || i == KW_SCOPE || i == KW_AUTO || i == KW_RETURN) {
-            return advance();
+            builder.advanceLexer();
         } else {
-            if (validate) {
-                error("Parameter attribute expected");
-            }
-            return null;
+            return false;
         }
+        return true;
     }
 
     /**
@@ -5189,7 +4997,7 @@ class DLangParser {
      * ;)
      */
     boolean parseParameters() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(OP_PAR_LEFT)) {
             cleanup(m, PARAMETERS);
             return false;
@@ -5218,16 +5026,16 @@ class DLangParser {
                 break;
             // Save starting point to deal with attributed variadics, e.g.
             // int printf(in char* format, scope const ...);
-            Bookmark b = setBookmark();
+            Marker bookmark = builder.mark();
             if (!(parseParameter())) {
                 // parseParameter fails for C-style variadics, they are parsed below
                 if (!currentIs(OP_TRIPLEDOT)) {
-                    abandonBookmark(b);
+                    bookmark.drop();
                     cleanup(m, PARAMETERS);
                     return false;
                 }
                 // Reset to the beginning of the current parameters
-                goToBookmark(b);
+                bookmark.rollbackTo();
                 if (!parseVariadicArgumentsAttributes()) {
                     cleanup(m, PARAMETERS);
                     return false;
@@ -5237,7 +5045,7 @@ class DLangParser {
                     return false;
                 }
             } else {
-                abandonBookmark(b);
+                bookmark.drop();
             }
             if (currentIs(OP_COMMA))
                 advance();
@@ -5254,13 +5062,13 @@ class DLangParser {
 
     /**
      * Parses attributes of C-style variadic parameters.
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF variadicArgumentsAttributes):
      *       $(RULE variadicArgumentsAttribute)+
      *     ;)
      */
     public boolean parseVariadicArgumentsAttributes() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         while (moreTokens() && !currentIs(OP_TRIPLEDOT)) {
             if (!parseVariadicArgumentsAttribute()) {
                 cleanup(m, VARIADIC_ARGUMENTS_ATTRIBUTES);
@@ -5273,7 +5081,7 @@ class DLangParser {
 
     /**
      * Parses an attribute of C-style variadic parameters.
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF variadicArgumentsAttribute):
      *       $(LITERAL 'const')
      *     | $(LITERAL 'immutable')
@@ -5283,7 +5091,7 @@ class DLangParser {
      *     ;)
      */
     public boolean parseVariadicArgumentsAttribute() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!currentIsOneOf(KW_CONST, KW_IMMUTABLE, KW_SHARED, KW_SCOPE, KW_RETURN)) {
             error("`const`, `immutable`, `shared`, `scope` or `return` expected");
             cleanup(m, VARIADIC_ARGUMENTS_ATTRIBUTE);
@@ -5366,27 +5174,6 @@ class DLangParser {
     }
 
     /**
-     * Parses a PragmaDeclaration
-     * <p>
-     * $(GRAMMAR $(RULEDEF pragmaDeclaration):
-     * $(RULE pragmaExpression) $(LITERAL ';')
-     * ;)
-     */
-    boolean parsePragmaDeclaration() {
-        final Marker marker = enter_section_modified(builder);
-        if(!parsePragmaExpression()) {
-            cleanup(marker, PRAGMA_DECLARATION);
-            return false;
-        }
-        if (expect(OP_SCOLON) == null) {
-            cleanup(marker, PRAGMA_DECLARATION);
-            return false;
-        }
-        exit_section_modified(builder, marker, PRAGMA_DECLARATION, true);
-        return true;
-    }
-
-    /**
      * Parses a PragmaExpression
      * <p>
      * $(GRAMMAR $(RULEDEF pragmaExpression):
@@ -5394,7 +5181,7 @@ class DLangParser {
      * ;)
      */
     boolean parsePragmaExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_PRAGMA);
         expect(OP_PAR_LEFT);
         final IElementType ident = expect(ID);
@@ -5424,7 +5211,7 @@ class DLangParser {
      *     ;)
      */
     public boolean parsePragmaStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!parsePragmaExpression()) {
             cleanup(m, PRAGMA_STATEMENT);
             return false;
@@ -5545,13 +5332,13 @@ class DLangParser {
             }
         }
         // Function Literal
-        Bookmark b = setBookmark();
+        Marker bookmark = builder.mark();
         Marker fnctlMarker = parseFunctionLiteralExpression();
         if (fnctlMarker != null) {
-            abandonBookmark(b);
+            bookmark.drop();
             return fnctlMarker;
         }
-        goToBookmark(b);
+        bookmark.rollbackTo();
 
         // AssertExpression
         if (i == KW_ASSERT) {
@@ -5599,22 +5386,20 @@ class DLangParser {
         // TypeCtor? ...
         if (i == KW_IMMUTABLE || i == KW_CONST || i == KW_INOUT || i == KW_SHARED) {
             Marker m = builder.mark();
-            Bookmark b1 = setBookmark();
+            bookmark = builder.mark();
             advance();
             if (expect(OP_PAR_LEFT) == null) {
-                goToBookmark(b1);
+                bookmark.rollbackTo();
                 m.drop();
                 return null;
             }
-            if (!parseType().first) {
-                goToBookmark(b1);
+            if (!parseType()) {
+                bookmark.rollbackTo();
                 m.drop();
                 return null;
             }
-            abandonBookmark(b1);
-            if (expect(OP_PAR_RIGHT) == null) {
-
-            }
+            bookmark.drop();
+            expect(OP_PAR_RIGHT);
             if (currentIs(OP_DOT)) {
                 // ( type ) . id
                 advance();
@@ -5639,22 +5424,22 @@ class DLangParser {
         if (i == OP_PAR_LEFT) {
             Marker m = builder.mark();
             advance();
-            Bookmark b1 = setBookmark();
-            if (parseType().first) {
+            bookmark = builder.mark();
+            if (parseType()) {
                 if (expect(OP_PAR_RIGHT) != null) {
                     if (builder.getTokenType() == OP_DOT) {
                         // ( type ) . id
                         builder.advanceLexer();
                         expect(ID);
                         if (builder.getTokenType() != OP_NOT && builder.getTokenType() != OP_PAR_LEFT && builder.getTokenType() != OP_DDOT) {
-                            abandonBookmark(b1);
+                            bookmark.drop();
                             exit_section_modified(builder, m, TYPE_PROPERTY_EXPRESSION, true);
                             return m;
                         }
                         // then it’s a parenthesised expression followed by reference expression
                     } else if (builder.getTokenType() == OP_PAR_LEFT) {
                         // (type) (args)
-                        abandonBookmark(b1);
+                        bookmark.drop();
                         builder.advanceLexer();
                         parseArgumentList();
                         expect(OP_PAR_RIGHT);
@@ -5663,7 +5448,7 @@ class DLangParser {
                     }
                 }
             }
-            goToBookmark(b1);
+            bookmark.rollbackTo();
 
             // ( expression )
             if (!parseExpression()) {
@@ -5722,7 +5507,7 @@ class DLangParser {
      * ;)
      */
     boolean parseRegister() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType ident = expect(ID);
         if (ident == null) {
             cleanup(m, REGISTER);
@@ -5770,7 +5555,7 @@ class DLangParser {
     Marker parseRelExpression(Marker m)
     {
         if (m == null) {
-            m = enter_section_modified(builder);
+            m = builder.mark();
             if (parseShiftExpression() == null) {
                 cleanup(m, IDENTITY_EXPRESSION);
                 return null;
@@ -5797,7 +5582,7 @@ class DLangParser {
      * ;)
      */
     boolean parseReturnStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType start = expect(KW_RETURN);
         if (start == null) {
             cleanup(m, RETURN_STATEMENT);
@@ -5825,7 +5610,7 @@ class DLangParser {
      * ;)
      */
     boolean parseScopeGuardStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_SCOPE);
         expect(OP_PAR_LEFT);
         final IElementType ident = expect(ID);
@@ -5852,7 +5637,7 @@ class DLangParser {
     boolean parseSharedStaticConstructor() {
         if (builder.getTokenType() != KW_SHARED)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         builder.advanceLexer();
         if (builder.getTokenType() != KW_SHARED) {
             m.rollbackTo();
@@ -5878,7 +5663,7 @@ class DLangParser {
     boolean parseSharedStaticDestructor() {
         if (builder.getTokenType() != KW_SHARED)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         builder.advanceLexer();
         if (builder.getTokenType() != KW_STATIC) {
             m.rollbackTo();
@@ -5925,7 +5710,7 @@ class DLangParser {
      * ;)
      */
     boolean parseSingleImport() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (startsWith(ID, OP_EQ)) {
             advance(); // identifier
             advance(); // =
@@ -5946,12 +5731,9 @@ class DLangParser {
      *     ;)
      */
     public boolean parseShortenedFunctionBody() {
-        final Marker m = enter_section_modified(builder);
-        boolean contract = false;
+        final Marker m = builder.mark();
         while (currentIsOneOf(KW_IN, KW_OUT)) {
-            if (parseFunctionContract(false)) {
-                contract = true;
-            }
+            parseFunctionContract(false);
         }
         if (!tokenCheck(OP_LAMBDA_ARROW)) {
             cleanup(m, SHORTENED_FUNCTION_BODY);
@@ -5971,7 +5753,7 @@ class DLangParser {
 
     /**
      * Parses a SpecifiedFunctionBody
-     *
+     * <p>
      * $(GRAMMAR $(RULEDEF specifiedFunctionBody):
      *       $(LITERAL 'do')? $(RULE blockStatement)
      *     | $(RULE functionContract)* $(RULE inOutContractExpression) $(LITERAL 'do')? $(RULE blockStatement)
@@ -5979,20 +5761,20 @@ class DLangParser {
      *     ;)
      */
     public boolean parseSpecifiedFunctionBody() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         boolean requireDo = false;
         while (currentIsOneOf(KW_IN, KW_OUT)) {
-            Bookmark b = setBookmark();
+            Marker bookmark = builder.mark();
             if (parseFunctionContract(false)) {
                 requireDo = false;
             }
             else {
-                goToBookmark(b);
+                bookmark.rollbackTo();
                 if (parseFunctionContract()) {
                     requireDo = true;
                 }
             }
-            abandonBookmark(b);
+            bookmark.drop();
         }
         if (currentIs(KW_DO) || currentIs(ID)) {
             advance();
@@ -6050,7 +5832,7 @@ class DLangParser {
         }
         final IElementType i = current();
         if (i == KW_CASE) {
-            final Marker m_case = enter_section_modified(builder);
+            final Marker m_case = builder.mark();
             advance();
             final boolean argumentList = parseArgumentList();
             if (!argumentList) {
@@ -6263,7 +6045,7 @@ class DLangParser {
      * ;)
      */
     boolean parseStaticAssertDeclaration() {
-        final Marker marker = enter_section_modified(builder);
+        final Marker marker = builder.mark();
         if (builder.getTokenType() != KW_STATIC) {
             marker.rollbackTo();
             return false;
@@ -6290,7 +6072,7 @@ class DLangParser {
      * ;)
      */
     boolean parseStaticAssertStatement() {
-        final Marker marker = enter_section_modified(builder);
+        final Marker marker = builder.mark();
         if (expect(KW_STATIC) == null) {
             cleanup(marker, STATIC_ASSERT_STATEMENT);
             return false;
@@ -6317,7 +6099,7 @@ class DLangParser {
     boolean parseStaticConstructor() {
         if (builder.getTokenType() != KW_STATIC)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         builder.advanceLexer();
         final boolean b = parseStaticCtorDtorCommon();
         exit_section_modified(builder, m, STATIC_CONSTRUCTOR, b);
@@ -6334,7 +6116,7 @@ class DLangParser {
     boolean parseStaticDestructor() {
         if (builder.getTokenType() != KW_STATIC)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         builder.advanceLexer();
         if (!tokenCheck(OP_TILDA)) {
             m.rollbackTo();
@@ -6353,7 +6135,7 @@ class DLangParser {
      * ;)
      */
     boolean parseStaticIfCondition() {
-        final Marker marker = enter_section_modified(builder);
+        final Marker marker = builder.mark();
         if (expect(KW_STATIC) == null) {
             cleanup(marker, STATIC_IF_CONDITION);
             return false;
@@ -6404,7 +6186,7 @@ class DLangParser {
      * ;)
      */
     boolean parseStorageClass() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = current();
         if (i == OP_AT) {
             if (!parseAtAttribute()) {
@@ -6453,7 +6235,7 @@ class DLangParser {
      * ;)
      */
     boolean parseStructBody() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType start = expect(OP_BRACES_LEFT);
         while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT) {
             if (!parseDeclDef()) {
@@ -6518,7 +6300,7 @@ class DLangParser {
      * ;)
      */
     boolean parseStructInitializer() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(OP_BRACES_LEFT);
         if (currentIs(OP_BRACES_RIGHT)) {
             advance();
@@ -6545,7 +6327,7 @@ class DLangParser {
      * ;)
      */
     boolean parseStructMemberInitializer() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (startsWith(ID, OP_COLON)) {
             advance();
             advance();
@@ -6566,7 +6348,7 @@ class DLangParser {
      * ;)
      */
     boolean parseStructMemberInitializers() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         do {
             parseStructMemberInitializer();
             if (currentIs(OP_COMMA))
@@ -6586,7 +6368,7 @@ class DLangParser {
      * ;)
      */
     boolean parseSwitchStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_SWITCH);
         expect(OP_PAR_LEFT);
         if (!parseExpression()) {
@@ -6610,7 +6392,7 @@ class DLangParser {
      * ;)
      */
     boolean parseSymbol() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (currentIs(OP_DOT)) {
             advance();
         }
@@ -6630,7 +6412,7 @@ class DLangParser {
      * ;)
      */
     boolean parseSynchronizedStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_SYNCHRONIZED);
         if (currentIs(OP_PAR_LEFT)) {
             expect(OP_PAR_LEFT);
@@ -6656,13 +6438,13 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateAliasParameter() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_ALIAS);
         if (currentIs(ID) && !peekIs(OP_DOT)) {
             if (peekIsOneOf(OP_COMMA, OP_PAR_RIGHT, OP_EQ, OP_COLON))
                 advance();
             else {
-                if (!parseType().first) {
+                if (!parseType()) {
                     cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                     return false;
                 }
@@ -6673,7 +6455,7 @@ class DLangParser {
                 }
             }
         } else {
-            if (!parseType().first) {
+            if (!parseType()) {
                 cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                 return false;
             }
@@ -6687,7 +6469,7 @@ class DLangParser {
         if (currentIs(OP_COLON)) {
             advance();
             if (isType()) {
-                if (!parseType().first) {
+                if (!parseType()) {
                     cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                     return false;
                 }
@@ -6699,7 +6481,7 @@ class DLangParser {
         if (currentIs(OP_EQ)) {
             advance();
             if (isType()) {
-                if (!parseType().first) {
+                if (!parseType()) {
                     cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                     return false;
                 }
@@ -6721,7 +6503,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateArgument() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         int startIndex = builder.getCurrentOffset();
         boolean p = cachedTypedChecks.containsKey(startIndex);
         if (p) {
@@ -6736,14 +6518,14 @@ class DLangParser {
             }
         }
         else {
-            final Bookmark b = setBookmark();
-            final boolean t = parseType().first;
+            Marker bookmark = builder.mark();
+            final boolean t = parseType();
             if (t && currentIsOneOf(OP_COMMA, OP_PAR_RIGHT)) {
                 cachedTypedChecks.put(startIndex, true);
-                abandonBookmark(b);
+                bookmark.drop();
             } else {
                 cachedTypedChecks.put(startIndex, false);
-                goToBookmark(b);
+                bookmark.rollbackTo();
                 if (!parseAssignExpression()) {
                     cleanup(m, TEMPLATE_ARGUMENT);
                     return false;
@@ -6762,7 +6544,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateArgumentList() {
-        final Marker marker = enter_section_modified(builder);
+        final Marker marker = builder.mark();
         while (moreTokens()) {
             if (!parseTemplateArgument()) {
                 cleanup(marker, TEMPLATE_ARGUMENT_LIST);
@@ -6787,7 +6569,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateArguments() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(OP_NOT);
         if (currentIs(OP_PAR_LEFT)) {
             advance();
@@ -6818,7 +6600,7 @@ class DLangParser {
     boolean parseTemplateDeclaration() {
         if (builder.getTokenType() != KW_TEMPLATE)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!parseTemplateDeclarationCommon()) {
             m.rollbackTo();
             return false;
@@ -6867,7 +6649,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateInstance() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType ident = expect(ID);
         if (ident == null) {
             cleanup(m, TEMPLATE_INSTANCE);
@@ -6895,7 +6677,7 @@ class DLangParser {
     boolean parseTemplateMixin() {
         if (builder.getTokenType() != KW_MIXIN)
             return false;
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         builder.advanceLexer();
         if (!parseMixinTemplateName()) {
             m.rollbackTo();
@@ -6927,7 +6709,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateParameter() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = current();
         if (i == KW_ALIAS) {
             if (!parseTemplateAliasParameter()) {
@@ -6972,7 +6754,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateParameterList() {
-        final Marker marker = enter_section_modified(builder);
+        final Marker marker = builder.mark();
         while (moreTokens()) {
             if (!parseTemplateParameter()) {
                 cleanup(marker, TEMPLATE_PARAMETER_LIST);
@@ -6997,7 +6779,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateParameters() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(OP_PAR_LEFT)) {
             cleanup(m, TEMPLATE_PARAMETERS);
             return false;
@@ -7043,7 +6825,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateSingleArgument() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!moreTokens()) {
             error("template argument expected instead of EOF");
             exit_section_modified(builder, m, TEMPLATE_SINGLE_ARGUMENT, true);
@@ -7071,7 +6853,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateThisParameter() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_THIS);
         if (!parseTemplateTypeParameter()) {
             cleanup(m, TEMPLATE_THIS_PARAMETER);
@@ -7089,7 +6871,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateTupleParameter() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = expect(ID);
         if (i == null) {
             cleanup(m, TEMPLATE_TUPLE_PARAMETER);
@@ -7111,7 +6893,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateTypeParameter() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType ident = expect(ID);
         if (ident == null) {
             cleanup(m, TEMPLATE_TYPE_PARAMETER);
@@ -7119,14 +6901,14 @@ class DLangParser {
         }
         if (currentIs(OP_COLON)) {
             advance();
-            if (!parseType().first) {
+            if (!parseType()) {
                 cleanup(m, TEMPLATE_TYPE_PARAMETER);
                 return false;
             }
         }
         if (currentIs(OP_EQ)) {
             advance();
-            if (!parseType().first) {
+            if (!parseType()) {
                 cleanup(m, TEMPLATE_TYPE_PARAMETER);
                 return false;
             }
@@ -7143,8 +6925,8 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateValueParameter() {
-        final Marker m = enter_section_modified(builder);
-        if (!parseType().first) {
+        final Marker m = builder.mark();
+        if (!parseType()) {
             cleanup(m, TEMPLATE_VALUE_PARAMETER);
             return false;
         }
@@ -7187,7 +6969,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTemplateValueParameterDefault() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(OP_EQ);
         final IElementType i = current();
         if (i == KW___FILE__ || i == KW___FILE_FULL_PATH__ || i == KW___MODULE__ || i == KW___LINE__ || i == KW___FUNCTION__ || i == KW___PRETTY_FUNCTION__) {
@@ -7245,7 +7027,7 @@ class DLangParser {
      * ;)
      */
     Marker parseThrowExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_THROW);
         if (!parseAssignExpression()) {
             cleanup(m, THROW_EXPRESSION);
@@ -7263,7 +7045,7 @@ class DLangParser {
      * ;)
      */
     Marker parseTraitsExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW___TRAITS)) {
             cleanup(m, TRAITS_EXPRESSION);
             return null;
@@ -7300,7 +7082,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTryStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_TRY);
         if (!parseScopeStatement()) {
             cleanup(m, TRY_STATEMENT);
@@ -7327,24 +7109,24 @@ class DLangParser {
      * $(RULE typeConstructors)? $(RULE type2) $(RULE typeSuffix)*
      * ;)
      */
-    Pair<Boolean, Marker> parseType() {
-        final Marker m = enter_section_modified(builder);
+    boolean parseType() {
+        final Marker m = builder.mark();
         if (!moreTokens()) {
             error("type expected");
             exit_section_modified(builder, m, TYPE, true);
-            return new Pair<>(false, m);
+            return false;
         }
         final IElementType i = current();
         if (isTypeCtor(i)) {
             if (!peekIs(OP_PAR_LEFT))
                 if (!parseTypeConstructors()) {
                     cleanup(m, TYPE);
-                    return new Pair<>(false, m);
+                    return false;
                 }
         }
         if (!parseBasicType()) {
             cleanup(m, TYPE);
-            return new Pair<>(false, m);
+            return false;
         }
         while (moreTokens()) {
             final IElementType i1 = current();
@@ -7353,24 +7135,24 @@ class DLangParser {
                 // Allow this to fail because of the madness that is the
                 // newExpression rule. Something starting with '[' may be arguments
                 // to the newExpression instead of part of the type
-                final Bookmark newBookmark = setBookmark();
-                if (parseTypeSuffix())
-                    abandonBookmark(newBookmark);
-                else {
-                    goToBookmark(newBookmark);
+                Marker bookmark = builder.mark();
+                if (parseTypeSuffix()) {
+                    bookmark.drop();
+                } else {
+                    bookmark.rollbackTo();
                     break;
                 }
             } else if (i1 == OP_ASTERISK || i1 == KW_DELEGATE || i1 == KW_FUNCTION) {
                 if (!parseTypeSuffix()) {
                     cleanup(m, TYPE);
-                    return new Pair<>(false, m);
+                    return false;
                 }
             } else {
                 break;
             }
         }
         exit_section_modified(builder, m, TYPE, true);
-        return new Pair<>(true, m);
+        return true;
     }
 
     int parseTypeSuffixes() {
@@ -7399,7 +7181,7 @@ class DLangParser {
      * ;)
      */
     boolean parseBasicType() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!moreTokens()) {
             error("basic type expected instead of EOF");
             exit_section_modified(builder, m, BASIC_TYPE, true);
@@ -7453,7 +7235,7 @@ class DLangParser {
                 cleanup(m, BASIC_TYPE);
                 return false;
             }
-            if (!(parseType().first)) {
+            if (!(parseType())) {
                 cleanup(m, BASIC_TYPE);
                 return false;
             }
@@ -7539,7 +7321,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTypeSpecialization() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = current();
         if (i == KW_STRUCT || i == KW_UNION || i == KW_CLASS || i == KW_INTERFACE || i == KW___VECTOR || i == KW_ENUM || i == KW_FUNCTION || i == KW_DELEGATE || i == KW_SUPER || i == KW_CONST || i == KW_IMMUTABLE || i == KW_INOUT || i == KW_SHARED || i == KW_RETURN || i == KW___PARAMETERS || i == KW_MODULE || i == KW_PACKAGE) {
             if (peekIsOneOf(OP_PAR_RIGHT, OP_COMMA)) {
@@ -7547,11 +7329,11 @@ class DLangParser {
                 exit_section_modified(builder, m, TYPE_SPECIALIZATION, true);
                 return true;
             }
-            if (!parseType().first) {
+            if (!parseType()) {
                 cleanup(m, TYPE_SPECIALIZATION);
                 return false;
             }
-        } else if (!parseType().first) {
+        } else if (!parseType()) {
             cleanup(m, TYPE_SPECIALIZATION);
             return false;
         }
@@ -7571,7 +7353,7 @@ class DLangParser {
      * ;)
      */
     boolean parseTypeSuffix() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType i = current();
         if (i == OP_ASTERISK) {
             advance();
@@ -7584,12 +7366,12 @@ class DLangParser {
                 exit_section_modified(builder, m, TYPE_SUFFIX, true);
                 return true;
             }
-            final Bookmark bookmark = setBookmark();
-            final Pair<Boolean, Marker> type = parseType();
-            if (type.first && currentIs(OP_BRACKET_RIGHT)) {
-                abandonBookmark(bookmark);
+            Marker bookmark = builder.mark();
+            final boolean type = parseType();
+            if (type && currentIs(OP_BRACKET_RIGHT)) {
+                bookmark.drop();
             } else {
-                goToBookmark(bookmark);
+                bookmark.rollbackTo();
                 if (!parseAssignExpression()) {
                     cleanup(m, TYPE_SUFFIX);
                     return false;
@@ -7635,19 +7417,19 @@ class DLangParser {
      * ;)
      */
     Marker parseTypeidExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_TYPEID);
         expect(OP_PAR_LEFT);
-        final Bookmark b = setBookmark();
-        final boolean t = parseType().first;
+        Marker bookmark = builder.mark();
+        final boolean t = parseType();
         if (!t || !currentIs(OP_PAR_RIGHT)) {
-            goToBookmark(b);
+            bookmark.rollbackTo();
             if (!parseExpression()) {
                 cleanup(m, TYPEID_EXPRESSION);
                 return null;
             }
         } else {
-            abandonBookmark(b);
+            bookmark.drop();
         }
         expect(OP_PAR_RIGHT);
         exit_section_modified(builder, m, TYPEID_EXPRESSION, true);
@@ -7662,7 +7444,7 @@ class DLangParser {
      * ;)
      */
     Marker parseTypeofExpression() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         expect(KW_TYPEOF);
         expect(OP_PAR_LEFT);
         if (currentIs(KW_RETURN))
@@ -7706,7 +7488,7 @@ class DLangParser {
     Marker parseUnaryExpression() {
         final IElementType i = current();
         if (i == OP_AND || i == OP_NOT || i == OP_ASTERISK || i == OP_PLUS || i == OP_MINUS || i == OP_TILDA || i == OP_PLUS_PLUS || i == OP_MINUS_MINUS) {
-            Marker m = enter_section_modified(builder);
+            Marker m = builder.mark();
             advance();
             if (parseUnaryExpression() == null) {
                 cleanup(m, UNARY_EXPRESSION);
@@ -7731,7 +7513,7 @@ class DLangParser {
         // TypeCtor
         final IElementType i = current();
         if (isTypeCtor(i)) {
-            m = enter_section_modified(builder);
+            m = builder.mark();
             builder.advanceLexer();
             parseBasicType();
             if (expect(OP_PAR_LEFT) == null) {
@@ -7750,13 +7532,13 @@ class DLangParser {
         if (currentIs(OP_DOT)) {
             Marker marker = m.precede();
             builder.advanceLexer();
-            Bookmark b = setBookmark();
+            Marker bookmark = builder.mark();
             boolean success = false;
             if (parseTemplateInstance()) {
-                abandonBookmark(b);
+                bookmark.drop();
                 success = true;
             } else {
-                goToBookmark(b);
+                bookmark.rollbackTo();
             }
             if (!success && currentIs(ID)) {
                 advance();
@@ -7792,7 +7574,7 @@ class DLangParser {
         advance();
         if (currentIs(OP_BRACKET_RIGHT)) {
             advance();
-            m.done(INDEX_EXPRESSION); // TODO actually it’s a slice
+            m.done(INDEX_EXPRESSION);
             return false;
         }
         if (!parseAssignExpression()) {
@@ -7800,17 +7582,15 @@ class DLangParser {
             expect(OP_BRACKET_RIGHT);
             return false;
         }
-        boolean supposeIndexOperation = true;
         while (currentIs(OP_COMMA)) {
             advance();
             if (currentIs(OP_BRACKET_RIGHT)) {
-                supposeIndexOperation = false;
             }
             parseAssignExpression();
         }
         if (currentIs(OP_BRACKET_RIGHT)) {
             advance();
-            m.done(INDEX_EXPRESSION); // TODO can be sliceExpression or indexExpression
+            m.done(INDEX_EXPRESSION);
             return true;
         }
         while (currentIs(OP_COMMA) || currentIs(OP_DDOT)) {
@@ -7818,10 +7598,10 @@ class DLangParser {
             parseAssignExpression();
         }
         if (expect(OP_BRACKET_RIGHT) == null) {
-            cleanup(m, INDEX_EXPRESSION); // TODO actually sliceExpression
+            cleanup(m, INDEX_EXPRESSION);
             return false;
         }
-        m.done(INDEX_EXPRESSION); // TODO actually sliceExpression
+        m.done(INDEX_EXPRESSION);
         return true;
     }
 
@@ -7969,7 +7749,7 @@ class DLangParser {
      * ;)
      */
     boolean parseVector() {
-        final Marker marker = enter_section_modified(builder);
+        final Marker marker = builder.mark();
         if (expect(KW___VECTOR) == null) {
             cleanup(marker, VECTOR);
             return false;
@@ -7978,7 +7758,7 @@ class DLangParser {
             cleanup(marker, VECTOR);
             return false;
         }
-        if(!parseType().first) {
+        if(!parseType()) {
             cleanup(marker, VECTOR);
             return false;
         }
@@ -7998,7 +7778,7 @@ class DLangParser {
      * ;)
      */
     boolean parseVersionCondition() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         final IElementType v = expect(KW_VERSION);
         if (v == null) {
             cleanup(m, VERSION_CONDITION);
@@ -8056,7 +7836,7 @@ class DLangParser {
      * ;)
      */
     boolean parseWhileStatement() {
-        final Marker m = enter_section_modified(builder);
+        final Marker m = builder.mark();
         if (!tokenCheck(KW_WHILE)) {
             cleanup(m, WHILE_STATEMENT);
             return false;
@@ -8094,7 +7874,7 @@ class DLangParser {
      * ;)
      */
     boolean parseWithStatement() {
-        final Marker marker = enter_section_modified(builder);
+        final Marker marker = builder.mark();
         if (expect(KW_WITH) == null) {
             cleanup(marker, WITH_STATEMENT);
             return false;
@@ -8177,109 +7957,23 @@ class DLangParser {
         if (cachedAAChecks.containsKey(builder.getCurrentOffset()))
             return cachedAAChecks.get(builder.getCurrentOffset());
         int currentIndex = builder.getCurrentOffset();
-        final Bookmark b = setBookmark();
+        Marker bookmark = builder.mark();
         advance();
         final boolean result = !currentIs(OP_BRACKET_RIGHT) && parseExpression() && currentIs(OP_COLON);
         cachedAAChecks.put(currentIndex, result);
-        goToBookmark(b);
+        bookmark.rollbackTo();
         return result;
-    }
-
-    Pair<DecType, Integer> isAutoDeclaration() {
-        int beginIndex = Integer.MAX_VALUE;
-        final Bookmark b = setBookmark();
-        loop:
-        while (moreTokens()) {
-            final IElementType i = current();
-            if (i == KW_PRAGMA) {
-                beginIndex = Integer.MAX_VALUE;
-                advance();
-                if (currentIs(OP_PAR_LEFT)) {
-                    skipParens();
-                    break;
-                } else {
-                    goToBookmark(b);
-                    return new Pair<>(DecType.other, beginIndex);
-                }
-            } else if (i == KW_PACKAGE || i == KW_PRIVATE || i == KW_PROTECTED || i == KW_PUBLIC) {
-                beginIndex = Integer.MAX_VALUE;
-                advance();
-            } else if (i == OP_AT) {
-                beginIndex = Math.min(beginIndex, builder.getCurrentOffset());
-                advance();
-                if (currentIs(OP_PAR_LEFT))
-                    skipParens();
-                else if (currentIs(ID)) {
-                    advance();
-                    if (currentIs(OP_NOT)) {
-                        advance();
-                        if (currentIs(OP_PAR_LEFT))
-                            skipParens();
-                        else
-                            advance();
-                    }
-                    if (currentIs(OP_PAR_LEFT))
-                        skipParens();
-                } else {
-                    goToBookmark(b);
-                    return new Pair<>(DecType.other, beginIndex);
-                }
-            } else if (i == KW_DEPRECATED || i == KW_ALIGN || i == KW_EXTERN) {
-                beginIndex = Math.min(beginIndex, builder.getCurrentOffset());
-                advance();
-                if (currentIs(OP_PAR_LEFT))
-                    skipParens();
-            } else if (i == KW_CONST || i == KW_IMMUTABLE || i == KW_INOUT || i == KW_SYNCHRONIZED) {
-                if (peekIs(OP_PAR_LEFT)) {
-                    goToBookmark(b);
-                    return new Pair<>(DecType.other, beginIndex);
-                } else {
-                    beginIndex = Math.min(beginIndex, builder.getCurrentOffset());
-                    advance();
-                    break;
-                }
-            } else if (i == KW_AUTO || i == KW_ENUM || i == KW_EXPORT || i == KW_FINAL || i == KW___GSHARED || i == KW_NOTHROW || i == KW_OVERRIDE || i == KW_PURE || i == KW_REF || i == KW_SCOPE || i == KW_SHARED || i == KW_STATIC) {
-                beginIndex = Math.min(beginIndex, builder.getCurrentOffset());
-                advance();
-            } else {
-                break loop;
-            }
-        }
-        if (builder.getCurrentOffset() <= b.intValue()) {
-            goToBookmark(b);
-            return new Pair<>(DecType.other, beginIndex);
-        }
-        if (startsWith(ID, OP_EQ)) {
-            goToBookmark(b);
-            return new Pair<>(DecType.autoVar, beginIndex);
-        }
-        if (startsWith(ID, OP_PAR_LEFT)) {
-            advance();
-            final IElementType past = peekPastParens();
-            if (past == null) {
-                goToBookmark(b);
-                return new Pair<>(DecType.other, beginIndex);
-            } else if (past == OP_EQ) {
-                goToBookmark(b);
-                return new Pair<>(DecType.autoVar, beginIndex);
-            } else {
-                goToBookmark(b);
-                return new Pair<>(DecType.autoFun, beginIndex);
-            }
-        }
-        goToBookmark(b);
-        return new Pair<>(DecType.other, beginIndex);
     }
 
     /// Only use this in template parameter parsing
     boolean isType() {
         if (!moreTokens()) return false;
-        final Bookmark b = setBookmark();
-        if (!parseType().first) {
-            goToBookmark(b);
+        Marker bookmark = builder.mark();
+        if (!parseType()) {
+            bookmark.rollbackTo();
             return false;
         }
-        goToBookmark(b);
+        bookmark.rollbackTo();
         return currentIsOneOf(OP_COMMA, OP_PAR_RIGHT, OP_EQ);
     }
 
@@ -8302,14 +7996,14 @@ class DLangParser {
         } else if (i == KW_SHARED) {
             return !(startsWith(KW_SHARED, KW_STATIC, KW_THIS) || startsWith(KW_SHARED, KW_STATIC, OP_TILDA) || peekIs(OP_PAR_LEFT));
         } else if (i == KW_PRAGMA) {
-            final Bookmark b = setBookmark();
+            Marker bookmark = builder.mark();
             advance();
             final IElementType past = peekPastParens();
             if (past == null || past == OP_SCOLON) {
-                goToBookmark(b);
+                bookmark.rollbackTo();
                 return false;
             }
-            goToBookmark(b);
+            bookmark.rollbackTo();
             return true;
         } else
             return i == KW_DEPRECATED || i == KW_PRIVATE || i == KW_PACKAGE || i == KW_PROTECTED || i == KW_PUBLIC || i == KW_EXPORT || i == KW_FINAL || i == KW_SYNCHRONIZED || i == KW_OVERRIDE || i == KW_ABSTRACT || i == KW_AUTO || i == KW___GSHARED || i == KW_PURE || i == KW_NOTHROW || i == OP_AT || i == KW_REF || i == KW_EXTERN || i == KW_ALIGN;
@@ -8328,10 +8022,7 @@ class DLangParser {
     }
 
     private void error(final String message) {
-        if (suppressMessages.isEmpty()) {
-            builder.error(message);
-        } else
-            suppressMessages.set(suppressMessages.size() - 1, suppressMessages.get(suppressMessages.size() - 1) + 1);
+        builder.error(message);
         while (moreTokens()) {
             if (currentIsOneOf(OP_SCOLON, OP_BRACES_RIGHT,
                 OP_PAR_RIGHT, OP_BRACKET_RIGHT)) {
@@ -8360,10 +8051,6 @@ class DLangParser {
                 advance();
             }
         }
-    }
-
-    private void skipParens() {
-        skip(OP_PAR_LEFT, OP_PAR_RIGHT);
     }
 
     private void skipBrackets() {
@@ -8459,7 +8146,7 @@ class DLangParser {
         } else {
             final String tokenString = tok.getDebugName();
             final String token = (!builder.eof() ? (builder.getTokenType().toString()) : "EOF");
-            error("Expected " + tokenString + " instead of " + token/*,!shouldNotAdvance*/);
+            builder.error("Expected " + tokenString + " instead of " + token);
             return null;
         }
     }
@@ -8470,11 +8157,6 @@ class DLangParser {
     @Nullable
     private IElementType current() {
         return builder.getTokenType();
-    }
-
-    @Nullable
-    private String currentText() {
-        return builder.getTokenText();
     }
 
     /**
@@ -8521,28 +8203,6 @@ class DLangParser {
                 return false;
         }
         return true;
-    }
-
-    private Bookmark setBookmark() {
-        suppressMessages.add(suppressedErrorCount());
-        final Marker m = enter_section_modified(builder);
-        return new Bookmark(builder.getCurrentOffset(), m);
-    }
-
-    private void abandonBookmark(final Bookmark bookmark) {
-        if (!suppressMessages.isEmpty())
-            suppressMessages.remove(suppressMessages.size() - 1);
-        if (!bookmark.dropped) {
-            bookmark.m.drop();
-            bookmark.dropped = true;
-        }
-    }
-
-    private void goToBookmark(final Bookmark bookmark) {
-        if (!suppressMessages.isEmpty())
-            suppressMessages.remove(suppressMessages.size() - 1);
-        bookmark.m.rollbackTo();
-        bookmark.dropped = true;
     }
 
     private boolean tokenCheck(final IElementType tok) {
@@ -8640,7 +8300,7 @@ class DLangParser {
             return baseClassList();
         }
         if (currentIs(KW_IF)) {
-            return constraint(baseClassListQ);
+            return constraint(false);
         }
         if (currentIs(OP_SCOLON)) {
             return emptyBody();
@@ -8649,37 +8309,6 @@ class DLangParser {
             return baseClassList();
         }
         return parseStructBody();
-    }
-
-    enum DecType {
-        autoVar,
-        autoFun,
-        other
-    }
-
-    class Pair<First, Second> {
-        final First first;
-        final Second second;
-
-        Pair(final First first, final Second second) {
-            this.first = first;
-            this.second = second;
-        }
-    }
-
-    class Bookmark {
-        final int num;
-        final Marker m;
-        private boolean dropped = false;
-
-        Bookmark(final int num, final Marker m) {
-            this.num = num;
-            this.m = m;
-        }
-
-        int intValue() {
-            return num;
-        }
     }
 
 }
