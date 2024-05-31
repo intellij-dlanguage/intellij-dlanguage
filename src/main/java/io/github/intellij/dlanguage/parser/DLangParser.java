@@ -759,23 +759,22 @@ class DLangParser {
     boolean parseAsmInstruction() {
         final Marker m = builder.mark();
         if (currentIs(OP_SCOLON)) {
-            exit_section_modified(builder, m, ASM_INSTRUCTION, true);
+            builder.advanceLexer();
+            m.done(ASM_INSTRUCTION);
             return true;
         }
         if (currentIs(KW_ALIGN)) {
             advance(); // align
             if (currentIsOneOf(INTEGER_LITERAL, ID)) {
-                if (!currentIs(OP_SCOLON))
-                {
-                    error("`;` expected.");
-                    if (moreTokens())
-                        advance();
-                    cleanup(m, ASM_INSTRUCTION);
+                if (!currentIs(OP_SCOLON)) {
+                    builder.error("`;` expected.");
+                    m.done(ASM_INSTRUCTION);
                     return false;
                 }
+                builder.advanceLexer();
             } else {
                 error("Identifier or integer literal expected.");
-                cleanup(m, ASM_INSTRUCTION);
+                m.done(ASM_INSTRUCTION);
                 return false;
             }
         } else if (currentIsOneOf(ID, KW_IN, KW_OUT, KW_INT)) {
@@ -783,20 +782,26 @@ class DLangParser {
             if (t == ID && currentIs(OP_COLON)) {
                 advance(); // :
                 if (currentIs(OP_SCOLON)) {
-                    exit_section_modified(builder, m, ASM_INSTRUCTION, true);
+                    builder.advanceLexer();
+                    m.done(ASM_INSTRUCTION);
                     return true;
                 }
                 if (!parseAsmInstruction()) {
-                    cleanup(m, ASM_INSTRUCTION);
+                    m.done(ASM_INSTRUCTION);
                     return false;
                 }
-            } else if (!currentIs(OP_SCOLON))
+            } else if (!currentIs(OP_SCOLON)) {
                 if (!parseOperands()) {
-                    cleanup(m, ASM_INSTRUCTION);
+                    m.done(ASM_INSTRUCTION);
                     return false;
                 }
+            }
+            builder.advanceLexer();
+        } else {
+            m.rollbackTo();
+            return false;
         }
-        exit_section_modified(builder, m, ASM_INSTRUCTION, true);
+        m.done(ASM_INSTRUCTION);
         return true;
     }
 
@@ -1031,10 +1036,10 @@ class DLangParser {
         while (moreTokens() && !currentIs(OP_BRACES_RIGHT)) {
             if (!parseAsmInstruction()) {
                 // TODO: here libdparse handle gcc asm instructions
-                cleanup(m, ASM_STATEMENT);
-                return false;
-            } else {
-                expect(OP_SCOLON);
+                while(builder.getTokenType() != OP_BRACES_RIGHT) {
+                    builder.advanceLexer();
+                }
+                break;
             }
         }
         expect(OP_BRACES_RIGHT);
