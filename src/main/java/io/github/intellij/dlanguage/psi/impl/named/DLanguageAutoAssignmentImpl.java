@@ -9,24 +9,24 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageInitializer;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
-import io.github.intellij.dlanguage.psi.named.DlangAutoDeclarationPart;
+import io.github.intellij.dlanguage.psi.named.DLanguageAutoAssignment;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangAutoDeclarationPartStub;
+import io.github.intellij.dlanguage.stubs.DLanguageAutoAssignmentStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DLanguageAutoDeclarationPartImpl extends
-    DNamedStubbedPsiElementBase<DlangAutoDeclarationPartStub> implements DlangAutoDeclarationPart {
+public class DLanguageAutoAssignmentImpl extends
+    DNamedStubbedPsiElementBase<DLanguageAutoAssignmentStub> implements DLanguageAutoAssignment {
 
-    public DLanguageAutoDeclarationPartImpl(final DlangAutoDeclarationPartStub stub, final IStubElementType type) {
+    public DLanguageAutoAssignmentImpl(final DLanguageAutoAssignmentStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageAutoDeclarationPartImpl(final ASTNode node) {
+    public DLanguageAutoAssignmentImpl(final ASTNode node) {
         super(node);
     }
 

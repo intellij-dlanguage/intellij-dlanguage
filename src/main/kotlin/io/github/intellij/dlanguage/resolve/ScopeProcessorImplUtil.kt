@@ -170,7 +170,7 @@ object ScopeProcessorImplUtil {
 
         }
         if (def is AutoDeclaration) {
-            for (initializer in def.autoDeclarationParts) {
+            for (initializer in def.autoAssignments) {
                 if (!processor.execute(initializer, state)) {
                     toContinue = false
                 }

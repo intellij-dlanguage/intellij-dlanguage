@@ -15,7 +15,7 @@ fun presentableName(psi: PsiElement?): String? = when (psi) {
     is PsiNamedElement -> psi.name
     is StructBody -> presentableName(psi.parent)
     is AutoDeclaration -> {
-        psi.autoDeclarationParts.firstOrNull()?.name
+        psi.autoAssignments.firstOrNull()?.name
     }
     is SpecifiedVariableDeclaration -> {
         psi.identifierInitializers.firstOrNull()?.identifier?.name

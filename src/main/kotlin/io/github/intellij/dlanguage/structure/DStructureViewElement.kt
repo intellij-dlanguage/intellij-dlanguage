@@ -101,7 +101,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                     }
                 }
                 is AutoDeclaration -> {
-                    val parts = element.autoDeclarationParts
+                    val parts = element.autoAssignments
                     val declPart = parts.firstOrNull()
 
                     if (declPart != null) {

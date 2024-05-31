@@ -533,7 +533,7 @@ public interface DlangTypes {
             } else if (type == AUTO_DECLARATION) {
                 return new DLanguageAutoDeclarationImpl(node);
             } else if (type == AUTO_DECLARATION_PART) {
-                return new DLanguageAutoDeclarationPartImpl(node);
+                return new DLanguageAutoAssignmentImpl(node);
             } else if (type == BASE_CLASS) {
                 return new DLanguageBaseClassImpl(node);
             } else if (type == BASE_CLASS_LIST) {

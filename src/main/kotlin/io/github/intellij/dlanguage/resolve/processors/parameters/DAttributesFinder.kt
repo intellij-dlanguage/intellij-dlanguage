@@ -60,7 +60,7 @@ class DAttributesFinder {
         } else if (elem is LabeledStatement) {
             defualts = defaultLabeledStatement(elem)
             directApplication = handleLabeledStatement(elem)
-        } else if (elem is AutoDeclarationPart) {
+        } else if (elem is AutoAssignment) {
             defualts = defaultAutoDeclarationPart(elem)
             directApplication = handleAutoDeclarationPart(elem)
         } else if (elem is EnumDeclaration) {
@@ -576,7 +576,7 @@ class DAttributesFinder {
         )
     }
 
-    fun handleAutoDeclarationPart(autoDeclPart: AutoDeclarationPart): DirectApplication {
+    fun handleAutoDeclarationPart(autoDeclPart: AutoAssignment): DirectApplication {
         val autoDecl = autoDeclPart.parent as AutoDeclaration
         val attribs = updateFromParentDecl(autoDecl)
         for (storageClasss in autoDecl.storageClasss) {
@@ -586,7 +586,7 @@ class DAttributesFinder {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun defaultAutoDeclarationPart(autoDeclPart: AutoDeclarationPart): DefaultAttributes {
+    fun defaultAutoDeclarationPart(autoDeclPart: AutoAssignment): DefaultAttributes {
         return DefaultAttributes(
             static = true,
             visibility = Visibility.PUBLIC,

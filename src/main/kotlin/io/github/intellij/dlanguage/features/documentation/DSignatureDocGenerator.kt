@@ -45,7 +45,7 @@ class DSignatureDocGenerator {
             is IdentifierIdentifier -> {
                 appendType(builder, (element.parent as SpecifiedVariableDeclaration).type)
                 builder.append(" ").append(element.identifier?.text)}
-            is AutoDeclarationPart -> appendAutoDeclarationPartSignature(builder, element)
+            is AutoAssignment -> appendAutoAssignmentSignature(builder, element)
             is AliasInitializer -> appendAliasInitializerSignature(builder, element)
             is TemplateParameter -> appendTemplateParameter(builder, element)
             is EnumMember -> {
@@ -173,7 +173,7 @@ class DSignatureDocGenerator {
         // add constraint?
     }
 
-    private fun appendAutoDeclarationPartSignature(builder: StringBuilder, element: AutoDeclarationPart) {
+    private fun appendAutoAssignmentSignature(builder: StringBuilder, element: AutoAssignment) {
         builder.append((element.parent as AutoDeclaration).storageClasss.joinToString(" "){
             HtmlSyntaxInfoUtil.getStyledSpan(DColor.KEYWORD.textAttributesKey, it.text, highlightingSaturation)
         }).append(" ").append(element.identifier?.text)

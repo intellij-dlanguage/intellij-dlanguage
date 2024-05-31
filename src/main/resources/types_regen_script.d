@@ -22,7 +22,7 @@ string[][string] types_extra_interfaces;
  */
 string[] named_children = [
     "AliasInitializer",
-    "AutoDeclarationPart",
+    "AutoAssignment",
     "Catch",
     "ClassDeclaration",
     "Constructor",
@@ -111,7 +111,7 @@ static this() {
     types_children["Attribute"] = ["PragmaExpression", "KW_SYNCHRONIZED","KW_ABSTRACT","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_THROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC","KW_EXPORT", "KW_PRIVATE","KW_PROTECTED","KW_PUBLIC","AlignAttribute","Deprecated","AtAttribute","KW_PACKAGE","IdentifierChain","LinkageAttribute","KW_CONST"];
     types_children["AttributeSpecifier"] = ["OP_COLON","Attribute"];
     types_extra_interfaces["AttributeSpecifier"] = ["Declaration"];
-    types_children["AutoDeclaration"] = ["StorageClass*","OP_COMMA*","OP_SCOLON","AutoDeclarationPart*"];
+    types_children["AutoDeclaration"] = ["StorageClass*","OP_COMMA*","OP_SCOLON","AutoAssignment*"];
     types_extra_interfaces["AutoDeclaration"] = ["VariableDeclaration"];
     types_children["BlockStatement"] = ["Statement*","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_extra_interfaces["BlockStatement"] = ["Statement"];
@@ -368,7 +368,7 @@ static this() {
     has_processDeclaration["Attribute"] = false;
     has_processDeclaration["AttributeDeclaration"] = false;
     has_processDeclaration["AutoDeclaration"] = false;
-    has_processDeclaration["AutoDeclarationPart"] = false;
+    has_processDeclaration["AutoAssignment"] = false;
     has_processDeclaration["BlockStatement"] = false;
     has_processDeclaration["BreakStatement"] = false;
     has_processDeclaration["BaseClass"] = false;
@@ -539,6 +539,7 @@ static this() {
         renameMap["DLanguage" ~ key] = "Dlang" ~ key;
     }
     renameMap["DLanguageIdentifierInitializer"] = "DLanguageIdentifierInitializer";
+    renameMap["DLanguageAutoAssignment"] = "DLanguageAutoAssignment";
 }
 
 enum psiDlangImportTemplate = "import io.github.intellij.dlanguage.psi.DLanguage%s;";

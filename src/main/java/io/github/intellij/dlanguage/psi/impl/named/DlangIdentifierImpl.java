@@ -117,7 +117,7 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                     .findParentOfType(DlangIdentifierImpl.this, DlangCatch.class);
 
                 final PsiNamedElement autoDeclarationDecl = (PsiNamedElement) DUtil
-                    .findParentOfType(DlangIdentifierImpl.this, DlangAutoDeclarationPart.class);
+                    .findParentOfType(DlangIdentifierImpl.this, DLanguageAutoAssignment.class);
                 final PsiNamedElement ifConditionDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageIfCondition.class);
                 final PsiNamedElement foreachTypeDecl = (PsiNamedElement) DUtil
                     .findParentOfType(DlangIdentifierImpl.this, DlangForeachType.class);

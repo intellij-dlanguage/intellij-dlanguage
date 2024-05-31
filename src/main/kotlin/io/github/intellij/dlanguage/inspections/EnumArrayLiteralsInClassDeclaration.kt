@@ -10,7 +10,7 @@ import io.github.intellij.dlanguage.psi.impl.named.DlangStructDeclarationImpl
 import io.github.intellij.dlanguage.psi.impl.named.DlangUnionDeclarationImpl
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.quickfix.MakeStaticImmutable
-import io.github.intellij.dlanguage.utils.AutoDeclarationPart
+import io.github.intellij.dlanguage.utils.AutoAssignment
 
 /**
  * Created by francis on 1/5/2018.
@@ -36,7 +36,7 @@ class EnumArrayLiteralsInClassDeclarationVisitor(val holder: ProblemsHolder) : D
     }
 
     fun checkForEnumLiterals(o: DNamedElement) {
-        for (decl in PsiTreeUtil.findChildrenOfType(o, AutoDeclarationPart::class.java)) {
+        for (decl in PsiTreeUtil.findChildrenOfType(o, AutoAssignment::class.java)) {
             if (decl.isEnum) {
                 if (decl.initializer?.arrayLiteral?.arrayInitializer == null)
                     continue

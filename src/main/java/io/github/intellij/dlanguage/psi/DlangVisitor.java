@@ -156,7 +156,7 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitAutoDeclarationPart(@NotNull final DLanguageAutoDeclarationPartImpl o) {
+    public void visitAutoDeclarationPart(@NotNull final DLanguageAutoAssignmentImpl o) {
         visitPsiElement(o);
     }
 

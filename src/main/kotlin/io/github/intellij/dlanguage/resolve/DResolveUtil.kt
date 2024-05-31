@@ -126,7 +126,7 @@ class DResolveUtil private constructor(val project: Project) {
         if (parent is TraitsExpression && traitsIdentifiers.contains(name)) return true
         if (parent is FunctionDeclaration || parent is ClassDeclaration || parent is InterfaceDeclaration || parent is StructDeclaration ||
             parent is UnionDeclaration || parent is EnumDeclaration || parent is EnumMember ||
-            parent is AutoDeclarationPart || parent is IdentifierIdentifier || parent is TemplateDeclaration ||
+            parent is AutoAssignment || parent is IdentifierIdentifier || parent is TemplateDeclaration ||
             parent is Catch || parent is NamedImportBind) return true
         if (parent is Parameter)
             if (parent.identifier == e)
