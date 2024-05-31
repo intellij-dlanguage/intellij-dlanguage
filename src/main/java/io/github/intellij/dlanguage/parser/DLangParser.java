@@ -5163,7 +5163,7 @@ class DLangParser {
      * $(RULE moduleDeclaration)? $(RULE declaration)*
      * ;)
      */
-    boolean parseModule() {
+    void parseModule() {
         if (currentIs(SHEBANG)) {
             advance();
         }
@@ -5179,7 +5179,6 @@ class DLangParser {
         while (moreTokens()) {
             parseDeclaration(true, true);
         }
-        return true;
     }
 
     /**
