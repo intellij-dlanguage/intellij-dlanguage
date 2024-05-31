@@ -14,7 +14,7 @@ import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 class DLangParser {
 
     // Please keep this list in order
-    private static final String[] REGISTER_NAMES = {
+    private static final HashSet<String> REGISTER_NAMES = new HashSet<>(Arrays.asList(
         "AH", "AL", "AX", "BH", "BL", "BP", "BPL", "BX", "CH", "CL", "CR0", "CR2",
         "CR3", "CR4", "CS", "CX", "DH", "DI", "DIL", "DL", "DR0", "DR1", "DR2",
         "DR3", "DR6", "DR7", "DS", "DX", "EAX", "EBP", "EBX", "ECX", "EDI", "EDX",
@@ -27,8 +27,7 @@ class DLangParser {
         "TR7", "XMM0", "XMM1", "XMM10", "XMM11", "XMM12", "XMM13", "XMM14", "XMM15",
         "XMM2", "XMM3", "XMM4", "XMM5", "XMM6", "XMM7", "XMM8", "XMM9", "YMM0",
         "YMM1", "YMM10", "YMM11", "YMM12", "YMM13", "YMM14", "YMM15", "YMM2",
-        "YMM3", "YMM4", "YMM5", "YMM6", "YMM7", "YMM8", "YMM9"
-    };
+        "YMM3", "YMM4", "YMM5", "YMM6", "YMM7", "YMM8", "YMM9"));
 
     private static final IElementType[] stringLiteralsArray = new IElementType[] {
         ALTERNATE_WYSIWYG_STRING,
@@ -38,7 +37,7 @@ class DLangParser {
         TOKEN_STRING
     };
 
-    private final Set<IElementType> literals = Sets.newHashSet(
+    private static final Set<IElementType> literals = Sets.newHashSet(
         KW_THIS,
         KW_SUPER,
         KW_NULL,
@@ -54,7 +53,7 @@ class DLangParser {
         TOKEN_STRING
     );
 
-    private final Set<IElementType> basicTypes = Sets.newHashSet(
+    private static final Set<IElementType> basicTypes = Sets.newHashSet(
         KW_INT,
         KW_BOOL,
         KW_BYTE,
@@ -81,7 +80,7 @@ class DLangParser {
         KW_WCHAR
     );
 
-    private final Set<IElementType> Protections = Sets.newHashSet(
+    private static final Set<IElementType> Protections = Sets.newHashSet(
         KW_EXPORT,
         KW_PACKAGE,
         KW_PRIVATE,
@@ -930,7 +929,7 @@ class DLangParser {
         if (i == FLOAT_LITERAL || i == INTEGER_LITERAL || i == DOUBLE_QUOTED_STRING || i == OP_DOLLAR || i == KW_THIS) {
             advance();
         } else if (i == ID) {
-            if ((Sets.newHashSet(Arrays.asList(REGISTER_NAMES))).contains(builder.getTokenText())) {
+            if (REGISTER_NAMES.contains(builder.getTokenText())) {
                 if (!parseRegister()) {
                     cleanup(m, ASM_PRIMARY_EXP);
                     return false;
