@@ -886,10 +886,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitTypeConstructors(@NotNull final DLanguageTypeConstructorsImpl o) {
-        visitPsiElement(o);
-    }
-
     public void visitUnittest(@NotNull final DlangUnittestImpl o) {
         visitPsiElement(o);
     }

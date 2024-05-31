@@ -302,10 +302,9 @@ static this() {
     types_children["TraitsExpression"] = ["KW___TRAITS","TemplateArgumentList","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["TryStatement"] = ["KW_TRY","Statement","Catches","Finally"];
     types_extra_interfaces["TryStatement"] = ["Statement"];
-    types_children["Type"] = ["Attribute","BasicType","TypeSuffix*"];
+    types_children["Type"] = ["TypeConstructor*","BasicType","TypeSuffix*"];
     types_children["TypeConstructExpression"] = ["KW_IMMUTABLE", "KW_CONST", "KW_INOUT", "KW_SHARED", "Type", "OP_PAR_LEFT", "ArgumentList", "OP_PAR_RIGHT"];
     types_children["TypeConstructor"] = ["KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED","KW_SCOPE"];
-    types_children["TypeConstructors"] = ["TypeConstructor*"];
     types_children["TypeIdentifierPart"] = ["OP_DOT", "IdentifierOrTemplateInstance", "OP_BRACKET_LEFT", "OP_BRACKET_RIGHT", "AssignExpression", "OP_DDOT", "TypeIdentifierPart"];
     types_children["TypePropertyExpression"] = ["KW_IMMUTABLE", "KW_CONST", "KW_INOUT", "KW_SHARED", "Type", "OP_DOT", "Identifier"];
     types_children["TypeidExpression"] = ["AssignExpression","KW_TYPEID","Type","OP_PAR_RIGHT","OP_PAR_LEFT"];
@@ -514,7 +513,6 @@ static this() {
     has_processDeclaration["TryStatement"] = false;
     has_processDeclaration["Type"] = false;
     has_processDeclaration["TypeConstructor"] = false;
-    has_processDeclaration["TypeConstructors"] = false;
     has_processDeclaration["TypeidExpression"] = false;
     has_processDeclaration["TypeofExpression"] = false;
     has_processDeclaration["TypeSpecialization"] = false;

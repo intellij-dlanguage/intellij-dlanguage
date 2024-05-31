@@ -6,7 +6,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageType;
-import io.github.intellij.dlanguage.psi.DLanguageTypeConstructors;
+import io.github.intellij.dlanguage.psi.DLanguageTypeConstructor;
 import io.github.intellij.dlanguage.psi.named.DlangForeachType;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
@@ -14,6 +14,8 @@ import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.stubs.DlangForeachTypeStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
@@ -44,10 +46,10 @@ public class DLanguageForeachTypeImpl extends
         return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
     }
 
-    @Nullable
+    @NotNull
     @Override
-    public DLanguageTypeConstructors getTypeConstructors() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageTypeConstructors.class);
+    public List<DLanguageTypeConstructor> getTypeConstructors() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTypeConstructor.class);
     }
 
     @Override
