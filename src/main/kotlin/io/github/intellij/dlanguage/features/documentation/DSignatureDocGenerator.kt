@@ -455,8 +455,8 @@ class DSignatureDocGenerator {
 
             if (element.oP_BRACKET_LEFT != null)
                 builder.append("[")
-            if (element.assignExpression != null)
-                builder.append(element.assignExpression!!.text)
+            if (element.expression != null)
+                builder.append(element.expression!!.text)
             if (element.oP_BRACKET_RIGHT != null)
                 builder.append("]")
 
