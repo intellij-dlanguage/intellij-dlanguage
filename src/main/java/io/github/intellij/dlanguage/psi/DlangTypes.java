@@ -34,7 +34,6 @@ public interface DlangTypes {
     IElementType FOREACH_TYPE = DElementTypeFactory.factory("FOREACH_TYPE");
     IElementType PARAMETER = DElementTypeFactory.factory("PARAMETER");
     IElementType TEMPLATE_PARAMETER = DElementTypeFactory.factory("TEMPLATE_PARAMETER");
-    IElementType EPONYMOUS_TEMPLATE_DECLARATION = DElementTypeFactory.factory("EPONYMOUS_TEMPLATE_DECLARATION");
     IElementType ENUM_MEMBER = DElementTypeFactory.factory("ENUM_MEMBER");
     IElementType NAMED_IMPORT_BIND = DElementTypeFactory.factory("NAMED_IMPORT_BIND");
     IElementType VERSION_SPECIFICATION = DElementTypeFactory.factory("VERSION_SPECIFICATION");
@@ -592,8 +591,6 @@ public interface DlangTypes {
                 return new DLanguageEmptyStatementImpl(node);
             } else if (type == ENUM_BODY) {
                 return new DLanguageEnumBodyImpl(node);
-            } else if (type == EPONYMOUS_TEMPLATE_DECLARATION) {
-                return new DLanguageEponymousTemplateDeclarationImpl(node);
             } else if (type == EQUAL_EXPRESSION) {
                 return new DLanguageEqualExpressionImpl(node);
             } else if (type == EXPRESSION_STATEMENT) {

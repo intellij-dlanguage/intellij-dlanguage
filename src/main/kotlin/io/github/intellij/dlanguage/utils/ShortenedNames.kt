@@ -94,7 +94,6 @@ typealias Deprecated = io.github.intellij.dlanguage.psi.DLanguageDeprecated
 typealias DoStatement = io.github.intellij.dlanguage.psi.DLanguageDoStatement
 typealias EnumBody = io.github.intellij.dlanguage.psi.DLanguageEnumBody
 typealias EnumMemberAttribute = io.github.intellij.dlanguage.psi.DLanguageEnumMemberAttribute
-typealias EponymousTemplateDeclaration = io.github.intellij.dlanguage.psi.DLanguageEponymousTemplateDeclaration
 typealias EqualExpression = io.github.intellij.dlanguage.psi.DLanguageEqualExpression
 typealias ExpressionStatement = io.github.intellij.dlanguage.psi.DLanguageExpressionStatement
 typealias FinalSwitchStatement = io.github.intellij.dlanguage.psi.DLanguageFinalSwitchStatement

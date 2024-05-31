@@ -66,12 +66,6 @@ public class DlangTemplateDeclarationImpl extends
 
     @Nullable
     @Override
-    public DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageEponymousTemplateDeclaration.class);
-    }
-
-    @Nullable
-    @Override
     public PsiElement getKW_TEMPLATE() {
         return findChildByType(DlangTypes.KW_TEMPLATE);
     }

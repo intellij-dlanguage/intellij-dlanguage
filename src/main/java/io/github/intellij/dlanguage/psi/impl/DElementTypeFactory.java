@@ -65,8 +65,6 @@ public class DElementTypeFactory {
                 return new DlangParameterStubElementType(name);
             case "TEMPLATE_PARAMETER":
                 return new DlangTemplateParameterStubElementType(name);
-            case "EPONYMOUS_TEMPLATE_DECLARATION":
-                return new DlangEponymousTemplateDeclarationStubElementType(name);
             case "ENUM_MEMBER":
                 return new DlangEnumMemberStubElementType(name);
             case "NAMED_IMPORT_BIND":

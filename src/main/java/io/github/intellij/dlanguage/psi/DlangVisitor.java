@@ -898,12 +898,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitEponymousTemplateDeclaration(
-        @NotNull final DLanguageEponymousTemplateDeclarationImpl o) {
-        visitPsiElement(o);
-    }
-
-
     public void visitUnittest(@NotNull final DlangUnittestImpl o) {
         visitPsiElement(o);
     }

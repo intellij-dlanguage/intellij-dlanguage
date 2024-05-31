@@ -31,7 +31,6 @@ string[] named_children = [
     "Destructor",
     "EnumDeclaration",
     "EnumMember",
-    "EponymousTemplateDeclaration",
     "ForeachType",
     "FunctionDeclaration",
     "Identifier",
@@ -154,7 +153,6 @@ static this() {
     types_extra_interfaces["EmptyStatement"] = ["Statement"];
     types_children["EnumBody"] = [ "Identifier","OP_BRACES_RIGHT", "OP_BRACES_LEFT", "EnumMember*","OP_COMMA*","OP_SCOLON"];
     types_children["EnumMemberAttribute"] = ["Attribute","Deprecated"];
-    stub_children ["EponymousTemplateDeclaration"] = ["Identifier", "TemplateParameters", "OP_EQ", "Type", "OP_SCOLON", "KW_ENUM", "KW_ALIAS"];
     types_children["EqualExpression"] = ["ShiftExpression*","OP_EQ_EQ","OP_NOT_EQ"];
     types_children["ExpressionStatement"] = ["AssignExpression*","OP_COMMA*","OP_SCOLON"];
     types_extra_interfaces["ExpressionStatement"] = ["Statement"];
@@ -404,7 +402,6 @@ static this() {
 //    has_processDeclaration["EnumDeclaration"] = true;
     has_processDeclaration["EnumMember"] = false;
     has_processDeclaration["EnumMemberAttribute"] = false;
-    has_processDeclaration["EponymousTemplateDeclaration"] = true;
     has_processDeclaration["EqualExpression"] = false;
     has_processDeclaration["ExpressionStatement"] = false;
     has_processDeclaration["Finally"] = false;

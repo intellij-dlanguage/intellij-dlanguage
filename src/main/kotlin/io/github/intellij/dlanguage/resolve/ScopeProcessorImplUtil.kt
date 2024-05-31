@@ -184,9 +184,6 @@ object ScopeProcessorImplUtil {
             }
             return toContinue
         }
-        if (def.eponymousTemplateDeclaration != null) {
-            return processor.execute(def.eponymousTemplateDeclaration!!, state)
-        }
         if (def.attributeDeclaration != null) {
 
         }

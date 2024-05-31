@@ -71,9 +71,6 @@ class DAttributesFinder {
         } else if (elem is Declarator) {
             defualts = defaultDeclarator(elem)
             directApplication = handleDeclarator(elem)
-        } else if (elem is EponymousTemplateDeclaration) {
-            defualts = defaultEponymousTemplateDeclaration(elem)
-            directApplication = handleEponymousTemplateDeclaration(elem)
         } else if (elem is ForeachType) {
             defualts = defaultForeachType(elem)
             directApplication = handleForeachType(elem)
@@ -699,24 +696,6 @@ class DAttributesFinder {
             const = false,
             immutable = false
         )
-    }
-
-    fun handleEponymousTemplateDeclaration(decl: EponymousTemplateDeclaration): DirectApplication {
-        return updateFromParentDecl(decl.parent as Declaration)
-    }
-
-    fun defaultEponymousTemplateDeclaration(decl: EponymousTemplateDeclaration): DefaultAttributes {
-        return DefaultAttributes(
-            static = true,
-            visibility = Visibility.PUBLIC,
-            property = false,
-            noGC = false,
-            //Not extern by default I believe todo check this
-            extern = false,
-            pure = false,
-            nothrow = false,
-            const = false,
-            immutable = false)
     }
 
     @Suppress("UNUSED_PARAMETER")

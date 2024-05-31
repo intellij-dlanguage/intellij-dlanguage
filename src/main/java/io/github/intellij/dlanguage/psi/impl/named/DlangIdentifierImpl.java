@@ -128,7 +128,6 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                 final PsiNamedElement labeledStatementDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageLabeledStatement.class);
                 final PsiNamedElement constructorDecl = (PsiNamedElement) DUtil
                     .findParentOfType(DlangIdentifierImpl.this, DlangConstructor.class);
-                final PsiNamedElement eponymousTemplateDeclarationDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageEponymousTemplateDeclaration.class);
 
 
                 String description = "";
@@ -186,10 +185,6 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                 if (constructorDecl != null && constructorDecl == firstMatch) {
                     description = " [Constructor] (" + constructorDecl.getName() + ")";
                 }
-                if (eponymousTemplateDeclarationDecl != null && eponymousTemplateDeclarationDecl == firstMatch) {
-                    description = " [Eponymous Template Declaration] (" + eponymousTemplateDeclarationDecl.getName() + ")";
-                }
-
 
                 return getName() + description;
             }

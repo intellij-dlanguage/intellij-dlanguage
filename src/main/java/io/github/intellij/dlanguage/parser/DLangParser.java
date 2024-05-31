@@ -2784,36 +2784,6 @@ class DLangParser {
         return true;
     }
 
-    /**
-     * Parses an EponymousTemplateDeclaration
-     * <p>
-     * $(GRAMMAR $(RULEDEF eponymousTemplateDeclaration):
-     * $(LITERAL 'enum') $(LITERAL Identifier) $(RULE templateParameters) $(LITERAL '=') $(RULE assignExpression) $(LITERAL ';')
-     * ;)
-     */
-    boolean parseEponymousTemplateDeclaration() {
-        final Marker m = enter_section_modified(builder);
-        advance(); // enum
-        final IElementType ident = expect(ID);
-        if (ident == null) {
-            cleanup(m, EPONYMOUS_TEMPLATE_DECLARATION);
-            return false;
-        }
-        if (!parseTemplateParameters()) {
-            cleanup(m, EPONYMOUS_TEMPLATE_DECLARATION);
-            return false;
-        }
-        expect(OP_EQ);
-        if (!parseAssignExpression())
-            if (!parseType().first) {
-                cleanup(m, EPONYMOUS_TEMPLATE_DECLARATION);
-                return false;
-            }
-        expect(OP_SCOLON);
-        exit_section_modified(builder, m, EPONYMOUS_TEMPLATE_DECLARATION, true);
-        return true;
-    }
-
     Marker parseEqualExpression() {
         return parseEqualExpression(null);
     }

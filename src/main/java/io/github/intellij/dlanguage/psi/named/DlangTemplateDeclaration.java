@@ -5,7 +5,6 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import io.github.intellij.dlanguage.psi.DLanguageConstraint;
-import io.github.intellij.dlanguage.psi.DLanguageEponymousTemplateDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
@@ -40,9 +39,6 @@ public interface DlangTemplateDeclaration extends PsiElement, DNamedElement, Dec
 
     @NotNull
     List<Declaration> getDeclarations();
-
-    @Nullable
-    DLanguageEponymousTemplateDeclaration getEponymousTemplateDeclaration();
 
     @Override
     default boolean processDeclarations(@NotNull final PsiScopeProcessor processor,

@@ -212,20 +212,6 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: EponymousTemplateDeclaration,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement,
-                            place: PsiElement): Boolean {
-        if (element.templateParameters != null) {
-            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
-                return false
-            }
-        }
-        return true
-    }
-
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: TemplateDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
