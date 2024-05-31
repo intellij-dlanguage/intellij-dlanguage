@@ -270,7 +270,7 @@ class DLangParser {
             return false;
         }
         if (isFunction()) {
-            if (!parseFunctionLiteralExpression()) {
+            if (parseFunctionLiteralExpression() == null) {
                 cleanup(m, ALIAS_INITIALIZER);
                 return false;
             }
@@ -491,26 +491,26 @@ class DLangParser {
      * $(LITERAL '[') $(RULE ArrayMemberInitiolizations)? $(LITERAL ']')
      * ;)
      */
-    boolean parseArrayLiteral() {
+    Marker parseArrayLiteral() {
         final Marker m = enter_section_modified(builder);
         final IElementType open = expect(OP_BRACKET_LEFT);
         if (open == null) {
             cleanup(m, ARRAY_LITERAL);
-            return false;
+            return null;
         }
         if (!currentIs(OP_BRACKET_RIGHT)) {
             if (!parseArrayInitializer()) {
                 cleanup(m, ARRAY_LITERAL);
-                return false;
+                return null;
             }
         }
         final IElementType close = expect(OP_BRACKET_RIGHT);
         if (close == null) {
             cleanup(m, ARRAY_INITIALIZER);
-            return false;
+            return null;
         }
         exit_section_modified(builder, m, ARRAY_LITERAL, true);
-        return true;
+        return m;
     }
 
     /**
@@ -1238,23 +1238,23 @@ class DLangParser {
      * $(LITERAL 'assert') $(LITERAL '$(LPAREN)') $(RULE assertArguments) ($(LITERAL ',') $(RULE assignExpression))? $(LITERAL ',')? $(LITERAL '$(RPAREN)')
      * ;)
      */
-    boolean parseAssertExpression() {
+    Marker parseAssertExpression() {
         final Marker m = enter_section_modified(builder);
         advance(); // "assert"
         if (!tokenCheck(OP_PAR_LEFT)) {
             cleanup(m, ASSERT_EXPRESSION);
-            return false;
+            return null;
         }
         if (!parseAssertArguments()) {
             cleanup(m, ASSERT_EXPRESSION);
-            return false;
+            return null;
         }
         if (!tokenCheck(OP_PAR_RIGHT)) {
             cleanup(m, ASSERT_EXPRESSION);
-            return false;
+            return null;
         }
         exit_section_modified(builder, m, ASSERT_EXPRESSION, true);
-        return true;
+        return m;
     }
 
     /**
@@ -1305,22 +1305,22 @@ class DLangParser {
      * $(LITERAL '[') $(RULE keyValuePairs) $(LITERAL ']')
      * ;)
      */
-    boolean parseAssocArrayLiteral() {
+    Marker parseAssocArrayLiteral() {
         final Marker m = enter_section_modified(builder);
         if (expect(OP_BRACKET_LEFT) == null) {
             cleanup(m, ASSOC_ARRAY_LITERAL);
-            return false;
+            return null;
         }
         if(!parseKeyValuePairs()) {
             cleanup(m, ASSOC_ARRAY_LITERAL);
-            return false;
+            return null;
         }
         if (expect(OP_BRACKET_RIGHT) == null) {
             cleanup(m, ASSOC_ARRAY_LITERAL);
-            return false;
+            return null;
         }
         exit_section_modified(builder, m, ASSOC_ARRAY_LITERAL, true);
-        return true;
+        return m;
     }
 
     /**
@@ -3446,7 +3446,7 @@ class DLangParser {
      * | $($(LITERAL 'auto')? LITERAL 'ref')? $(RULE parameters) $(RULE functionAttribute)* $(LITERAL '=>') $(RULE assignExpression)
      * ;)
      */
-    boolean parseFunctionLiteralExpression() {
+    Marker parseFunctionLiteralExpression() {
         final Marker m = enter_section_modified(builder);
         if (currentIsOneOf(KW_FUNCTION, KW_DELEGATE)) {
             advance();
@@ -3461,7 +3461,7 @@ class DLangParser {
                 KW_OUT, OP_BRACES_LEFT, OP_LAMBDA_ARROW))
                 if (!parseType().first) {
                     cleanup(m, FUNCTION_LITERAL_EXPRESSION);
-                    return false;
+                    return null;
                 }
         }
         if (startsWith(ID, OP_LAMBDA_ARROW)) {
@@ -3469,10 +3469,10 @@ class DLangParser {
             advance(); // =>
             if (!parseAssignExpression()) {
                 cleanup(m, FUNCTION_LITERAL_EXPRESSION);
-                return false;
+                return null;
             }
             exit_section_modified(builder, m, FUNCTION_LITERAL_EXPRESSION, true);
-            return true;
+            return m;
         } else if (currentIs(OP_PAR_LEFT)
             || currentIs(KW_REF) && peekIs(OP_PAR_LEFT)
             || currentIs(KW_AUTO) && peekAre(KW_REF, OP_PAR_LEFT)) {
@@ -3485,7 +3485,7 @@ class DLangParser {
             }
             if (!parseParameters()) {
                 cleanup(m, FUNCTION_LITERAL_EXPRESSION);
-                return false;
+                return null;
             }
             while (currentIsMemberFunctionAttribute()) {
                 if (!parseMemberFunctionAttribute()) {
@@ -3497,14 +3497,14 @@ class DLangParser {
             advance();
             if (!parseAssignExpression()) {
                 cleanup(m, FUNCTION_LITERAL_EXPRESSION);
-                return false;
+                return null;
             }
         } else if (!parseSpecifiedFunctionBody()) {
             cleanup(m, FUNCTION_LITERAL_EXPRESSION);
-            return false;
+            return null;
         }
         exit_section_modified(builder, m, FUNCTION_LITERAL_EXPRESSION, true);
-        return true;
+        return m;
     }
 
     /**
@@ -4000,26 +4000,26 @@ class DLangParser {
      * $(LITERAL 'import') $(LITERAL '$(LPAREN)') $(RULE assignExpression) $(LITERAL '$(RPAREN)')
      * ;)
      */
-    boolean parseImportExpression() {
+    Marker parseImportExpression() {
         final Marker marker = enter_section_modified(builder);
         if (expect(KW_IMPORT) == null) {
             cleanup(marker, IMPORT_EXPRESSION);
-            return false;
+            return null;
         }
         if (expect(OP_PAR_LEFT) == null) {
             cleanup(marker, IMPORT_EXPRESSION);
-            return false;
+            return null;
         }
         if(!parseAssignExpression()) {
             cleanup(marker, IMPORT_EXPRESSION);
-            return false;
+            return null;
         }
         if (expect(OP_PAR_RIGHT) == null) {
             cleanup(marker, IMPORT_EXPRESSION);
-            return false;
+            return null;
         }
         exit_section_modified(builder, marker, IMPORT_EXPRESSION, true);
-        return true;
+        return marker;
     }
 
     /**
@@ -4330,19 +4330,19 @@ class DLangParser {
      * | $(LITERAL'is') $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL identifier)? $(LITERAL '=') $(RULE typeSpecialization) $(LITERAL ',') $(RULE templateParameterList) $(LITERAL '$(RPAREN)')
      * ;)
      */
-    boolean parseIsExpression() {
+    Marker parseIsExpression() {
         final Marker m = enter_section_modified(builder);
         if (!tokenCheck(KW_IS)) {
             cleanup(m, IS_EXPRESSION);
-            return false;
+            return null;
         }
         if (!tokenCheck(OP_PAR_LEFT)) {
             cleanup(m, IS_EXPRESSION);
-            return false;
+            return null;
         }
         if (!parseType().first) {
             cleanup(m, IS_EXPRESSION);
-            return false;
+            return null;
         }
         if (currentIs(ID))
             advance();
@@ -4350,22 +4350,22 @@ class DLangParser {
             advance();
             if (!parseTypeSpecialization()) {
                 cleanup(m, IS_EXPRESSION);
-                return false;
+                return null;
             }
             if (currentIs(OP_COMMA)) {
                 advance();
                 if (!parseTemplateParameterList()) {
                     cleanup(m, IS_EXPRESSION);
-                    return false;
+                    return null;
                 }
             }
         }
         if (!tokenCheck(OP_PAR_RIGHT)) {
             cleanup(m, IS_EXPRESSION);
-            return false;
+            return null;
         }
         exit_section_modified(builder, m, IS_EXPRESSION, true);
-        return true;
+        return m;
     }
 
     /**
@@ -4622,17 +4622,17 @@ class DLangParser {
      * $(LITERAL 'mixin') $(LITERAL '$(LPAREN)') $(RULE argumentList) $(LITERAL '$(RPAREN)')
      * ;)
      */
-    boolean parseMixinExpression() {
+    Marker parseMixinExpression() {
         final Marker m = enter_section_modified(builder);
         expect(KW_MIXIN);
         expect(OP_PAR_LEFT);
         if (!parseArgumentList()) {
             cleanup(m, MIXIN_EXPRESSION);
-            return false;
+            return null;
         }
         expect(OP_PAR_RIGHT);
         exit_section_modified(builder, m, MIXIN_EXPRESSION, true);
-        return true;
+        return m;
     }
 
     /**
@@ -4671,7 +4671,7 @@ class DLangParser {
     boolean parseMixinTemplateName() {
         final Marker m = enter_section_modified(builder);
         if (currentIs(KW_TYPEOF)) {
-            if (!parseTypeofExpression()) {
+            if (parseTypeofExpression() != null) {
                 cleanup(m, MIXIN_TEMPLATE_NAME);
                 return false;
             }
@@ -4835,34 +4835,34 @@ class DLangParser {
      * | $(RULE newAnonClassExpression)
      * ;)
      */
-    boolean parseNewExpression() {
+    Marker parseNewExpression() {
         final Marker m = enter_section_modified(builder);
         if (peekIs(KW_CLASS)) {
             if (!parseNewAnonClassExpression()) {
                 cleanup(m, NEW_EXPRESSION);
-                return false;
+                return null;
             }
         } else {
             expect(KW_NEW);
             if (!parseType().first) {
                 cleanup(m, NEW_EXPRESSION);
-                return false;
+                return null;
             }
             if (currentIs(OP_BRACKET_LEFT)) {
                 advance();
                 if (!parseAssignExpression()) {
                     cleanup(m, NEW_EXPRESSION);
-                    return false;
+                    return null;
                 }
                 expect(OP_BRACKET_RIGHT);
             } else if (currentIs(OP_PAR_LEFT))
                 if (!parseArguments()) {
                     cleanup(m, NEW_EXPRESSION);
-                    return false;
+                    return null;
                 }
         }
         exit_section_modified(builder, m, NEW_EXPRESSION, true);
-        return true;
+        return m;
     }
 
     /**
@@ -4903,7 +4903,7 @@ class DLangParser {
                 || b == OP_BRACKET_RIGHT
                 || b == OP_BRACES_RIGHT
                 || b == OP_SCOLON)) {
-                return parseArrayLiteral();
+                return parseArrayLiteral() == null;
             }
         }
         return parseAssignExpression();
@@ -5455,28 +5455,27 @@ class DLangParser {
      * ;)
      */
     Marker parsePrimaryExpression() {
-        final Marker m = enter_section_modified(builder);
         final IElementType i = current();
+
+        if (i == ID && peekIs(OP_LAMBDA_ARROW)) {
+            return parseFunctionLiteralExpression();
+        }
+
         // [.] (Identifier|TemplateInstance)
-        if (i == OP_DOT) {
-            advance();
-            if (!primaryExpressionIdentifierCase(m)) return null;
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
-        } else if (i == ID) {
-            if (!primaryExpressionIdentifierCase(m)) return null;
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
+        if (i == OP_DOT || i == ID) {
+            return primaryExpressionIdentifierCase();
         }
 
         if (i == OP_DOLLAR) {
+            Marker m = builder.mark();
             builder.advanceLexer();
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
+            m.done(DOLLAR_EXPRESSION);
             return m;
         }
 
         // LiteralExpression
         if (isLiteral(i)) {
+            Marker m = builder.mark();
             if (currentIsOneOf(stringLiteralsArray)) {
                 do {
                     advance();
@@ -5484,93 +5483,72 @@ class DLangParser {
             } else {
                 advance();
             }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
+            exit_section_modified(builder, m, LITERAL_EXPRESSION, true);
             return m;
         }
         if (i == OP_BRACKET_LEFT) {
             // ArrayLiteral | AssocArrayLiteral
             if (isAssociativeArrayLiteral()) {
-                if (!parseAssocArrayLiteral()) {
-                    cleanup(m, PRIMARY_EXPRESSION);
-                    return null;
-                }
-            } else if (!parseArrayLiteral()) {
-                cleanup(m, PRIMARY_EXPRESSION);
-                return null;
+                return parseAssocArrayLiteral();
+            } else {
+                return parseArrayLiteral();
             }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
         }
         // Function Literal
         Bookmark b = setBookmark();
-        if (parseFunctionLiteralExpression()) {
+        Marker fnctlMarker = parseFunctionLiteralExpression();
+        if (fnctlMarker != null) {
             abandonBookmark(b);
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
+            return fnctlMarker;
         }
         goToBookmark(b);
 
         // AssertExpression
         if (i == KW_ASSERT) {
-            if (!parseAssertExpression()) {
-                cleanup(m, PRIMARY_EXPRESSION);
-                return null;
-            }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
+            return parseAssertExpression();
         }
 
         // MixinExpression
         if (i == KW_MIXIN) {
-            if (!parseMixinExpression()) {
-                cleanup(m, PRIMARY_EXPRESSION);
-                return null;
-            }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
+            return parseMixinExpression();
         }
 
         // ImportExpression
         if (i == KW_IMPORT) {
-            if (!parseImportExpression()) {
-                cleanup(m, PRIMARY_EXPRESSION);
-                return null;
-            }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
+            return parseImportExpression();
         }
 
         // NewExpression
         if (i == KW_NEW) {
-            if (!parseNewExpression()) {
-                cleanup(m, PRIMARY_EXPRESSION);
-                return null;
-            }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
+            return parseNewExpression();
         }
 
         // FundamentalType . Identifier | FundamentalType ( NamedArgumentList )
         if (isBasicType(i)) {
+            Marker m = builder.mark();
             advance();
             if (currentIs(OP_DOT)) {
                 advance();
                 expect(ID);
             } else if (currentIs(OP_PAR_LEFT)) {
                 if (!parseArguments()) {
-                    cleanup(m, PRIMARY_EXPRESSION);
+                    cleanup(m, FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION);
                     return null;
                 }
+                m.done(FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION);
+                return m;
             } else {
-                cleanup(m, PRIMARY_EXPRESSION);
+                builder.error("`.` or `(` expected");
+                m.drop();
                 return null;
             }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
+            exit_section_modified(builder, m, FUNDAMENTAL_TYPE_PROPERTY_EXPRESSION, true);
             return m;
         }
 
         // TypeCtor? ...
         if (i == KW_IMMUTABLE || i == KW_CONST || i == KW_INOUT || i == KW_SHARED) {
+            Marker m = builder.mark();
             Bookmark b1 = setBookmark();
             advance();
             if (expect(OP_PAR_LEFT) == null) {
@@ -5584,31 +5562,36 @@ class DLangParser {
                 return null;
             }
             expect(OP_PAR_RIGHT);
-            if (currentIs(OP_DDOT)) {
+            if (currentIs(OP_DOT)) {
                 advance();
                 if (currentIs(ID)) {
                     advance();
-                } else {
-                    if (expect(OP_PAR_LEFT) == null) {
-                        goToBookmark(b1);
-                        m.drop();
-                        return null;
-                    }
-                    parseArgumentList();
-                    if (expect(OP_PAR_RIGHT) == null) {
-                        goToBookmark(b1);
-                        m.drop();
-                        return null;
-                    }
+                    abandonBookmark(b1);
+                    exit_section_modified(builder, m, TYPE_PROPERTY_EXPRESSION, true);
                 }
             } else {
+                if (expect(OP_PAR_LEFT) == null) {
+                    goToBookmark(b1);
+                    m.drop();
+                    return null;
+                }
+                parseArgumentList();
+                if (expect(OP_PAR_RIGHT) == null) {
+                    goToBookmark(b1);
+                    m.drop();
+                    return null;
+                }
                 abandonBookmark(b1);
+                exit_section_modified(builder, m, TYPE_CONSTRUCT_EXPRESSION, true);
+                return m;
             }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
+            builder.error("`.` or `(` expected");
+            m.done(TYPE_PROPERTY_EXPRESSION);
             return m;
         }
 
         if (i == OP_PAR_LEFT) {
+            Marker m = builder.mark();
             advance();
             // ( type ) . id
             Bookmark b1 = setBookmark();
@@ -5617,7 +5600,7 @@ class DLangParser {
                     if (expect(OP_DOT) != null) {
                         abandonBookmark(b1);
                         expect(ID);
-                        exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
+                        exit_section_modified(builder, m, TYPE_PROPERTY_EXPRESSION, true);
                         return m;
                     }
                 }
@@ -5626,59 +5609,39 @@ class DLangParser {
 
             // ( expression )
             if (!parseExpression()) {
-                cleanup(m, PRIMARY_EXPRESSION);
+                cleanup(m, PARENTHESISED_EXPRESSION);
                 return null;
             }
             expect(OP_PAR_RIGHT);
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
+            exit_section_modified(builder, m, PARENTHESISED_EXPRESSION, true);
             return m;
         }
 
         if (i == KW_TYPEOF) {
-            if (!parseTypeofExpression()) {
-                cleanup(m, PRIMARY_EXPRESSION);
-                return null;
-            }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
+            return parseTypeofExpression();
         }
 
         if (i == KW_TYPEID) {
-            if (!parseTypeidExpression()) {
-                cleanup(m, PRIMARY_EXPRESSION);
-                return null;
-            }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
+            return parseTypeidExpression();
         }
 
         if (i == KW_IS) {
-            if (!parseIsExpression()) {
-                cleanup(m, PRIMARY_EXPRESSION);
-                return null;
-            }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
+            return parseIsExpression();
         }
 
         // Special keyword
         if (i == KW___FILE__ || i == KW___FILE_FULL_PATH__ || i == KW___MODULE__ || i == KW___LINE__ || i == KW___FUNCTION__ || i == KW___PRETTY_FUNCTION__) {
+            Marker m = builder.mark();
             advance();
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
+            exit_section_modified(builder, m, MAGIC_LITERAL_EXPRESSION, true);
             return m;
         }
 
         if (i == KW___TRAITS) {
-            if (!parseTraitsExpression()) {
-                cleanup(m, PRIMARY_EXPRESSION);
-                return null;
-            }
-            exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
-            return m;
+            return parseTraitsExpression();
         }
 
         error("Primary expression expected");
-        exit_section_modified(builder, m, PRIMARY_EXPRESSION, true);
         return null;
     }
 
@@ -5690,17 +5653,14 @@ class DLangParser {
         return basicTypes.contains(i);
     }
 
-    private boolean primaryExpressionIdentifierCase(final Marker m) {
-        if (peekIs(OP_LAMBDA_ARROW)) {
-            if (!parseFunctionLiteralExpression()) {
-                cleanup(m, PRIMARY_EXPRESSION);
-                return false;
-            }
-        } else if (!parseIdentifierOrTemplateInstance()) {
-            cleanup(m, PRIMARY_EXPRESSION);
-            return false;
+    private Marker primaryExpressionIdentifierCase() {
+        Marker m = builder.mark();
+        if (builder.getTokenType() == OP_DOT) {
+            builder.advanceLexer();
         }
-        return true;
+        boolean result = parseIdentifierOrTemplateInstance();
+        m.done(REFERENCE_EXPRESSION);
+        return result ? m : null;
     }
 
     /**
@@ -6245,7 +6205,7 @@ class DLangParser {
             marker.rollbackTo();
             return false;
         }
-        if(!parseAssertExpression()) {
+        if(parseAssertExpression() != null) {
             marker.done(STATIC_ASSERT_DECLARATION);
             return true;
         }
@@ -6267,7 +6227,7 @@ class DLangParser {
             cleanup(marker, STATIC_ASSERT_STATEMENT);
             return false;
         }
-        if(!parseAssertExpression()) {
+        if(parseAssertExpression() != null) {
             cleanup(marker, STATIC_ASSERT_STATEMENT);
             return false;
         }
@@ -7217,34 +7177,34 @@ class DLangParser {
      * $(LITERAL '___traits') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL ',') $(RULE TemplateArgumentList) $(LITERAL '$(RPAREN)')
      * ;)
      */
-    boolean parseTraitsExpression() {
+    Marker parseTraitsExpression() {
         final Marker m = enter_section_modified(builder);
         if (!tokenCheck(KW___TRAITS)) {
             cleanup(m, TRAITS_EXPRESSION);
-            return false;
+            return null;
         }
         if (!tokenCheck(OP_PAR_LEFT)) {
             cleanup(m, TRAITS_EXPRESSION);
-            return false;
+            return null;
         }
         final IElementType ident = expect(ID);
         if (ident == null) {
             cleanup(m, TRAITS_EXPRESSION);
-            return false;
+            return null;
         }
         if (currentIs(OP_COMMA)) {
             advance();
             if (!(parseTemplateArgumentList())) {
                 cleanup(m, TRAITS_EXPRESSION);
-                return false;
+                return null;
             }
         }
         if (!tokenCheck(OP_PAR_RIGHT)) {
             cleanup(m, TRAITS_EXPRESSION);
-            return false;
+            return null;
         }
         exit_section_modified(builder, m, TRAITS_EXPRESSION, true);
-        return true;
+        return m;
     }
 
     /**
@@ -7378,12 +7338,12 @@ class DLangParser {
                 return false;
             }
         } else if (i == KW___TRAITS) {
-            if (!parseTraitsExpression()) {
+            if (parseTraitsExpression() != null) {
                 cleanup(m, BASIC_TYPE);
                 return false;
             }
         } else if (i == KW_TYPEOF) {
-            if (!parseTypeofExpression()) {
+            if (parseTypeofExpression() != null) {
                 cleanup(m, BASIC_TYPE);
                 return false;
             }
@@ -7395,7 +7355,7 @@ class DLangParser {
                 }
             }
         } else if (i == KW_MIXIN) {
-            if (!parseMixinExpression()) {
+            if (parseMixinExpression() != null) {
                 cleanup(m, BASIC_TYPE);
                 return false;
             }
@@ -7586,7 +7546,7 @@ class DLangParser {
      * $(LITERAL 'typeid') $(LITERAL '$(LPAREN)') ($(RULE type) | $(RULE expression)) $(LITERAL '$(RPAREN)')
      * ;)
      */
-    boolean parseTypeidExpression() {
+    Marker parseTypeidExpression() {
         final Marker m = enter_section_modified(builder);
         expect(KW_TYPEID);
         expect(OP_PAR_LEFT);
@@ -7596,14 +7556,14 @@ class DLangParser {
             goToBookmark(b);
             if (!parseExpression()) {
                 cleanup(m, TYPEID_EXPRESSION);
-                return false;
+                return null;
             }
         } else {
             abandonBookmark(b);
         }
         expect(OP_PAR_RIGHT);
         exit_section_modified(builder, m, TYPEID_EXPRESSION, true);
-        return true;
+        return m;
     }
 
     /**
@@ -7613,7 +7573,7 @@ class DLangParser {
      * $(LITERAL 'typeof') $(LITERAL '$(LPAREN)') ($(RULE expression) | $(LITERAL 'return')) $(LITERAL '$(RPAREN)')
      * ;)
      */
-    boolean parseTypeofExpression() {
+    Marker parseTypeofExpression() {
         final Marker m = enter_section_modified(builder);
         expect(KW_TYPEOF);
         expect(OP_PAR_LEFT);
@@ -7621,11 +7581,11 @@ class DLangParser {
             advance();
         else if (!parseExpression()) {
             cleanup(m, TYPEOF_EXPRESSION);
-            return false;
+            return null;
         }
         expect(OP_PAR_RIGHT);
         exit_section_modified(builder, m, TYPEOF_EXPRESSION, true);
-        return true;
+        return m;
     }
 
     /**
@@ -7699,7 +7659,6 @@ class DLangParser {
     }
 
     Marker parsePostfixExpression_0(Marker m) {
-        // TODO create a Postfix token
         if (currentIs(OP_DOT)) {
             Marker marker = m.precede();
             builder.advanceLexer();
@@ -7716,13 +7675,13 @@ class DLangParser {
             } else if (currentIs(KW_NEW)) {
                 parseNewExpression();
             }
-            marker.done(UNARY_EXPRESSION);
+            marker.done(POSTFIX_EXPRESSION);
             return marker;
         }
         if (currentIsOneOf(OP_PLUS_PLUS, OP_MINUS_MINUS)) {
             Marker marker = m.precede();
             builder.advanceLexer();
-            marker.done(UNARY_EXPRESSION);
+            marker.done(POSTFIX_EXPRESSION);
             return marker;
         }
         if (currentIs(OP_PAR_LEFT)) {

@@ -280,6 +280,10 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitDollarExpression(@NotNull final DLanguageDollarExpressionImpl o) {
+        visitPsiElement(o);
+    }
+
     public void visitDoStatement(@NotNull final DLanguageDoStatementImpl o) {
         visitPsiElement(o);
     }
@@ -362,6 +366,14 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitFunctionLiteralExpression(@NotNull final DLanguageFunctionLiteralExpressionImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitFundamentalTypeConstructExpression(@NotNull final DLanguageFundamentalTypeConstructExpressionImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitFundamentalTypePropertyExpression(@NotNull final DLanguageFundamentalTypePropertyExpressionImpl o) {
         visitPsiElement(o);
     }
 
@@ -469,7 +481,15 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitLiteralExpression(@NotNull final DLanguageLiteralExpressionImpl o) {
+        visitPsiElement(o);
+    }
+
     public void visitMemberFunctionAttribute(@NotNull final DLanguageMemberFunctionAttributeImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitMagicLiteralExpression(@NotNull final DLanguageMagicLiteralExpressionImpl o) {
         visitPsiElement(o);
     }
 
@@ -545,6 +565,10 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitParenthesisedExpression(@NotNull final DLanguageParenthesisedExpressionImpl o) {
+        visitPsiElement(o);
+    }
+
     public void visitPostblit(@NotNull final DLanguagePostblitImpl o) {
         visitPsiElement(o);
     }
@@ -569,7 +593,11 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitPrimaryExpression(@NotNull final DLanguagePrimaryExpressionImpl o) {
+    public void visitTypePropertyExpression(@NotNull final DLanguageTypePropertyExpressionImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitReferenceExpression(@NotNull final DLanguageReferenceExpressionImpl o) {
         visitPsiElement(o);
     }
 
@@ -738,6 +766,10 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitTemplateValueParameterDefault(@NotNull final DLanguageTemplateValueParameterDefaultImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitTypeConstructExpression(@NotNull final DLanguageTypeConstructExpressionImpl o) {
         visitPsiElement(o);
     }
 
