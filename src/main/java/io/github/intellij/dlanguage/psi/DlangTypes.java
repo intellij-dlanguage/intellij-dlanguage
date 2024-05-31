@@ -18,7 +18,7 @@ public interface DlangTypes {
     IElementType STRUCT_DECLARATION = DElementTypeFactory.factory("STRUCT_DECLARATION");
     IElementType ALIAS_INITIALIZER = DElementTypeFactory.factory("ALIAS_INITIALIZER");
     IElementType MODULE_DECLARATION = DElementTypeFactory.factory("MODULE_DECLARATION");
-    IElementType DECLARATOR = DElementTypeFactory.factory("DECLARATOR");
+    IElementType IDENTIFIER_INITIALIZER = DElementTypeFactory.factory("IDENTIFIER_INITIALIZER");
     IElementType LABELED_STATEMENT = DElementTypeFactory.factory("LABELED_STATEMENT");
     IElementType SHARED_STATIC_CONSTRUCTOR = DElementTypeFactory.factory("SHARED_STATIC_CONSTRUCTOR");
     IElementType SHARED_STATIC_DESTRUCTOR = DElementTypeFactory.factory("SHARED_STATIC_DESTRUCTOR");
@@ -574,8 +574,8 @@ public interface DlangTypes {
                 return new DLanguageDeclarationBlockImpl(node);
             } else if (type == DECLARATION_STATEMENT) {
                 return new DLanguageDeclarationStatementImpl(node);
-            } else if (type == DECLARATOR) {
-                return new DLanguageDeclaratorImpl(node);
+            } else if (type == IDENTIFIER_INITIALIZER) {
+                return new DLanguageIdentifierInitializerImpl(node);
             } else if (type == DEFAULT_STATEMENT) {
                 return new DLanguageDefaultStatementImpl(node);
             } else if (type == DELETE_EXPRESSION) {

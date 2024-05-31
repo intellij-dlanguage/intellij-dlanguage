@@ -69,9 +69,9 @@ class DAttributesFinder {
         } else if (elem is Catch) {
             defualts = defaultCatch(elem)
             directApplication = handleCatch(elem)
-        } else if (elem is Declarator) {
-            defualts = defaultDeclarator(elem)
-            directApplication = handleDeclarator(elem)
+        } else if (elem is IdentifierIdentifier) {
+            defualts = defaultIdentifierInitializer(elem)
+            directApplication = handleIdentifierInitializer(elem)
         } else if (elem is ForeachType) {
             defualts = defaultForeachType(elem)
             directApplication = handleForeachType(elem)
@@ -655,7 +655,7 @@ class DAttributesFinder {
         //cannot be const/immutable etc, so no need to update from attributes
     }
 
-    fun handleDeclarator(decl: Declarator): DirectApplication {
+    fun handleIdentifierInitializer(decl: IdentifierIdentifier): DirectApplication {
         val varDecls = decl.parent as SpecifiedVariableDeclaration
         val attribs = DirectApplication()
         for (storageClasss in varDecls.storageClasss) {
@@ -664,7 +664,7 @@ class DAttributesFinder {
         return attribs
     }
 
-    fun defaultDeclarator(decl: Declarator): DefaultAttributes {
+    fun defaultIdentifierInitializer(decl: IdentifierIdentifier): DefaultAttributes {
         return DefaultAttributes(
             static = true,
             visibility = Visibility.PUBLIC,

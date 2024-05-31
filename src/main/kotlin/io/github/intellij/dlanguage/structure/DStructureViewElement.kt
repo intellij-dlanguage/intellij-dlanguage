@@ -94,7 +94,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                 is SpecifiedVariableDeclaration -> {
                     append(" : ${element.type?.text}")
 
-                    val initializer = element.declarators.firstOrNull()?.initializer
+                    val initializer = element.identifierInitializers.firstOrNull()?.initializer
 
                     if (initializer != null) {
                         append(" = ${psiElementShortText(initializer)}")

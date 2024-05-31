@@ -26,7 +26,6 @@ string[] named_children = [
     "Catch",
     "ClassDeclaration",
     "Constructor",
-    "Declarator",
     "DeclaratorIdentifier",
     "Destructor",
     "EnumDeclaration",
@@ -34,6 +33,7 @@ string[] named_children = [
     "ForeachType",
     "FunctionDeclaration",
     "Identifier",
+    "IdentifierInitializer",
     "IfCondition",
     "InterfaceDeclaration",
     "LabeledStatement",
@@ -251,7 +251,7 @@ static this() {
     types_children["SliceExpression"] = ["UnaryExpression","AssignExpression*","OP_BRACKET_LEFT","OP_BRACKET_RIGHT","OP_DDOT"];
     types_children["ShortenedFunctionBody"] = ["FunctionContract*", "OP_LAMBDA_ARROW", "AssignExpression", "OP_SCOLON"];
     types_children["SpecifiedFunctionBody"] = ["FunctionContract*", "KW_DO", "BlockStatement"];
-    types_children["SpecifiedVariableDeclaration"] = ["OP_SCOLON","Type","Declarator*","OP_COMMA*","OP_EQ","FunctionBody","StorageClass*"];
+    types_children["SpecifiedVariableDeclaration"] = ["OP_SCOLON","Type","IdentifierInitializer*","OP_COMMA*","OP_EQ","FunctionBody","StorageClass*"];
     types_extra_interfaces["SpecifiedVariableDeclaration"] = ["VariableDeclaration"];
     types_children["StaticAssertDeclaration"] = ["StaticAssertStatement"];
     types_extra_interfaces["StaticAssertDeclaration"] = ["Declaration"];
@@ -391,7 +391,6 @@ static this() {
     has_processDeclaration["DebugCondition"] = false;
     has_processDeclaration["DebugSpecification"] = false;
     has_processDeclaration["Declaration"] = true;
-    has_processDeclaration["Declarator"] = false;
     has_processDeclaration["DefaultStatement"] = false;
     has_processDeclaration["DeleteExpression"] = false;
     has_processDeclaration["DeleteStatement"] = false;
@@ -419,6 +418,7 @@ static this() {
     has_processDeclaration["FunctionLiteralExpression"] = true;
     has_processDeclaration["GotoStatement"] = false;
     has_processDeclaration["IdentifierChain"] = false;
+    has_processDeclaration["IdentifierInitializer"] = false;
     has_processDeclaration["IdentifierList"] = false;
     has_processDeclaration["IdentifierOrTemplateChain"] = false;
     has_processDeclaration["IdentifierOrTemplateInstance"] = false;
@@ -538,6 +538,7 @@ static this() {
             continue;
         renameMap["DLanguage" ~ key] = "Dlang" ~ key;
     }
+    renameMap["DLanguageIdentifierInitializer"] = "DLanguageIdentifierInitializer";
 }
 
 enum psiDlangImportTemplate = "import io.github.intellij.dlanguage.psi.DLanguage%s;";

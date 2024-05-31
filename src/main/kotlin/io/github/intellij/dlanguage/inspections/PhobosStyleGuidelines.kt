@@ -37,7 +37,7 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
         }
     }
 
-    override fun visitDeclarator(o: DLanguageDeclaratorImpl) {
+    override fun visitDeclarator(o: DLanguageIdentifierInitializerImpl) {
         checkName("Variable", StringUtil.decapitalize(o.name), o.nameIdentifier!!, varFunNameRegex)
     }
 

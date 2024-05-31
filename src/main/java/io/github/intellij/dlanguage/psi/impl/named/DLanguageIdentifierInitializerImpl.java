@@ -9,24 +9,24 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageInitializer;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
-import io.github.intellij.dlanguage.psi.named.DlangDeclarator;
+import io.github.intellij.dlanguage.psi.named.DLanguageIdentifierInitializer;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangDeclaratorStub;
+import io.github.intellij.dlanguage.stubs.DLanguageIdentifierInitializerStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class DLanguageDeclaratorImpl extends
-    DNamedStubbedPsiElementBase<DlangDeclaratorStub> implements DlangDeclarator {
-    public DLanguageDeclaratorImpl(final ASTNode node) {
+public class DLanguageIdentifierInitializerImpl extends
+    DNamedStubbedPsiElementBase<DLanguageIdentifierInitializerStub> implements DLanguageIdentifierInitializer {
+    public DLanguageIdentifierInitializerImpl(final ASTNode node) {
         super(node);
     }
 
-    public DLanguageDeclaratorImpl(@NotNull final DlangDeclaratorStub stub, final IStubElementType nodeType) {
+    public DLanguageIdentifierInitializerImpl(@NotNull final DLanguageIdentifierInitializerStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 

@@ -122,7 +122,7 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                 final PsiNamedElement foreachTypeDecl = (PsiNamedElement) DUtil
                     .findParentOfType(DlangIdentifierImpl.this, DlangForeachType.class);
                 final PsiNamedElement declaratorDecl = (PsiNamedElement) DUtil
-                    .findParentOfType(DlangIdentifierImpl.this, DlangDeclarator.class);
+                    .findParentOfType(DlangIdentifierImpl.this, DLanguageIdentifierInitializer.class);
                 final PsiNamedElement aliasInitializerDecl = (PsiNamedElement) DUtil
                     .findParentOfType(DlangIdentifierImpl.this, DlangAliasInitializer.class);
                 final PsiNamedElement labeledStatementDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageLabeledStatement.class);

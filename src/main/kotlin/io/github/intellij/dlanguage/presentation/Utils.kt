@@ -18,7 +18,7 @@ fun presentableName(psi: PsiElement?): String? = when (psi) {
         psi.autoDeclarationParts.firstOrNull()?.name
     }
     is SpecifiedVariableDeclaration -> {
-        psi.declarators.firstOrNull()?.identifier?.name
+        psi.identifierInitializers.firstOrNull()?.identifier?.name
     }
     is AliasDeclaration -> {
         psi.aliasInitializers.joinToString(", ") { it.name }

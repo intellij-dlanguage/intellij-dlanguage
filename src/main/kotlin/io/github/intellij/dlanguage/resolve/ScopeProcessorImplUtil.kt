@@ -178,7 +178,7 @@ object ScopeProcessorImplUtil {
             return toContinue
         }
         if (def is SpecifiedVariableDeclaration) {
-            for (declarator in def.declarators) {
+            for (declarator in def.identifierInitializers) {
                 if (!processor.execute(declarator, state)) {
                     toContinue = false
                 }

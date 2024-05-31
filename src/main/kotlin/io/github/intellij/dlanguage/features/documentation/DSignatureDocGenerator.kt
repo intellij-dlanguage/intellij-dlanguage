@@ -42,7 +42,7 @@ class DSignatureDocGenerator {
             is InterfaceDeclaration -> appendInterfaceSignature(builder, element)
             is ClassDeclaration -> appendClassSignature(builder, element)
             is Parameter -> appendParameterSignature(builder, element)
-            is Declarator -> {
+            is IdentifierIdentifier -> {
                 appendType(builder, (element.parent as SpecifiedVariableDeclaration).type)
                 builder.append(" ").append(element.identifier?.text)}
             is AutoDeclarationPart -> appendAutoDeclarationPartSignature(builder, element)

@@ -69,7 +69,7 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: Declarator,
+    fun processDeclarations(element: IdentifierIdentifier,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,

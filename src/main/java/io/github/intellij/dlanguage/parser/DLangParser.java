@@ -2377,7 +2377,7 @@ class DLangParser {
     }
 
     /**
-     * Parses a Declarator
+     * Parses an Identifier initializer
      * <p>
      * $(GRAMMAR $(RULEDEF declarator):
      *   $(LITERAL Identifier)
@@ -2385,42 +2385,42 @@ class DLangParser {
      * | $(LITERAL Identifier) $(RULE templateParameters) $(LITERAL '=') $(RULE initializer)
      * ;)
      */
-    boolean parseDeclarator() {
+    boolean parseIdentifierInitializer() {
         final Marker m = enter_section_modified(builder);
         final IElementType id = expect(ID);
         if (id == null) {
-            cleanup(m, DECLARATOR);
+            cleanup(m, IDENTIFIER_INITIALIZER);
             return false;
         }
         if (currentIs(OP_BRACKET_LEFT)) // dmd doesn't accept pointer after identifier
         {
             while (moreTokens() && currentIs(OP_BRACKET_LEFT))
                 if (!parseTypeSuffix()) {
-                    cleanup(m, DECLARATOR);
+                    cleanup(m, IDENTIFIER_INITIALIZER);
                     return false;
                 }
         }
         if (currentIs(OP_PAR_LEFT)) {
             if (!parseTemplateParameters()) {
-                cleanup(m, DECLARATOR);
+                cleanup(m, IDENTIFIER_INITIALIZER);
                 return false;
             }
             if (!tokenCheck(OP_EQ)) {
-                cleanup(m, DECLARATOR);
+                cleanup(m, IDENTIFIER_INITIALIZER);
                 return false;
             }
             if (!parseInitializer()) {
-                cleanup(m, DECLARATOR);
+                cleanup(m, IDENTIFIER_INITIALIZER);
                 return false;
             }
         } else if (currentIs(OP_EQ)) {
             advance();
             if (!parseInitializer()) {
-                cleanup(m, DECLARATOR);
+                cleanup(m, IDENTIFIER_INITIALIZER);
                 return false;
             }
         }
-        exit_section_modified(builder, m, DECLARATOR, true);
+        exit_section_modified(builder, m, IDENTIFIER_INITIALIZER, true);
         return true;
     }
 
@@ -7955,7 +7955,7 @@ class DLangParser {
         int suffixCount = parseTypeSuffixes();
         boolean hasDeclarator = false;
         while (!builder.eof()) {
-            if(!parseDeclarator())
+            if(!parseIdentifierInitializer())
                 break;
             hasDeclarator = true;
             if (currentIs(OP_COMMA))

@@ -31,8 +31,8 @@ public class DElementTypeFactory {
                 return new AliasInitializerStubElementType(name);
             case "MODULE_DECLARATION":
                 return new ModuleDeclarationStubElementType(name);
-            case "DECLARATOR":
-                return new DeclaratorStubElementType(name);
+            case "IDENTIFIER_INITIALIZER":
+                return new IdentifierInitializerStubElementType(name);
             case "DECLARATOR_IDENTIFIER":
                 return new DeclaratorIdentifierStubElementType(name);
             case "LABELED_STATEMENT":
