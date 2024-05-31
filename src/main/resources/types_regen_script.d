@@ -168,7 +168,6 @@ static this() {
     types_extra_interfaces["ForeachStatement"] = ["Statement"];
     types_children["ForeachTypeList"] = ["ForeachType*","OP_COMMA*"];
     types_children["FunctionAttribute"] = ["AtAttribute","KW_PURE","KW_NOTHROW"];
-    types_children["FunctionBody"] = ["SpecifiedFunctionBody","MissingFunctionBody","ShortenedFunctionBody"];
     types_children["FunctionCallExpression"] = ["Type", "Arguments", "UnaryExpression",  "TemplateArguments"];
     types_children["FunctionContract"] = ["OP_BRACES_LEFT", "InOutStatement", "OP_PAR_LEFT", "InOutContractExpression"];
     types_children["FunctionLiteralExpression"] = ["Type","KW_FUNCTION","KW_DELEGATE","KW_REF","Parameters","FunctionAttribute*","SpecifiedFunctionBody","Identifier"];
@@ -209,6 +208,7 @@ static this() {
     types_children["MagicLiteralExpression"] = ["KW___FILE__", "KW___FILE_FULL_PATH__", "KW___MODULE__", "KW___LINE__", "KW___FUNCTION__", "KW___PRETTY_FUNCTION__"];
     types_children["MemberFunctionAttribute"] = [ "FunctionAttribute","KW_IMMUTABLE","KW_INOUT","KW_SHARED","KW_CONST"];
     types_children["MissingFunctionBody"] = ["FunctionContract*","OP_SCOLON"];
+    types_extra_interfaces["MissingFunctionBody"] = ["FunctionBody"];
     types_children["MixinDeclaration"] = ["TemplateMixinExpression","MixinExpression","OP_SCOLON"];
     types_extra_interfaces["MixinDeclaration"] = ["Declaration"];
     types_children["MixinExpression"] = ["ArgumentList","OP_PAR_RIGHT","OP_PAR_LEFT","KW_MIXIN"];
@@ -250,7 +250,9 @@ static this() {
     types_children["ShiftExpression"] = ["ShiftExpression","AddExpression","OP_SH_RIGHT","OP_SH_LEFT","OP_USH_RIGHT"];
     types_children["SliceExpression"] = ["UnaryExpression","AssignExpression*","OP_BRACKET_LEFT","OP_BRACKET_RIGHT","OP_DDOT"];
     types_children["ShortenedFunctionBody"] = ["FunctionContract*", "OP_LAMBDA_ARROW", "AssignExpression", "OP_SCOLON"];
+    types_extra_interfaces["ShortenedFunctionBody"] = ["FunctionBody"];
     types_children["SpecifiedFunctionBody"] = ["FunctionContract*", "KW_DO", "BlockStatement"];
+    types_extra_interfaces["SpecifiedFunctionBody"] = ["FunctionBody"];
     types_children["SpecifiedVariableDeclaration"] = ["OP_SCOLON","Type","IdentifierInitializer*","OP_COMMA*","OP_EQ","FunctionBody","StorageClass*"];
     types_extra_interfaces["SpecifiedVariableDeclaration"] = ["VariableDeclaration"];
     types_children["StaticAssertDeclaration"] = ["StaticAssertStatement"];
@@ -411,7 +413,6 @@ static this() {
     has_processDeclaration["ForeachTypeList"] = false;
     has_processDeclaration["ForeachType"] = false;
     has_processDeclaration["FunctionAttribute"] = false;
-    has_processDeclaration["FunctionBody"] = false;
     has_processDeclaration["FunctionCallExpression"] = false;
     has_processDeclaration["FunctionContract"] = false;
     has_processDeclaration["FunctionDeclaration"] = true;

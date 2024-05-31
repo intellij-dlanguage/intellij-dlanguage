@@ -101,7 +101,6 @@ typealias ForStatement = io.github.intellij.dlanguage.psi.DLanguageForStatement
 typealias ForeachStatement = io.github.intellij.dlanguage.psi.DLanguageForeachStatement
 typealias ForeachTypeList = io.github.intellij.dlanguage.psi.DLanguageForeachTypeList
 typealias FunctionAttribute = io.github.intellij.dlanguage.psi.DLanguageFunctionAttribute
-typealias FunctionBody = io.github.intellij.dlanguage.psi.DLanguageFunctionBody
 typealias FunctionCallExpression = io.github.intellij.dlanguage.psi.DLanguageFunctionCallExpression
 typealias FunctionContract = io.github.intellij.dlanguage.psi.DLanguageFunctionContract
 typealias FunctionDeclaration = DlangFunctionDeclaration

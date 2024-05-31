@@ -11,8 +11,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
 import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
+import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
 import io.github.intellij.dlanguage.psi.named.DlangDestructor;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.stubs.DlangDestructorStub;
@@ -42,8 +42,8 @@ public class DLanguageDestructorImpl extends DStubbedPsiElementBase<DlangDestruc
     }
 
     @Nullable
-    public DLanguageFunctionBody getFunctionBody() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
+    public FunctionBody getFunctionBody() {
+        return PsiTreeUtil.getChildOfType(this, FunctionBody.class);
     }
 
     @Nullable

@@ -8,12 +8,12 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageConstraint;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
 import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageParameters;
 import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
@@ -88,8 +88,8 @@ public class DLanguageFunctionDeclarationImpl extends
 
     @Nullable
     @Override
-    public DLanguageFunctionBody getFunctionBody() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageFunctionBody.class);
+    public FunctionBody getFunctionBody() {
+        return PsiTreeUtil.getChildOfType(this, FunctionBody.class);
     }
 
     @NotNull

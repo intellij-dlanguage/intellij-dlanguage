@@ -23,7 +23,7 @@ import io.github.intellij.dlanguage.psi.impl.*
 import io.github.intellij.dlanguage.psi.impl.named.DlangTemplateDeclarationImpl
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration
-import io.github.intellij.dlanguage.utils.FunctionBody
+import io.github.intellij.dlanguage.utils.FunctionDeclaration
 import java.util.ArrayList
 
 class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
@@ -200,9 +200,6 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         }
 
         private fun tryFoldBlockWhitespaces(block: DLanguageBlockStatement): Boolean {
-            if (block.parent !is FunctionBody)
-                return false
-
             val doc = PsiDocumentManager.getInstance(block.project).getDocument(block.containingFile) ?: return false
             val maxLength = rightMargin - block.getOffsetInLine(doc) - ONE_LINER_PLACEHOLDERS_EXTRA_LENGTH
             if (!block.isSingleLine(doc, maxLength)) return false

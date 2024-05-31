@@ -269,7 +269,7 @@ object ScopeProcessorImpl {
                 return false
             }
         }
-        if (element.functionBody?.specifiedFunctionBody?.blockStatement != null) {
+        if (element.functionBody is SpecifiedFunctionBody) {
            /*if (!processDeclarationsOrStatements(element.functionBody!!.specifiedFunctionBody!!.blockStatement!!.declarationOrStatements, processor, state, lastParent, place)) {
                return false
            }*/

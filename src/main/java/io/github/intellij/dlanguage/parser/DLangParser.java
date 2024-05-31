@@ -3277,7 +3277,6 @@ class DLangParser {
      * ;)
      */
     boolean parseFunctionBody() {
-        final Marker m = enter_section_modified(builder);
         Bookmark b = setBookmark();
         if (parseMissingFunctionBody()) {
             abandonBookmark(b);
@@ -3288,13 +3287,9 @@ class DLangParser {
                 abandonBookmark(b);
             } else {
                 goToBookmark(b);
-                if (!parseSpecifiedFunctionBody()) {
-                    cleanup(m, FUNCTION_BODY);
-                    return false;
-                }
+                return parseSpecifiedFunctionBody();
             }
         }
-        exit_section_modified(builder, m, FUNCTION_BODY, true);
         return true;
     }
 

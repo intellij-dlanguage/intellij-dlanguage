@@ -348,10 +348,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitFunctionBody(@NotNull final DLanguageFunctionBodyImpl o) {
-        visitPsiElement(o);
-    }
-
     public void visitFunctionCallExpression(@NotNull final DLanguageFunctionCallExpressionImpl o) {
         visitPsiElement(o);
     }

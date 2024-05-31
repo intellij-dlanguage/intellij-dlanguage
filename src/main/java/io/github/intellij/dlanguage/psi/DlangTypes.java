@@ -112,7 +112,6 @@ public interface DlangTypes {
     DlangElementType FOREACH_STATEMENT = new DlangElementType("FOREACH_STATEMENT");
     DlangElementType FOREACH_TYPE_LIST = new DlangElementType("FOREACH_TYPE_LIST");
     DlangElementType FUNCTION_ATTRIBUTE = new DlangElementType("FUNCTION_ATTRIBUTE");
-    DlangElementType FUNCTION_BODY = new DlangElementType("FUNCTION_BODY");
     DlangElementType FUNCTION_CALL_EXPRESSION = new DlangElementType("FUNCTION_CALL_EXPRESSION");
     DlangElementType FUNCTION_CONTRACT = new DlangElementType("FUNCTION_CONTRACT");
     DlangElementType FUNCTION_LITERAL_EXPRESSION = new DlangElementType("FUNCTION_LITERAL_EXPRESSION");
@@ -608,8 +607,6 @@ public interface DlangTypes {
                 return new DLanguageForeachTypeListImpl(node);
             } else if (type == FUNCTION_ATTRIBUTE) {
                 return new DLanguageFunctionAttributeImpl(node);
-            } else if (type == FUNCTION_BODY) {
-                return new DLanguageFunctionBodyImpl(node);
             } else if (type == FUNCTION_CALL_EXPRESSION) {
                 return new DLanguageFunctionCallExpressionImpl(node);
             } else if (type == FUNCTION_CONTRACT) {
