@@ -1,17 +1,9 @@
 D Language File
   PsiComment(DlangTokenType.BLOCK_COMMENT)('/*\nTEST_OUTPUT:\n---\nfail_compilation/e15876_1.d(15): Error: valid scope identifiers are `exit`, `failure`, or `success`, not `x`\nfail_compilation/e15876_1.d(16): Error: found `End of File` when expecting `)`\nfail_compilation/e15876_1.d(16): Error: found `End of File` instead of statement\nfail_compilation/e15876_1.d(16): Error: found `End of File` when expecting `}` following compound statement\nfail_compilation/e15876_1.d(16): Error: found `End of File` when expecting `]`\nfail_compilation/e15876_1.d(16): Error: no identifier for declarator `o[()\n{\nscope(exit) }\n]`\n---\n*/')
-  DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageTypeIdentifierPartImpl(TYPE_IDENTIFIER_PART)
-          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('o')
-    PsiErrorElement:no identifier for declarator
-      <empty list>
+  PsiErrorElement:Unable to parse this declaration
+    PsiElement(DlangTokenType.ID)('o')
     PsiElement(DlangTokenType.[)('[')
     PsiElement(DlangTokenType.{)('{')
     PsiElement(DlangTokenType.scope)('scope')
     PsiElement(DlangTokenType.()('(')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('x')
+    PsiElement(DlangTokenType.ID)('x')

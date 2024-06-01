@@ -1,6 +1,7 @@
 D Language File
-  DLanguageDeclarationImpl(DECLARATION)
+  DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.synchronized)('synchronized')
-    PsiElement(DlangTokenType.{)('{')
-    PsiElement(DlangTokenType.})('}')
+    DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
+      PsiElement(DlangTokenType.{)('{')
+      PsiElement(DlangTokenType.})('}')

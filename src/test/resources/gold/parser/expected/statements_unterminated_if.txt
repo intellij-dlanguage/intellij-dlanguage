@@ -1,26 +1,21 @@
 D Language File
-  DLanguageDeclarationImpl(DECLARATION)
-    FUNCTION_DECLARATION
-      DLanguageTypeImpl(TYPE)
-        DLanguageType_2Impl(TYPE_2)
-          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-            PsiElement(DlangTokenType.void)('void')
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('main')
-      DLanguageParametersImpl(PARAMETERS)
-        PsiElement(DlangTokenType.()('(')
-        PsiElement(DlangTokenType.))(')')
-      DLanguageFunctionBodyImpl(FUNCTION_BODY)
-        DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
-          DLanguageBlockStatementImpl(BLOCK_STATEMENT)
-            PsiElement(DlangTokenType.{)('{')
-            DLanguageDeclarationsAndStatementsImpl(DECLARATIONS_AND_STATEMENTS)
-              DLanguageDeclarationOrStatementImpl(DECLARATION_OR_STATEMENT)
-                DLanguageStatementImpl(STATEMENT)
-                  DLanguageStatementNoCaseNoDefaultImpl(STATEMENT_NO_CASE_NO_DEFAULT)
-                    DLanguageIfStatementImpl(IF_STATEMENT)
-                      PsiElement(DlangTokenType.if)('if')
-                      PsiElement(DlangTokenType.()('(')
-            PsiErrorElement:Expected } instead of EOF
-              <empty list>
+  FUNCTION_DECLARATION
+    DLanguageBasicTypeImpl(BASIC_TYPE)
+      DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+        PsiElement(DlangTokenType.void)('void')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('main')
+    DLanguageParametersImpl(PARAMETERS)
+      PsiElement(DlangTokenType.()('(')
+      PsiElement(DlangTokenType.))(')')
+    DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
+      DLanguageBlockStatementImpl(BLOCK_STATEMENT)
+        PsiElement(DlangTokenType.{)('{')
+        DLanguageIfStatementImpl(IF_STATEMENT)
+          PsiElement(DlangTokenType.if)('if')
+          PsiElement(DlangTokenType.()('(')
+        PsiErrorElement:Unable to parse this statement
+          <empty list>
+        PsiErrorElement:Expected } instead of EOF
+          <empty list>
     PsiComment(DlangTokenType.BLOCK_COMMENT)('/*Comment started\n}')
