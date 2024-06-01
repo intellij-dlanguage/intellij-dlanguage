@@ -45,8 +45,8 @@ public class DElementTypeFactory {
                 return new StaticConstructorStubElementType(name);
             case "STATIC_DESTRUCTOR":
                 return new StaticDestructorStubElementType(name);
-            case "AUTO_DECLARATION_PART":
-                return new AutoDeclarationPartStubElementType(name);
+            case "AUTO_ASSIGNMENT":
+                return new AutoAssignmentStubElementType(name);
             case "ENUM_DECLARATION":
                 return new EnumDeclarationStubElementType(name);
             case "UNION_DECLARATION":

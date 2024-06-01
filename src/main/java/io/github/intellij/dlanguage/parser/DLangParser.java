@@ -1494,24 +1494,24 @@ class DLangParser {
         final Marker m = builder.mark();
         final IElementType i = expect(ID);
         if (i == null) {
-            cleanup(m, AUTO_DECLARATION_PART);
+            cleanup(m, AUTO_ASSIGNMENT);
             return false;
         }
         if (currentIs(OP_PAR_LEFT)) {
             if (!parseTemplateParameters()) {
-                cleanup(m, AUTO_DECLARATION_PART);
+                cleanup(m, AUTO_ASSIGNMENT);
                 return false;
             }
         }
         if (!tokenCheck(OP_EQ)) {
-            cleanup(m, AUTO_DECLARATION_PART);
+            cleanup(m, AUTO_ASSIGNMENT);
             return false;
         }
         if (!parseInitializer()) {
-            cleanup(m, AUTO_DECLARATION_PART);
+            cleanup(m, AUTO_ASSIGNMENT);
             return false;
         }
-        exit_section_modified(builder, m, AUTO_DECLARATION_PART, true);
+        exit_section_modified(builder, m, AUTO_ASSIGNMENT, true);
         return true;
     }
 
@@ -2242,7 +2242,7 @@ class DLangParser {
      * ;)
      */
     boolean parseDeclDef() {
-        boolean result = parseAttributeSpecifier();
+        boolean result = false;
         result = result || parseDestructor();
         result = result || parsePostblit();
         result = result || parseInvariant();
@@ -2250,7 +2250,6 @@ class DLangParser {
         result = result || parseDebugSpecification();
         result = result || parseVersionSpecification();
         result = result || parseAliasThisDeclaration();
-        result = result || parseDeclaration();
         result = result || parseConstructor();
         result = result || parseStaticConstructor();
         result = result || parseStaticDestructor();
@@ -2258,6 +2257,8 @@ class DLangParser {
         result = result || parseSharedStaticDestructor();
         result = result || parseConditionalDeclaration();
         result = result || parseMixinDeclaration();
+        result = result || parseDeclaration();
+        result = result || parseAttributeSpecifier();
         result = result || parseEmptyDeclaration();
         return result;
     }
@@ -2893,15 +2894,18 @@ class DLangParser {
 
     boolean parseDeclarationStatement() {
         Marker marker = builder.mark();
+        // First try without storage class to have storage class attached to the declaration that can have some
+        // It produces a nicer tree
+        if (parseDeclaration()) {
+            marker.done(DECLARATION_STATEMENT);
+            return true;
+        }
+        // Declaration does not contains storage class
+        marker.rollbackTo();
+        marker = builder.mark();
         while (!builder.eof()) {
             if(!parseStorageClass())
                 break;
-        }
-        if (builder.getTokenType() == ID || builder.getTokenType() == OP_COLON || builder.getTokenType() == OP_BRACES_LEFT) {
-            // Make the storage class belong to the variable declaration instead of the declaration statement
-            // this produce a nicer tree
-            marker.rollbackTo();
-            marker = builder.mark();
         }
         if (!parseDeclaration()) {
             marker.rollbackTo();
@@ -4440,7 +4444,11 @@ class DLangParser {
         final Marker m = builder.mark();
         m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
-        expect(OP_PAR_LEFT);
+        if (builder.getTokenType() != OP_PAR_LEFT) {
+            m.rollbackTo();
+            return false;
+        }
+        builder.advanceLexer();
         if (!parseArgumentList()) {
             cleanup(m, MIXIN_EXPRESSION);
             return false;
@@ -4690,7 +4698,7 @@ class DLangParser {
             }
         } else {
             expect(KW_NEW);
-            if (!parseType()) {
+            if (!parseType(true)) {
                 cleanup(m, NEW_EXPRESSION);
                 return null;
             }
@@ -6088,9 +6096,12 @@ class DLangParser {
             return false;
         final Marker m = builder.mark();
         builder.advanceLexer();
-        final boolean b = parseStaticCtorDtorCommon();
-        exit_section_modified(builder, m, STATIC_CONSTRUCTOR, b);
-        return b;
+        if (!parseStaticCtorDtorCommon()) {
+            m.rollbackTo();
+            return false;
+        }
+        m.done(STATIC_CONSTRUCTOR);
+        return true;
     }
 
     /**
@@ -6621,7 +6632,7 @@ class DLangParser {
                     builder.advanceLexer();
                 if (builder.getTokenType() == OP_SCOLON)
                     builder.advanceLexer();
-                recovery.error("Unable to parse this statement");
+                recovery.error("Unable to parse this declaration");
             }
         }
         expect(OP_BRACES_RIGHT);
@@ -7089,6 +7100,10 @@ class DLangParser {
         return true;
     }
 
+    boolean parseType() {
+        return parseType(true);
+    }
+
     /**
      * Parses a Type
      * <p>
@@ -7096,7 +7111,7 @@ class DLangParser {
      * $(RULE typeConstructors)? $(RULE type2) $(RULE typeSuffix)*
      * ;)
      */
-    boolean parseType() {
+    boolean parseType(boolean inNewExpression) {
         final Marker m = builder.mark();
         if (!moreTokens()) {
             error("type expected");
@@ -7119,15 +7134,24 @@ class DLangParser {
             final IElementType i1 = current();
 
             if (i1 == OP_BRACKET_LEFT) {
-                // Allow this to fail because of the madness that is the
-                // newExpression rule. Something starting with '[' may be arguments
-                // to the newExpression instead of part of the type
                 Marker bookmark = builder.mark();
-                if (parseTypeSuffix()) {
-                    bookmark.drop();
-                } else {
-                    bookmark.rollbackTo();
-                    break;
+                if(inNewExpression) {
+                    builder.advanceLexer();
+                    if (parseAssignExpression() && builder.getTokenType() == OP_BRACES_RIGHT) {
+                        builder.advanceLexer();
+                        if (builder.getTokenType() != OP_BRACKET_LEFT && builder.getTokenType() != OP_ASTERISK
+                            && builder.getTokenType() != KW_DELEGATE && builder.getTokenType() != KW_FUNCTION
+                            && builder.getTokenType() != OP_PAR_LEFT) {
+                            // This one is not a type prefix but part of the parent newExpression
+                            bookmark.rollbackTo();
+                            break;
+                        }
+                    }
+                }
+                bookmark.rollbackTo();
+                if (!parseTypeSuffix()) {
+                    cleanup(m, TYPE);
+                    return false;
                 }
             } else if (i1 == OP_ASTERISK || i1 == KW_DELEGATE || i1 == KW_FUNCTION) {
                 if (!parseTypeSuffix()) {

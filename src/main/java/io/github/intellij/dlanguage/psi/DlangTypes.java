@@ -24,7 +24,7 @@ public interface DlangTypes {
     IElementType SHARED_STATIC_DESTRUCTOR = DElementTypeFactory.factory("SHARED_STATIC_DESTRUCTOR");
     IElementType STATIC_CONSTRUCTOR = DElementTypeFactory.factory("STATIC_CONSTRUCTOR");
     IElementType STATIC_DESTRUCTOR = DElementTypeFactory.factory("STATIC_DESTRUCTOR");
-    IElementType AUTO_DECLARATION_PART = DElementTypeFactory.factory("AUTO_DECLARATION_PART");
+    IElementType AUTO_ASSIGNMENT = DElementTypeFactory.factory("AUTO_ASSIGNMENT");
     IElementType ENUM_DECLARATION = DElementTypeFactory.factory("ENUM_DECLARATION");
     IElementType UNION_DECLARATION = DElementTypeFactory.factory("UNION_DECLARATION");
     IElementType SINGLE_IMPORT = DElementTypeFactory.factory("SINGLE_IMPORT");
@@ -529,7 +529,7 @@ public interface DlangTypes {
                 return new DLanguageAttributeSpecifierImpl(node);
             } else if (type == AUTO_DECLARATION) {
                 return new DLanguageAutoDeclarationImpl(node);
-            } else if (type == AUTO_DECLARATION_PART) {
+            } else if (type == AUTO_ASSIGNMENT) {
                 return new DLanguageAutoAssignmentImpl(node);
             } else if (type == BASE_CLASS) {
                 return new DLanguageBaseClassImpl(node);

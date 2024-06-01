@@ -10,9 +10,9 @@ import io.github.intellij.dlanguage.stubs.DLanguageAutoAssignmentStub;
 import java.io.IOException;
 import org.jetbrains.annotations.NotNull;
 
-public class AutoDeclarationPartStubElementType extends
+public class AutoAssignmentStubElementType extends
     DNamedStubElementType<DLanguageAutoAssignmentStub, DLanguageAutoAssignment> {
-    public AutoDeclarationPartStubElementType(final String debugName) {
+    public AutoAssignmentStubElementType(final String debugName) {
         super(debugName);
     }
 
