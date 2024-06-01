@@ -605,10 +605,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitScopeBlockStatement(@NotNull final DLanguageScopeBlockStatementImpl o) {
-        visitPsiElement(o);
-    }
-
     public void visitScopeGuardStatement(@NotNull final DLanguageScopeGuardStatementImpl o) {
         visitPsiElement(o);
     }
@@ -887,6 +883,10 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitUnittest(@NotNull final DlangUnittestImpl o) {
+        visitPsiElement(o);
+    }
+
+    public void visitUnittestBlock(@NotNull final DLanguageUnittestBlockImpl o) {
         visitPsiElement(o);
     }
 

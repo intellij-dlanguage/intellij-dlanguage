@@ -268,8 +268,6 @@ static this() {
     types_extra_interfaces["RelExpression"] = ["Expression"];
     types_children["ReturnStatement"] = ["KW_RETURN","Expression*","OP_COMMA*","OP_SCOLON"];
     types_extra_interfaces["ReturnStatement"] = ["Statement"];
-    types_children["ScopeBlockStatement"] = ["Attribute", "BlockStatement"];
-    types_extra_interfaces["ScopeBlockStatement"] = ["Statement"];
     types_children["ScopeGuardStatement"] = ["KW_SCOPE","Identifier","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_extra_interfaces["ScopeGuardStatement"] = ["Statement"];
     stub_children ["SharedStaticConstructor"] = ["KW_STATIC","KW_SHARED","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
@@ -353,8 +351,9 @@ static this() {
     types_children["TypeSuffix"] = ["Expression*","OP_TRIPLEDOT","KW_FUNCTION","KW_DELEGATE","OP_ASTERISK","MemberFunctionAttribute*","Parameters","OP_BRACKET_LEFT","OP_BRACKET_RIGHT"];
     types_children["UnaryExpression"] = ["Expression","IdentifierOrTemplateInstance","OP_PAR_RIGHT","OP_PAR_LEFT","Type","OP_DOT","OP_AND","OP_ASTERISK","OP_MINUS","OP_MINUS_MINUS","OP_NOT","OP_PLUS","OP_PLUS_PLUS","OP_TILDA"];
     types_extra_interfaces["UnaryExpression"] = ["Expression"];
-    stub_children ["Unittest"] = ["Unittest",  "BlockStatement"];
+    stub_children ["Unittest"] = ["Unittest",  "UnittestBlock"];
     types_extra_interfaces["Unittest"] = ["Declaration"];
+    types_children ["UnittestBlock"] = ["OP_BRACES_LEFT", "Statement*", "Declaration*", "OP_BRACES_RIGHT"];
     types_children["VariadicArgumentsAttribute"] = ["KW_CONST", "KW_IMMUTABLE", "KW_SHARED", "KW_SCOPE", "KW_RETURN"];
     types_children["VariadicArgumentsAttributes"] = ["OP_TRIPLEDOT*", "VariadicArgumentsAttribute*"];
     types_children["Vector"] = ["KW___VECTOR", "Type", "OP_PAR_RIGHT","OP_PAR_LEFT"];

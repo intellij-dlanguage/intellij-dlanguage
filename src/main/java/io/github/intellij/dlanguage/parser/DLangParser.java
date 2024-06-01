@@ -2297,7 +2297,7 @@ class DLangParser {
                     builder.advanceLexer();
                 if (builder.getTokenType() == OP_SCOLON)
                     builder.advanceLexer();
-                recovery.error("Unable to parse this statement");
+                recovery.error("Unable to parse this declaration");
             }
         }
         expect(OP_BRACES_RIGHT);
@@ -5805,14 +5805,10 @@ class DLangParser {
      * | $(RULE nonEmptyStatement)
      */
     boolean parseStatement() {
-        if (builder.getTokenType() == OP_SCOLON) {
-            return parseEmptyStatement();
-        }
-        Marker bookmark = builder.mark();
-        parseAttribute();
         IElementType i = builder.getTokenType();
-        bookmark.rollbackTo();
-        if (i  == OP_BRACES_LEFT) {
+        if (i == OP_SCOLON) {
+            return parseEmptyStatement();
+        } else if (i  == OP_BRACES_LEFT) {
             return parseScopeBlockStatement();
         } else {
             return parseNonEmptyStatement();
@@ -5989,11 +5985,7 @@ class DLangParser {
     }
 
     boolean parseScopeBlockStatement() {
-        Marker m = builder.mark();
-        parseAttribute();
-        boolean result = parseBlockStatement();
-        m.done(SCOPE_BLOCK_STATEMENT);
-        return result;
+        return parseBlockStatement();
     }
 
     boolean parseScopeStatementList() {
@@ -6009,12 +6001,7 @@ class DLangParser {
         IElementType i = builder.getTokenType();
         if (i == OP_SCOLON) {
             return parseEmptyStatement();
-        }
-        Marker bookmark = builder.mark();
-        parseAttribute();
-        i = builder.getTokenType();
-        bookmark.rollbackTo();
-        if (i == OP_BRACES_LEFT) {
+        } else if (i == OP_BRACES_LEFT) {
             return parseScopeBlockStatement();
         } else {
             return parseNonEmptyStatementNoCaseNoDefault();
@@ -6030,11 +6017,7 @@ class DLangParser {
     }
 
     boolean parseScopeStatement() {
-        Marker bookmark = builder.mark();
-        parseAttribute();
-        IElementType i = builder.getTokenType();
-        bookmark.rollbackTo();
-        if (i == OP_BRACES_LEFT) {
+        if (builder.getTokenType() == OP_BRACES_LEFT) {
             return parseScopeBlockStatement();
         } else {
             return parseNonEmptyStatement();
@@ -7664,7 +7647,7 @@ class DLangParser {
      * Parses a Unittest
      * <p>
      * $(GRAMMAR $(RULEDEF unittest):
-     * $(LITERAL 'unittest') $(RULE blockStatement)
+     * $(LITERAL 'unittest') $(RULE unittestBlock)
      * ;)
      */
     boolean parseUnittest() {
@@ -7673,9 +7656,38 @@ class DLangParser {
         final Marker marker = builder.mark();
         marker.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
-        parseBlockStatement();
+        parseUnittestBlock();
         marker.done(UNITTEST);
         return true;
+    }
+    /**
+     * Parses a BlockStatement
+     * <p>
+     * $(GRAMMAR $(RULEDEF blockStatement):
+     * $(LITERAL '{') $(RULE statementOrDeclDef)* $(LITERAL '}')
+     * ;)
+     */
+    void parseUnittestBlock() {
+        final Marker m = builder.mark();
+        final IElementType openBrace = expect(OP_BRACES_LEFT);
+        if (openBrace == null) {
+            m.done(UNITTEST_BLOCK);
+            return;
+        }
+        while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT) {
+            if (!parseStatement() && !parseDeclDef()) {
+                Marker recovery = builder.mark();
+                while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT && builder.getTokenType() != OP_SCOLON) {
+                    builder.advanceLexer();
+                }
+                if (builder.getTokenType() == OP_SCOLON)
+                    builder.advanceLexer();
+                recovery.error("Unable to parse this statement or declaration");
+                break;
+            }
+        }
+        expect(OP_BRACES_RIGHT);
+        m.done(UNITTEST_BLOCK);
     }
 
     /**

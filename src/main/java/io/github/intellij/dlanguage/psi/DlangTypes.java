@@ -168,7 +168,6 @@ public interface DlangTypes {
     DlangElementType REGISTER = new DlangElementType("REGISTER");
     DlangElementType REL_EXPRESSION = new DlangElementType("REL_EXPRESSION");
     DlangElementType RETURN_STATEMENT = new DlangElementType("RETURN_STATEMENT");
-    DlangElementType SCOPE_BLOCK_STATEMENT = new DlangElementType("SCOPE_BLOCK_STATEMENT");
     DlangElementType SCOPE_GUARD_STATEMENT = new DlangElementType("SCOPE_GUARD_STATEMENT");
     DlangElementType SHIFT_EXPRESSION = new DlangElementType("SHIFT_EXPRESSION");
     DlangElementType SHORTENED_FUNCTION_BODY = new DlangElementType("SHORTENED_FUNCTION_BODY");
@@ -211,6 +210,7 @@ public interface DlangTypes {
     DlangElementType TYPEID_EXPRESSION = new DlangElementType("TYPEID_EXPRESSION");
     DlangElementType TYPEOF_EXPRESSION = new DlangElementType("TYPEOF_EXPRESSION");
     DlangElementType UNARY_EXPRESSION = new DlangElementType("UNARY_EXPRESSION");
+    DlangElementType UNITTEST_BLOCK = new DlangElementType("UNITTEST_BLOCK");
     DlangElementType VARIABLE_DECLARATION = new DlangElementType("VARIABLE_DECLARATION");
     DlangElementType VARIADIC_ARGUMENTS_ATTRIBUTE = new DlangElementType("VARIADIC_ARGUMENTS_ATTRUBUTE");
     DlangElementType VARIADIC_ARGUMENTS_ATTRIBUTES = new DlangElementType("VARIADIC_ARGUMENTS_ATTRUBUTES");
@@ -719,8 +719,6 @@ public interface DlangTypes {
                 return new DLanguageRelExpressionImpl(node);
             } else if (type == RETURN_STATEMENT) {
                 return new DLanguageReturnStatementImpl(node);
-            } else if (type == SCOPE_BLOCK_STATEMENT) {
-                return new DLanguageScopeBlockStatementImpl(node);
             } else if (type == SCOPE_GUARD_STATEMENT) {
                 return new DLanguageScopeGuardStatementImpl(node);
             } else if (type == SHIFT_EXPRESSION) {
@@ -833,6 +831,8 @@ public interface DlangTypes {
                 return new DlangClassDeclarationImpl(node);
             } else if (type == UNITTEST) {
                 return new DlangUnittestImpl(node);
+            } else if (type == UNITTEST_BLOCK) {
+                return new DLanguageUnittestBlockImpl(node);
             } else if (type == INTERFACE_DECLARATION) {
                 return new DlangInterfaceDeclarationImpl(node);
             } else if (type == IF_CONDITION) {
