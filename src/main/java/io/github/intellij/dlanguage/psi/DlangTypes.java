@@ -119,8 +119,6 @@ public interface DlangTypes {
     DlangElementType FUNDAMENTAL_TYPE_PROPERTY_EXPRESSION = new DlangElementType("FUNDAMENTAL_TYPE_PROPERTY_EXPRESSION");
     DlangElementType GOTO_STATEMENT = new DlangElementType("GOTO_STATEMENT");
     DlangElementType IDENTIFIER_CHAIN = new DlangElementType("IDENTIFIER_CHAIN");
-    DlangElementType IDENTIFIER_OR_TEMPLATE_CHAIN = new DlangElementType("IDENTIFIER_OR_TEMPLATE_CHAIN");
-    DlangElementType IDENTIFIER_OR_TEMPLATE_INSTANCE = new DlangElementType("IDENTIFIER_OR_TEMPLATE_INSTANCE");
     DlangElementType IDENTITY_EXPRESSION = new DlangElementType("IDENTITY_EXPRESSION");
     DlangElementType IF_STATEMENT = new DlangElementType("IF_STATEMENT");
     DlangElementType IMPORT_BIND = new DlangElementType("IMPORT_BIND");
@@ -146,7 +144,7 @@ public interface DlangTypes {
     DlangElementType MISSING_FUNCTION_BODY = new DlangElementType("MISSING_FUNCTION_BODY");
     DlangElementType MIXIN_DECLARATION = new DlangElementType("MIXIN_DECLARATION");
     DlangElementType MIXIN_EXPRESSION = new DlangElementType("MIXIN_EXPRESSION");
-    DlangElementType TEMPLATE_MIXIN_DECLARATION = new DlangElementType("TEMPLATE_MIXIN_DECLARATION");
+    DlangElementType MIXIN_QUALIFIED_IDENTIFIER = new DlangElementType("MIXIN_QUALIFIED_IDENTIFIER");
     DlangElementType MIXIN_TEMPLATE_NAME = new DlangElementType("MIXIN_TEMPLATE_NAME");
     DlangElementType MUL_EXPRESSION = new DlangElementType("MUL_EXPRESSION");
     DlangElementType NAMESPACE_LIST = new DlangElementType("NAMESPACE_LIST");
@@ -164,6 +162,7 @@ public interface DlangTypes {
     DlangElementType POW_EXPRESSION = new DlangElementType("POW_EXPRESSION");
     DlangElementType PRAGMA_EXPRESSION = new DlangElementType("PRAGMA_EXPRESSION");
     DlangElementType PRAGMA_STATEMENT = new DlangElementType("PRAGMA_STATEMENT");
+    DlangElementType QUALIFIED_IDENTIFIER = new DlangElementType("QUALIFIED_IDENTIFIER");
     DlangElementType REFERENCE_EXPRESSION = new DlangElementType("REFERENCE_EXPRESSION");
     DlangElementType REGISTER = new DlangElementType("REGISTER");
     DlangElementType REL_EXPRESSION = new DlangElementType("REL_EXPRESSION");
@@ -181,7 +180,6 @@ public interface DlangTypes {
     DlangElementType STRUCT_MEMBER_INITIALIZER = new DlangElementType("STRUCT_MEMBER_INITIALIZER");
     DlangElementType STRUCT_MEMBER_INITIALIZERS = new DlangElementType("STRUCT_MEMBER_INITIALIZERS");
     DlangElementType SWITCH_STATEMENT = new DlangElementType("SWITCH_STATEMENT");
-    DlangElementType SYMBOL = new DlangElementType("SYMBOL");
     DlangElementType SYNCHRONIZED_STATEMENT = new DlangElementType("SYNCHRONIZED_STATEMENT");
     DlangElementType TEMPLATE_ALIAS_PARAMETER = new DlangElementType("TEMPLATE_ALIAS_PARAMETER");
     DlangElementType TEMPLATE_ARGUMENT = new DlangElementType("TEMPLATE_ARGUMENT");
@@ -189,6 +187,7 @@ public interface DlangTypes {
     DlangElementType TEMPLATE_ARGUMENTS = new DlangElementType("TEMPLATE_ARGUMENTS");
     DlangElementType TEMPLATE_INSTANCE = new DlangElementType("TEMPLATE_INSTANCE");
     DlangElementType TEMPLATE_MIXIN = new DlangElementType("TEMPLATE_MIXIN");
+    DlangElementType TEMPLATE_MIXIN_DECLARATION = new DlangElementType("TEMPLATE_MIXIN_DECLARATION");
     DlangElementType TEMPLATE_PARAMETER_LIST = new DlangElementType("TEMPLATE_PARAMETER_LIST");
     DlangElementType TEMPLATE_PARAMETERS = new DlangElementType("TEMPLATE_PARAMETERS");
     DlangElementType TEMPLATE_SINGLE_ARGUMENT = new DlangElementType("TEMPLATE_SINGLE_ARGUMENT");
@@ -203,7 +202,6 @@ public interface DlangTypes {
     DlangElementType TRY_STATEMENT = new DlangElementType("TRY_STATEMENT");
     DlangElementType TYPE = new DlangElementType("TYPE");
     DlangElementType TYPE_CONSTRUCT_EXPRESSION = new DlangElementType("TYPE_CONSTRUCT_EXPRESSION");
-    DlangElementType TYPE_IDENTIFIER_PART = new DlangElementType("TYPE_IDENTIFIER_PART");
     DlangElementType TYPE_PROPERTY_EXPRESSION = new DlangElementType("TYPE_PROPERTY_EXPRESSION");
     DlangElementType TYPE_SPECIALIZATION = new DlangElementType("TYPE_SPECIALIZATION");
     DlangElementType TYPE_SUFFIX = new DlangElementType("TYPE_SUFFIX");
@@ -623,10 +621,8 @@ public interface DlangTypes {
                 return new DLanguageIdentifierChainImpl(node);
             } else if (type == DECLARATOR_IDENTIFIER) {
                 return new DlangDeclaratorIdentifierImpl(node);
-            } else if (type == IDENTIFIER_OR_TEMPLATE_CHAIN) {
-                return new DLanguageIdentifierOrTemplateChainImpl(node);
-            } else if (type == IDENTIFIER_OR_TEMPLATE_INSTANCE) {
-                return new DLanguageIdentifierOrTemplateInstanceImpl(node);
+            } else if (type == MIXIN_QUALIFIED_IDENTIFIER) {
+                return new DLanguageMixinQualifiedIdentifierImpl(node);
             } else if (type == IDENTITY_EXPRESSION) {
                 return new DLanguageIdentityExpressionImpl(node);
             } else if (type == IF_STATEMENT) {
@@ -747,8 +743,6 @@ public interface DlangTypes {
                 return new DLanguageStructMemberInitializersImpl(node);
             } else if (type == SWITCH_STATEMENT) {
                 return new DLanguageSwitchStatementImpl(node);
-            } else if (type == SYMBOL) {
-                return new DLanguageSymbolImpl(node);
             } else if (type == SYNCHRONIZED_STATEMENT) {
                 return new DLanguageSynchronizedStatementImpl(node);
             } else if (type == TEMPLATE_ALIAS_PARAMETER) {
@@ -793,8 +787,8 @@ public interface DlangTypes {
                 return new DLanguageTypeImpl(node);
             } else if (type == TYPE_CONSTRUCT_EXPRESSION) {
                 return new DLanguageTypeConstructExpressionImpl(node);
-            } else if (type == TYPE_IDENTIFIER_PART) {
-                return new DLanguageTypeIdentifierPartImpl(node);
+            } else if (type == QUALIFIED_IDENTIFIER) {
+                return new DLanguageQualifiedIdentifierImpl(node);
             } else if (type == TYPE_PROPERTY_EXPRESSION) {
                 return new DLanguageTypePropertyExpressionImpl(node);
             } else if (type == TYPE_SPECIALIZATION) {

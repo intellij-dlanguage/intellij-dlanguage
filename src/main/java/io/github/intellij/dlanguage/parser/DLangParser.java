@@ -1392,7 +1392,7 @@ class DLangParser {
      * | $(RULE atAttribute)
      * | $(RULE linkageAttribute)
      * | $(LITERAL 'export')
-     * | $(LITERAL 'package') ($(LITERAL "(") $(RULE identifierChain) $(LITERAL ")"))?
+     * | $(LITERAL 'package') ($(LITERAL "(") $(RULE QualifiedIdentifier) $(LITERAL ")"))?
      * | $(LITERAL 'private')
      * | $(LITERAL 'protected')
      * | $(LITERAL 'public')
@@ -1442,7 +1442,7 @@ class DLangParser {
             advance();
             if (currentIs(OP_PAR_LEFT)) {
                 expect(OP_PAR_LEFT);
-                if (!parseIdentifierChain()) {
+                if (!parseQualifiedIdentifier()) {
                     cleanup(m, ATTRIBUTE);
                     return false;
                 }
@@ -3512,89 +3512,110 @@ class DLangParser {
     }
 
     /**
-     * Parses a TypeIdentifierPart.
+     * Parses a QualifiedIdentifier.
      * <p>
-     * $(GRAMMAR $(RULEDEF typeIdentifierPart):
+     * $(GRAMMAR $(RULEDEF qualifiedIdentifier):
      *       $(RULE identifierOrTemplateInstance)
-     *     | $(RULE identifierOrTemplateInstance) $(LITERAL '.') $(RULE typeIdentifierPart)
-     *     | $(RULE identifierOrTemplateInstance) $(LITERAL '[') $(RULE assignExpression) $(LITERAL ']')
-     *     | $(RULE identifierOrTemplateInstance) $(LITERAL '[') $(RULE assignExpression) $(LITERAL ']') $(LITERAL '.') $(RULE typeIdentifierPart)
+     *     | $(RULE identifierOrTemplateInstance) $(LITERAL '.') $(RULE qualifiedIdentifier)
+     *     | $(RULE identifier) $(LITERAL '[') $(RULE assignExpression) $(LITERAL ']')
+     *     | $(RULE identifier) $(LITERAL '[') $(RULE assignExpression) $(LITERAL ']') $(LITERAL '.') $(RULE qualifiedIdentifier)
      *     ;)
      */
-    public boolean parseTypeIdentifierPart() {
-        final Marker m = builder.mark();
-        if (currentIs(OP_DOT)) {
-            advance();
-        }
-        if (!parseIdentifierOrTemplateInstance()) {
-            cleanup(m, TYPE_IDENTIFIER_PART);
+    public boolean parseQualifiedIdentifier() {
+        if (builder.getTokenType() != ID) {
+            builder.error("Identifier expected");
             return false;
         }
-        if (currentIs(OP_BRACKET_LEFT)) {
-            // dyn arrays -> type suffixes
-            if (peekIs(OP_BRACKET_RIGHT)) {
-                exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
-                return true;
-            }
+        Marker m = builder.mark();
+        while(!builder.eof()) {
             Marker bookmark = builder.mark();
-            advance();
-            // here we can have a type (AA key)
-            if (!parseAssignExpression()) {
+            if (parseTemplateInstance()) {
+                bookmark.drop();
+                if (currentIs(OP_DOT)) {
+                    advance();
+                    continue;
+                }
+                m.done(QUALIFIED_IDENTIFIER);
+                return true;
+            } else {
                 bookmark.rollbackTo();
-                exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
-                return true;
+                advance(); // Identifier
+                if (currentIs(OP_BRACKET_LEFT)) {
+                    // dyn arrays -> type suffixes
+                    if (peekIs(OP_BRACKET_RIGHT)) {
+                        break;
+                    }
+                    bookmark = builder.mark();
+                    advance();
+                    // here we can have a type (AA key)
+                    if (!parseAssignExpression()) {
+                        bookmark.rollbackTo();
+                        break;
+                    }
+                    // indexer followed by ".." -> sliceExp -> type suffix
+                    else if (currentIs(OP_DDOT)) {
+                        bookmark.rollbackTo();
+                        break;
+                    }
+                    // otherwise either the index of a type list or a dim
+                    bookmark.drop();
+                    expect(OP_BRACKET_RIGHT);
+                }
             }
-            // indexer followed by ".." -> sliceExp -> type suffix
-            else if (currentIs(OP_DDOT)) {
-                bookmark.rollbackTo();
-                exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
-                return true;
+            if (builder.getTokenType() != OP_DOT) {
+                break;
             }
-            // otherwise either the index of a type list or a dim
-            bookmark.drop();
-            expect(OP_BRACKET_RIGHT);
-            if (!currentIs(OP_DOT)) {
-                exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
-                return true;
-            }
-        }
-        if (currentIs(OP_DOT)) {
             advance();
-            if (!parseTypeIdentifierPart()) {
-                cleanup(m, TYPE_IDENTIFIER_PART);
-                return false;
-            }
+            m.done(QUALIFIED_IDENTIFIER);
+            m = m.precede();
         }
-        exit_section_modified(builder, m, TYPE_IDENTIFIER_PART, true);
+        m.done(QUALIFIED_IDENTIFIER);
         return true;
     }
 
 
     /**
-     * Parses an IdentifierOrTemplateChain
+     * Parses an MixinQualifiedIdentifier
      * <p>
-     * $(GRAMMAR $(RULEDEF identifierOrTemplateChain):
-     * $(RULE identifierOrTemplateInstance) ($(LITERAL '.') $(RULE identifierOrTemplateInstance))*
+     * $(GRAMMAR $(RULEDEF MixinQualifiedIdentifier):
+     * $(RULE identifier)
+     * | $(RULE identifier) ($(LITERAL '.') $(RULE MixinQualifiedIdentifier)
+     * | $(RULE TemplateInstance) ($(LITERAL '.') $(RULE MixinQualifiedIdentifier)
      * ;)
      */
-    boolean parseIdentifierOrTemplateChain() {
-        final Marker m = builder.mark();
-        int identifiersOrTemplateInstancesLength = 0;
-        while (moreTokens()) {
-            if (!parseIdentifierOrTemplateInstance()) {
-                if (identifiersOrTemplateInstancesLength == 0) {
-                    cleanup(m, IDENTIFIER_OR_TEMPLATE_CHAIN);
-                    return false;
-                } else
-                    break;
-            }
-            identifiersOrTemplateInstancesLength++;
-            if (!currentIs(OP_DOT))
-                break;
-            else
-                advance();
+    boolean parseMixinQualifiedIdentifier() {
+        if(!currentIs(ID)) {
+            builder.error("Identifier expected");
+            return false;
         }
-        exit_section_modified(builder, m, IDENTIFIER_OR_TEMPLATE_CHAIN, true);
+        Marker m = builder.mark();
+        while (moreTokens()) {
+            Marker bookmark = builder.mark();
+            if (parseTemplateInstance()) {
+                if (builder.getTokenType() != OP_DOT) {
+                    // Template arguments not part of the name, just take the id
+                    bookmark.rollbackTo();
+                    assert builder.getTokenType() == ID;
+                    advance();
+                } else {
+                    bookmark.drop();
+                }
+            } else {
+                bookmark.rollbackTo();
+                assert builder.getTokenType() == ID;
+                advance();
+            }
+            if (builder.getTokenType() != OP_DOT) {
+                break;
+            }
+            builder.advanceLexer();
+            if (builder.getTokenType() != ID) {
+                break;
+            }
+            m.done(MIXIN_QUALIFIED_IDENTIFIER);
+            m = m.precede();
+        }
+        m.done(MIXIN_QUALIFIED_IDENTIFIER);
         return true;
     }
 
@@ -3607,21 +3628,12 @@ class DLangParser {
      * ;)
      */
     boolean parseIdentifierOrTemplateInstance() {
-        final Marker m = builder.mark();
         if (peekIs(OP_NOT) && !startsWith(ID, OP_NOT, KW_IS) && !startsWith(ID, OP_NOT, KW_IN)) {
-            if (!parseTemplateInstance()) {
-                cleanup(m, IDENTIFIER_OR_TEMPLATE_INSTANCE);
-                return false;
-            }
+            return parseTemplateInstance();
         } else {
             final IElementType ident = expect(ID);
-            if (ident == null) {
-                cleanup(m, IDENTIFIER_OR_TEMPLATE_INSTANCE);
-                return false;
-            }
+            return ident != null;
         }
-        exit_section_modified(builder, m, IDENTIFIER_OR_TEMPLATE_INSTANCE, true);
-        return true;
     }
 
     /**
@@ -4310,7 +4322,7 @@ class DLangParser {
      * $(GRAMMAR $(RULEDEF linkageAttribute):
      *   $(LITERAL 'extern') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '$(RPAREN)')
      * | $(LITERAL 'extern') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '-') $(LITERAL Identifier) $(LITERAL '$(RPAREN)')
-     * | $(LITERAL 'extern') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '++') ($(LITERAL ',') $(RULE typeIdentifierPart) | $(RULE namespaceList) | $(LITERAL 'struct') | $(LITERAL 'class'))? $(LITERAL '$(RPAREN)')
+     * | $(LITERAL 'extern') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) $(LITERAL '++') ($(LITERAL ',') $(RULE QualifiedIdentifier) | $(RULE namespaceList) | $(LITERAL 'struct') | $(LITERAL 'class'))? $(LITERAL '$(RPAREN)')
      * ;)
      */
     boolean parseLinkageAttribute() {
@@ -4335,7 +4347,7 @@ class DLangParser {
                 if (currentIsOneOf(KW_STRUCT, KW_CLASS))
                     advance();
                 else if (currentIs(ID)) {
-                    if (!parseTypeIdentifierPart()) {
+                    if (!parseQualifiedIdentifier()) {
                         cleanup(m, LINKAGE_ATTRIBUTE);
                         return false;
                     }
@@ -4512,8 +4524,8 @@ class DLangParser {
      * Parses a MixinTemplateName
      * <p>
      * $(GRAMMAR $(RULEDEF mixinTemplateName):
-     * $(RULE symbol)
-     * | $(RULE typeofExpression) $(LITERAL '.') $(RULE identifierOrTemplateChain)
+     * $(LITERAL '.')? $(RULE mixinQualifiedIdentifier)
+     * | $(RULE typeofExpression) $(LITERAL '.') $(RULE mixinQualifiedIdentifier)
      * ;)
      */
     boolean parseMixinTemplateName() {
@@ -4524,15 +4536,19 @@ class DLangParser {
                 return false;
             }
             expect(OP_DOT);
-            if (!parseIdentifierOrTemplateChain()) {
+            if (!parseMixinQualifiedIdentifier()) {
                 cleanup(m, MIXIN_TEMPLATE_NAME);
                 return false;
             }
-        } else if (!parseSymbol()) {
-            cleanup(m, MIXIN_TEMPLATE_NAME);
-            return false;
+        } else {
+            if (currentIs(OP_DOT))
+                builder.advanceLexer();
+            if (!parseMixinQualifiedIdentifier()) {
+                cleanup(m, MIXIN_TEMPLATE_NAME);
+                return false;
+            }
         }
-        exit_section_modified(builder, m, MIXIN_TEMPLATE_NAME, true);
+        m.done(MIXIN_TEMPLATE_NAME);
         return true;
     }
 
@@ -5538,10 +5554,6 @@ class DLangParser {
         return true;
     }
 
-    Marker parseRelExpression() {
-        return parseRelExpression(null);
-    }
-
     /**
      * Parses a RelExpression
      * <p>
@@ -6383,26 +6395,6 @@ class DLangParser {
     }
 
     /**
-     * Parses a Symbol
-     * <p>
-     * $(GRAMMAR $(RULEDEF symbol):
-     * $(LITERAL '.')? $(RULE identifierOrTemplateChain)
-     * ;)
-     */
-    boolean parseSymbol() {
-        final Marker m = builder.mark();
-        if (currentIs(OP_DOT)) {
-            advance();
-        }
-        if (!parseIdentifierOrTemplateChain()) {
-            cleanup(m, SYMBOL);
-            return false;
-        }
-        exit_section_modified(builder, m, SYMBOL, true);
-        return true;
-    }
-
-    /**
      * Parses a SynchronizedStatement
      * <p>
      * $(GRAMMAR $(RULEDEF synchronizedStatement):
@@ -6682,7 +6674,6 @@ class DLangParser {
             return false;
         }
         if (currentIs(OP_NOT)) {
-            builder.advanceLexer();
             if (!parseTemplateArguments()) {
                 m.done(TEMPLATE_MIXIN);
                 return true;
@@ -7177,14 +7168,14 @@ class DLangParser {
     }
 
     /**
-     * Parses a Type2
+     * Parses a BasicType
      * <p>
-     * $(GRAMMAR $(RULEDEF type2):
+     * $(GRAMMAR $(RULEDEF basicType):
      *   $(RULE builtinType)
-     * | $(RULE typeIdentifierPart)
-     * | $(LITERAL 'super') $(LITERAL '.') $(RULE typeIdentifierPart)
-     * | $(LITERAL 'this') $(LITERAL '.') $(RULE typeIdentifierPart)
-     * | $(RULE typeofExpression) ($(LITERAL '.') $(RULE typeIdentifierPart))?
+     * | $(RULE qualifiedIdentifier)
+     * | $(LITERAL 'super') $(LITERAL '.') $(RULE qualifiedIdentifier)
+     * | $(LITERAL 'this') $(LITERAL '.') $(RULE qualifiedIdentifier)
+     * | $(RULE typeofExpression) ($(LITERAL '.') $(RULE qualifiedIdentifier))?
      * | $(RULE typeConstructor) $(LITERAL '$(LPAREN)') $(RULE type) $(LITERAL '$(RPAREN)')
      * | $(RULE traitsExpression)
      * | $(RULE vector)
@@ -7198,9 +7189,12 @@ class DLangParser {
             exit_section_modified(builder, m, BASIC_TYPE, true);
             return false;
         }
-        final IElementType i = current();
-        if (i == ID || i == OP_DOT) {
-            if (!parseTypeIdentifierPart()) {
+        if (builder.getTokenType() == OP_DOT) {
+            builder.advanceLexer();
+        }
+        final IElementType i = builder.getTokenType();
+        if (i == ID) {
+            if (!parseQualifiedIdentifier()) {
                 cleanup(m, BASIC_TYPE);
                 return false;
             }
@@ -7214,7 +7208,7 @@ class DLangParser {
                 return false;
             }
             advance();
-            if (!parseTypeIdentifierPart()) {
+            if (!parseQualifiedIdentifier()) {
                 cleanup(m, BASIC_TYPE);
                 return false;
             }
@@ -7230,7 +7224,7 @@ class DLangParser {
             }
             if (currentIs(OP_DOT)) {
                 advance();
-                if (!parseTypeIdentifierPart()) {
+                if (!parseQualifiedIdentifier()) {
                     cleanup(m, BASIC_TYPE);
                     return false;
                 }
@@ -7544,19 +7538,21 @@ class DLangParser {
             Marker marker = m.precede();
             builder.advanceLexer();
             Marker bookmark = builder.mark();
-            boolean success = false;
-            if (parseTemplateInstance()) {
+            if (currentIs(KW_NEW)) {
                 bookmark.drop();
-                success = true;
-            } else {
-                bookmark.rollbackTo();
-            }
-            if (!success && currentIs(ID)) {
-                advance();
-            } else if (currentIs(KW_NEW)) {
                 parseNewExpression();
             }
-            marker.done(POSTFIX_EXPRESSION);
+            else if (parseTemplateInstance()) {
+                bookmark.drop();
+            } else {
+                bookmark.rollbackTo();
+                if (builder.getTokenType() == ID) {
+                    advance();
+                } else {
+                    builder.error("Identifier, template instance or new expression expected");
+                }
+            }
+            marker.done(REFERENCE_EXPRESSION);
             return marker;
         }
         if (currentIsOneOf(OP_PLUS_PLUS, OP_MINUS_MINUS)) {
