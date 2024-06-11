@@ -154,8 +154,8 @@ public class DLanguageParameterImpl extends
         }
         if (getType() != null) {
             if (getType().getBasicType() != null) {
-                if (getType().getBasicType().getTypeIdentifierPart() != null) {
-                    return getType().getBasicType().getTypeIdentifierPart().getIdentifierOrTemplateInstance().getIdentifier();
+                if (getType().getBasicType().getQualifiedIdentifier() != null) {
+                    return getType().getBasicType().getQualifiedIdentifier().getIdentifier();
                 }
             }
         }

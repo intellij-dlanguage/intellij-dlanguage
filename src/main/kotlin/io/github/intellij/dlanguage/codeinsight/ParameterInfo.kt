@@ -110,7 +110,7 @@ class ConstructorParameterInfo : ParameterInfoHandler<NewExpression, Parameters>
     }
 
     override fun showParameterInfo(newExpression: NewExpression, context: CreateParameterInfoContext) {
-        val reference = newExpression.type?.basicType?.typeIdentifierPart?.identifierOrTemplateInstance?.identifier?.reference
+        val reference = newExpression.type?.basicType?.qualifiedIdentifier?.identifier?.reference
         if (reference == null || reference !is DReference) {
             return
         }

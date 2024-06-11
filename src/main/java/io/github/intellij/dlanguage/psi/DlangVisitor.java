@@ -385,14 +385,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitIdentifierOrTemplateChain(@NotNull final DLanguageIdentifierOrTemplateChainImpl o) {
-        visitPsiElement(o);
-    }
-
-    public void visitIdentifierOrTemplateInstance(@NotNull final DLanguageIdentifierOrTemplateInstanceImpl o) {
-        visitPsiElement(o);
-    }
-
     public void visitIdentityExpression(@NotNull final DLanguageIdentityExpressionImpl o) {
         visitPsiElement(o);
     }
@@ -505,6 +497,10 @@ public class DlangVisitor extends PsiElementVisitor {
         visitElement(o);
     }
 
+    public void visitMixinQualifiedIdentifier(@NotNull final DLanguageMixinQualifiedIdentifierImpl o) {
+        visitElement(o);
+    }
+
     public void visitMixinTemplateDeclaration(@NotNull final DLanguageMixinTemplateDeclarationImpl o) {
         visitPsiElement(o);
     }
@@ -587,6 +583,10 @@ public class DlangVisitor extends PsiElementVisitor {
 
     public void visitPragmaStatement(@NotNull final DLanguagePragmaStatementImpl o) {
         visitPsiElement(o);
+    }
+
+    public void visitQualifiedIdentifier(@NotNull final DLanguageQualifiedIdentifierImpl o) {
+        visitElement(o);
     }
 
     public void visitTypePropertyExpression(@NotNull final DLanguageTypePropertyExpressionImpl o) {
@@ -686,10 +686,6 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitSwitchStatement(@NotNull final DLanguageSwitchStatementImpl o) {
-        visitPsiElement(o);
-    }
-
-    public void visitSymbol(@NotNull final DLanguageSymbolImpl o) {
         visitPsiElement(o);
     }
 
@@ -875,10 +871,6 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitBasicType(@NotNull final DLanguageBasicTypeImpl o) {
-        visitPsiElement(o);
-    }
-
-    public void visitTypeIdentifierPart(@NotNull final DLanguageTypeIdentifierPart o) {
         visitPsiElement(o);
     }
 

@@ -24,14 +24,14 @@ fun presentableName(psi: PsiElement?): String? = when (psi) {
         psi.aliasInitializers.joinToString(", ") { it.name }
     }
     is Type -> {
-        if (psi.basicType?.typeIdentifierPart != null)
+        if (psi.basicType?.qualifiedIdentifier != null)
             if (psi.typeSuffixs.isNotEmpty())
                 if (psi.typeSuffixs.first().kW_DELEGATE != null || psi.typeSuffixs.first().kW_FUNCTION != null)
-                    psi.basicType?.typeIdentifierPart?.text + " " +  presentableName(psi.typeSuffixs.first())
+                    psi.basicType?.qualifiedIdentifier?.text + " " +  presentableName(psi.typeSuffixs.first())
                 else
-                    psi.basicType?.typeIdentifierPart?.text +  presentableName(psi.typeSuffixs.first())
+                    psi.basicType?.qualifiedIdentifier?.text +  presentableName(psi.typeSuffixs.first())
             else
-                psi.basicType?.typeIdentifierPart?.text
+                psi.basicType?.qualifiedIdentifier?.text
         else
             psi.text
     }

@@ -83,7 +83,7 @@ object DPsiUtil {
                 max++
                 continue
             }
-            val param = parameter.type?.basicType?.typeIdentifierPart?.identifierOrTemplateInstance?.identifier
+            val param = parameter.type?.basicType?.qualifiedIdentifier?.identifier
             if (param is Identifier) {
                 val resolve = param.reference?.resolve()
                 if (resolve is TemplateParameter) {//todo make this identifier resolving proof

@@ -392,8 +392,8 @@ class DSignatureDocGenerator {
                 HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, element.basicType!!.builtinType!!.text, highlightingSaturation)
             } else if (element.basicType!!.type != null) {
                 appendType(builder, element.basicType!!.type)
-            } else if (element.basicType!!.typeIdentifierPart != null) {
-                appendTypeIdentifierPart(builder, element.basicType!!.typeIdentifierPart!!)
+            } else if (element.basicType!!.qualifiedIdentifier != null) {
+                appendQualifiedIdentifier(builder, element.basicType!!.qualifiedIdentifier!!)
             }
 
             if(element.basicType!!.oP_PAR_RIGHT != null) {
@@ -434,39 +434,33 @@ class DSignatureDocGenerator {
         return builder
     }
 
-    private fun appendTypeIdentifierPart(builder: StringBuilder, element: TypeIdentifierPart) {
-        if (element.identifierOrTemplateInstance != null) {
-            if (element.identifierOrTemplateInstance!!.identifier != null) {
-                builder.append(element.identifierOrTemplateInstance!!.identifier!!.text)
+    private fun appendQualifiedIdentifier(builder: StringBuilder, element: QualifiedIdentifier) {
+        if (element.qualifiedIdentifier != null) {
+            appendQualifiedIdentifier(builder, element.qualifiedIdentifier!!)
+            builder.append(".")
+        }
+        if (element.identifier != null) {
+            builder.append(element.identifier!!.text)
+        } else {
+            // template instance
+            builder.append(element.templateInstance!!.identifier!!.text)
+            if (element.templateInstance!!.templateArguments?.templateSingleArgument != null) {
+                builder.append("!")
+                appendTemplateSingleArgument(builder, element.templateInstance!!.templateArguments!!.templateSingleArgument!!)
             }
             else {
-                // template instance
-                builder.append(element.identifierOrTemplateInstance!!.templateInstance!!.identifier!!.text)
-                if (element.identifierOrTemplateInstance!!.templateInstance!!.templateArguments?.templateSingleArgument != null) {
-                    builder.append("!")
-                    appendTemplateSingleArgument(builder, element.identifierOrTemplateInstance!!.templateInstance!!.templateArguments!!.templateSingleArgument!!)
-                }
-                else {
-                    builder.append("!(")
-                    appendTemplateArguments(builder, element.identifierOrTemplateInstance!!.templateInstance!!.templateArguments!!)
-                    builder.append(")")
-                }
+                builder.append("!(")
+                appendTemplateArguments(builder, element.templateInstance!!.templateArguments!!)
+                builder.append(")")
             }
-
-            if (element.oP_BRACKET_LEFT != null)
-                builder.append("[")
-            if (element.expression != null)
-                builder.append(element.expression!!.text)
-            if (element.oP_BRACKET_RIGHT != null)
-                builder.append("]")
-
-            if (element.oP_DOT != null) {
-                builder.append(".")
-                appendTypeIdentifierPart(builder, element.typeIdentifierPart!!)
-            }
-        } else {
-            builder.append(element.text)
         }
+
+        if (element.oP_BRACKET_LEFT != null)
+            builder.append("[")
+        if (element.expression != null)
+            builder.append(element.expression!!.text)
+        if (element.oP_BRACKET_RIGHT != null)
+            builder.append("]")
     }
 
     private fun appendTemplateArguments(builder: StringBuilder, element: TemplateArguments) {

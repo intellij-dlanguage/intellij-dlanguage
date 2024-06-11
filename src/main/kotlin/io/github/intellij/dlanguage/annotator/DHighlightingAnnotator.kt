@@ -24,7 +24,7 @@ class DHighlightingAnnotator : Annotator {
         val (partToHighlight, color) = when (element) {
             is AtAttribute -> element.textRange to DColor.AT_ATTRIBUTE
             is ModuleDeclaration -> element.identifierChain?.textRange to DColor.MODULE_DEFINITION
-            is IdentifierOrTemplateInstance -> highlightReference(element)
+            is ReferenceExpression -> highlightReference(element)
             is TemplateSingleArgument -> highlightReference(element)
             is TemplateParameter -> highlightNotReference(element)
             is Identifier -> highlightIdentifier(element)
@@ -36,7 +36,7 @@ class DHighlightingAnnotator : Annotator {
 
     private fun highlightReference(element: PsiElement): Pair<TextRange, DColor>? {
         val identifier = when (element) {
-            is IdentifierOrTemplateInstance -> element.identifier
+            is ReferenceExpression -> element.identifier
             is TemplateSingleArgument -> element.identifier
             else -> null
         } ?: return null

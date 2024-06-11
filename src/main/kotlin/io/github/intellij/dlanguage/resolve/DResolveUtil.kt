@@ -84,7 +84,7 @@ class DResolveUtil private constructor(val project: Project) {
 
 
     fun resolvingConstructorCall(e: PsiElement): Boolean {
-        return e.parent is IdentifierOrTemplateInstance && e.parent.parent is TypeIdentifierPart
+        return e.parent is QualifiedIdentifier && e.parent.parent is QualifiedIdentifier
             && DPsiUtil.getParent(e, setOf(NEW_EXPRESSION), setOf(BLOCK_STATEMENT, STRUCT_BODY)) is NewExpression
     }
 

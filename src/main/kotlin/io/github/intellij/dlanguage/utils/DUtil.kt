@@ -7,7 +7,6 @@ import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateChain
 import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
@@ -135,14 +134,6 @@ object DUtil {
         }
 
         return list[list.size - 1]
-    }
-
-    fun getEndOfIdentifierList(chain: DLanguageIdentifierOrTemplateChain?): DlangIdentifier? {
-        if (chain == null) return null
-
-        val list = chain.identifierOrTemplateInstances
-
-        return if (list.size > 0) list[list.size - 1].identifier else null
     }
 
     /**

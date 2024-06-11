@@ -157,17 +157,15 @@ object SpecialCaseResolve {
     }
 
     fun tryPackageResolve(e: Identifier): Set<PsiNamedElement> {
-        fun inIdentifierOrTemplateChain(identifier: Identifier): IdentifierOrTemplateChain? {
-            return PsiTreeUtil.getTopmostParentOfType(identifier, IdentifierOrTemplateChain::class.java)
+        fun inMixinQualifiedIdentifier(identifier: Identifier): MixinQualifiedIdentifier? {
+            return PsiTreeUtil.getTopmostParentOfType(identifier, MixinQualifiedIdentifier::class.java)
         }
 
-        fun inIdentifierOrTemplateInstance(identifier: Identifier): IdentifierOrTemplateInstance? {
-            return PsiTreeUtil.getTopmostParentOfType(identifier, IdentifierOrTemplateInstance::class.java)
-        }
-
-        if (inIdentifierOrTemplateChain(e) != null) {
-            val instances = inIdentifierOrTemplateChain(e)!!.identifierOrTemplateInstances
-            val endIndex = instances.indexOf(inIdentifierOrTemplateInstance(e))
+        if (inMixinQualifiedIdentifier(e) != null) {
+            // FIXME resolve
+            val instances = inMixinQualifiedIdentifier(e)!!.mixinQualifiedIdentifier
+            val name = instances!!.text
+            /*val endIndex = instances.indexOf(inIdentifierOrTemplateInstance(e))
             val parents = instances.subList(0, endIndex + 1)
             if (parents.size == 0) {
                 return emptySet()
@@ -180,7 +178,7 @@ object SpecialCaseResolve {
                 } else {
                     name += parent.text
                 }
-            }
+            }*/
             val directoryResolve = resolvePackageFromName(e.project, name)
             return directoryResolve//todo do a file resolve as well
         }
