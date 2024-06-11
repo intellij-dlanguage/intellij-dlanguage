@@ -45,6 +45,10 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitArrayAccessExpression(@NotNull final DLanguageArrayAccessExpression o) {
+        visitElement(o);
+    }
+
     public void visitArrayInitializer(@NotNull final DLanguageArrayInitializerImpl o) {
         visitPsiElement(o);
     }

@@ -85,6 +85,8 @@ static this() {
     types_children["AnonymousEnumMember"] = [];
     types_children["ArgumentList"] = ["Expression*", "OP_COMMA*"];
     types_children["Arguments"] = ["ArgumentList","OP_PAR_RIGHT", "OP_PAR_LEFT"];
+    types_children["ArrayAccessExpression"] = ["Expression", "IndexExpression"];
+    types_extra_interfaces["ArrayAccessExpression"] = ["Expression"];
     types_children["ArrayInitializer"] = ["OP_COMMA*", "ArrayMemberInitialization*"];
     types_children["ArrayLiteral"] = ["ArrayInitializer", "OP_BRACKET_RIGHT", "OP_BRACKET_LEFT"];
     types_children["ArrayMemberInitialization"] = ["Expression", "OP_COLON", "ArrayLiteral", "StructInitializer", "OP_BRACES_LEFT"];
@@ -378,6 +380,7 @@ static this() {
     has_processDeclaration["AnonymousEnumMember"] = false;
     has_processDeclaration["ArgumentList"] = false;
     has_processDeclaration["Arguments"] = false;
+    has_processDeclaration["ArrayAccessExpression"] = false;
     has_processDeclaration["ArrayInitializer"] = false;
     has_processDeclaration["ArrayLiteral"] = false;
     has_processDeclaration["ArrayMemberInitialization"] = false;

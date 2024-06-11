@@ -48,6 +48,7 @@ public interface DlangTypes {
     DlangElementType ANONYMOUS_ENUM_DECLARATION = new DlangElementType("ANONYMOUS_ENUM_DECLARATION");
     DlangElementType ARGUMENT_LIST = new DlangElementType("ARGUMENT_LIST");
     DlangElementType ARGUMENTS = new DlangElementType("ARGUMENTS");
+    DlangElementType ARRAY_ACCESS_EXPRESSION = new DlangElementType("ARRAY_ACCESS_EXPRESSION");
     DlangElementType ARRAY_INITIALIZER = new DlangElementType("ARRAY_INITIALIZER");
     DlangElementType ARRAY_LITERAL = new DlangElementType("ARRAY_LITERAL");
     DlangElementType ARRAY_MEMBER_INITIALIZATION = new DlangElementType("ARRAY_MEMBER_INITIALIZATION");
@@ -471,6 +472,8 @@ public interface DlangTypes {
                 return new DLanguageArgumentListImpl(node);
             } else if (type == ARGUMENTS) {
                 return new DLanguageArgumentsImpl(node);
+            } else if (type == ARRAY_ACCESS_EXPRESSION) {
+                return new DLanguageArrayAccessExpressionImpl(node);
             } else if (type == ARRAY_INITIALIZER) {
                 return new DLanguageArrayInitializerImpl(node);
             } else if (type == ARRAY_LITERAL) {

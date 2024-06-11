@@ -7570,46 +7570,44 @@ class DLangParser {
             return marker;
         }
         if (currentIs(OP_BRACKET_LEFT)) {
+            Marker marker = m.precede();
             parseSliceOrIndexExpression();
-            return m;
+            marker.done(ARRAY_ACCESS_EXPRESSION);
+            return marker;
         }
         return null;
     }
 
-    boolean parseSliceOrIndexExpression() {
+    void parseSliceOrIndexExpression() {
         Marker m = builder.mark();
         advance();
         if (currentIs(OP_BRACKET_RIGHT)) {
             advance();
             m.done(INDEX_EXPRESSION);
-            return false;
+            return;
         }
         if (!parseAssignExpression()) {
             m.drop();
             expect(OP_BRACKET_RIGHT);
-            return false;
+            return;
         }
-        while (currentIs(OP_COMMA)) {
+        while (!builder.eof() && builder.getTokenType() == OP_COMMA) {
             advance();
-            if (currentIs(OP_BRACKET_RIGHT)) {
+            if (builder.getTokenType() != OP_BRACKET_RIGHT) {
+                parseAssignExpression();
             }
-            parseAssignExpression();
         }
-        if (currentIs(OP_BRACKET_RIGHT)) {
+        if (builder.getTokenType() == OP_BRACKET_RIGHT) {
             advance();
             m.done(INDEX_EXPRESSION);
-            return true;
+            return;
         }
-        while (currentIs(OP_COMMA) || currentIs(OP_DDOT)) {
+        while (!builder.eof() && (builder.getTokenType() == OP_COMMA || builder.getTokenType() == OP_DDOT)) {
             advance();
             parseAssignExpression();
         }
-        if (expect(OP_BRACKET_RIGHT) == null) {
-            cleanup(m, INDEX_EXPRESSION);
-            return false;
-        }
+        expect(OP_BRACKET_RIGHT);
         m.done(INDEX_EXPRESSION);
-        return true;
     }
 
     Marker parsePostfixExpression() {
