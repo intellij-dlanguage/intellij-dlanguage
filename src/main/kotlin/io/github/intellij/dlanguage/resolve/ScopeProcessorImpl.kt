@@ -6,6 +6,7 @@ import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processTemplateParameters
@@ -69,7 +70,7 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: IdentifierIdentifier,
+    fun processDeclarations(element: IdentifierInitializer,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement,
@@ -270,9 +271,16 @@ object ScopeProcessorImpl {
             }
         }
         if (element.functionBody is SpecifiedFunctionBody) {
-           /*if (!processDeclarationsOrStatements(element.functionBody!!.specifiedFunctionBody!!.blockStatement!!.declarationOrStatements, processor, state, lastParent, place)) {
-               return false
-           }*/
+            var toContinue = true
+            val declarations = (element.functionBody!! as SpecifiedFunctionBody).blockStatement!!
+                .statements.filterIsInstance<DeclarationStatement>()
+                .mapNotNull { it.declaration }
+            for (declaration in declarations) {
+                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+            return toContinue
         }
         return true
     }

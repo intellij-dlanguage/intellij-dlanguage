@@ -25,7 +25,8 @@ class DHighlightingAnnotator : Annotator {
             is AtAttribute -> element.textRange to DColor.AT_ATTRIBUTE
             is ModuleDeclaration -> element.identifierChain?.textRange to DColor.MODULE_DEFINITION
             is ReferenceExpression -> highlightReference(element)
-            is TemplateSingleArgument -> highlightReference(element)
+            is QualifiedIdentifier -> highlightReference(element)
+            is TemplateSingleArgument -> highlightNotReference(element)
             is TemplateParameter -> highlightNotReference(element)
             is Identifier -> highlightIdentifier(element)
             else -> null
@@ -38,6 +39,7 @@ class DHighlightingAnnotator : Annotator {
         val identifier = when (element) {
             is ReferenceExpression -> element.identifier
             is TemplateSingleArgument -> element.identifier
+            is QualifiedIdentifier -> element.identifier
             else -> null
         } ?: return null
 

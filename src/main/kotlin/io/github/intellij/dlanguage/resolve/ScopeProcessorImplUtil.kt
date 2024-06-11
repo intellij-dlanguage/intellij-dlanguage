@@ -18,6 +18,9 @@ object ScopeProcessorImplUtil {
                            lastParent: PsiElement?,
                            place: PsiElement): Boolean {
         var toContinue = true
+        if (def is AliasInitializer) {
+            return processor.execute(def, state)
+        }
         if (def is AliasDeclaration) {
             if (def.aliasInitializers.isNotEmpty()) {
                 for (varDeclaration in def.aliasInitializers) {
@@ -182,6 +185,12 @@ object ScopeProcessorImplUtil {
                 if (!processor.execute(declarator, state)) {
                     toContinue = false
                 }
+            }
+            return toContinue
+        }
+        if (def is DeclarationStatement) {
+            if (def.declaration != null && !processor.execute(def.declaration!!, state)) {
+                toContinue = false
             }
             return toContinue
         }

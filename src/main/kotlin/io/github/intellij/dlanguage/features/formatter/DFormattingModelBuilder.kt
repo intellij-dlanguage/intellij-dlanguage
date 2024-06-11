@@ -12,6 +12,7 @@ import com.intellij.psi.tree.TokenSet
 import io.github.intellij.dlanguage.features.formatter.impl.createSpacingBuilder
 import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
+import io.github.intellij.dlanguage.psi.interfaces.Expression
 import io.github.intellij.dlanguage.psi.interfaces.Statement
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
 import io.github.intellij.dlanguage.utils.DUtil.getPrevSiblingOfType
@@ -75,9 +76,6 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             if ((child.psi as? DeclarationBlock)?.oP_BRACES_LEFT != null) {
                 return Indent.getNoneIndent()
             }
-            /*if ((child.psi as DeclarationOrStatement).blockStatement != null) {
-                return Indent.getNoneIndent()
-            }*/
             if (parentType == IF_STATEMENT) {
                 return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
             } else if (parentType == FOREACH_STATEMENT) {
@@ -90,7 +88,9 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
             }
             if (parentType == CASE_STATEMENT || parentType == CASE_RANGE_STATEMENT || parentType == DEFAULT_STATEMENT) {
-                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+                if (type == KW_CASE || type == ARGUMENT_LIST || type == OP_COLON)
+                    return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+                return Indent.getNormalIndent()
             }
             if (type == OP_BRACES_RIGHT || type == OP_BRACES_LEFT) {
                 return Indent.getNoneIndent()
@@ -158,21 +158,28 @@ class DFormattingModelBuilder : FormattingModelBuilder {
 
         override fun getChildAttributes(newChildIndex: Int): ChildAttributes {
             // This governs the indent on the new line when pressing the ENTER key
-            val childIndent = Indent.getNoneIndent()
 
-            val type = myNode.elementType
-            if (type == BLOCK_STATEMENT || type == STRUCT_BODY || type == TEMPLATE_DECLARATION || type == CONDITIONAL_DECLARATION || type == CONDITIONAL_STATEMENT
-                || type == ENUM_BODY) {
-                return ChildAttributes(Indent.getNormalIndent(), null)
+            if (myNode.psi is Expression) {
+                return ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null)
             }
 
-            if (type == EXPRESSION_STATEMENT)
-                return ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null)
+            return when (myNode.elementType) {
+                BLOCK_STATEMENT,
+                CONDITIONAL_DECLARATION,
+                CONDITIONAL_STATEMENT,
+                DECLARATION_BLOCK,
+                ENUM_BODY,
+                STRUCT_BODY,
+                TEMPLATE_DECLARATION,
+                UNITTEST_BLOCK ->
+                    ChildAttributes(Indent.getNormalIndent(), null)
 
-            return ChildAttributes(childIndent, null)
+                else ->
+                    ChildAttributes(Indent.getNoneIndent(), null)
+            }
         }
 
-        override fun isLeaf(): Boolean = false // todo implement
+        override fun isLeaf(): Boolean =  node.firstChildNode == null
 
         companion object {
 

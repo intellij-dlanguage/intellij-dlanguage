@@ -10,9 +10,7 @@ import io.github.intellij.dlanguage.resolve.processors.DResolveProcessor
 import io.github.intellij.dlanguage.stubs.index.DMembersIndex
 import io.github.intellij.dlanguage.stubs.index.DPublicImportIndex
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex
-import io.github.intellij.dlanguage.utils.Constructor
-import io.github.intellij.dlanguage.utils.Identifier
-import io.github.intellij.dlanguage.utils.SingleImport
+import io.github.intellij.dlanguage.utils.*
 
 /**
  * Created by francis on 6/15/2017.
@@ -40,7 +38,10 @@ class DNameScopeProcessor(var start: Identifier, val profile: Boolean = false) :
         val startTime = System.currentTimeMillis()
         if (element is DNamedElement) {
             if (element.name == name) {
-                if (element !is Constructor) {//todo this class should be renamed because of this
+                // TODO should handle this more properly
+                if (start.parent is ReferenceExpression && (start.parent as ReferenceExpression).referenceExpression == null && element is EnumMember) {
+                    // no match
+                } else if (element !is Constructor) {//todo this class should be renamed because of this
                     result.add(element)
                     toContinue = false
                 }

@@ -33,7 +33,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
         } else {
             var attributes = ""
 
-            /*(element.parent as? Declaration)?.attributes?.forEach {
+            /*(element.parent as? AttributeSpecifier)?.attributes?.forEach {
                 if (it.text in allowedAttributes) {
                     attributes += it.text + " "
                 }
@@ -75,7 +75,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
             when (element) {
                 is FunctionDeclaration -> {
                     when {
-                        psiElementIsGetter(element) -> append(" : ${element.type?.text}")
+                        psiElementIsGetter(element) -> append(" : ${element.basicType?.text}${element.typeSuffixes.joinToString{ it.text }}")
                         psiElementIsSetter(element) -> {
                             val parametersNode = element.parameters
                             appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
@@ -83,7 +83,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                         else -> {
                             val parametersNode = element.parameters
                             appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
-                            append(" : ${element.type?.text}")
+                            append(" : ${element.basicType?.text}")
                         }
                     }
                 }
@@ -92,7 +92,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                     appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
                 }
                 is SpecifiedVariableDeclaration -> {
-                    append(" : ${element.type?.text}")
+                    append(" : ${element.basicType?.text}${element.typeSuffixs.joinToString { it.text }}")
 
                     val initializer = element.identifierInitializers.firstOrNull()?.initializer
 

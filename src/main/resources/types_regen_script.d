@@ -263,7 +263,7 @@ static this() {
     types_extra_interfaces["PragmaExpression"] = ["Expression"];
     types_children["PragmaStatement"] = ["PragmaExpression", "OP_SCOLON", "DefaultStatement","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","CaseStatement","CaseRangeStatement"];
     types_children["QualifiedIdentifier"] = ["Identifier", "TemplateInstance", "OP_BRACKET_LEFT", "OP_BRACKET_RIGHT", "Expression", "OP_DOT", "QualifiedIdentifier"];
-    types_children["ReferenceExpression"] = ["OP_DOT", "Identifier", "TemplateInstance"];
+    types_children["ReferenceExpression"] = ["OP_DOT", "Identifier", "TemplateInstance", "ReferenceExpression"];
     types_extra_interfaces["ReferenceExpression"] = ["Expression"];
     types_children["Register"] = ["Identifier","INTEGER_LITERAL", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
     types_children["RelExpression"] = ["Expression*", "OP_GT","OP_GT_EQ","OP_LESS","OP_LESS_EQ","OP_NOT_GR","OP_NOT_GR_EQ","OP_NOT_LESS","OP_NOT_LESS_EQ"];
@@ -284,7 +284,7 @@ static this() {
     types_extra_interfaces["ShortenedFunctionBody"] = ["FunctionBody"];
     types_children["SpecifiedFunctionBody"] = ["FunctionContract*", "KW_DO", "BlockStatement"];
     types_extra_interfaces["SpecifiedFunctionBody"] = ["FunctionBody"];
-    types_children["SpecifiedVariableDeclaration"] = ["OP_SCOLON","Type","IdentifierInitializer*","OP_COMMA*","OP_EQ","FunctionBody","StorageClass*"];
+    types_children["SpecifiedVariableDeclaration"] = ["OP_SCOLON", "BasicType", "TypeSuffix*", "IdentifierInitializer*","OP_COMMA*","OP_EQ","FunctionBody","StorageClass*"];
     types_extra_interfaces["SpecifiedVariableDeclaration"] = ["VariableDeclaration"];
     types_children["StaticAssertDeclaration"] = ["StaticAssertStatement"];
     types_extra_interfaces["StaticAssertDeclaration"] = ["Declaration"];
