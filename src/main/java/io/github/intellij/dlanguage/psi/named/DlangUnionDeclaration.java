@@ -10,7 +10,6 @@ import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangUnionDeclarationStub;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 public interface DlangUnionDeclaration extends PsiElement, DNamedElement, Declaration,
     StubBasedPsiElement<DlangUnionDeclarationStub>, HasMembers<DlangUnionDeclarationStub> {
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     DLanguageTemplateParameters getTemplateParameters();

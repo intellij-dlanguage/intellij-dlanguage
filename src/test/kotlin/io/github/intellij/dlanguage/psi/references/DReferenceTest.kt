@@ -3,6 +3,7 @@ package io.github.intellij.dlanguage.psi.references
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
 import io.github.intellij.dlanguage.DlangFileType
@@ -87,7 +88,7 @@ class DReferenceTest : LightPlatformCodeInsightFixture4TestCase() {
 
     @Test
     fun `test DReference handleElementRename with Identifier`() {
-        val element: PsiNamedElement = DElementFactory.createDLanguageIdentifierFromText(project, "myvar")!!
+        val element: PsiElement = DElementFactory.createDLanguageIdentifierFromText(project, "myvar")!!
 
         val ref = DReference(element, element.textRange)
 

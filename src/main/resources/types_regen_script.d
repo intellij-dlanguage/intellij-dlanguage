@@ -32,7 +32,6 @@ string[] named_children = [
     "EnumMember",
     "ForeachType",
     "FunctionDeclaration",
-    "Identifier",
     "IdentifierInitializer",
     "IfCondition",
     "InterfaceDeclaration",
@@ -683,7 +682,9 @@ public interface %s extends PsiElement`;
 }
 
 bool isToken(string toget) {
-    return toget.canFind("OP") || toget.canFind("KW") || toget.canFind("LITERAL") || toget.canFind("STRING") || toget.canFind("ID");
+    import std.array : replace;
+    toget = toget.replace("*", "");
+    return toget.canFind("OP") || toget.canFind("KW") || toget.canFind("LITERAL") || toget.canFind("STRING") || toget == "Identifier";
 }
 
 bool isExtraInterface(string toget) {
@@ -711,16 +712,14 @@ string getNonTokenImport(string toget, string key) {
     string import_;
     if (toget.canFind("*")) {
         toget = toget.replace("*", "");
-        if (toget == "Identifier")
-            import_ = psiDlangNamedImportTemplate.format(toget);
-        else if ((named_children.canFind(toget) && toget !in stub_children))
+        if ((named_children.canFind(toget) && toget !in stub_children))
             import_ = "import io.github.intellij.dlanguage.psi.named.DLanguage%s;".format(toget);
         else if (isExtraInterface(toget))
             import_ = psiDlangExtraInterfaceImportTemplate.format(toget);
         else
             import_ = psiDlangImportTemplate.format(toget);
     } else {
-        if (toget == "Identifier" || (named_children.canFind(toget) && toget !in stub_children))
+        if (named_children.canFind(toget) && toget !in stub_children)
             import_ = psiDlangNamedImportTemplate.format(toget);
         else if (isExtraInterface(toget))
             import_ = psiDlangExtraInterfaceImportTemplate.format(toget);
@@ -738,6 +737,8 @@ void getImplImportsElements(string[] elements, string key, ref string[] staticIm
         if (isToken(toget)) {
             toget = toget.replace("*", "");
             // tokens are imported statically
+            if (toget == "Identifier")
+                toget = "ID";
             staticImports ~= "import static io.github.intellij.dlanguage.psi.DlangTypes.%s;".format(toget);
         } else {
             normalImports ~= getNonTokenImport(toget, key);
@@ -779,8 +780,6 @@ string getterMethod(string toget) {
     string type;
     if (isToken(toget))
         type = "PsiElement";
-    else if (toget == "Identifier")
-        type = "DlangIdentifier";
     else if (isExtraInterface(toget))
         type = toget;
     else
@@ -788,12 +787,15 @@ string getterMethod(string toget) {
 
     if (hasMultiple) {
         if (isToken(toget)) {
+            auto typeToGet = toget;
+            if (toget == "Identifier")
+                typeToGet = "ID";
             return `
     @NotNull
     public List<PsiElement> get%ss() {
         return findChildrenByType(%s);
     }
-`.format(toget,toget);
+`.format(toget,typeToGet);
         }
         else {
             return `
@@ -806,12 +808,15 @@ string getterMethod(string toget) {
     }
 
     if (isToken(toget)) {
+        auto typeToGet = toget;
+        if (toget == "Identifier")
+            typeToGet = "ID";
         return `
     @Nullable
     public PsiElement get%s() {
         return findChildByType(%s);
     }
-`.format(toget,toget);
+`.format(toget,typeToGet);
     }
     else {
         return `
@@ -886,8 +891,6 @@ string getterMethodInterface(string toget) {
 
     if (isToken(toget))
         type = "PsiElement";
-    else if (toget == "Identifier")
-        type = "DlangIdentifier";
     else if (isExtraInterface(toget))
         type = toget;
     else

@@ -7,7 +7,6 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.named.DlangEnumDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.stubs.DlangEnumDeclarationStub;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import org.jetbrains.annotations.NotNull;
@@ -42,8 +41,8 @@ public class DlangEnumDeclarationImpl extends
 
     @Override
     @Nullable
-    public DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
+    public PsiElement getIdentifier() {
+        return findChildByType(DlangTypes.ID);
     }
 
     @Nullable
@@ -65,7 +64,7 @@ public class DlangEnumDeclarationImpl extends
     }
 
     @Nullable
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         return getIdentifier();
     }
 }

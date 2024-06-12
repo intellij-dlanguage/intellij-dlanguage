@@ -29,7 +29,7 @@ public interface DlangCatch extends PsiElement, DNamedElement, StubBasedPsiEleme
     DLanguageType getType();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     Statement getStatement();

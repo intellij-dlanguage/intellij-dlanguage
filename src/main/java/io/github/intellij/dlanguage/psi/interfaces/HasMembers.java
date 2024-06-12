@@ -35,10 +35,10 @@ public interface HasMembers<T extends StubElement> extends StubBasedPsiElement<T
 
     default void getMembersImpl(final @NotNull Stub stub, final Set<NamedStubBase> result) {
         for (final Stub childStub : stub.getChildrenStubs()) {
-            if (childStub instanceof NamedStubBase && !(childStub instanceof DlangIdentifierStub)) {
+            if (childStub instanceof NamedStubBase) {
                 result.add((NamedStubBase) childStub);
             }
-            if (childStub instanceof DlangUnittestStub || (childStub instanceof DlangDestructorStub) || (childStub instanceof DlangStaticDestructorStub) || (childStub instanceof DLanguageSharedStaticDestructor) || (childStub instanceof DlangConstructorStub) || (childStub instanceof DlangStaticConstructorStub) || (childStub instanceof DLanguageSharedStaticConstructor) || (childStub instanceof DlangFunctionDeclarationStub) || (childStub instanceof DlangIdentifierStub)) {
+            if (childStub instanceof DlangUnittestStub || (childStub instanceof DlangDestructorStub) || (childStub instanceof DlangStaticDestructorStub) || (childStub instanceof DLanguageSharedStaticDestructor) || (childStub instanceof DlangConstructorStub) || (childStub instanceof DlangStaticConstructorStub) || (childStub instanceof DLanguageSharedStaticConstructor) || (childStub instanceof DlangFunctionDeclarationStub)) {
             } else {
                 getMembersImpl(childStub, result);
             }

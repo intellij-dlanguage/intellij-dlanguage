@@ -24,7 +24,6 @@ object DUtil {
      * Precondition: Element is in a DLanguage file.
      */
     fun definitionNode(e: PsiNamedElement): Boolean {
-        if (e is DlangIdentifier) return true
         return e is Declaration
     }
 
@@ -127,7 +126,7 @@ object DUtil {
     }
 
     @JvmStatic
-    fun getEndOfIdentifierList(chain: DLanguageIdentifierChain): DlangIdentifier? {
+    fun getEndOfIdentifierList(chain: DLanguageIdentifierChain): PsiElement? {
         val list = chain.identifiers
         if (list.isEmpty()) {
             return null

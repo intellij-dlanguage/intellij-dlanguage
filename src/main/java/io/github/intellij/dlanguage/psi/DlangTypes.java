@@ -8,7 +8,6 @@ import io.github.intellij.dlanguage.psi.impl.*;
 import io.github.intellij.dlanguage.psi.impl.named.*;
 
 public interface DlangTypes {
-    IElementType IDENTIFIER = DElementTypeFactory.factory("IDENTIFIER");
     IElementType FUNCTION_DECLARATION = DElementTypeFactory.factory("FUNCTION_DECLARATION");
     IElementType CLASS_DECLARATION =DElementTypeFactory.factory("CLASS_DECLARATION");
     IElementType INTERFACE_DECLARATION = DElementTypeFactory.factory("INTERFACE_DECLARATION");
@@ -430,8 +429,6 @@ public interface DlangTypes {
                 return new DLanguageEnumMemberAttributeImpl(node);
             } else if (type == FOREACH_TYPE) {
                 return new DLanguageForeachTypeImpl(node);
-            } else if (type == IDENTIFIER) {
-                return new DlangIdentifierImpl(node);
             } else if (type == LABELED_STATEMENT) {
                 return new DLanguageLabeledStatementImpl(node);
             } else if (type == MODULE_DECLARATION) {

@@ -13,7 +13,6 @@ typealias Destructor = DlangDestructor
 typealias EnumDeclaration = DlangEnumDeclaration
 typealias EnumMember = DlangEnumMember
 typealias ForeachType = DlangForeachType
-typealias Identifier = DlangIdentifier
 typealias SingleImport = DlangSingleImport
 typealias InterfaceDeclaration = DlangInterfaceDeclaration
 typealias LabeledStatement = io.github.intellij.dlanguage.psi.DLanguageLabeledStatement

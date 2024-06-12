@@ -8,7 +8,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DLanguageTypeConstructor;
 import io.github.intellij.dlanguage.psi.named.DlangForeachType;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.stubs.DlangForeachTypeStub;
@@ -42,8 +41,8 @@ public class DLanguageForeachTypeImpl extends
 
     @Override
     @Nullable
-    public DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
+    public PsiElement getIdentifier() {
+        return findChildByType(ID);
     }
 
     @NotNull
@@ -77,7 +76,7 @@ public class DLanguageForeachTypeImpl extends
     }
 
     @Nullable
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         return getIdentifier();
     }
 

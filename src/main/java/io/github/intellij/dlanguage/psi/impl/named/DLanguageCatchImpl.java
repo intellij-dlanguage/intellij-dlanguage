@@ -12,9 +12,9 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.interfaces.Statement;
 import io.github.intellij.dlanguage.psi.named.DlangCatch;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
@@ -68,8 +68,8 @@ public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DlangCatchSt
 
     @Override
     @Nullable
-    public DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
+    public PsiElement getIdentifier() {
+        return findChildByType(DlangTypes.ID);
     }
 
     @Nullable
@@ -79,7 +79,7 @@ public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DlangCatchSt
     }
 
     @Nullable
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         return getIdentifier();
     }
 

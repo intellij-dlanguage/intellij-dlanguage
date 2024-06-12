@@ -13,7 +13,6 @@ import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.processors.DCompletionProcessor
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.resolve.DResolveUtil
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationsByModule
@@ -24,12 +23,12 @@ import java.util.*
 /**
  * Resolves references to elements.
  */
-class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceBase<PsiNamedElement>(element, textRange), PsiPolyVariantReference {
+class DReference(element: PsiElement, textRange: TextRange) : PsiReferenceBase<PsiElement>(element, textRange), PsiPolyVariantReference {
 
     private val name: String
 
     init {
-        name = element.name!!
+        name = element.text!!
     }
 
     /**
@@ -100,7 +99,7 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         return result.toTypedArray()
     }
 
-    private fun addModuleVariants(result: MutableList<String>, element: PsiNamedElement) {
+    private fun addModuleVariants(result: MutableList<String>, element: PsiElement) {
         val moduleSoFar: IdentifierChain
         if (element is SingleImport) {
             moduleSoFar = element.identifierChain!!
@@ -270,11 +269,11 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
     @Throws(IncorrectOperationException::class)
     override fun handleElementRename(newElementName: String): PsiElement {
         val element: PsiElement?
-        if (myElement is DlangIdentifier) {
+        if (myElement is DNamedElement) {
             // Renaming files is tricky: we don't want to change `RenamePsiFileProcessor`,
             // If it’s end by `.d` then it’s because we renamed a file
             val newName = StringUtil.trimEnd(newElementName, ".d")
-            element = myElement.setName(newName)
+            element = (myElement as DNamedElement).setName(newName)
             return element
         }
         return super.handleElementRename(newElementName)

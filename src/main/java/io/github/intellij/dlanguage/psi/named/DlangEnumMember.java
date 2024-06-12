@@ -7,7 +7,6 @@ import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
 import io.github.intellij.dlanguage.psi.DLanguageEnumMemberAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.stubs.DlangEnumMemberStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +21,7 @@ public interface DlangEnumMember extends PsiElement, DNamedElement,
     List<DLanguageEnumMemberAttribute> getEnumMemberAttributes();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     PsiElement getOP_EQ();

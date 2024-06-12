@@ -5,9 +5,13 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.colors.DColor
 import io.github.intellij.dlanguage.psi.DLanguageBasicType
+import io.github.intellij.dlanguage.psi.DlangTokenType
+import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.utils.*
@@ -28,8 +32,8 @@ class DHighlightingAnnotator : Annotator {
             is QualifiedIdentifier -> highlightReference(element)
             is TemplateSingleArgument -> highlightNotReference(element)
             is TemplateParameter -> highlightNotReference(element)
-            is Identifier -> highlightIdentifier(element)
-            else -> null
+            else -> if (element.elementType == DlangTypes.ID) { highlightIdentifier(element) }
+                    else null
         } ?: return
 
         holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(partToHighlight).textAttributes(color.textAttributesKey).create()
@@ -44,7 +48,7 @@ class DHighlightingAnnotator : Annotator {
         } ?: return null
 
         val basicResolveResult = BasicResolve.getInstance(element.project, false)
-            .findDefinitionNode(identifier)
+            .findDefinitionNode(element)
 
         val result = basicResolveResult.firstOrNull() ?: return null
 
@@ -62,7 +66,7 @@ class DHighlightingAnnotator : Annotator {
     }
 
     private fun highlightIdentifier(element: PsiElement): Pair<TextRange, DColor>? {
-        val color = when (val parent = element.parent) {
+        val color = when (val parent = element) {
             is FunctionDeclaration,
             is TemplateDeclaration,
             is TemplateMixinDeclaration -> DColor.FUNCTION_DEFINITION

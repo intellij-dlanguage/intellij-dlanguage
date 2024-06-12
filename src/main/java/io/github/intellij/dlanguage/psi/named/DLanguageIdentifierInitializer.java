@@ -14,7 +14,7 @@ public interface DLanguageIdentifierInitializer extends PsiElement, DNamedElemen
     StubBasedPsiElement<DLanguageIdentifierInitializerStub> {
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     PsiElement getOP_EQ();

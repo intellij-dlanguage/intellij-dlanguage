@@ -10,7 +10,6 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.impl.DElementFactory;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.references.DReference;
@@ -54,7 +53,7 @@ public class DlangModuleDeclarationImpl extends DNamedStubbedPsiElementBase<Dlan
     }
 
     @Nullable
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         if (getIdentifierChain() == null) {
             return null;
         }

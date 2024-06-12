@@ -6,7 +6,7 @@ import com.intellij.icons.AllIcons
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.psi.DlangPsiFile
-import io.github.intellij.dlanguage.psi.DlangTypes.IDENTIFIER
+import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
 
 class DubExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
@@ -22,10 +22,10 @@ class DubExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
     }
 
     private fun isDMainFunction(element: PsiElement) : Boolean {
-        if (!(element.parent.elementType == IDENTIFIER && element.parent.parent is DlangFunctionDeclaration
-            && element.parent.parent.parent is DlangPsiFile && element.text == "main"))
+        if (!(element.elementType == DlangTypes.ID && element.parent is DlangFunctionDeclaration
+            && element.parent.parent is DlangPsiFile && element.text == "main"))
             return false
-        val funcDecl = element.parent.parent as DlangFunctionDeclaration
+        val funcDecl = element.parent as DlangFunctionDeclaration
         // check return type
         if (!(funcDecl.isAuto ||
             listOf("void", "int", "noreturn").contains(funcDecl.basicType?.text)))

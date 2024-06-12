@@ -10,7 +10,6 @@ import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageSpecifiedVariableDeclaration;
 import io.github.intellij.dlanguage.psi.DlangPsiFile;
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,13 +24,13 @@ public class DElementFactory {
      * Takes a name and returns a Psi node of that name, or null.
      */
     @Nullable
-    public static DlangIdentifier createDLanguageIdentifierFromText(@NotNull final Project project, @NotNull final String name) {
+    public static PsiElement createDLanguageIdentifierFromText(@NotNull final Project project, @NotNull final String name) {
         if (name.isBlank()) return null;
         @Nullable PsiElement element = createExpressionFromText(project, "int " + name + ";");
         assert element != null;
-        final DlangIdentifier e = ((DLanguageSpecifiedVariableDeclaration) element).getIdentifierInitializers().get(0).getIdentifier();
+        final PsiElement e = ((DLanguageSpecifiedVariableDeclaration) element).getIdentifierInitializers().get(0).getIdentifier();
 
-        return e != null && e.getName().equals(name) ? e : null;
+        return e != null && e.getText().equals(name) ? e : null;
     }
 
     /**

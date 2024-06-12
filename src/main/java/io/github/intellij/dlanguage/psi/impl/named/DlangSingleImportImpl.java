@@ -10,7 +10,6 @@ import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
 import io.github.intellij.dlanguage.psi.DLanguageImportBind;
 import io.github.intellij.dlanguage.psi.DLanguageImportBindings;
 import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
@@ -50,8 +49,8 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
 
     @Nullable
     @Override
-    public DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
+    public PsiElement getIdentifier() {
+        return findChildByType(DlangTypes.ID);
     }
 
     @Nullable
@@ -88,7 +87,7 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
             final Set<String> set = new HashSet<>();
             for (final DLanguageImportBind importBind : importBindings.getImportBinds()) {
                 if (importBind.getIdentifier() != null && importBind.getNamedImportBind() == null) {
-                    final @NotNull String name = importBind.getIdentifier().getName();
+                    final @NotNull String name = importBind.getIdentifier().getText();
                     set.add(name);
                 }
             }
@@ -114,8 +113,8 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
             final Map<String, String> map = new HashMap<>();
             for (final DLanguageImportBind importBind : importBindings.getImportBinds()) {
                 if (importBind.getIdentifier() != null && importBind.getNamedImportBind() != null && importBind.getNamedImportBind().getIdentifier() != null) {
-                    final @NotNull String name = importBind.getNamedImportBind().getIdentifier().getName();
-                    final @NotNull String bind = importBind.getIdentifier().getName();
+                    final @NotNull String name = importBind.getNamedImportBind().getIdentifier().getText();
+                    final @NotNull String bind = importBind.getIdentifier().getText();
                     map.put(name, bind);
                 }
             }
@@ -133,7 +132,7 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
         if (getIdentifierChain() == null) {
             return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
-        if (getIdentifierChain().getText().equals("")) {
+        if (getIdentifierChain().getText().isEmpty()) {
             Logger.getInstance(getClass())
                 .warn("getIdentifier chain was: \"\". Complete text of symbol: " + getText());
             return DReference.Companion.getNAME_NOT_FOUND_STRING();
@@ -144,9 +143,10 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
 
     @Nullable
     @Override
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         return getIdentifier();
     }
+
     public boolean hasAName() {
         try {
             return getIdentifier() != null;

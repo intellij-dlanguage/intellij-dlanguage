@@ -8243,15 +8243,8 @@ class DLangParser {
      * Advances to the next token and returns the current token
      */
     private IElementType advance() {
-        Marker identifierMarker = null;
-        if (currentIs(ID)) {
-            identifierMarker = builder.mark();
-        }
         IElementType token = builder.getTokenType();
         builder.advanceLexer();
-        if (identifierMarker != null) {
-            identifierMarker.done(IDENTIFIER);
-        }
         return token;
     }
 

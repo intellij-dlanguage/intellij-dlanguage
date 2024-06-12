@@ -4,12 +4,10 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.named.DlangDeclaratorIdentifier;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.stubs.DlangDeclaratorIdentifierStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,13 +34,13 @@ public class DlangDeclaratorIdentifierImpl extends
     }
 
     @Override
-    public @Nullable DlangIdentifier getNameIdentifier() {
+    public @Nullable PsiElement getNameIdentifier() {
         return getIdentifier();
     }
 
     @Override
-    public @Nullable DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
+    public @Nullable PsiElement getIdentifier() {
+        return findChildByType(DlangTypes.ID);
     }
 
     @Override

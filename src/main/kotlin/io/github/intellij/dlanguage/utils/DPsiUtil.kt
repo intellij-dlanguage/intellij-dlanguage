@@ -84,7 +84,7 @@ object DPsiUtil {
                 continue
             }
             val param = parameter.type?.basicType?.qualifiedIdentifier?.identifier
-            if (param is Identifier) {
+            if (param != null) {
                 val resolve = param.reference?.resolve()
                 if (resolve is TemplateParameter) {//todo make this identifier resolving proof
                     if (resolve.templateTupleParameter != null) {

@@ -45,7 +45,7 @@ public class SingleImportStubElementType extends DNamedStubElementType<DlangSing
             psi.getApplicableNamedImportBinds().size(), namedBinds,
             psi.getImportedModuleName(),
             psi.getIdentifier() != null,
-            psi.getIdentifier() != null ? psi.getIdentifier().getName() : "",
+            psi.getIdentifier() != null ? psi.getIdentifier().getText() : "",
             psi.getAttributes());
     }
 

@@ -14,7 +14,7 @@ import java.util.Set;
 
 public interface DlangSingleImport extends PsiElement, DNamedElement, StubBasedPsiElement<DlangSingleImportStub> {
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     PsiElement getOP_EQ();

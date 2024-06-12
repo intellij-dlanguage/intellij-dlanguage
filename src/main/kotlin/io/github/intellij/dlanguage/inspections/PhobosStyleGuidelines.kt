@@ -33,7 +33,7 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
 
     override fun visitModuleDeclaration(o: DlangModuleDeclarationImpl) {
         for (identifier in o.identifierChain!!.identifiers) {
-            checkName("Module", identifier.name, identifier, moduleNameRegex)
+            checkName("Module", identifier.text, identifier, moduleNameRegex)
         }
     }
 

@@ -2,14 +2,16 @@ package io.github.intellij.dlanguage.resolve.processors.basic
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.search.GlobalSearchScope.allScope
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.attributes.DNameScopeProcessor
 import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.psi.DlangPsiFile
-import io.github.intellij.dlanguage.utils.Identifier
+import io.github.intellij.dlanguage.psi.DlangTypes
 
 
 /**
@@ -30,9 +32,9 @@ class BasicResolve private constructor(val project: Project, val profile: Boolea
     val `object`: DlangPsiFile?
         get() = DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet().firstOrNull()?.containingFile as DlangPsiFile?
 
-    fun findDefinitionNode(e: PsiNamedElement): Set<PsiNamedElement> {
+    fun findDefinitionNode(e: PsiElement): Set<PsiNamedElement> {
         //todo fix templated functions return type bug
-        if (e !is Identifier) {
+        if (e.elementType != DlangTypes.ID) {
             return emptySet()
         }
 

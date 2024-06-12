@@ -14,7 +14,7 @@ public interface DLanguageAutoAssignment extends PsiElement, DNamedElement,
     StubBasedPsiElement<DLanguageAutoAssignmentStub> {
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     DLanguageTemplateParameters getTemplateParameters();

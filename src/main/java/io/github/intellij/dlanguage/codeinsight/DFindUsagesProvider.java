@@ -31,7 +31,7 @@ public class DFindUsagesProvider implements FindUsagesProvider {
     @Override
     public WordsScanner getWordsScanner() {
         return new DefaultWordsScanner(new DLanguageLexerAdapter(),
-            TokenSet.create(DlangTypes.IDENTIFIER),
+            TokenSet.create(DlangTypes.ID),
             DTokenSets.LINE_COMMENTS, DTokenSets.BLOCK_COMMENTS, DTokenSets.STRING_LITERALS);
     }
 
@@ -55,8 +55,6 @@ public class DFindUsagesProvider implements FindUsagesProvider {
 
         if (element instanceof DlangFunctionDeclaration) {
             return "Function";
-        } else if (element instanceof DlangIdentifier) {
-            return "Identifier";
         } else if (element instanceof DlangClassDeclaration) {
             return "Class";
         } else if (element instanceof DlangInterfaceDeclaration) {

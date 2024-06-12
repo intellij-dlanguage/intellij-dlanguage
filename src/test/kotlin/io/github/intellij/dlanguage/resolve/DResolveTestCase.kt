@@ -13,7 +13,6 @@ import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
 import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration
 import io.github.intellij.dlanguage.psi.named.DlangConstructor
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import org.intellij.lang.annotations.Language
 import java.io.File
 
@@ -61,7 +60,7 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
 
     private fun findResolvedInFile(psiFile: PsiElement, resolvedOffset: Int) {
         var element = psiFile.findElementAt(resolvedOffset)
-        while (element!!.reference == null || element.reference is DlangIdentifier) {
+        while (element!!.reference == null) {
             element = element.parent
         }
         val ref = element.reference
@@ -71,9 +70,9 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         resolvedElement = ref!!.element
         ensureResolvedNotNull(psiFile.containingFile.name)
         // container elements like DEFINITION_FUNCTION need to be looked up by .getElement().getParent()
-        if (resolvedElement is DlangIdentifier) {
+        /*if (resolvedElement is DlangIdentifier) {
             resolvedElement = ref.element.parent
-        }
+        }*/
         //if we're resolving something within a class don't resolve the class
         if (ref is PsiMultiReference && resolvedElement is DlangClassDeclaration) {
             for (psiReference in ref.references) {

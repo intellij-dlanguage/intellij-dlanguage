@@ -1,12 +1,12 @@
 package io.github.intellij.dlanguage.psi.impl;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.testFramework.LightPlatform4TestCase;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import org.junit.Test;
 
 
@@ -18,12 +18,12 @@ public class DElementFactoryTest extends LightPlatform4TestCase {
 
     @Test
     public void createDLanguageIdentifierFromText() {
-        final DlangIdentifier result = DElementFactory.createDLanguageIdentifierFromText(getProject(), "text");
+        final PsiElement result = DElementFactory.createDLanguageIdentifierFromText(getProject(), "text");
 
         assertEquals(DLanguage.INSTANCE, result.getLanguage());
         assertEquals("text", result.getText());
-        assertEquals("text", result.getName());
-        assertEquals("IDENTIFIER", result.getElementType().getDebugName());
+        assertEquals("text", result.getText());
+        assertEquals("ID", result.getNode().getElementType().getDebugName());
     }
 
     @Test

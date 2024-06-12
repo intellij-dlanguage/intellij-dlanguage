@@ -9,7 +9,6 @@ import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
 import io.github.intellij.dlanguage.psi.DLanguageParameterAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DLanguageTypeSuffix;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.named.DlangParameter;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
@@ -115,8 +114,8 @@ public class DLanguageParameterImpl extends
 
     @Override
     @Nullable
-    public DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
+    public PsiElement getIdentifier() {
+        return findChildByType(DlangTypes.ID);
     }
 
     @NotNull
@@ -148,7 +147,7 @@ public class DLanguageParameterImpl extends
 //    }
 
     @Nullable
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         if (getIdentifier() != null) {
             return getIdentifier();
         }

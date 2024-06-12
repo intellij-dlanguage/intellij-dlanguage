@@ -215,7 +215,6 @@ object ScopeProcessorImpl {
             }
         }
         return toContinue
-        return true
     }
 
     @Suppress("UNUSED_PARAMETER")
