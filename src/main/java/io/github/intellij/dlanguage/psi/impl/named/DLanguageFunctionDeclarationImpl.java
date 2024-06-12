@@ -7,16 +7,10 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageConstraint;
-import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
-import io.github.intellij.dlanguage.psi.DLanguageParameters;
-import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
-import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
-import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub;
@@ -58,8 +52,14 @@ public class DLanguageFunctionDeclarationImpl extends
 
     @Nullable
     @Override
-    public DLanguageType getType() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
+    public DLanguageBasicType getBasicType() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class);
+    }
+
+    @NotNull
+    @Override
+    public List<DLanguageTypeSuffix> getTypeSuffixes() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageTypeSuffix.class);
     }
 
     @Nullable
