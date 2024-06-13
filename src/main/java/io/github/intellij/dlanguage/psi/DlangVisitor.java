@@ -208,6 +208,10 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitCommaExpression(@NotNull final DLanguageCommaExpressionImpl o) {
+        visitPsiElement(o);
+    }
+
     public void visitCompileCondition(@NotNull final DLanguageCompileConditionImpl o) {
         visitPsiElement(o);
     }
@@ -908,10 +912,6 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitLambdaExpression(@NotNull final DLanguageLambdaExpressionImpl o) {
-        visitPsiElement(o);
-    }
-
-    public void visitInterfaceOrClass(@NotNull final DlangClassDeclarationImpl o) {
         visitPsiElement(o);
     }
 

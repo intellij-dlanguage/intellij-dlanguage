@@ -347,7 +347,7 @@ class DLangParser {
                 cleanup(m, ALIGN_ATTRIBUTE);
                 return false;
             }
-            if (!parseAssignExpression()) {
+            if (parseAssignExpression() == null) {
                 cleanup(m, ALIGN_ATTRIBUTE);
                 return false;
             }
@@ -420,7 +420,7 @@ class DLangParser {
             return true;
         Marker m = builder.mark();
         while (!currentIs(OP_PAR_RIGHT)) {
-            if (!parseAssignExpression()) {
+            if (parseAssignExpression() == null) {
                     cleanup(m, ARGUMENT_LIST);
                     return false;
             }
@@ -529,7 +529,7 @@ class DLangParser {
             skipBrackets();
             if (currentIs(OP_COLON)) {
                 bookmark.rollbackTo();
-                if (!parseAssignExpression()) {
+                if (parseAssignExpression() == null) {
                     cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                     return false;
                 }
@@ -550,7 +550,7 @@ class DLangParser {
                 return false;
             }
         } else {
-            final boolean assignExpression = parseAssignExpression();
+            final boolean assignExpression = parseAssignExpression() != null;
             if (!assignExpression) {
                 cleanup(m, ARRAY_MEMBER_INITIALIZATION);
                 return false;
@@ -1209,7 +1209,7 @@ class DLangParser {
      */
     public boolean parseAssertArguments() {
         final Marker m = builder.mark();
-        if (!parseAssignExpression()) {
+        if (parseAssignExpression() == null) {
             cleanup(m, ASSERT_ARGUMENTS);
             return false;
         }
@@ -1221,7 +1221,7 @@ class DLangParser {
             return true;
         }
         while (!currentIs(OP_PAR_RIGHT)) {
-            if (!parseAssignExpression()) {
+            if (parseAssignExpression() == null) {
                 cleanup(m, ASSERT_ARGUMENTS);
                 return false;
             }
@@ -1282,22 +1282,22 @@ class DLangParser {
      * | $(LITERAL '~=')
      * ;)
      */
-    boolean parseAssignExpression() {
+    Marker parseAssignExpression() {
         Marker ternary = parseTernaryExpression();
         if (ternary == null) {
-            return false;
+            return null;
         }
         if (currentIsOneOf(OP_EQ, OP_USH_RIGHT_EQ, OP_SH_RIGHT_EQ, OP_SH_LEFT_EQ, OP_PLUS_EQ, OP_MINUS_EQ, OP_MUL_EQ, OP_MOD_EQ, OP_AND_EQ, OP_DIV_EQ, OP_OR_EQ, OP_POW_EQ, OP_XOR_EQ, OP_TILDA_EQ)) {
             Marker m = ternary.precede();
             advance();
-            if (!parseAssignExpression()) {
+            if (parseAssignExpression() == null) {
                 cleanup(m, ASSIGN_EXPRESSION);
-                return false;
+                return m;
             }
             exit_section_modified(builder, m, ASSIGN_EXPRESSION, true);
-            return true;
+            return m;
         }
-        return true;
+        return ternary;
     }
 
     /**
@@ -1684,7 +1684,7 @@ class DLangParser {
             return false;
         }
         expect(KW_CASE);
-        if (!parseAssignExpression()) {
+        if (parseAssignExpression() == null) {
             cleanup(m, CASE_RANGE_STATEMENT);
             return false;
         }
@@ -2499,7 +2499,7 @@ class DLangParser {
         }
         if (currentIs(OP_PAR_LEFT)) {
             advance();
-            if (!parseAssignExpression()) {
+            if (parseAssignExpression() == null) {
                 cleanup(m, DEPRECATED);
                 return false;
             }
@@ -2681,7 +2681,7 @@ class DLangParser {
     }
 
     private boolean assignAnonEnumMember(final Marker m) {
-        if (!parseAssignExpression()) {
+        if (parseAssignExpression() == null) {
             cleanup(m, ENUM_MEMBER);
             return false;
         }
@@ -2809,7 +2809,7 @@ class DLangParser {
         }
         if (currentIs(OP_EQ)) {
             advance();
-            if (!parseAssignExpression()) {
+            if (parseAssignExpression() == null) {
                 cleanup(m, ENUM_MEMBER);
                 return false;
             }
@@ -2848,26 +2848,39 @@ class DLangParser {
      * Parses an Expression
      * <p>
      * $(GRAMMAR $(RULEDEF expression):
-     * $(RULE assignExpression) ($(LITERAL ',') $(RULE assignExpression))*
+     * $(RULE commaExpression)
      * ;)
      */
     boolean parseExpression() {
-        if (!moreTokens()) {
-            error("Expected expression instead of EOF");
-            return false;
+        return parseCommaExpression() != null;
+    }
+
+    /**
+     * Parses an Expression
+     * <p>
+     * $(GRAMMAR $(RULEDEF expression):
+     * $(RULE assignExpression)
+     * | $(RULE commaExpression) ($(LITERAL ',') $(RULE assignExpression))
+     * ;)
+     */
+    Marker parseCommaExpression() {
+        Marker assign = parseAssignExpression();
+        if (assign == null) {
+            return null;
         }
-        while (moreTokens()) {
-            if (!parseAssignExpression()) {
-                return false;
+        if (currentIs(OP_COMMA)) {
+            Marker m = assign.precede();
+            advance();
+            if (!currentIsOneOf(OP_PAR_RIGHT, OP_BRACES_RIGHT, OP_BRACKET_RIGHT)) {
+                if (parseCommaExpression() == null) {
+                    cleanup(m, COMMA_EXPRESSION);
+                    return m;
+                }
             }
-            if (currentIs(OP_COMMA)) {
-                advance();
-                if (currentIsOneOf(OP_PAR_RIGHT, OP_BRACES_RIGHT, OP_BRACKET_RIGHT))
-                    break;
-            } else
-                break;
+            m.done(COMMA_EXPRESSION);
+            return m;
         }
-        return true;
+        return assign;
     }
 
     /**
@@ -3411,7 +3424,7 @@ class DLangParser {
         if (startsWith(ID, OP_LAMBDA_ARROW)) {
             advance();
             advance(); // =>
-            if (!parseAssignExpression()) {
+            if (parseAssignExpression() == null) {
                 cleanup(m, FUNCTION_LITERAL_EXPRESSION);
                 return null;
             }
@@ -3439,7 +3452,7 @@ class DLangParser {
         }
         if (currentIs(OP_LAMBDA_ARROW)) {
             advance();
-            if (!parseAssignExpression()) {
+            if (parseAssignExpression() == null) {
                 cleanup(m, FUNCTION_LITERAL_EXPRESSION);
                 return null;
             }
@@ -3548,7 +3561,7 @@ class DLangParser {
                     bookmark = builder.mark();
                     advance();
                     // here we can have a type (AA key)
-                    if (!parseAssignExpression()) {
+                    if (parseAssignExpression() == null) {
                         bookmark.rollbackTo();
                         break;
                     }
@@ -3942,7 +3955,7 @@ class DLangParser {
             cleanup(marker, IMPORT_EXPRESSION);
             return null;
         }
-        if(!parseAssignExpression()) {
+        if(parseAssignExpression() == null) {
             cleanup(marker, IMPORT_EXPRESSION);
             return null;
         }
@@ -4229,7 +4242,7 @@ class DLangParser {
      */
     boolean parseKeyValuePair() {
         final Marker m = builder.mark();
-        if (!parseAssignExpression()) {
+        if (parseAssignExpression() == null) {
             cleanup(m, KEY_VALUE_PAIR);
             return false;
         }
@@ -4237,7 +4250,7 @@ class DLangParser {
             cleanup(m, KEY_VALUE_PAIR);
             return false;
         }
-        if (!parseAssignExpression()) {
+        if (parseAssignExpression() == null) {
             cleanup(m, KEY_VALUE_PAIR);
             return false;
         }
@@ -4720,7 +4733,7 @@ class DLangParser {
             }
             if (currentIs(OP_BRACKET_LEFT)) {
                 advance();
-                if (!parseAssignExpression()) {
+                if (parseAssignExpression() == null) {
                     cleanup(m, NEW_EXPRESSION);
                     return null;
                 }
@@ -4748,7 +4761,7 @@ class DLangParser {
         if (currentIs(OP_BRACES_LEFT)) {
             final IElementType b = peekPastBraces();
             if (b == OP_PAR_LEFT) {
-                return parseAssignExpression();
+                return parseAssignExpression() != null;
             }
             Marker bookmark = builder.mark();
             final boolean initializer = parseStructInitializer();
@@ -4776,7 +4789,7 @@ class DLangParser {
                 return parseArrayLiteral() != null;
             }
         }
-        return parseAssignExpression();
+        return parseAssignExpression() != null;
     }
 
     /**
@@ -4951,7 +4964,7 @@ class DLangParser {
                 advance();
             } else if (currentIs(OP_EQ)) {
                 advance();
-                if (!parseAssignExpression()) {
+                if (parseAssignExpression() == null) {
                     cleanup(m, PARAMETER);
                     return false;
                 }
@@ -4969,7 +4982,7 @@ class DLangParser {
             advance();
         } else if (currentIs(OP_EQ)) {
             advance();
-            if (!parseAssignExpression()) {
+            if (parseAssignExpression() == null) {
                 cleanup(m, PARAMETER);
                 return false;
             }
@@ -6158,7 +6171,7 @@ class DLangParser {
             cleanup(marker, STATIC_IF_CONDITION);
             return false;
         }
-        if(!parseAssignExpression()) {
+        if(parseAssignExpression() == null) {
             cleanup(marker, STATIC_IF_CONDITION);
             return false;
         }
@@ -6463,7 +6476,7 @@ class DLangParser {
                     cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                     return false;
                 }
-            } else if (!parseAssignExpression()) {
+            } else if (parseAssignExpression() == null) {
                 cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                 return false;
             }
@@ -6475,7 +6488,7 @@ class DLangParser {
                     cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                     return false;
                 }
-            } else if (!parseAssignExpression()) {
+            } else if (parseAssignExpression() == null) {
                 cleanup(m, TEMPLATE_ALIAS_PARAMETER);
                 return false;
             }
@@ -6501,7 +6514,7 @@ class DLangParser {
                 parseType();
             }
             else {
-                if (!parseAssignExpression()) {
+                if (parseAssignExpression() == null) {
                     cleanup(m, TEMPLATE_ARGUMENT);
                     return false;
                 }
@@ -6516,7 +6529,7 @@ class DLangParser {
             } else {
                 cachedTypedChecks.put(startIndex, false);
                 bookmark.rollbackTo();
-                if (!parseAssignExpression()) {
+                if (parseAssignExpression() == null) {
                     cleanup(m, TEMPLATE_ARGUMENT);
                     return false;
                 }
@@ -6925,7 +6938,7 @@ class DLangParser {
         }
         if (currentIs(OP_COLON)) {
             advance();
-            if (!parseAssignExpression()) {
+            if (parseAssignExpression() == null) {
                 cleanup(m, TEMPLATE_VALUE_PARAMETER);
                 return false;
             }
@@ -6964,7 +6977,7 @@ class DLangParser {
         if (i == KW___FILE__ || i == KW___FILE_FULL_PATH__ || i == KW___MODULE__ || i == KW___LINE__ || i == KW___FUNCTION__ || i == KW___PRETTY_FUNCTION__) {
             advance();
         } else {
-            if (!parseAssignExpression()) {
+            if (parseAssignExpression() == null) {
                 cleanup(m, TEMPLATE_VALUE_PARAMETER_DEFAULT);
                 return false;
             }
@@ -7018,7 +7031,7 @@ class DLangParser {
     Marker parseThrowExpression() {
         final Marker m = builder.mark();
         expect(KW_THROW);
-        if (!parseAssignExpression()) {
+        if (parseAssignExpression() == null) {
             cleanup(m, THROW_EXPRESSION);
             return null;
         }
@@ -7128,7 +7141,7 @@ class DLangParser {
                 Marker bookmark = builder.mark();
                 if(inNewExpression) {
                     builder.advanceLexer();
-                    if (parseAssignExpression() && builder.getTokenType() == OP_BRACES_RIGHT) {
+                    if (parseAssignExpression() != null && builder.getTokenType() == OP_BRACES_RIGHT) {
                         builder.advanceLexer();
                         if (builder.getTokenType() != OP_BRACKET_LEFT && builder.getTokenType() != OP_ASTERISK
                             && builder.getTokenType() != KW_DELEGATE && builder.getTokenType() != KW_FUNCTION
@@ -7377,13 +7390,13 @@ class DLangParser {
                 bookmark.drop();
             } else {
                 bookmark.rollbackTo();
-                if (!parseAssignExpression()) {
+                if (parseAssignExpression() == null) {
                     cleanup(m, TYPE_SUFFIX);
                     return false;
                 }
                 if (currentIs(OP_DDOT)) {
                     advance();
-                    if (!parseAssignExpression()) {
+                    if (parseAssignExpression() == null) {
                         cleanup(m, TYPE_SUFFIX);
                         return false;
                     }
@@ -7586,7 +7599,7 @@ class DLangParser {
             m.done(INDEX_EXPRESSION);
             return;
         }
-        if (!parseAssignExpression()) {
+        if (parseAssignExpression() == null) {
             m.drop();
             expect(OP_BRACKET_RIGHT);
             return;

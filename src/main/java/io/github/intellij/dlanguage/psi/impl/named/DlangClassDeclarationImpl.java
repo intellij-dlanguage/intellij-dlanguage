@@ -36,7 +36,7 @@ public class DlangClassDeclarationImpl extends
 
     public void accept(@NotNull final DlangVisitor visitor) {
         visitor.visitDNamedElement(this);
-        visitor.visitInterfaceOrClass(this);
+        visitor.visitClassDeclaration(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {

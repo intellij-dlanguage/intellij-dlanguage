@@ -45,13 +45,12 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
         checkName("Function", StringUtil.decapitalize(o.name), o.nameIdentifier!!, varFunNameRegex)
     }
 
-    override fun visitInterfaceOrClass(o: DlangClassDeclarationImpl) {
-        val type: String
-        if (o.parent is ClassDeclaration)
-            type = "Class"
-        else
-            type = "Interface"
-        checkName(type, o.name, o, aggregateNameRegex)
+    override fun visitClassDeclaration(o: DlangClassDeclarationImpl) {
+        checkName("Class", o.name, o, aggregateNameRegex)
+    }
+
+    override fun visitInterfaceDeclaration(o: DlangInterfaceDeclarationImpl) {
+        checkName("Interface", o.name, o, aggregateNameRegex)
     }
 
     override fun visitStructDeclaration(o: DlangStructDeclarationImpl) {
@@ -65,6 +64,4 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
     override fun visitEnumDeclaration(o: DlangEnumDeclarationImpl) {
         checkName("Enum", o.name, o, aggregateNameRegex)
     }
-
-
 }

@@ -23,7 +23,7 @@ class EnumArrayLiteralsInClassDeclaration : LocalInspectionTool() {
 }
 
 class EnumArrayLiteralsInClassDeclarationVisitor(val holder: ProblemsHolder) : DlangVisitor() {
-    override fun visitInterfaceOrClass(o: DlangClassDeclarationImpl) {
+    override fun visitClassDeclaration(o: DlangClassDeclarationImpl) {
         checkForEnumLiterals(o)
     }
 
