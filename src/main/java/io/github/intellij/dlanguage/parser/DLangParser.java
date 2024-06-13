@@ -2398,13 +2398,13 @@ class DLangParser {
             }
             if (!parseInitializer()) {
                 cleanup(m, IDENTIFIER_INITIALIZER);
-                return false;
+                return true;
             }
         } else if (currentIs(OP_EQ)) {
             advance();
             if (!parseInitializer()) {
                 cleanup(m, IDENTIFIER_INITIALIZER);
-                return false;
+                return true;
             }
         }
         exit_section_modified(builder, m, IDENTIFIER_INITIALIZER, true);
@@ -5997,7 +5997,8 @@ class DLangParser {
             return parseImportDeclaration();
         } else {
             Marker marker = builder.mark();
-            if (parseExpressionStatement()) {
+            boolean canBeDeclaration = canBeDeclaration();
+            if (parseExpressionStatement() || !canBeDeclaration) {
                 marker.drop();
                 return true;
             } else {
@@ -6005,6 +6006,35 @@ class DLangParser {
                 return parseDeclarationStatement();
             }
         }
+    }
+
+    boolean canBeDeclaration() {
+        IElementType token = builder.getTokenType();
+        if (token == KW_ASSERT || token == KW_SUPER || token == KW_THIS || isLiteral(token)
+            || token == KW_CAST || token == OP_TILDA || token == OP_NOT || token == OP_PLUS_PLUS
+            || token == OP_MINUS_MINUS || token == KW_NEW || token == KW_DELETE || token == KW_DELEGATE
+            || token == KW_FUNCTION || token == KW_TYPEID || token == KW_IS || token == OP_BRACKET_LEFT
+            || isMagicKeywordLiteral(token))
+            return false;
+
+        if (token == ID) {
+            Marker bookmark = builder.mark();
+            if (!parseBasicType()) {
+                bookmark.rollbackTo();
+                return false;
+            }
+            parseTypeSuffixes();
+            if (builder.getTokenType() != ID) {
+                bookmark.rollbackTo();
+                return false;
+            }
+            bookmark.rollbackTo();
+            return true;
+        }
+        IElementType next = builder.lookAhead(1);
+        if (isBasicType(token) && (next == OP_DOT || next == OP_PAR_LEFT))
+            return false;
+        return token != KW_MIXIN || next != OP_PAR_LEFT;
     }
 
     boolean parseEmptyStatement() {
@@ -6974,7 +7004,7 @@ class DLangParser {
         final Marker m = builder.mark();
         expect(OP_EQ);
         final IElementType i = current();
-        if (i == KW___FILE__ || i == KW___FILE_FULL_PATH__ || i == KW___MODULE__ || i == KW___LINE__ || i == KW___FUNCTION__ || i == KW___PRETTY_FUNCTION__) {
+        if (isMagicKeywordLiteral(i)) {
             advance();
         } else {
             if (parseAssignExpression() == null) {
@@ -6985,6 +7015,10 @@ class DLangParser {
         }
         exit_section_modified(builder, m, TEMPLATE_VALUE_PARAMETER_DEFAULT, true);
         return true;
+    }
+
+    boolean isMagicKeywordLiteral(IElementType i) {
+        return i == KW___FILE__ || i == KW___FILE_FULL_PATH__ || i == KW___MODULE__ || i == KW___LINE__ || i == KW___FUNCTION__ || i == KW___PRETTY_FUNCTION__;
     }
 
     /**
@@ -7761,11 +7795,7 @@ class DLangParser {
             m.rollbackTo();
             return false;
         }
-        if (builder.getTokenType() != OP_SCOLON) {
-            m.rollbackTo();
-            return false;
-        }
-        builder.advanceLexer();
+        expect(OP_SCOLON);
         m.done(VARIABLE_DECLARATION);
         return true;
     }
