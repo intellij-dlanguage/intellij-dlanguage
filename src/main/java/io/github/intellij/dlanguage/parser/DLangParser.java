@@ -306,6 +306,7 @@ class DLangParser {
      * <p>
      * $(GRAMMAR $(RULEDEF aliasThisDeclaration):
      * $(LITERAL 'alias') $(LITERAL Identifier) $(LITERAL 'this') $(LITERAL ';')
+     * | $(LITERAL 'alias') $(LITERAL 'this') $(LITERAL Identifier) $(LITERAL ';')
      * ;)
      */
     boolean parseAliasThisDeclaration() {
@@ -314,17 +315,24 @@ class DLangParser {
         final Marker m = builder.mark();
         m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
-        if (!tokenCheck(ID)) {
+        if (builder.getTokenType() == ID) {
+            if (!tokenCheck(ID)) {
+                m.rollbackTo();
+                return false;
+            }
+            if (!tokenCheck(KW_THIS)) {
+                m.rollbackTo();
+                return false;
+            }
+            expect(OP_SCOLON);
+        } else if (builder.getTokenType() == KW_THIS) {
+            builder.advanceLexer();
+            expect(OP_EQ);
+            expect(ID);
+            expect(OP_SCOLON);
+        } else {
             m.rollbackTo();
             return false;
-        }
-        if (!tokenCheck(KW_THIS)) {
-            m.rollbackTo();
-            return false;
-        }
-        if (expect(OP_SCOLON) == null) {
-            m.done(ALIAS_THIS_DECLARATION);
-            return true;
         }
         m.done(ALIAS_THIS_DECLARATION);
         return true;
