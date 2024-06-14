@@ -162,24 +162,9 @@ object SpecialCaseResolve {
         }
 
         if (inMixinQualifiedIdentifier(e) != null) {
-            // FIXME resolve
-            val instances = inMixinQualifiedIdentifier(e)!!.mixinQualifiedIdentifier
-            val name = instances!!.text
-            /*val endIndex = instances.indexOf(inIdentifierOrTemplateInstance(e))
-            val parents = instances.subList(0, endIndex + 1)
-            if (parents.size == 0) {
-                return emptySet()
-            }
-            val last = parents.last()
-            var name = ""
-            for (parent in parents) {
-                if (parent != last) {
-                    name += (parent.text + ".")
-                } else {
-                    name += parent.text
-                }
-            }*/
-            val directoryResolve = resolvePackageFromName(e.project, name)
+            val mixinName = inMixinQualifiedIdentifier(e)!!.mixinQualifiedIdentifier
+            mixinName?: return emptySet()
+            val directoryResolve = resolvePackageFromName(e.project, mixinName.text)
             return directoryResolve//todo do a file resolve as well
         }
         return emptySet()

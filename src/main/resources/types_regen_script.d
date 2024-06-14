@@ -230,11 +230,11 @@ static this() {
     types_children["MemberFunctionAttribute"] = [ "FunctionAttribute","KW_IMMUTABLE","KW_INOUT","KW_SHARED","KW_CONST"];
     types_children["MissingFunctionBody"] = ["FunctionContract*","OP_SCOLON"];
     types_extra_interfaces["MissingFunctionBody"] = ["FunctionBody"];
-    types_children["MixinDeclaration"] = ["TemplateMixinExpression","MixinExpression","OP_SCOLON"];
+    types_children["MixinDeclaration"] = ["KW_MIXIN", "OP_PAR_LEFT", "ArgumentList", "OP_PAR_RIGHT", "OP_SCOLON"];
     types_extra_interfaces["MixinDeclaration"] = ["Declaration"];
-    types_children["MixinExpression"] = ["ArgumentList","OP_PAR_RIGHT","OP_PAR_LEFT","KW_MIXIN"];
-    types_extra_interfaces["MixinExpression"] = ["Expression"];
     types_children["MixinQualifiedIdentifier"] = ["Identifier", "TemplateInstance", "OP_DOT", "MixinQualifiedIdentifier"];
+    types_children["TemplateMixinExpression"] = ["KW_MIXIN","MixinTemplateName","TemplateArguments","Identifier"];
+    types_extra_interfaces["TemplateMixinExpression"] = ["Expression"];
     types_children["MixinTemplateDeclaration"] = ["TemplateDeclaration","KW_MIXIN"];
     types_children["MixinTemplateName"] = ["TypeofExpression", "MixinQualifiedIdentifier", "OP_DOT"];
     types_children["MulExpression"] = ["Expression*","OP_MOD","OP_DIV","OP_ASTERISK"];
@@ -317,9 +317,7 @@ static this() {
     types_children["TemplateInstance"] = ["Identifier", "TemplateArguments"];
     types_children["TemplateMixin"] = ["KW_MIXIN","MixinTemplateName","TemplateArguments","Identifier"];
     types_extra_interfaces["TemplateMixin"] = ["Declaration"];
-    types_children["TemplateMixinExpression"] = ["KW_MIXIN","MixinTemplateName","TemplateArguments","Identifier"];
-    types_extra_interfaces["TemplateMixinExpression"] = ["Expression"];
-    types_children["TemplateMixinDeclaration"] = ["KW_MIXIN","TemplateDeclaration"];
+    types_children["TemplateMixinDeclaration"] = ["KW_MIXIN","KW_TEMPLATE", "Identifier", "TemplateParameters", "KW_IF", "OP_BRACES_LEFT", "Declaration*", "OP_BRACES_RIGHT"];
     types_extra_interfaces["TemplateMixinDeclaration"] = ["Declaration"];
     stub_children ["TemplateParameter"] = ["TemplateAliasParameter","TemplateTupleParameter","TemplateTypeParameter","TemplateThisParameter","TemplateValueParameter"];
     types_children["TemplateParameterList"] = ["TemplateParameter*","OP_COMMA*"];
@@ -487,7 +485,6 @@ static this() {
     has_processDeclaration["LinkageAttribute"] = false;
     has_processDeclaration["MemberFunctionAttribute"] = false;
     has_processDeclaration["MixinDeclaration"] = false;
-    has_processDeclaration["MixinExpression"] = false;
     has_processDeclaration["MixinQualifiedIdentifier"] = false;
     has_processDeclaration["MixinTemplateDeclaration"] = true;
     has_processDeclaration["MixinTemplateName"] = false;
@@ -539,7 +536,6 @@ static this() {
     has_processDeclaration["TemplateArguments"] = false;
 //    has_processDeclaration["TemplateDeclaration"] = true;
     has_processDeclaration["TemplateInstance"] = false;
-    has_processDeclaration["TemplateMixinExpression"] = false;
     has_processDeclaration["TemplateMixinDeclaration"] = true;
     has_processDeclaration["TemplateParameter"] = false;
     has_processDeclaration["TemplateParameterList"] = false;

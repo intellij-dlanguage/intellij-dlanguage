@@ -62,24 +62,26 @@ class DHighlightingAnnotator : Annotator {
     }
 
     private fun highlightIdentifier(element: PsiElement): Pair<TextRange, DColor>? {
-        val parent = element.parent
-        val color = when {
-            parent is FunctionDeclaration -> DColor.FUNCTION_DEFINITION
-            parent is TemplateDeclaration -> DColor.FUNCTION_DEFINITION
-            parent is TemplateInstance -> {
+        val color = when (val parent = element.parent) {
+            is FunctionDeclaration,
+            is TemplateDeclaration,
+            is TemplateMixinDeclaration -> DColor.FUNCTION_DEFINITION
+            is TemplateInstance -> {
                 // don’t colorize templated class/struct/union instantiations as function calls
                 if (PsiTreeUtil.getParentOfType(parent, DLanguageBasicType::class.java, true, Declaration::class.java) == null)
                     DColor.FUNCTION_CALL
                 else
                     null
             }
+
             else -> null
-        }?: return null
+        } ?: return null
 
         return element.textRange to color
     }
 
     private fun colorFor(element: PsiElement): DColor? = when (element) {
+        is TemplateSingleArgument,
         is TemplateTypeParameter,
         is TemplateParameter -> DColor.TYPE_PARAMETER
         else -> null
@@ -90,6 +92,7 @@ class DHighlightingAnnotator : Annotator {
      * @param element: the reference of the element to color
      */
     private fun colorForReferenced(element: PsiElement): DColor? = when (element) {
+        is TemplateSingleArgument,
         is TemplateTypeParameter,
         is TemplateParameter -> DColor.TYPE_PARAMETER
         is FunctionDeclaration -> {
@@ -99,7 +102,8 @@ class DHighlightingAnnotator : Annotator {
             else
                 DColor.FUNCTION_CALL
         }
-        is TemplateDeclaration -> DColor.FUNCTION_CALL
+        is TemplateDeclaration,
+        is TemplateMixinDeclaration -> DColor.FUNCTION_CALL
         is AliasInitializer -> {
             // Colorize standard alias types as if they were keywords
             if (element.identifier?.text in DlangAliasedTypes)
@@ -125,6 +129,8 @@ class DHighlightingAnnotator : Annotator {
             is TemplateValueParameter -> element.identifier
             is TemplateAliasParameter -> element.identifier
             is TemplateThisParameter -> element.templateTypeParameter?.identifier
+            is ReferenceExpression -> element.identifier
+            is TemplateSingleArgument -> element.identifier
             else -> element
         }
 

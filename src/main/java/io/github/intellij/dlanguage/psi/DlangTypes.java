@@ -762,7 +762,7 @@ public interface DlangTypes {
             } else if (type == TEMPLATE_INSTANCE) {
                 return new DLanguageTemplateInstanceImpl(node);
             } else if (type == TEMPLATE_MIXIN) {
-                return new DLanguageTemplateMixinExpressionImpl(node);
+                return new DLanguageTemplateMixinImpl(node);
             } else if (type == TEMPLATE_MIXIN_DECLARATION) {
                 return new DLanguageTemplateMixinDeclarationImpl(node);
             } else if (type == TEMPLATE_PARAMETER_LIST) {
@@ -848,7 +848,6 @@ public interface DlangTypes {
             } else if (type == ALIAS_ASSIGN) {
                 return new DLanguageAliasAssignImpl(node);
             }
-
 
             throw new AssertionError("Unknown element type: " + type);
         }

@@ -1152,7 +1152,7 @@ D Language File
       DLanguageBlockStatementImpl(BLOCK_STATEMENT)
         PsiElement(DlangTokenType.{)('{')
         DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
-          DLanguageTemplateMixinExpressionImpl(TEMPLATE_MIXIN)
+          DLanguageTemplateMixinImpl(TEMPLATE_MIXIN)
             PsiElement(DlangTokenType.mixin)('mixin')
             DLanguageMixinTemplateNameImpl(MIXIN_TEMPLATE_NAME)
               DLanguageMixinQualifiedIdentifierImpl(MIXIN_QUALIFIED_IDENTIFIER)

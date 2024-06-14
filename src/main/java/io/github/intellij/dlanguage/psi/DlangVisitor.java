@@ -725,10 +725,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitTemplateMixinExpression(@NotNull final DLanguageTemplateMixinExpressionImpl o) {
-        visitPsiElement(o);
-    }
-
     public void visitTemplateParameter(@NotNull final DLanguageTemplateParameterImpl o) {
         visitPsiElement(o);
     }

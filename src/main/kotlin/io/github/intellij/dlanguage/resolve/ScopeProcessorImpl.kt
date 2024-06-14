@@ -203,11 +203,18 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement,
                             place: PsiElement): Boolean {
-//        if (element.templateDeclaration?.templateParameters != null) {
-//            if (!processTemplateParameters(element.templateDeclaration!!.templateParameters!!, processor, state, lastParent, place)) {
-//                return false
-//            }
-//        }
+        var toContinue = true
+        if (element.templateParameters != null) {
+            if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
+                toContinue = false
+            }
+        }
+        for (declaration in element.declarations) {
+            if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                toContinue = false
+            }
+        }
+        return toContinue
         return true
     }
 
