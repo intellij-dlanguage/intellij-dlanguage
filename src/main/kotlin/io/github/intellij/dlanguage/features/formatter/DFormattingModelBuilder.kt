@@ -160,10 +160,12 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             // This governs the indent on the new line when pressing the ENTER key
 
             if (myNode.psi is Expression) {
-                return ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null)
+                ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null)
             }
 
             return when (myNode.elementType) {
+                EXPRESSION_STATEMENT ->
+                    ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null)
                 BLOCK_STATEMENT,
                 CONDITIONAL_DECLARATION,
                 CONDITIONAL_STATEMENT,
@@ -173,7 +175,6 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 TEMPLATE_DECLARATION,
                 UNITTEST_BLOCK ->
                     ChildAttributes(Indent.getNormalIndent(), null)
-
                 else ->
                     ChildAttributes(Indent.getNoneIndent(), null)
             }

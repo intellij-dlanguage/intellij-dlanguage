@@ -2898,6 +2898,8 @@ class DLangParser {
                 return false;
             }
         if (expect(OP_SCOLON) == null) {
+            // To have enter key properly work in unfinished expression statement
+            m.setCustomEdgeTokenBinders(null, TrailingSpaceBinder.INSTANCE);
             cleanup(m, EXPRESSION_STATEMENT);
             return false;
         }
