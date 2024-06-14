@@ -172,8 +172,7 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 DECLARATION_BLOCK,
                 ENUM_BODY,
                 STRUCT_BODY,
-                TEMPLATE_DECLARATION,
-                UNITTEST_BLOCK ->
+                TEMPLATE_DECLARATION ->
                     ChildAttributes(Indent.getNormalIndent(), null)
                 else ->
                     ChildAttributes(Indent.getNoneIndent(), null)

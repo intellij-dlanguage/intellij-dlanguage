@@ -36,7 +36,7 @@ D Language File
       PsiElement(DlangTokenType.;)(';')
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
-    DLanguageUnittestBlockImpl(UNITTEST_BLOCK)
+    DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)

@@ -7,7 +7,7 @@ D Language File
     PsiElement(DlangTokenType.;)(';')
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
-    DLanguageUnittestBlockImpl(UNITTEST_BLOCK)
+    DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         FUNCTION_DECLARATION
@@ -279,7 +279,7 @@ D Language File
               IDENTIFIER
                 PsiElement(DlangTokenType.ID)('baz')
           PsiElement(DlangTokenType.;)(';')
-          PsiComment(DlangTokenType.LINE_COMMENT)('// void baz(X);')
+        PsiComment(DlangTokenType.LINE_COMMENT)('// void baz(X);')
         DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
           DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
             DLanguageBasicTypeImpl(BASIC_TYPE)

@@ -81,8 +81,8 @@ object SpecialCaseResolve {
         return out
     }
 
-    private fun resolvePackage(parents: MutableList<DlangIdentifier>): Set<PsiNamedElement> {
-        if (parents.size == 0)
+    private fun resolvePackage(parents: List<DlangIdentifier>): Set<PsiNamedElement> {
+        if (parents.isEmpty())
             return emptySet()
         val last = parents.last()
         var name = ""
@@ -105,6 +105,9 @@ object SpecialCaseResolve {
             .toSet()
     }
 
+    private fun resolveModule(path: QualifiedIdentifier): Set<PsiNamedElement> {
+        return newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.text, GlobalSearchScope.allScope(path.project)))
+    }
 
     private fun resolveModule(path: IdentifierChain): Set<PsiNamedElement> {
         return newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.importText, GlobalSearchScope.allScope(path.project)))

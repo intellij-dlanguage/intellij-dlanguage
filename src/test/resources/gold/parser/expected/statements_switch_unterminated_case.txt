@@ -37,11 +37,8 @@ D Language File
               PsiElement(DlangTokenType.{)('{')
               PsiElement(DlangTokenType.case)('case')
               DLanguageArgumentListImpl(ARGUMENT_LIST)
-                PsiErrorElement:Primary expression expected
-                  <empty list>
-                PsiElement(DlangTokenType.})('}')
+                <empty list>
               PsiErrorElement:Unable to parse this statement
                 <empty list>
               PsiElement(DlangTokenType.})('}')
-        PsiErrorElement:Expected } instead of EOF
-          <empty list>
+        PsiElement(DlangTokenType.})('}')

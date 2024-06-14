@@ -49,36 +49,35 @@ D Language File
         DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
           PsiElement(DlangTokenType.;)(';')
       PsiElement(DlangTokenType.})('}')
-  DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+  CLASS_DECLARATION
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.abstract)('abstract')
-    CLASS_DECLARATION
-      PsiElement(DlangTokenType.class)('class')
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('Printer')
-      PsiElement(DlangTokenType.:)(':')
-      DLanguageBaseClassListImpl(BASE_CLASS_LIST)
-        DLanguageBaseClassImpl(BASE_CLASS)
-          DLanguageBasicTypeImpl(BASIC_TYPE)
-            DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('IText')
-      DLanguageStructBodyImpl(STRUCT_BODY)
-        PsiElement(DlangTokenType.{)('{')
-        FUNCTION_DECLARATION
-          DLanguageBasicTypeImpl(BASIC_TYPE)
-            DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-              PsiElement(DlangTokenType.void)('void')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('print')
-          DLanguageParametersImpl(PARAMETERS)
-            PsiElement(DlangTokenType.()('(')
-            PsiElement(DlangTokenType.))(')')
-          DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
-            DLanguageBlockStatementImpl(BLOCK_STATEMENT)
-              PsiElement(DlangTokenType.{)('{')
-              PsiElement(DlangTokenType.})('}')
-        PsiElement(DlangTokenType.})('}')
+    PsiElement(DlangTokenType.class)('class')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('Printer')
+    PsiElement(DlangTokenType.:)(':')
+    DLanguageBaseClassListImpl(BASE_CLASS_LIST)
+      DLanguageBaseClassImpl(BASE_CLASS)
+        DLanguageBasicTypeImpl(BASIC_TYPE)
+          DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
+            IDENTIFIER
+              PsiElement(DlangTokenType.ID)('IText')
+    DLanguageStructBodyImpl(STRUCT_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      FUNCTION_DECLARATION
+        DLanguageBasicTypeImpl(BASIC_TYPE)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DlangTokenType.void)('void')
+        IDENTIFIER
+          PsiElement(DlangTokenType.ID)('print')
+        DLanguageParametersImpl(PARAMETERS)
+          PsiElement(DlangTokenType.()('(')
+          PsiElement(DlangTokenType.))(')')
+        DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
+          DLanguageBlockStatementImpl(BLOCK_STATEMENT)
+            PsiElement(DlangTokenType.{)('{')
+            PsiElement(DlangTokenType.})('}')
+      PsiElement(DlangTokenType.})('}')
   CLASS_DECLARATION
     PsiElement(DlangTokenType.class)('class')
     IDENTIFIER

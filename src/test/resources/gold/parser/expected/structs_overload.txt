@@ -34,7 +34,7 @@ D Language File
     PsiComment(DlangTokenType.LINE_COMMENT)('// t is copy-constructed from s')
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
-    DLanguageUnittestBlockImpl(UNITTEST_BLOCK)
+    DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)

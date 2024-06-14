@@ -1,5 +1,5 @@
 D Language File
-  DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+  DLanguageEmptyDeclarationImpl(EMPTY_DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
@@ -7,10 +7,9 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('msg')
         PsiElement(DlangTokenType.))(')')
-    DLanguageEmptyDeclarationImpl(EMPTY_DECLARATION)
-      PsiElement(DlangTokenType.;)(';')
-      PsiComment(DlangTokenType.LINE_COMMENT)('// just by itself')
-  DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+    PsiElement(DlangTokenType.;)(';')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// just by itself')
+  DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
@@ -18,19 +17,18 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('msg')
         PsiElement(DlangTokenType.))(')')
-    DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
-      DLanguageBasicTypeImpl(BASIC_TYPE)
-        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-          PsiElement(DlangTokenType.int)('int')
-      IDENTIFIER_INITIALIZER
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('x')
-        PsiElement(DlangTokenType.=)('=')
-        DLanguageInitializerImpl(INITIALIZER)
-          DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
-            PsiElement(DlangTokenType.INTEGER_LITERAL)('0')
-      PsiElement(DlangTokenType.;)(';')
-      PsiComment(DlangTokenType.LINE_COMMENT)('// influence one declaration')
+    DLanguageBasicTypeImpl(BASIC_TYPE)
+      DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+        PsiElement(DlangTokenType.int)('int')
+    IDENTIFIER_INITIALIZER
+      IDENTIFIER
+        PsiElement(DlangTokenType.ID)('x')
+      PsiElement(DlangTokenType.=)('=')
+      DLanguageInitializerImpl(INITIALIZER)
+        DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
+          PsiElement(DlangTokenType.INTEGER_LITERAL)('0')
+    PsiElement(DlangTokenType.;)(';')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// influence one declaration')
   DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
     DLanguageAttributeImpl(ATTRIBUTE)
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)

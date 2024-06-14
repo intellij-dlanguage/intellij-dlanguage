@@ -493,12 +493,12 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitMixinExpression(@NotNull final DLanguageMixinExpressionImpl o) {
-        visitPsiElement(o);
-    }
-
     public void visitMissingFunctionBody(@NotNull final DLanguageMissingFunctionBodyImpl o) {
         visitElement(o);
+    }
+
+    public void visitMixinType(@NotNull final DLanguageMixinTypeImpl o) {
+        visitPsiElement(o);
     }
 
     public void visitMixinQualifiedIdentifier(@NotNull final DLanguageMixinQualifiedIdentifierImpl o) {
@@ -724,6 +724,9 @@ public class DlangVisitor extends PsiElementVisitor {
     public void visitTemplateMixin(@NotNull final DLanguageTemplateMixinImpl o) {
         visitPsiElement(o);
     }
+    public void visitTemplateMixinExpression(@NotNull final DLanguageTemplateMixinExpressionImpl o) {
+        visitPsiElement(o);
+    }
 
     public void visitTemplateParameter(@NotNull final DLanguageTemplateParameterImpl o) {
         visitPsiElement(o);
@@ -879,10 +882,6 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitUnittest(@NotNull final DlangUnittestImpl o) {
-        visitPsiElement(o);
-    }
-
-    public void visitUnittestBlock(@NotNull final DLanguageUnittestBlockImpl o) {
         visitPsiElement(o);
     }
 

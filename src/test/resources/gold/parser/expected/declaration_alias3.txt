@@ -148,7 +148,7 @@ D Language File
     PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
-    DLanguageUnittestBlockImpl(UNITTEST_BLOCK)
+    DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)

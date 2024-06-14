@@ -1,34 +1,33 @@
 D Language File
-  DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+  STRUCT_DECLARATION
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.const)('const')
-    STRUCT_DECLARATION
-      PsiElement(DlangTokenType.struct)('struct')
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('S')
-      DLanguageStructBodyImpl(STRUCT_BODY)
-        PsiElement(DlangTokenType.{)('{')
-        DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
-          DLanguageBasicTypeImpl(BASIC_TYPE)
-            DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-              PsiElement(DlangTokenType.int)('int')
-          IDENTIFIER_INITIALIZER
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('a')
-          PsiElement(DlangTokenType.;)(';')
-        DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
-          DLanguageBasicTypeImpl(BASIC_TYPE)
-            DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-              PsiElement(DlangTokenType.int)('int')
-          IDENTIFIER_INITIALIZER
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('b')
-            PsiElement(DlangTokenType.=)('=')
-            DLanguageInitializerImpl(INITIALIZER)
-              DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
-                PsiElement(DlangTokenType.INTEGER_LITERAL)('2')
-          PsiElement(DlangTokenType.;)(';')
-        PsiElement(DlangTokenType.})('}')
+    PsiElement(DlangTokenType.struct)('struct')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('S')
+    DLanguageStructBodyImpl(STRUCT_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
+        DLanguageBasicTypeImpl(BASIC_TYPE)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DlangTokenType.int)('int')
+        IDENTIFIER_INITIALIZER
+          IDENTIFIER
+            PsiElement(DlangTokenType.ID)('a')
+        PsiElement(DlangTokenType.;)(';')
+      DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
+        DLanguageBasicTypeImpl(BASIC_TYPE)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DlangTokenType.int)('int')
+        IDENTIFIER_INITIALIZER
+          IDENTIFIER
+            PsiElement(DlangTokenType.ID)('b')
+          PsiElement(DlangTokenType.=)('=')
+          DLanguageInitializerImpl(INITIALIZER)
+            DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
+              PsiElement(DlangTokenType.INTEGER_LITERAL)('2')
+        PsiElement(DlangTokenType.;)(';')
+      PsiElement(DlangTokenType.})('}')
   FUNCTION_DECLARATION
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)

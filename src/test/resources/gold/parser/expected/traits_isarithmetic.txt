@@ -62,27 +62,26 @@ D Language File
         DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
           PsiElement(DlangTokenType.;)(';')
       PsiElement(DlangTokenType.})('}')
-  DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+  CLASS_DECLARATION
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.final)('final')
-    CLASS_DECLARATION
-      PsiElement(DlangTokenType.class)('class')
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('FC')
-      DLanguageStructBodyImpl(STRUCT_BODY)
-        PsiElement(DlangTokenType.{)('{')
-        FUNCTION_DECLARATION
-          DLanguageBasicTypeImpl(BASIC_TYPE)
-            DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-              PsiElement(DlangTokenType.void)('void')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('foo')
-          DLanguageParametersImpl(PARAMETERS)
-            PsiElement(DlangTokenType.()('(')
-            PsiElement(DlangTokenType.))(')')
-          DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
-            PsiElement(DlangTokenType.;)(';')
-        PsiElement(DlangTokenType.})('}')
+    PsiElement(DlangTokenType.class)('class')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('FC')
+    DLanguageStructBodyImpl(STRUCT_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      FUNCTION_DECLARATION
+        DLanguageBasicTypeImpl(BASIC_TYPE)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DlangTokenType.void)('void')
+        IDENTIFIER
+          PsiElement(DlangTokenType.ID)('foo')
+        DLanguageParametersImpl(PARAMETERS)
+          PsiElement(DlangTokenType.()('(')
+          PsiElement(DlangTokenType.))(')')
+        DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
+          PsiElement(DlangTokenType.;)(';')
+      PsiElement(DlangTokenType.})('}')
   FUNCTION_DECLARATION
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)

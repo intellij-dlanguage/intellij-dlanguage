@@ -134,17 +134,15 @@ class DLangParser {
      * | $(LITERAL 'alias') $(RULE storageClass)* $(RULE type) $(RULE identifier) $(LITERAL '(') $(RULE parameters) $(LITERAL ')') $(memberFunctionAttribute)* $(LITERAL ';')
      * ;)
      */
-    boolean parseAliasDeclaration() {
+    boolean parseAliasDeclaration(Marker m) {
         if (builder.getTokenType() != KW_ALIAS)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (startsWith(ID, OP_EQ) || startsWith(ID, OP_PAR_LEFT)) {
             do {
                 if (!parseAliasInitializer()) {
-                    cleanup(m, ALIAS_DECLARATION);
-                    return false;
+                    m.done(ALIAS_DECLARATION);
+                    return true;
                 }
                 if (currentIs(OP_COMMA)) {
                     advance();
@@ -156,27 +154,27 @@ class DLangParser {
         } else {
             while (moreTokens() && isStorageClass()) {
                 if (!parseStorageClass()) {
-                    cleanup(m, ALIAS_DECLARATION);
-                    return false;
+                    m.done(ALIAS_DECLARATION);
+                    return true;
                 }
             }
             if (!parseType()) {
-                cleanup(m, ALIAS_DECLARATION);
-                return false;
+                m.done(ALIAS_DECLARATION);
+                return true;
             }
             if (!parseDeclaratorIdentifierList()) {
-                cleanup(m, ALIAS_DECLARATION);
-                return false;
+                m.done(ALIAS_DECLARATION);
+                return true;
             }
             if (currentIs(OP_PAR_LEFT)) {
                 if (!parseParameters()) {
-                    cleanup(m, ALIAS_DECLARATION);
-                    return false;
+                    m.done(ALIAS_DECLARATION);
+                    return true;
                 }
                 while (moreTokens() && currentIsMemberFunctionAttribute()) {
                     if (!parseMemberFunctionAttribute()) {
-                        cleanup(m, ALIAS_DECLARATION);
-                        return false;
+                        m.done(ALIAS_DECLARATION);
+                        return true;
                     }
                 }
             }
@@ -214,25 +212,25 @@ class DLangParser {
      * $(GRAMMAR $(RULEDEF aliasAssign):
      *   $(LITERAL Identifier) $(LITERAL '=') $(RULE type)
      */
-    boolean parseAliasAssign()
+    boolean parseAliasAssign(Marker m)
     {
         if (builder.getTokenType() != ID)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+        final Marker bookmark = builder.mark();
         advance();
         if (!tokenCheck(OP_EQ)) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
         if (!parseType()) {
-            cleanup(m, ALIAS_ASSIGN);
+            bookmark.rollbackTo();
             return false;
         }
         if (builder.getTokenType() != OP_SCOLON) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         builder.advanceLexer();
         m.done(ALIAS_ASSIGN);
         return true;
@@ -303,19 +301,18 @@ class DLangParser {
      * | $(LITERAL 'alias') $(LITERAL 'this') $(LITERAL Identifier) $(LITERAL ';')
      * ;)
      */
-    boolean parseAliasThisDeclaration() {
+    boolean parseAliasThisDeclaration(Marker m) {
         if (builder.getTokenType() != KW_ALIAS)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (builder.getTokenType() == ID) {
             if (!tokenCheck(ID)) {
-                m.rollbackTo();
+                bookmark.rollbackTo();
                 return false;
             }
             if (!tokenCheck(KW_THIS)) {
-                m.rollbackTo();
+                bookmark.rollbackTo();
                 return false;
             }
             expect(OP_SCOLON);
@@ -325,9 +322,10 @@ class DLangParser {
             expect(ID);
             expect(OP_SCOLON);
         } else {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         m.done(ALIAS_THIS_DECLARATION);
         return true;
     }
@@ -1392,7 +1390,7 @@ class DLangParser {
      * | $(RULE atAttribute)
      * | $(RULE linkageAttribute)
      * | $(LITERAL 'export')
-     * | $(LITERAL 'package') ($(LITERAL "(") $(RULE QualifiedIdentifier) $(LITERAL ")"))?
+     * | $(LITERAL 'package') ($(LITERAL "(") $(RULE identifierChain) $(LITERAL ")"))?
      * | $(LITERAL 'private')
      * | $(LITERAL 'protected')
      * | $(LITERAL 'public')
@@ -1442,7 +1440,7 @@ class DLangParser {
             advance();
             if (currentIs(OP_PAR_LEFT)) {
                 expect(OP_PAR_LEFT);
-                if (!parseQualifiedIdentifier()) {
+                if (!parseIdentifierChain()) {
                     cleanup(m, ATTRIBUTE);
                     return false;
                 }
@@ -1456,7 +1454,17 @@ class DLangParser {
                 }
             } else
                 advance();
-        } else if (i == KW_PRIVATE || i == KW_PROTECTED || i == KW_PUBLIC || i == KW_EXPORT || i == KW_STATIC || i == KW_ABSTRACT || i == KW_FINAL || i == KW_OVERRIDE || i == KW_SYNCHRONIZED || i == KW_AUTO || i == KW_SCOPE || i == KW_CONST || i == KW_IMMUTABLE || i == KW_INOUT || i == KW_SHARED || i == KW___GSHARED || i == KW_NOTHROW || i == KW_PURE || i == KW_REF || i == KW_THROW) {
+        } else if (i == KW_CONST || i == KW_IMMUTABLE || i == KW_INOUT || i == KW_SHARED) {
+            if (peekIs(OP_PAR_LEFT)) {
+                m.rollbackTo();
+                return false;
+            }
+            builder.advanceLexer();
+            if(builder.getTokenType() == ID) {
+                m.rollbackTo();
+                return false;
+            }
+        } else if (i == KW_PRIVATE || i == KW_PROTECTED || i == KW_PUBLIC || i == KW_EXPORT || i == KW_STATIC || i == KW_ABSTRACT || i == KW_FINAL || i == KW_OVERRIDE || i == KW_SYNCHRONIZED || i == KW_AUTO || i == KW_SCOPE || i == KW___GSHARED || i == KW_NOTHROW || i == KW_PURE || i == KW_REF || i == KW_THROW) {
             boolean isStorageClass = isStorageClass();
             advance();
             if(isStorageClass && builder.getTokenType() == ID) {
@@ -1526,25 +1534,35 @@ class DLangParser {
         final Marker m = builder.mark();
         final IElementType openBrace = expect(OP_BRACES_LEFT);
         if (openBrace == null) {
-            cleanup(m, BLOCK_STATEMENT);
+            m.done(BLOCK_STATEMENT);
             return false;
         }
-        while (!builder.eof()) {
-            if (currentIs(OP_BRACES_RIGHT))
-                break;
+        while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT) {
             if (!parseStatement()) {
                 Marker recovery = builder.mark();
-                while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT && builder.getTokenType() != OP_SCOLON) {
+                int parentLevel = 0;
+                while (!builder.eof()) {
+                    if (builder.getTokenType() == OP_BRACES_RIGHT) {
+                        parentLevel--;
+                        if (parentLevel < 0) {
+                            break;
+                        }
+                    } else if (builder.getTokenType() == OP_BRACES_LEFT) {
+                        parentLevel++;
+                    } else if (builder.getTokenType() == OP_SCOLON) {
+                        if (parentLevel <= 0) {
+                            break;
+                        }
+                    }
                     builder.advanceLexer();
                 }
                 if (builder.getTokenType() == OP_SCOLON)
                     builder.advanceLexer();
                 recovery.error("Unable to parse this statement");
-                break;
             }
         }
         expect(OP_BRACES_RIGHT);
-        exit_section_modified(builder, m, BLOCK_STATEMENT, true);
+        m.done(BLOCK_STATEMENT);
         return true;
     }
 
@@ -1878,11 +1896,9 @@ class DLangParser {
      * | $(LITERAL 'class') $(LITERAL Identifier) $(RULE templateParameters) ($(LITERAL ':') $(RULE baseClassList))? $(RULE raint)? $(RULE structBody)
      * ;)
      */
-    boolean parseClassDeclaration() {
+    boolean parseClassDeclaration(Marker m) {
         if (builder.getTokenType() != KW_CLASS)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         parseInterfaceOrClass();
         m.done(CLASS_DECLARATION);
@@ -1958,6 +1974,41 @@ class DLangParser {
         return true;
     }
 
+    void parseDeclDefsWithRecoveryUpToParentScope() {
+        // Assume that the open brace is already passed
+        while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT) {
+            parseDeclDefWithRecovery();
+        }
+    }
+
+    void parseDeclDefWithRecovery() {
+        Marker bookmark = builder.mark();
+        if (!parseDeclDef()) {
+            bookmark.rollbackTo();
+            Marker recovery = builder.mark();
+            int braces_level = 0;
+            while(!builder.eof()) {
+                if (builder.getTokenType() == OP_BRACES_RIGHT) {
+                    braces_level--;
+                    if (braces_level < 0)
+                        break;
+                } else if (builder.getTokenType() == OP_BRACES_LEFT) {
+                    braces_level++;
+                }
+                if (builder.getTokenType() == OP_SCOLON) {
+                    if (braces_level <= 0)
+                        break;
+                }
+                builder.advanceLexer();
+            }
+            if (builder.getTokenType() == OP_SCOLON)
+                builder.advanceLexer();
+            recovery.error("Unable to parse this declaration");
+        } else {
+            bookmark.drop();
+        }
+    }
+
     /**
      * Parses a ConditionalDeclaration
      * <p>
@@ -1968,25 +2019,16 @@ class DLangParser {
      * | $(RULE compileCondition) $(LITERAL ':') $(RULE declDefs)+
      * ;)
      */
-    boolean parseConditionalDeclaration() {
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+    boolean parseConditionalDeclaration(Marker m) {
+        final Marker bookmark = builder.mark();
         if (!parseCompileCondition()) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         if (currentIs(OP_COLON)) {
             builder.advanceLexer();
-            while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT) {
-                if (!parseDeclDef()) {
-                    Marker recovery = builder.mark();
-                    while(!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT && builder.getTokenType() != OP_SCOLON)
-                        builder.advanceLexer();
-                    if (builder.getTokenType() == OP_SCOLON)
-                        builder.advanceLexer();
-                    recovery.error("Unable to parse this declaration");
-                }
-            }
+            parseDeclDefsWithRecoveryUpToParentScope();
             m.done(CONDITIONAL_DECLARATION);
             return true;
         }
@@ -2003,16 +2045,7 @@ class DLangParser {
 
         if (builder.getTokenType() == OP_COLON) {
             builder.advanceLexer();
-            while(!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT) {
-                if (!parseDeclDef()) {
-                    Marker recovery = builder.mark();
-                    while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT && builder.getTokenType() != OP_SCOLON)
-                        builder.advanceLexer();
-                    if (builder.getTokenType() == OP_SCOLON)
-                        builder.advanceLexer();
-                    recovery.error("Unable to parse this statement");
-                }
-            }
+            parseDeclDefsWithRecoveryUpToParentScope();
         } else {
             parseDeclarationBlock();
         }
@@ -2085,41 +2118,40 @@ class DLangParser {
      * $(LITERAL 'this') $(RULE templateParameters)? $(RULE parameters) $(RULE memberFunctionAttribute)* $(RULE constraint)? ($(RULE functionBody) | $(LITERAL ';'))
      * ;)
      */
-    boolean parseConstructor() {
+    boolean parseConstructor(Marker m) {
         if (builder.getTokenType() != KW_THIS)
             return false;
-        final Marker m = builder.mark();
         builder.advanceLexer();
         final IElementType p = peekPastParens();
         boolean isTemplate = false;
         if (p == OP_PAR_LEFT) {
             isTemplate = true;
             if (!parseTemplateParameters()) {
-                cleanup(m, CONSTRUCTOR);
-                return false;
+                m.done(CONSTRUCTOR);
+                return true;
             }
         }
         if (!parseParameters()) {
-            cleanup(m, CONSTRUCTOR);
-            return false;
+            m.done(CONSTRUCTOR);
+            return true;
         }
         while (moreTokens() && currentIsMemberFunctionAttribute())
             if (!parseMemberFunctionAttribute()) {
-                cleanup(m, CONSTRUCTOR);
-                return false;
+                m.done(CONSTRUCTOR);
+                return true;
             }
         if (isTemplate && currentIs(KW_IF))
             if (!parseConstraint()) {
-                cleanup(m, CONSTRUCTOR);
-                return false;
+                m.done(CONSTRUCTOR);
+                return true;
             }
         if (currentIs(OP_SCOLON))
             advance();
         else if (!parseFunctionBody()) {
-            cleanup(m, CONSTRUCTOR);
-            return false;
+            m.done(CONSTRUCTOR);
+            return true;
         }
-        exit_section_modified(builder, m, CONSTRUCTOR, true);
+        m.done(CONSTRUCTOR);
         return true;
     }
 
@@ -2197,16 +2229,16 @@ class DLangParser {
      * $(LITERAL 'debug') $(LITERAL '=') ($(LITERAL Identifier) | $(LITERAL IntegerLiteral)) $(LITERAL ';')
      * ;)
      */
-    boolean parseDebugSpecification() {
+    boolean parseDebugSpecification(Marker m) {
         if (builder.getTokenType() != KW_DEBUG)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (!tokenCheck(OP_EQ)) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         if (currentIsOneOf(ID, INTEGER_LITERAL)) { // Note: that using integer for version is deprecated since 2.101.0
             advance();
         } else {
@@ -2242,43 +2274,71 @@ class DLangParser {
      * ;)
      */
     boolean parseDeclDef() {
-        boolean result = false;
-        result = result || parseDestructor();
-        result = result || parsePostblit();
-        result = result || parseInvariant();
-        result = result || parseUnittest();
-        result = result || parseDebugSpecification();
-        result = result || parseVersionSpecification();
-        result = result || parseAliasThisDeclaration();
-        result = result || parseConstructor();
-        result = result || parseStaticConstructor();
-        result = result || parseStaticDestructor();
-        result = result || parseSharedStaticConstructor();
-        result = result || parseSharedStaticDestructor();
-        result = result || parseConditionalDeclaration();
-        result = result || parseMixinDeclaration();
-        result = result || parseDeclaration();
-        result = result || parseAttributeSpecifier();
-        result = result || parseEmptyDeclaration();
+        Marker m = builder.mark();
+        boolean result = parseDeclDef(m);
+        if (!result)
+            m.drop();
         return result;
     }
 
-    boolean parseAttributeSpecifier() {
-        Marker marker = builder.mark();
-        marker.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
-        if (!parseAttribute()) {
-            marker.rollbackTo();
+    boolean parseDeclDef(Marker m) {
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+        boolean result = false;
+        result = result || parseDestructor(m);
+        result = result || parsePostblit(m);
+        result = result || parseInvariant(m);
+        result = result || parseUnittest(m);
+        result = result || parseDebugSpecification(m);
+        result = result || parseVersionSpecification(m);
+        result = result || parseAliasThisDeclaration(m);
+        result = result || parseConstructor(m);
+        result = result || parseStaticConstructor(m);
+        result = result || parseStaticDestructor(m);
+        result = result || parseSharedStaticConstructor(m);
+        result = result || parseSharedStaticDestructor(m);
+        result = result || parseConditionalDeclaration(m);
+        result = result || parseMixinDeclaration(m);
+        result = result || parseDeclaration(m);
+        result = result || parseAttributeSpecifier(m);
+        result = result || parseEmptyDeclaration(m);
+        return result;
+    }
+
+    boolean parseAttributeSpecifier(Marker marker) {
+        Marker bookmark = builder.mark();
+        boolean hasAttribute = false;
+        while(!builder.eof()) {
+            if (!parseAttribute()) {
+                break;
+            }
+            hasAttribute = true;
+        }
+        if (!hasAttribute) {
+            bookmark.rollbackTo();
             return false;
         }
         if (currentIs(OP_COLON)) {
+            bookmark.drop();
             advance();
             marker.done(ATTRIBUTE_SPECIFIER);
             return true;
         }
-        if (!parseDeclarationBlock()) {
-            marker.rollbackTo();
+        if (!parseDeclarationBlockWithAttribute(marker)) {
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
+        // Marker done by parseDeclarationBlock
+        return true;
+    }
+
+    boolean parseDeclarationBlockWithAttribute(Marker marker) {
+        // single statement
+        if (!currentIs(OP_BRACES_LEFT)) {
+            return parseDeclDef(marker);
+        }
+        // Multiple statements
+        parseDeclarationBlockWithBlock();
         marker.done(ATTRIBUTE_SPECIFIER);
         return true;
     }
@@ -2289,28 +2349,23 @@ class DLangParser {
             return parseDeclDef();
         }
         // Multiple statements
-        Marker marker = builder.mark();
-        builder.advanceLexer();
-        while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT) {
-            if (!parseDeclDef()) {
-                Marker recovery = builder.mark();
-                while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT && builder.getTokenType() != OP_SCOLON)
-                    builder.advanceLexer();
-                if (builder.getTokenType() == OP_SCOLON)
-                    builder.advanceLexer();
-                recovery.error("Unable to parse this declaration");
-            }
-        }
-        expect(OP_BRACES_RIGHT);
-        marker.done(DECLARATION_BLOCK);
+        parseDeclarationBlockWithBlock();
         return true;
     }
 
-    boolean parseEmptyDeclaration() {
+    private void parseDeclarationBlockWithBlock() {
+        assert builder.getTokenType() == OP_BRACES_LEFT;
+        // Multiple statements
+        Marker marker = builder.mark();
+        builder.advanceLexer();
+        parseDeclDefsWithRecoveryUpToParentScope();
+        expect(OP_BRACES_RIGHT);
+        marker.done(DECLARATION_BLOCK);
+    }
+
+    boolean parseEmptyDeclaration(Marker marker) {
         if (builder.getTokenType() != OP_SCOLON)
             return false;
-        Marker marker = builder.mark();
-        marker.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         marker.done(EMPTY_DECLARATION);
         return true;
@@ -2334,28 +2389,29 @@ class DLangParser {
      * | $(RULE templateMixin)
      * ;)
      */
-    boolean parseDeclaration() {
-        boolean result = parseAliasDeclaration();
-        result = result || parseAliasAssign();
-        result = result || parseAggregateDeclaration();
-        result = result || parseEnumDeclaration();
-        result = result || parseImportDeclaration();
-        result = result || parseConditionalDeclaration();
-        result = result || parseStaticForeachDeclaration();
-        result = result || parseStaticAssertDeclaration();
-        result = result || parseTemplateDeclaration();
-        result = result || parseTemplateMixinDeclaration();
-        result = result || parseTemplateMixin();
-        result = result || parseFunctionDeclaration();
-        result = result || parseVariableDeclaration();
+    boolean parseDeclaration(Marker m) {
+        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+        boolean result = parseAliasDeclaration(m);
+        result = result || parseAliasAssign(m);
+        result = result || parseAggregateDeclaration(m);
+        result = result || parseEnumDeclaration(m);
+        result = result || parseImportDeclaration(m);
+        result = result || parseConditionalDeclaration(m);
+        result = result || parseStaticForeachDeclaration(m);
+        result = result || parseStaticAssertDeclaration(m);
+        result = result || parseTemplateDeclaration(m);
+        result = result || parseTemplateMixinDeclaration(m);
+        result = result || parseTemplateMixin(m);
+        result = result || parseFunctionDeclaration(m);
+        result = result || parseVariableDeclaration(m);
         return result;
     }
 
-    boolean parseAggregateDeclaration() {
-        boolean result = parseClassDeclaration();
-        result = result || parseInterfaceDeclaration();
-        result = result || parseStructDeclaration();
-        result = result || parseUnionDeclaration();
+    boolean parseAggregateDeclaration(Marker m) {
+        boolean result = parseClassDeclaration(m);
+        result = result || parseInterfaceDeclaration(m);
+        result = result || parseStructDeclaration(m);
+        result = result || parseUnionDeclaration(m);
         return result;
     }
 
@@ -2373,12 +2429,11 @@ class DLangParser {
      * ;)
      */
     boolean parseIdentifierInitializer() {
-        final Marker m = builder.mark();
-        final IElementType id = expect(ID);
-        if (id == null) {
-            cleanup(m, IDENTIFIER_INITIALIZER);
+        if (builder.getTokenType() != ID) {
             return false;
         }
+        final Marker m = builder.mark();
+        advance();
         if (currentIs(OP_BRACKET_LEFT)) // dmd doesn't accept pointer after identifier
         {
             while (moreTokens() && currentIs(OP_BRACKET_LEFT))
@@ -2519,11 +2574,9 @@ class DLangParser {
      * $(LITERAL '~') $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)') $(RULE memberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ';'))
      * ;)
      */
-    boolean parseDestructor() {
+    boolean parseDestructor(Marker m) {
         if (!currentIs(OP_TILDA))
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (!moreTokens()) {
             error("`this` expected");
@@ -2720,23 +2773,23 @@ class DLangParser {
      * Parses an EnumDeclaration
      * <p>
      * $(GRAMMAR $(RULEDEF enumDeclaration):
-     *   $(LITERAL 'enum') $(LITERAL Identifier) ($(LITERAL ':') $(RULE type))? $(LITERAL ';')
-     * | $(LITERAL 'enum') $(LITERAL Identifier) ($(LITERAL ':') $(RULE type))? $(RULE enumBody)
+     *   $(LITERAL 'enum') $(LITERAL Identifier) ($(LITERAL ':') $(RULE type)) $(LITERAL ';')
+     * | $(LITERAL 'enum') $(LITERAL Identifier) ($(LITERAL ':') $(RULE type)) $(RULE enumBody)
      * $(GRAMMAR $(RULEDEF anonymousEnumDeclaration):
      * $(LITERAL 'enum') ($(LITERAL ':') $(RULE type))? $(LITERAL '{') $(RULE anonymousEnumMember)+ $(LITERAL '}')
      * ;)
      */
-    boolean parseEnumDeclaration() {
+    boolean parseEnumDeclaration(Marker m) {
         if (builder.getTokenType() != KW_ENUM)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (builder.getTokenType() != ID) {
             if (!parseAnonymousEnumDeclaration()) {
-                m.rollbackTo();
+                bookmark.rollbackTo();
                 return false;
             }
+            bookmark.drop();
             m.done(ANONYMOUS_ENUM_DECLARATION);
             return true;
         }
@@ -2744,19 +2797,22 @@ class DLangParser {
         if (currentIs(OP_COLON)) {
             advance(); // skip ':'
             if (!parseType()) {
-                cleanup(m, ENUM_DECLARATION);
+                bookmark.drop();
+                m.done(ENUM_DECLARATION);
                 return true;
             }
         }
         if (currentIs(OP_SCOLON)) {
             advance();
+            bookmark.drop();
             m.done(ENUM_DECLARATION);
             return true;
         }
         if (!parseEnumBody()) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         m.done(ENUM_DECLARATION);
         return true;
     }
@@ -2894,16 +2950,14 @@ class DLangParser {
         final Marker m = builder.mark();
         final boolean b = parseExpression();
         if (!b) {
-                cleanup(m, EXPRESSION_STATEMENT);
+                m.rollbackTo();
                 return false;
             }
         if (expect(OP_SCOLON) == null) {
             // To have enter key properly work in unfinished expression statement
             m.setCustomEdgeTokenBinders(null, TrailingSpaceBinder.INSTANCE);
-            cleanup(m, EXPRESSION_STATEMENT);
-            return false;
         }
-        exit_section_modified(builder, m, EXPRESSION_STATEMENT, true);
+        m.done(EXPRESSION_STATEMENT);
         return true;
     }
 
@@ -2911,7 +2965,7 @@ class DLangParser {
         Marker marker = builder.mark();
         // First try without storage class to have storage class attached to the declaration that can have some
         // It produces a nicer tree
-        if (parseDeclaration()) {
+        if (parseDeclaration(builder.mark())) {
             marker.done(DECLARATION_STATEMENT);
             return true;
         }
@@ -2922,7 +2976,7 @@ class DLangParser {
             if(!parseStorageClass())
                 break;
         }
-        if (!parseDeclaration()) {
+        if (!parseDeclaration(builder.mark())) {
             marker.rollbackTo();
             return false;
         }
@@ -3030,20 +3084,18 @@ class DLangParser {
      *     | $(LITERAL 'static') ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachType) $(LITERAL ';') $(RULE expression) $(LITERAL '..') $(RULE expression) $(LITERAL '$(RPAREN)') ($(RULE declaration) | $(LITERAL '{') $(RULE declaration)* $(LITERAL '}'))
      *     ;)
      */
-    boolean parseStaticForeachDeclaration()
+    boolean parseStaticForeachDeclaration(Marker m)
     {
         if (builder.getTokenType() != KW_STATIC)
             return false;
-        final Marker m = builder.mark();
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (!currentIsOneOf(KW_FOREACH, KW_FOREACH_REVERSE)) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
-        if (!parseForeach(STATIC_FOREACH_DECLARATION, true)) {
-            cleanup(m, STATIC_FOREACH_DECLARATION);
-            return false;
-        }
+        bookmark.drop();
+        parseForeach(STATIC_FOREACH_DECLARATION, true);
         exit_section_modified(builder, m, STATIC_FOREACH_DECLARATION, true);
         return true;
     }
@@ -3126,17 +3178,7 @@ class DLangParser {
         if (declOnly) {
             if (currentIs(OP_BRACES_LEFT)) {
                 advance();
-                while (moreTokens() && !currentIs(OP_BRACES_RIGHT)) {
-                    if (!parseDeclDef()) {
-                        Marker recovery = builder.mark();
-                        while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT && builder.getTokenType() != OP_SCOLON)
-                            builder.advanceLexer();
-                        if (builder.getTokenType() == OP_SCOLON) {
-                            builder.advanceLexer();
-                        }
-                        recovery.error("Unable to parse this declaration");
-                    }
-                }
+                parseDeclDefsWithRecoveryUpToParentScope();
                 if (!tokenCheck(OP_BRACES_RIGHT)) {
                     cleanup(m, elementType);
                     return false;
@@ -3319,9 +3361,8 @@ class DLangParser {
      * | ($(RULE storageClass)+ | $(RULE _type)) $(LITERAL Identifier) $(RULE templateParameters) $(RULE parameters) $(RULE memberFunctionAttribute)* $(RULE constraint)? ($(RULE functionBody) | $(LITERAL ';'))
      * ;)
      */
-    boolean parseFunctionDeclaration() {
-        Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+    boolean parseFunctionDeclaration(Marker m) {
+        Marker bookmark = builder.mark();
         boolean hasStorageClass = false;
         while (!builder.eof()) {
             if (!parseStorageClass())
@@ -3332,28 +3373,30 @@ class DLangParser {
             // it’s an auto function declaration
             advance();
             if (!parseFunctionDeclaratorSuffix()) {
-                m.rollbackTo();
+                bookmark.rollbackTo();
                 return false;
             }
             if (!parseFunctionBody()) {
-                m.rollbackTo();
+                bookmark.rollbackTo();
                 return false;
             }
+            bookmark.drop();
             m.done(FUNCTION_DECLARATION);
             return true;
         }
         if (!parseBasicType()) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
         if (!parseFunctionDeclarator()) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
         if (!parseFunctionBody()) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         m.done(FUNCTION_DECLARATION);
         return true;
     }
@@ -3896,19 +3939,33 @@ class DLangParser {
      * | $(LITERAL 'static')? $(LITERAL 'import') $(RULE importBindings) $(LITERAL ';')
      * ;)
      */
-    boolean parseImportDeclaration() {
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
-        if (builder.getTokenType() == KW_STATIC)
+    boolean parseImportDeclaration(Marker m) {
+        final Marker bookmark = builder.mark();
+        boolean isStatic = false;
+        if (builder.getTokenType() == KW_STATIC) {
             builder.advanceLexer();
+            isStatic = true;
+        }
         if (!tokenCheck(KW_IMPORT)) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        if (builder.getTokenType() == OP_PAR_LEFT) {
+            if (isStatic) {
+                builder.error("Expected identifier instead of '(");
+                bookmark.drop();
+                m.done(IMPORT_DECLARATION);
+                return true;
+            }
+            // It’s an import expression
+            bookmark.rollbackTo();
+            return false;
+        }
+        bookmark.drop();
         final boolean si = parseSingleImport();
         if (!si) {
-            cleanup(m, IMPORT_DECLARATION);
-            return false;
+            m.done(IMPORT_DECLARATION);
+            return true;
         }
         if (currentIs(OP_COLON))
             parseImportBindings();
@@ -3933,8 +3990,8 @@ class DLangParser {
             }
         }
         if (!tokenCheck(OP_SCOLON)) {
-            cleanup(m, IMPORT_DECLARATION);
-            return false;
+            m.done(IMPORT_DECLARATION);
+            return true;
         }
         exit_section_modified(builder, m, IMPORT_DECLARATION, true);
         return true;
@@ -4135,11 +4192,9 @@ class DLangParser {
      * | $(LITERAL 'interface') $(LITERAL Identifier) $(RULE templateParameters) ($(LITERAL ':') $(RULE baseClassList))? $(RULE raint)? $(RULE structBody)
      * ;)
      */
-    boolean parseInterfaceDeclaration() {
+    boolean parseInterfaceDeclaration(Marker m) {
         if (builder.getTokenType() != KW_INTERFACE)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         parseInterfaceOrClass();
         m.done(INTERFACE_DECLARATION);
@@ -4154,12 +4209,9 @@ class DLangParser {
      * | $(LITERAL 'invariant') $(LITERAL '$(LPAREN)') $(RULE assertArguments) $(LITERAL '$(RPAREN)') $(LITERAL ';')
      * ;)
      */
-    boolean parseInvariant() {
+    boolean parseInvariant(Marker m) {
         if (builder.getTokenType() != KW_INVARIANT)
             return false;
-
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (currentIs(OP_PAR_LEFT)) {
             builder.advanceLexer();
@@ -4465,35 +4517,35 @@ class DLangParser {
      * $(LITERAL 'mixin') $(LITERAL '$(LPAREN)') $(RULE argumentList) $(LITERAL '$(RPAREN)')
      * ;)
      */
-    boolean parseMixinDeclaration() {
+    boolean parseMixinDeclaration(Marker m) {
         if (builder.getTokenType() != KW_MIXIN)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (builder.getTokenType() != OP_PAR_LEFT) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
         builder.advanceLexer();
         if (!parseArgumentList()) {
-            cleanup(m, MIXIN_EXPRESSION);
-            return false;
+            m.done(MIXIN_DECLARATION);
+            return true;
         }
+        bookmark.drop();
         expect(OP_PAR_RIGHT);
         expect(OP_SCOLON);
-        exit_section_modified(builder, m, MIXIN_EXPRESSION, true);
+        m.done(MIXIN_DECLARATION);
         return true;
     }
 
     /**
-     * Parses a MixinExpriession
+     * Parses a MixinType
      * <p>
-     * $(GRAMMAR $(RULEDEF mixinExpression):
+     * $(GRAMMAR $(RULEDEF mixinType):
      * $(LITERAL 'mixin') $(LITERAL '$(LPAREN)') $(RULE argumentList) $(LITERAL '$(RPAREN)')
      * ;)
      */
-    Marker parseMixinExpression() {
+    Marker parseMixinType() {
         final Marker m = builder.mark();
         expect(KW_MIXIN);
         if (builder.getTokenType() != OP_PAR_LEFT) {
@@ -4502,11 +4554,11 @@ class DLangParser {
         }
         builder.advanceLexer();
         if (!parseArgumentList()) {
-            cleanup(m, MIXIN_EXPRESSION);
+            cleanup(m, MIXIN_TYPE);
             return null;
         }
         expect(OP_PAR_RIGHT);
-        exit_section_modified(builder, m, MIXIN_EXPRESSION, true);
+        exit_section_modified(builder, m, MIXIN_TYPE, true);
         return m;
     }
 
@@ -4517,21 +4569,22 @@ class DLangParser {
      * $(LITERAL 'mixin') $(RULE templateDeclaration)
      * ;)
      */
-    boolean parseTemplateMixinDeclaration() {
+    boolean parseTemplateMixinDeclaration(Marker m) {
         if (builder.getTokenType() != KW_MIXIN) {
             return false;
         }
-        final Marker m = builder.mark();
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (builder.getTokenType() != KW_TEMPLATE) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
         if (!parseTemplateDeclarationCommon()) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
-        exit_section_modified(builder, m, TEMPLATE_MIXIN_DECLARATION, true);
+        bookmark.drop();
+        m.done(TEMPLATE_MIXIN_DECLARATION);
         return true;
     }
 
@@ -4588,14 +4641,13 @@ class DLangParser {
             parseModuleDeclaration();
         }
         while (!builder.eof()) {
-            if (!parseDeclDef()) {
-                Marker recovery = builder.mark();
-                while (!builder.eof() && builder.getTokenType() != OP_SCOLON)
-                    builder.advanceLexer();
-                if (builder.getTokenType() == OP_SCOLON)
-                    builder.advanceLexer();
-                recovery.error("Unable to parse this declaration");
+            // To prevent infinite loop if top level } are present
+            if (builder.getTokenType() == OP_BRACES_RIGHT) {
+                Marker error = builder.mark();
+                builder.advanceLexer();
+                error.error("Unexpected '}'");
             }
+            parseDeclDefWithRecovery();
         }
     }
 
@@ -5152,29 +5204,29 @@ class DLangParser {
      * $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL 'this') $(LITERAL '$(RPAREN)') $(RULE memberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ';'))
      * ;)
      */
-    boolean parsePostblit() {
+    boolean parsePostblit(Marker m) {
         if (builder.getTokenType() != KW_THIS)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+        final Marker bookmark = builder.mark();
         advance();
         if (builder.getTokenType() != OP_PAR_LEFT) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
         advance();
         if (builder.getTokenType() != KW_THIS) {
             // probably a constructor
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
         advance();
         if (builder.getTokenType() != OP_PAR_RIGHT) {
             // probably a template taking this as template argument
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
         advance();
+        bookmark.drop();
         while (currentIsMemberFunctionAttribute())
             if (!parseMemberFunctionAttribute()) {
                 m.done(POSTBLIT);
@@ -5390,7 +5442,7 @@ class DLangParser {
 
         // MixinExpression
         if (i == KW_MIXIN) {
-            return parseMixinExpression();
+            return parseMixinType();
         }
 
         // ImportExpression
@@ -5519,7 +5571,6 @@ class DLangParser {
             return parseTraitsExpression();
         }
 
-        error("Primary expression expected");
         return null;
     }
 
@@ -5673,21 +5724,22 @@ class DLangParser {
      * $(LITERAL 'shared') $(LITERAL 'static') $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)') $(RULE MemberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ";"))
      * ;)
      */
-    boolean parseSharedStaticConstructor() {
+    boolean parseSharedStaticConstructor(Marker m) {
         if (builder.getTokenType() != KW_SHARED)
             return false;
-        final Marker m = builder.mark();
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
-        if (builder.getTokenType() != KW_SHARED) {
-            m.rollbackTo();
+        if (builder.getTokenType() != KW_STATIC) {
+            bookmark.rollbackTo();
             return false;
         }
         builder.advanceLexer();
         final boolean b = parseStaticCtorDtorCommon();
         if (!b) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         m.done(SHARED_STATIC_CONSTRUCTOR);
         return true;
     }
@@ -5699,19 +5751,20 @@ class DLangParser {
      * $(LITERAL 'shared') $(LITERAL 'static') $(LITERAL '~') $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)') $(RULE MemberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ";"))
      * ;)
      */
-    boolean parseSharedStaticDestructor() {
+    boolean parseSharedStaticDestructor(Marker m) {
         if (builder.getTokenType() != KW_SHARED)
             return false;
-        final Marker m = builder.mark();
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (builder.getTokenType() != KW_STATIC) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
         if (!tokenCheck(OP_TILDA)) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         parseStaticCtorDtorCommon();
         m.done(SHARED_STATIC_DESTRUCTOR);
         return true;
@@ -5963,12 +6016,14 @@ class DLangParser {
             return parseFinalSwitchStatement();
         } else if (i == KW_DEBUG) {
             if (peekIs(OP_EQ)) {
-                return parseDebugSpecification();
+                return parseDeclarationStatement();
             }
             return parseConditionalStatement();
         } else if (i == KW_VERSION) {
             if (peekIs(OP_EQ)) {
-                return parseVersionSpecification();
+                // TODO for better error reporting `version = X;` in statement is an error
+                //  the parsing should print a pretty error, specifying that they must be done at module level
+                return false;
             }
             return parseConditionalStatement();
         } else if (i == KW_STATIC) {
@@ -5980,7 +6035,7 @@ class DLangParser {
             } else if (next == KW_FOREACH || next == KW_FOREACH_REVERSE) {
                 return parseStaticForeachStatement();
             } else if (next == KW_IMPORT) {
-                return parseImportDeclaration();
+                return parseImportDeclaration(builder.mark());
             }
             else {
                 Marker m = builder.mark();
@@ -5996,47 +6051,22 @@ class DLangParser {
         } else if (i == ID && peekIs(OP_COLON)) {
             return parseLabeledStatement();
         } else if (i == KW_IMPORT && !peekIs(OP_PAR_LEFT)) {
-            return parseImportDeclaration();
+            return parseImportDeclaration(builder.mark());
         } else {
             Marker marker = builder.mark();
-            boolean canBeDeclaration = canBeDeclaration();
-            if (parseExpressionStatement() || !canBeDeclaration) {
+            if (currentIs(ID) && builder.lookAhead(1) == OP_EQ) {
+                // there can’t be alias reassignment at this level
+                marker.drop();
+                return parseExpressionStatement();
+            }
+            if (parseDeclarationStatement()) {
                 marker.drop();
                 return true;
             } else {
                 marker.rollbackTo();
-                return parseDeclarationStatement();
+                return parseExpressionStatement();
             }
         }
-    }
-
-    boolean canBeDeclaration() {
-        IElementType token = builder.getTokenType();
-        if (token == KW_ASSERT || token == KW_SUPER || token == KW_THIS || isLiteral(token)
-            || token == KW_CAST || token == OP_TILDA || token == OP_NOT || token == OP_PLUS_PLUS
-            || token == OP_MINUS_MINUS || token == KW_NEW || token == KW_DELETE || token == KW_DELEGATE
-            || token == KW_FUNCTION || token == KW_TYPEID || token == KW_IS || token == OP_BRACKET_LEFT
-            || isMagicKeywordLiteral(token))
-            return false;
-
-        if (token == ID) {
-            Marker bookmark = builder.mark();
-            if (!parseBasicType()) {
-                bookmark.rollbackTo();
-                return false;
-            }
-            parseTypeSuffixes();
-            if (builder.getTokenType() != ID) {
-                bookmark.rollbackTo();
-                return false;
-            }
-            bookmark.rollbackTo();
-            return true;
-        }
-        IElementType next = builder.lookAhead(1);
-        if (isBasicType(token) && (next == OP_DOT || next == OP_PAR_LEFT))
-            return false;
-        return token != KW_MIXIN || next != OP_PAR_LEFT;
     }
 
     boolean parseEmptyStatement() {
@@ -6096,17 +6126,17 @@ class DLangParser {
      * $(RULE staticAssertStatement)
      * ;)
      */
-    boolean parseStaticAssertDeclaration() {
-        final Marker marker = builder.mark();
+    boolean parseStaticAssertDeclaration(Marker marker) {
         if (builder.getTokenType() != KW_STATIC) {
-            marker.rollbackTo();
             return false;
         }
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (builder.getTokenType() != KW_ASSERT) {
-            marker.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         if(parseAssertExpression() == null) {
             marker.done(STATIC_ASSERT_DECLARATION);
             return true;
@@ -6148,15 +6178,16 @@ class DLangParser {
      * $(LITERAL 'static') $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)') $(RULE memberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ";"))
      * ;)
      */
-    boolean parseStaticConstructor() {
+    boolean parseStaticConstructor(Marker m) {
         if (builder.getTokenType() != KW_STATIC)
             return false;
-        final Marker m = builder.mark();
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (!parseStaticCtorDtorCommon()) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         m.done(STATIC_CONSTRUCTOR);
         return true;
     }
@@ -6168,15 +6199,16 @@ class DLangParser {
      * $(LITERAL 'static') $(LITERAL '~') $(LITERAL 'this') $(LITERAL '$(LPAREN)') $(LITERAL '$(RPAREN)') $(RULE memberFunctionAttribute)* ($(RULE functionBody) | $(LITERAL ";"))
      * ;)
      */
-    boolean parseStaticDestructor() {
+    boolean parseStaticDestructor(Marker m) {
         if (builder.getTokenType() != KW_STATIC)
             return false;
-        final Marker m = builder.mark();
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (!tokenCheck(OP_TILDA)) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         parseStaticCtorDtorCommon();
         m.done(STATIC_DESTRUCTOR);
         return true;
@@ -6219,25 +6251,28 @@ class DLangParser {
      * Parses a StorageClass
      * <p>
      * $(GRAMMAR $(RULEDEF storageClass):
-     * $(RULE alignAttribute)
-     * | $(RULE linkageAttribute)
+     * $(RULE linkageAttribute)
+     * | $(RULE alignAttribute)
      * | $(RULE atAttribute)
      * | $(RULE typeConstructor)
-     * | $(RULE deprecated)
-     * | $(LITERAL 'abstract')
-     * | $(LITERAL 'auto')
+     * | $(LITERAL 'deprecated')
      * | $(LITERAL 'enum')
-     * | $(LITERAL 'extern')
-     * | $(LITERAL 'final')
-     * | $(LITERAL '')
-     * | $(LITERAL 'override')
-     * | $(LITERAL '')
-     * | $(LITERAL 'ref')
-     * | $(LITERAL '__gshared')
-     * | $(LITERAL 'scope')
      * | $(LITERAL 'static')
+     * | $(LITERAL 'extern')
+     * | $(LITERAL 'abstract')
+     * | $(LITERAL 'final')
+     * | $(LITERAL 'override')
      * | $(LITERAL 'synchronized')
-     * | $(LITERAL 'throw')
+     * | $(LITERAL 'auto')
+     * | $(LITERAL 'scope')
+     * | $(LITERAL 'const')
+     * | $(LITERAL 'immutable')
+     * | $(LITERAL 'inout')
+     * | $(LITERAL 'shared')
+     * | $(LITERAL '__gshared')
+     * | $(LITERAL 'nothrow')
+     * | $(LITERAL 'pure')
+     * | $(LITERAL 'ref')
      * ;)
      */
     boolean parseStorageClass() {
@@ -6249,8 +6284,9 @@ class DLangParser {
                 return false;
             }
         } else if (i == KW_DEPRECATED) {
-            if (!parseDeprecated()) {
-                cleanup(m, STORAGE_CLASS);
+            builder.advanceLexer();
+            if (builder.getTokenType() == OP_PAR_LEFT) {
+                m.rollbackTo();
                 return false;
             }
         } else if (i == KW_ALIGN) {
@@ -6268,7 +6304,7 @@ class DLangParser {
                 return true;
             } else
                 advance();
-        } else if (i == KW_CONST || i == KW_IMMUTABLE || i == KW_INOUT || i == KW_SHARED || i == KW_ABSTRACT || i == KW_AUTO || i == KW_ENUM || i == KW_FINAL || i == KW_NOTHROW || i == KW_OVERRIDE || i == KW_PURE || i == KW_REF || i == KW___GSHARED || i == KW_SCOPE || i == KW_STATIC || i == KW_SYNCHRONIZED || i == KW_THROW) {
+        } else if (i == KW_CONST || i == KW_IMMUTABLE || i == KW_INOUT || i == KW_SHARED || i == KW_ABSTRACT || i == KW_AUTO || i == KW_ENUM || i == KW_FINAL || i == KW_NOTHROW || i == KW_OVERRIDE || i == KW_PURE || i == KW_REF || i == KW___GSHARED || i == KW_SCOPE || i == KW_STATIC || i == KW_SYNCHRONIZED) {
             advance();
             if (builder.getTokenType() == OP_PAR_LEFT) {
                 m.rollbackTo();
@@ -6291,7 +6327,7 @@ class DLangParser {
      */
     boolean parseStructBody() {
         final Marker m = builder.mark();
-        final IElementType start = expect(OP_BRACES_LEFT);
+        expect(OP_BRACES_LEFT);
         while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT) {
             if (!parseDeclDef()) {
                 Marker recovery = builder.mark();
@@ -6314,11 +6350,9 @@ class DLangParser {
      * $(LITERAL 'struct') $(LITERAL Identifier)? ($(RULE templateParameters) $(RULE raint)? $(RULE structBody) | ($(RULE structBody) | $(LITERAL ';')))
      * ;)
      */
-    boolean parseStructDeclaration() {
+    boolean parseStructDeclaration(Marker m) {
         if (builder.getTokenType() != KW_STRUCT)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (currentIs(ID))
             advance();
@@ -6632,14 +6666,15 @@ class DLangParser {
      * $(LITERAL 'template') $(LITERAL Identifier) $(RULE templateParameters) $(RULE raint)? $(LITERAL '{') $(RULE declaration)* $(LITERAL '}')
      * ;)
      */
-    boolean parseTemplateDeclaration() {
+    boolean parseTemplateDeclaration(Marker m) {
         if (builder.getTokenType() != KW_TEMPLATE)
             return false;
-        final Marker m = builder.mark();
+        final Marker bookmark = builder.mark();
         if (!parseTemplateDeclarationCommon()) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         m.done(TEMPLATE_DECLARATION);
         return true;
     }
@@ -6709,15 +6744,16 @@ class DLangParser {
      * $(LITERAL 'mixin') $(RULE mixinTemplateName) $(RULE templateArguments)? $(LITERAL Identifier)?
      * ;)
      */
-    boolean parseTemplateMixin() {
+    boolean parseTemplateMixin(Marker m) {
         if (builder.getTokenType() != KW_MIXIN)
             return false;
-        final Marker m = builder.mark();
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (!parseMixinTemplateName()) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         if (currentIs(OP_NOT)) {
             if (!parseTemplateArguments()) {
                 m.done(TEMPLATE_MIXIN);
@@ -7141,7 +7177,7 @@ class DLangParser {
     }
 
     boolean parseType() {
-        return parseType(true);
+        return parseType(false);
     }
 
     /**
@@ -7206,14 +7242,11 @@ class DLangParser {
         return true;
     }
 
-    int parseTypeSuffixes() {
-        int count = 0;
+    void parseTypeSuffixes() {
         while (!builder.eof()) {
             if (!parseTypeSuffix())
-                return count;
-            count++;
+                break;
         }
-        return count;
     }
 
     /**
@@ -7279,7 +7312,7 @@ class DLangParser {
                 }
             }
         } else if (i == KW_MIXIN) {
-            if (parseMixinExpression() != null) {
+            if (parseMixinType() != null) {
                 cleanup(m, BASIC_TYPE);
                 return false;
             }
@@ -7579,7 +7612,7 @@ class DLangParser {
             m.done(POSTFIX_EXPRESSION);
             return m;
         }
-        return m;
+        return null;
     }
 
     Marker parsePostfixExpression_0(Marker m) {
@@ -7680,11 +7713,9 @@ class DLangParser {
      * | $(LITERAL 'union') $(RULE structBody)
      * ;)
      */
-    boolean parseUnionDeclaration() {
+    boolean parseUnionDeclaration(Marker m) {
         if (builder.getTokenType() != KW_UNION)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
         if (currentIs(ID)) {
             advance();
@@ -7714,47 +7745,16 @@ class DLangParser {
      * Parses a Unittest
      * <p>
      * $(GRAMMAR $(RULEDEF unittest):
-     * $(LITERAL 'unittest') $(RULE unittestBlock)
+     * $(LITERAL 'unittest') $(RULE blockStatement)
      * ;)
      */
-    boolean parseUnittest() {
+    boolean parseUnittest(Marker marker) {
         if (builder.getTokenType() != KW_UNITTEST)
             return false;
-        final Marker marker = builder.mark();
-        marker.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
         builder.advanceLexer();
-        parseUnittestBlock();
+        parseBlockStatement();
         marker.done(UNITTEST);
         return true;
-    }
-    /**
-     * Parses a BlockStatement
-     * <p>
-     * $(GRAMMAR $(RULEDEF blockStatement):
-     * $(LITERAL '{') $(RULE statementOrDeclDef)* $(LITERAL '}')
-     * ;)
-     */
-    void parseUnittestBlock() {
-        final Marker m = builder.mark();
-        final IElementType openBrace = expect(OP_BRACES_LEFT);
-        if (openBrace == null) {
-            m.done(UNITTEST_BLOCK);
-            return;
-        }
-        while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT) {
-            if (!parseStatement() && !parseDeclDef()) {
-                Marker recovery = builder.mark();
-                while (!builder.eof() && builder.getTokenType() != OP_BRACES_RIGHT && builder.getTokenType() != OP_SCOLON) {
-                    builder.advanceLexer();
-                }
-                if (builder.getTokenType() == OP_SCOLON)
-                    builder.advanceLexer();
-                recovery.error("Unable to parse this statement or declaration");
-                break;
-            }
-        }
-        expect(OP_BRACES_RIGHT);
-        m.done(UNITTEST_BLOCK);
     }
 
     /**
@@ -7767,36 +7767,37 @@ class DLangParser {
      * $(RULE storageClass)+  $(RULE autoDeclarationPart) ($(LITERAL ',') $(RULE autoDeclarationPart))* $(LITERAL ';')
      * ;)
      */
-    boolean parseVariableDeclaration()
+    boolean parseVariableDeclaration(Marker m)
     {
-        Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+        Marker bookmark = builder.mark();
         boolean hasStorageClass = false;
         while (!builder.eof()) {
             if (!parseStorageClass())
                 break;
             hasStorageClass = true;
         }
-        Marker bookmark = builder.mark();
+        Marker bookmark2 = builder.mark();
         boolean parsedVariable = parseNonAutoVariableDeclaration();
         if (!parsedVariable && hasStorageClass) {
-            bookmark.rollbackTo();
+            bookmark2.rollbackTo();
             // Then it’s an auto declaration
             parseAutoAssignments();
             if (builder.getTokenType() != OP_SCOLON) {
-                m.rollbackTo();
+                bookmark.rollbackTo();
                 return false;
             }
+            bookmark.drop();
             builder.advanceLexer();
             m.done(AUTO_DECLARATION);
             return true;
         } else {
-            bookmark.drop();
+            bookmark2.drop();
         }
         if (!parsedVariable) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         expect(OP_SCOLON);
         m.done(VARIABLE_DECLARATION);
         return true;
@@ -7806,7 +7807,7 @@ class DLangParser {
         if (!parseBasicType()) {
             return false;
         }
-        int suffixCount = parseTypeSuffixes();
+        parseTypeSuffixes();
         boolean hasDeclarator = false;
         while (!builder.eof()) {
             if(!parseIdentifierInitializer())
@@ -7817,7 +7818,7 @@ class DLangParser {
             else
                 break;
         }
-        return hasDeclarator || suffixCount > 0;
+        return hasDeclarator;
     }
 
     /**
@@ -7886,16 +7887,16 @@ class DLangParser {
      * $(LITERAL 'version') $(LITERAL '=') ($(LITERAL Identifier) | $(LITERAL IntegerLiteral)) $(LITERAL ';')
      * ;)
      */
-    boolean parseVersionSpecification() {
+    boolean parseVersionSpecification(Marker m) {
         if (builder.getTokenType() != KW_VERSION)
             return false;
-        final Marker m = builder.mark();
-        m.setCustomEdgeTokenBinders(LeadingDocCommentBinder.INSTANCE, TrailingDocCommentBinder.INSTANCE);
+        final Marker bookmark = builder.mark();
         builder.advanceLexer();
         if (!tokenCheck(OP_EQ)) {
-            m.rollbackTo();
+            bookmark.rollbackTo();
             return false;
         }
+        bookmark.drop();
         if (!currentIsOneOf(ID, INTEGER_LITERAL)) { // Note: that using integer for version is deprecated since 2.101.0
             error("Identifier or integer literal expected");
             m.done(VERSION_SPECIFICATION);

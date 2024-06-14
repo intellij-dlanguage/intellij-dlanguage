@@ -39,7 +39,7 @@ public class DlangUnittestImpl extends DStubbedPsiElementBase<DlangUnittestStub>
     }
 
     @Nullable
-    public DLanguageUnittestBlock getUnittestBlock() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageUnittestBlock.class);
+    public DLanguageBlockStatement getBlockStatement() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageBlockStatement.class);
     }
 }

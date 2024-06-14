@@ -223,7 +223,7 @@ D Language File
             PsiElement(DlangTokenType.INTEGER_LITERAL)('6')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// OK')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// OK')
   DLanguageStaticAssertDeclarationImpl(STATIC_ASSERT_DECLARATION)
     PsiElement(DlangTokenType.static)('static')
     DLanguageAssertExpressionImpl(ASSERT_EXPRESSION)
@@ -245,7 +245,7 @@ D Language File
             PsiElement(DlangTokenType.INTEGER_LITERAL)('12')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// invalid, modifies y.')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// invalid, modifies y.')
   TEMPLATE_DECLARATION
     PsiElement(DlangTokenType.template)('template')
     IDENTIFIER

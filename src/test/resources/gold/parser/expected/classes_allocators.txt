@@ -36,7 +36,7 @@ D Language File
       PsiElement(DlangTokenType.})('}')
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
-    DLanguageUnittestBlockImpl(UNITTEST_BLOCK)
+    DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
       PsiComment(DlangTokenType.LINE_COMMENT)('//new(1,2) Foo(a);        // calls new(Foo.sizeof,1,2)')
       PsiElement(DlangTokenType.})('}')

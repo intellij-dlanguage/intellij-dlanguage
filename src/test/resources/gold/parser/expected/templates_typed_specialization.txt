@@ -13,7 +13,7 @@ D Language File
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// #1')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// #1')
   TEMPLATE_DECLARATION
     PsiElement(DlangTokenType.template)('template')
     IDENTIFIER
@@ -32,7 +32,7 @@ D Language File
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// #2')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// #2')
   TEMPLATE_DECLARATION
     PsiElement(DlangTokenType.template)('template')
     IDENTIFIER
@@ -48,7 +48,7 @@ D Language File
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// #3')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// #3')
   STRUCT_DECLARATION
     PsiElement(DlangTokenType.struct)('struct')
     IDENTIFIER
@@ -182,7 +182,7 @@ D Language File
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// #4')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// #4')
   TEMPLATE_DECLARATION
     PsiElement(DlangTokenType.template)('template')
     IDENTIFIER
@@ -221,7 +221,7 @@ D Language File
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     PsiElement(DlangTokenType.})('}')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// #5')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// #5')
   CLASS_DECLARATION
     PsiElement(DlangTokenType.class)('class')
     IDENTIFIER

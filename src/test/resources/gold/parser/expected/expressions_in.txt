@@ -1,7 +1,7 @@
 D Language File
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
-    DLanguageUnittestBlockImpl(UNITTEST_BLOCK)
+    DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
       DLanguageIfStatementImpl(IF_STATEMENT)
         PsiElement(DlangTokenType.if)('if')

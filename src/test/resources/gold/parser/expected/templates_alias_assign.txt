@@ -47,7 +47,7 @@ D Language File
                 PsiElement(DlangTokenType.ID)('A')
       PsiElement(DlangTokenType.;)(';')
     PsiElement(DlangTokenType.})('}')
-  DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+  DLanguageEmptyDeclarationImpl(EMPTY_DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
@@ -66,9 +66,8 @@ D Language File
                   DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                     PsiElement(DlangTokenType.int)('int')
         PsiElement(DlangTokenType.))(')')
-    DLanguageEmptyDeclarationImpl(EMPTY_DECLARATION)
-      PsiElement(DlangTokenType.;)(';')
-      PsiComment(DlangTokenType.LINE_COMMENT)('// prints int')
+    PsiElement(DlangTokenType.;)(';')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// prints int')
   TEMPLATE_DECLARATION
     PsiElement(DlangTokenType.template)('template')
     IDENTIFIER
@@ -205,7 +204,7 @@ D Language File
                             PsiElement(DlangTokenType.ID)('X')
                 PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
-  DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+  DLanguageEmptyDeclarationImpl(EMPTY_DECLARATION)
     DLanguageAttributeImpl(ATTRIBUTE)
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
@@ -218,6 +217,5 @@ D Language File
             IDENTIFIER
               PsiElement(DlangTokenType.ID)('TK')
         PsiElement(DlangTokenType.))(')')
-    DLanguageEmptyDeclarationImpl(EMPTY_DECLARATION)
-      PsiElement(DlangTokenType.;)(';')
-      PsiComment(DlangTokenType.LINE_COMMENT)('// prints tuple(3, (const(uint)), (int))')
+    PsiElement(DlangTokenType.;)(';')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// prints tuple(3, (const(uint)), (int))')

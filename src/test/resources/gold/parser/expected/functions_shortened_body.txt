@@ -265,7 +265,7 @@ D Language File
             PsiElement(DlangTokenType.DOUBLE_QUOTED_STRING)('"hello"')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// works normally')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// works normally')
   DLanguageStaticAssertDeclarationImpl(STATIC_ASSERT_DECLARATION)
     PsiElement(DlangTokenType.static)('static')
     DLanguageAssertExpressionImpl(ASSERT_EXPRESSION)
@@ -301,7 +301,7 @@ D Language File
           PsiElement(DlangTokenType.))(')')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// same normal type')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// same normal type')
   FUNCTION_DECLARATION
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)

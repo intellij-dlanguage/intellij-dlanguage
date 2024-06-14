@@ -1,14 +1,13 @@
 D Language File
-  DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+  CLASS_DECLARATION
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.final)('final')
-    CLASS_DECLARATION
-      PsiElement(DlangTokenType.class)('class')
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('A')
-      DLanguageStructBodyImpl(STRUCT_BODY)
-        PsiElement(DlangTokenType.{)('{')
-        PsiElement(DlangTokenType.})('}')
+    PsiElement(DlangTokenType.class)('class')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('A')
+    DLanguageStructBodyImpl(STRUCT_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      PsiElement(DlangTokenType.})('}')
   CLASS_DECLARATION
     PsiElement(DlangTokenType.class)('class')
     IDENTIFIER

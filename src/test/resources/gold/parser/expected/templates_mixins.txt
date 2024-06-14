@@ -262,7 +262,7 @@ D Language File
                 PsiElement(DlangTokenType.int)('int')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
-  PsiComment(DlangTokenType.LINE_COMMENT)('// create x of type int')
+    PsiComment(DlangTokenType.LINE_COMMENT)('// create x of type int')
   DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
     PsiElement(DlangTokenType.mixin)('mixin')
     PsiElement(DlangTokenType.template)('template')
@@ -503,7 +503,7 @@ D Language File
                 IDENTIFIER
                   PsiElement(DlangTokenType.ID)('Foo')
             PsiElement(DlangTokenType.;)(';')
-        PsiComment(DlangTokenType.LINE_COMMENT)('// local y is picked up, not global y')
+            PsiComment(DlangTokenType.LINE_COMMENT)('// local y is picked up, not global y')
         DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
           DLanguageAssertExpressionImpl(ASSERT_EXPRESSION)
             PsiElement(DlangTokenType.assert)('assert')

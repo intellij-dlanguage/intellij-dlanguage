@@ -23,7 +23,7 @@ D Language File
         PsiElement(DlangTokenType.{)('{')
         DLanguageReturnStatementImpl(RETURN_STATEMENT)
           PsiElement(DlangTokenType.return)('return')
-          DLanguageMixinExpressionImpl(MIXIN_EXPRESSION)
+          DLanguageMixinTypeImpl(MIXIN_TYPE)
             PsiElement(DlangTokenType.mixin)('mixin')
             PsiElement(DlangTokenType.()('(')
             DLanguageArgumentListImpl(ARGUMENT_LIST)

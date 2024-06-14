@@ -241,7 +241,7 @@ D Language File
         PsiElement(DlangTokenType.{)('{')
         DLanguageReturnStatementImpl(RETURN_STATEMENT)
           PsiElement(DlangTokenType.return)('return')
-          DLanguageMixinExpressionImpl(MIXIN_EXPRESSION)
+          DLanguageMixinTypeImpl(MIXIN_TYPE)
             PsiElement(DlangTokenType.mixin)('mixin')
             PsiElement(DlangTokenType.()('(')
             DLanguageArgumentListImpl(ARGUMENT_LIST)
@@ -969,7 +969,7 @@ D Language File
       PsiElement(DlangTokenType.})('}')
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
-    DLanguageUnittestBlockImpl(UNITTEST_BLOCK)
+    DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -1040,7 +1040,7 @@ D Language File
       PsiElement(DlangTokenType.})('}')
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
-    DLanguageUnittestBlockImpl(UNITTEST_BLOCK)
+    DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -2115,7 +2115,7 @@ D Language File
       PsiElement(DlangTokenType.})('}')
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
-    DLanguageUnittestBlockImpl(UNITTEST_BLOCK)
+    DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         DLanguageAutoDeclarationImpl(AUTO_DECLARATION)

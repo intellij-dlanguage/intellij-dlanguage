@@ -145,7 +145,7 @@ public interface DlangTypes {
     DlangElementType MEMBER_FUNCTION_ATTRIBUTE = new DlangElementType("MEMBER_FUNCTION_ATTRIBUTE");
     DlangElementType MISSING_FUNCTION_BODY = new DlangElementType("MISSING_FUNCTION_BODY");
     DlangElementType MIXIN_DECLARATION = new DlangElementType("MIXIN_DECLARATION");
-    DlangElementType MIXIN_EXPRESSION = new DlangElementType("MIXIN_EXPRESSION");
+    DlangElementType MIXIN_TYPE = new DlangElementType("MIXIN_TYPE");
     DlangElementType MIXIN_QUALIFIED_IDENTIFIER = new DlangElementType("MIXIN_QUALIFIED_IDENTIFIER");
     DlangElementType MIXIN_TEMPLATE_NAME = new DlangElementType("MIXIN_TEMPLATE_NAME");
     DlangElementType MUL_EXPRESSION = new DlangElementType("MUL_EXPRESSION");
@@ -210,7 +210,6 @@ public interface DlangTypes {
     DlangElementType TYPEID_EXPRESSION = new DlangElementType("TYPEID_EXPRESSION");
     DlangElementType TYPEOF_EXPRESSION = new DlangElementType("TYPEOF_EXPRESSION");
     DlangElementType UNARY_EXPRESSION = new DlangElementType("UNARY_EXPRESSION");
-    DlangElementType UNITTEST_BLOCK = new DlangElementType("UNITTEST_BLOCK");
     DlangElementType VARIABLE_DECLARATION = new DlangElementType("VARIABLE_DECLARATION");
     DlangElementType VARIADIC_ARGUMENTS_ATTRIBUTE = new DlangElementType("VARIADIC_ARGUMENTS_ATTRUBUTE");
     DlangElementType VARIADIC_ARGUMENTS_ATTRIBUTES = new DlangElementType("VARIADIC_ARGUMENTS_ATTRUBUTES");
@@ -677,8 +676,8 @@ public interface DlangTypes {
                 return new DLanguageMissingFunctionBodyImpl(node);
             } else if (type == MIXIN_DECLARATION) {
                 return new DLanguageMixinDeclarationImpl(node);
-            } else if (type == MIXIN_EXPRESSION) {
-                return new DLanguageMixinExpressionImpl(node);
+            } else if (type == MIXIN_TYPE) {
+                return new DLanguageMixinTypeImpl(node);
             } else if (type == MIXIN_TEMPLATE_NAME) {
                 return new DLanguageMixinTemplateNameImpl(node);
             } else if (type == MUL_EXPRESSION) {
@@ -831,8 +830,6 @@ public interface DlangTypes {
                 return new DlangClassDeclarationImpl(node);
             } else if (type == UNITTEST) {
                 return new DlangUnittestImpl(node);
-            } else if (type == UNITTEST_BLOCK) {
-                return new DLanguageUnittestBlockImpl(node);
             } else if (type == INTERFACE_DECLARATION) {
                 return new DlangInterfaceDeclarationImpl(node);
             } else if (type == IF_CONDITION) {

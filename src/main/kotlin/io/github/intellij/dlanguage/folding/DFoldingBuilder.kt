@@ -46,7 +46,6 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             is DLanguageStructInitializer,
             is DLanguageAnonymousEnumDeclaration,
             is DLanguageEnumBody,
-            is DLanguageUnittestBlock,
             is DLanguageDeclarationBlock,
             is DLanguageConditionalDeclaration -> "{...}"
             is DLanguageLinkageAttribute -> {
@@ -110,10 +109,6 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         }
 
         override fun visitDeclarationBlock(o: DLanguageDeclarationBlockImpl) {
-            fold(o)
-        }
-
-        override fun visitUnittestBlock(o: DLanguageUnittestBlockImpl) {
             fold(o)
         }
 

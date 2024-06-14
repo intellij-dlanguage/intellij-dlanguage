@@ -115,43 +115,42 @@ D Language File
           IDENTIFIER
             PsiElement(DlangTokenType.ID)('n')
         PsiElement(DlangTokenType.;)(';')
-      DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+      CLASS_DECLARATION
         DLanguageAttributeImpl(ATTRIBUTE)
           PsiElement(DlangTokenType.static)('static')
-        CLASS_DECLARATION
-          PsiElement(DlangTokenType.class)('class')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('Inner')
-          DLanguageStructBodyImpl(STRUCT_BODY)
-            PsiElement(DlangTokenType.{)('{')
-            FUNCTION_DECLARATION
-              DLanguageBasicTypeImpl(BASIC_TYPE)
-                DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-                  PsiElement(DlangTokenType.int)('int')
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('foo')
-              DLanguageParametersImpl(PARAMETERS)
-                PsiElement(DlangTokenType.()('(')
-                PsiElement(DlangTokenType.))(')')
-              DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
-                DLanguageBlockStatementImpl(BLOCK_STATEMENT)
-                  PsiElement(DlangTokenType.{)('{')
-                  DLanguageReturnStatementImpl(RETURN_STATEMENT)
-                    PsiElement(DlangTokenType.return)('return')
-                    DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                      IDENTIFIER
-                        PsiElement(DlangTokenType.ID)('m')
-                    PsiElement(DlangTokenType.;)(';')
-                  PsiComment(DlangTokenType.LINE_COMMENT)('// Error, Inner is static and m needs a this')
-                  DLanguageReturnStatementImpl(RETURN_STATEMENT)
-                    PsiElement(DlangTokenType.return)('return')
-                    DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                      IDENTIFIER
-                        PsiElement(DlangTokenType.ID)('n')
-                    PsiElement(DlangTokenType.;)(';')
-                  PsiComment(DlangTokenType.LINE_COMMENT)('// Ok, n is static')
-                  PsiElement(DlangTokenType.})('}')
-            PsiElement(DlangTokenType.})('}')
+        PsiElement(DlangTokenType.class)('class')
+        IDENTIFIER
+          PsiElement(DlangTokenType.ID)('Inner')
+        DLanguageStructBodyImpl(STRUCT_BODY)
+          PsiElement(DlangTokenType.{)('{')
+          FUNCTION_DECLARATION
+            DLanguageBasicTypeImpl(BASIC_TYPE)
+              DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                PsiElement(DlangTokenType.int)('int')
+            IDENTIFIER
+              PsiElement(DlangTokenType.ID)('foo')
+            DLanguageParametersImpl(PARAMETERS)
+              PsiElement(DlangTokenType.()('(')
+              PsiElement(DlangTokenType.))(')')
+            DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
+              DLanguageBlockStatementImpl(BLOCK_STATEMENT)
+                PsiElement(DlangTokenType.{)('{')
+                DLanguageReturnStatementImpl(RETURN_STATEMENT)
+                  PsiElement(DlangTokenType.return)('return')
+                  DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
+                    IDENTIFIER
+                      PsiElement(DlangTokenType.ID)('m')
+                  PsiElement(DlangTokenType.;)(';')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// Error, Inner is static and m needs a this')
+                DLanguageReturnStatementImpl(RETURN_STATEMENT)
+                  PsiElement(DlangTokenType.return)('return')
+                  DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
+                    IDENTIFIER
+                      PsiElement(DlangTokenType.ID)('n')
+                  PsiElement(DlangTokenType.;)(';')
+                PsiComment(DlangTokenType.LINE_COMMENT)('// Ok, n is static')
+                PsiElement(DlangTokenType.})('}')
+          PsiElement(DlangTokenType.})('}')
       PsiElement(DlangTokenType.})('}')
   FUNCTION_DECLARATION
     DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -236,16 +235,15 @@ D Language File
         DLanguageStructBodyImpl(STRUCT_BODY)
           PsiElement(DlangTokenType.{)('{')
           PsiElement(DlangTokenType.})('}')
-      DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+      CLASS_DECLARATION
         DLanguageAttributeImpl(ATTRIBUTE)
           PsiElement(DlangTokenType.static)('static')
-        CLASS_DECLARATION
-          PsiElement(DlangTokenType.class)('class')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('SInner')
-          DLanguageStructBodyImpl(STRUCT_BODY)
-            PsiElement(DlangTokenType.{)('{')
-            PsiElement(DlangTokenType.})('}')
+        PsiElement(DlangTokenType.class)('class')
+        IDENTIFIER
+          PsiElement(DlangTokenType.ID)('SInner')
+        DLanguageStructBodyImpl(STRUCT_BODY)
+          PsiElement(DlangTokenType.{)('{')
+          PsiElement(DlangTokenType.})('}')
       PsiElement(DlangTokenType.})('}')
   FUNCTION_DECLARATION
     DLanguageBasicTypeImpl(BASIC_TYPE)

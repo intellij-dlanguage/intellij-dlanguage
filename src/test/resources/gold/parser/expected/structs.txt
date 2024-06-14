@@ -1,7 +1,7 @@
 D Language File
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
-    DLanguageUnittestBlockImpl(UNITTEST_BLOCK)
+    DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -52,15 +52,17 @@ D Language File
               PsiElement(DlangTokenType.ID)('s')
           PsiElement(DlangTokenType.;)(';')
           PsiComment(DlangTokenType.LINE_COMMENT)('// error, cannot initialize unknown contents')
-      DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
-        DLanguageMulExpressionImpl(MUL_EXPRESSION)
-          DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('S')
-          PsiElement(DlangTokenType.*)('*')
-          DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
+      DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
+        DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
+          DLanguageBasicTypeImpl(BASIC_TYPE)
+            DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
+              IDENTIFIER
+                PsiElement(DlangTokenType.ID)('S')
+          DLanguageTypeSuffixImpl(TYPE_SUFFIX)
+            PsiElement(DlangTokenType.*)('*')
+          IDENTIFIER_INITIALIZER
             IDENTIFIER
               PsiElement(DlangTokenType.ID)('p')
-        PsiElement(DlangTokenType.;)(';')
-      PsiComment(DlangTokenType.LINE_COMMENT)('// ok, knowledge of members is not necessary')
+          PsiElement(DlangTokenType.;)(';')
+          PsiComment(DlangTokenType.LINE_COMMENT)('// ok, knowledge of members is not necessary')
       PsiElement(DlangTokenType.})('}')

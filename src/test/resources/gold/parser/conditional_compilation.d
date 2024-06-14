@@ -1,3 +1,20 @@
+version (ProfessionalEdition)
+{
+    version = FeatureA;
+    version = FeatureB;
+    version = FeatureC;
+}
+version (HomeEdition)
+{
+    version = FeatureA;
+}
+
+
+void testFoo() {
+    debug(foo) writeln("Foo");
+}
+debug = foo;    // error, foo used before set
+
 unittest
 {
 int k;
@@ -17,16 +34,6 @@ else
 {
 }
 
-version (ProfessionalEdition)
-{
-    version = FeatureA;
-    version = FeatureB;
-    version = FeatureC;
-}
-version (HomeEdition)
-{
-    version = FeatureA;
-}
 version (FeatureB)
 {
 }
@@ -35,8 +42,6 @@ version (Foo)
 {
     int x;
 }
-version = Foo;  // error, Foo already used
-
 
 class Foo
 {
@@ -78,9 +83,6 @@ class Foo
 debug:
     int flag;
 }
-
-debug(foo) writeln("Foo");
-debug = foo;    // error, foo used before set
 
 debug(IntegerLiteral) { } // add in debug code if debug level is >= IntegerLiteral
 debug(identifier) { } // add in debug code if debug keyword is identifier

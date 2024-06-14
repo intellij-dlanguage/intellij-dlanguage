@@ -1,7 +1,7 @@
 D Language File
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
-    DLanguageUnittestBlockImpl(UNITTEST_BLOCK)
+    DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         STRUCT_DECLARATION
@@ -382,18 +382,17 @@ D Language File
                   PsiElement(DlangTokenType.ID)('x')
               PsiElement(DlangTokenType.;)(';')
             PsiComment(DlangTokenType.LINE_COMMENT)('// Disables default construction, function body can be empty.')
-            DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+            CONSTRUCTOR
               DLanguageAttributeImpl(ATTRIBUTE)
                 DLanguageAtAttributeImpl(AT_ATTRIBUTE)
                   PsiElement(DlangTokenType.@)('@')
                   IDENTIFIER
                     PsiElement(DlangTokenType.ID)('disable')
-              CONSTRUCTOR
-                PsiElement(DlangTokenType.this)('this')
-                DLanguageParametersImpl(PARAMETERS)
-                  PsiElement(DlangTokenType.()('(')
-                  PsiElement(DlangTokenType.))(')')
-                PsiElement(DlangTokenType.;)(';')
+              PsiElement(DlangTokenType.this)('this')
+              DLanguageParametersImpl(PARAMETERS)
+                PsiElement(DlangTokenType.()('(')
+                PsiElement(DlangTokenType.))(')')
+              PsiElement(DlangTokenType.;)(';')
             CONSTRUCTOR
               PsiElement(DlangTokenType.this)('this')
               DLanguageParametersImpl(PARAMETERS)

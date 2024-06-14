@@ -9,27 +9,26 @@ D Language File
         IDENTIFIER
           PsiElement(DlangTokenType.ID)('stdio')
     PsiElement(DlangTokenType.;)(';')
-  DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+  CLASS_DECLARATION
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.abstract)('abstract')
-    CLASS_DECLARATION
-      PsiElement(DlangTokenType.class)('class')
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('C')
-      DLanguageStructBodyImpl(STRUCT_BODY)
-        PsiElement(DlangTokenType.{)('{')
-        FUNCTION_DECLARATION
-          DLanguageBasicTypeImpl(BASIC_TYPE)
-            DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-              PsiElement(DlangTokenType.int)('int')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('foo')
-          DLanguageParametersImpl(PARAMETERS)
-            PsiElement(DlangTokenType.()('(')
-            PsiElement(DlangTokenType.))(')')
-          DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
-            PsiElement(DlangTokenType.;)(';')
-        PsiElement(DlangTokenType.})('}')
+    PsiElement(DlangTokenType.class)('class')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('C')
+    DLanguageStructBodyImpl(STRUCT_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      FUNCTION_DECLARATION
+        DLanguageBasicTypeImpl(BASIC_TYPE)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DlangTokenType.int)('int')
+        IDENTIFIER
+          PsiElement(DlangTokenType.ID)('foo')
+        DLanguageParametersImpl(PARAMETERS)
+          PsiElement(DlangTokenType.()('(')
+          PsiElement(DlangTokenType.))(')')
+        DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
+          PsiElement(DlangTokenType.;)(';')
+      PsiElement(DlangTokenType.})('}')
   FUNCTION_DECLARATION
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)

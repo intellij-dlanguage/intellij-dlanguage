@@ -7,16 +7,15 @@ D Language File
       IDENTIFIER
         PsiElement(DlangTokenType.ID)('B')
     PsiElement(DlangTokenType.;)(';')
-  DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
+  CLASS_DECLARATION
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.public)('public')
-    CLASS_DECLARATION
-      PsiElement(DlangTokenType.class)('class')
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('Foo')
-      DLanguageStructBodyImpl(STRUCT_BODY)
-        PsiElement(DlangTokenType.{)('{')
-        PsiElement(DlangTokenType.})('}')
+    PsiElement(DlangTokenType.class)('class')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('Foo')
+    DLanguageStructBodyImpl(STRUCT_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      PsiElement(DlangTokenType.})('}')
   DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
     PsiElement(DlangTokenType.import)('import')
     SINGLE_IMPORT
