@@ -7,8 +7,11 @@ import com.intellij.ui.LayeredIcon
 import javax.swing.Icon
 
 object DLanguage : Language("D") {
+    private fun readResolve(): Any = DLanguage
 
     const val MODULE_TYPE_ID = "DLANGUAGE_MODULE"
+
+    override fun isCaseSensitive(): Boolean = true
 
     class Icons {
         companion object {
