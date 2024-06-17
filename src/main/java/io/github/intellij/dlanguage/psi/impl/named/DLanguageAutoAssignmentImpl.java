@@ -7,27 +7,32 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.DLanguageInitializer;
+import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
+import io.github.intellij.dlanguage.psi.named.DLanguageAutoAssignment;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
+import io.github.intellij.dlanguage.psi.DlangTypes;
+import io.github.intellij.dlanguage.psi.DlangVisitor;
+import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangEponymousTemplateDeclarationStub;
+import io.github.intellij.dlanguage.stubs.DLanguageAutoAssignmentStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiElementBase<DlangEponymousTemplateDeclarationStub> implements DLanguageEponymousTemplateDeclaration {
+public class DLanguageAutoAssignmentImpl extends
+    DNamedStubbedPsiElementBase<DLanguageAutoAssignmentStub> implements DLanguageAutoAssignment {
 
-    public DLanguageEponymousTemplateDeclarationImpl(final DlangEponymousTemplateDeclarationStub stub, final IStubElementType type) {
+    public DLanguageAutoAssignmentImpl(final DLanguageAutoAssignmentStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DLanguageEponymousTemplateDeclarationImpl(final ASTNode node) {
+    public DLanguageAutoAssignmentImpl(final ASTNode node) {
         super(node);
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
         visitor.visitDNamedElement(this);
-        visitor.visitEponymousTemplateDeclaration(this);
+        visitor.visitAutoDeclarationPart(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {
@@ -35,13 +40,17 @@ public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiE
         else super.accept(visitor);
     }
 
-
     @Override
     @Nullable
     public DlangIdentifier getIdentifier() {
         return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
     }
 
+    @Override
+    @Nullable
+    public DLanguageInitializer getInitializer() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageInitializer.class);
+    }
 
     @Override
     @Nullable
@@ -53,30 +62,6 @@ public class DLanguageEponymousTemplateDeclarationImpl extends DNamedStubbedPsiE
     @Override
     public PsiElement getOP_EQ() {
         return findChildByType(DlangTypes.OP_EQ);
-    }
-
-    @Override
-    @Nullable
-    public DLanguageType getType() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getOP_SCOLON() {
-        return findChildByType(DlangTypes.OP_SCOLON);
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getKW_ENUM() {
-        return findChildByType(DlangTypes.KW_ENUM);
-    }
-
-    @Nullable
-    @Override
-    public PsiElement getKW_ALIAS() {
-        return findChildByType(DlangTypes.KW_ALIAS);
     }
 
     @Nullable

@@ -6,21 +6,21 @@ import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.DLanguageInitializer;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.stubs.DlangAutoDeclarationPartStub;
+import io.github.intellij.dlanguage.stubs.DLanguageIdentifierInitializerStub;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DlangAutoDeclarationPart extends PsiElement, DNamedElement,
-    StubBasedPsiElement<DlangAutoDeclarationPartStub> {
+public interface DLanguageIdentifierInitializer extends PsiElement, DNamedElement,
+    StubBasedPsiElement<DLanguageIdentifierInitializerStub> {
 
     @Nullable
     DlangIdentifier getIdentifier();
 
     @Nullable
-    DLanguageTemplateParameters getTemplateParameters();
+    PsiElement getOP_EQ();
 
     @Nullable
-    PsiElement getOP_EQ();
+    DLanguageTemplateParameters getTemplateParameters();
 
     @Nullable
     DLanguageInitializer getInitializer();

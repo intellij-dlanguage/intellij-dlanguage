@@ -32,8 +32,8 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.psi.DLanguageAtAttribute;
-import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression;
+import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.settings.ToolKey;
@@ -82,16 +82,16 @@ public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSP
 
             try {
                 final PsiFile psiFile = PsiManager.getInstance(project).findFile(configuration.getDFile());
-                final Collection<DLanguageClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration.class);
+                final Collection<DlangClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DlangClassDeclaration.class);
 
-                for (final DLanguageClassDeclaration cd : cds) {
+                for (final DlangClassDeclaration cd : cds) {
 
                     // if a class contains the UnitTest mixin assume its a valid d-unit test class
                     String testClassName = null;
                     final Collection<DLanguageTemplateMixinExpression> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression.class);
                     for (final DLanguageTemplateMixinExpression tmi : tmis) {
                         if (tmi.getText().contains("UnitTest")) {
-                            final DlangIdentifier classIdentifier = cd.getInterfaceOrClass().getIdentifier();
+                            final DlangIdentifier classIdentifier = cd.getIdentifier();
                             if (classIdentifier != null) {
                                 testClassName = classIdentifier.getText();
                             }

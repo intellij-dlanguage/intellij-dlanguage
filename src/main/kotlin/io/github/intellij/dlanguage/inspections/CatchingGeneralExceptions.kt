@@ -16,7 +16,7 @@ class CatchingGeneralExceptions : LocalInspectionTool() {
 
 class CatchingGeneralExceptionsVisitor(val holder: ProblemsHolder) : DlangVisitor() {
     override fun visitCatch(o: DLanguageCatchImpl) {
-        val exceptionType = o.type?.type_2?.typeIdentifierPart?.identifierOrTemplateInstance?.text
+        val exceptionType = o.type?.basicType?.qualifiedIdentifier?.text
         if (exceptionType != null)
             if (exceptionType == "Error" || exceptionType == "Throwable")
                 holder.registerProblem(o, "Catching Error or Throwable is usually a bad idea.")

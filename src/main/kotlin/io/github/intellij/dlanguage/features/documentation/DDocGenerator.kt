@@ -35,8 +35,8 @@ import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC
 import io.github.intellij.dlanguage.features.documentation.psi.DlangDocComment
 import io.github.intellij.dlanguage.features.documentation.psi.DlangDocPsiElement
 import io.github.intellij.dlanguage.features.documentation.psi.impl.*
-import io.github.intellij.dlanguage.psi.DLanguageDeclaration
-import io.github.intellij.dlanguage.psi.DLanguageVariableDeclaration
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
+import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration
 import io.github.intellij.dlanguage.utils.*
 import org.intellij.markdown.html.isWhitespace
 
@@ -51,7 +51,7 @@ class DDocGenerator {
         val builder = StringBuilder()
 
         if (element.parent is FunctionDeclaration ||
-            element.parent.parent is DLanguageVariableDeclaration ||
+            element.parent.parent is VariableDeclaration ||
             element.parent.parent is ClassDeclaration ||
             element.parent.parent is InterfaceDeclaration ||
             element.parent.parent is AliasDeclaration ||
@@ -59,7 +59,7 @@ class DDocGenerator {
             element.parent is StructDeclaration ||
             element.parent is UnionDeclaration ||
             element.parent is TemplateDeclaration)  {
-            val declarationElement = PsiTreeUtil.getParentOfType(element, DLanguageDeclaration::class.java)
+            val declarationElement = PsiTreeUtil.getParentOfType(element, Declaration::class.java)
             val elements = declarationElement!!.children.takeWhile { it is DlangDocComment || it is PsiWhiteSpace }.filterIsInstance<DlangDocComment>()
             if (elements.isNotEmpty())
                 appendDdoc(builder, elements)

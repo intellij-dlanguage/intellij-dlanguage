@@ -18,7 +18,7 @@ import org.mockito.kotlin.whenever
  * @author Samael Bate (singingbush)
  * created on 13/02/2022
  */
-class CreateDlangClassActionTest : LightPlatform4TestCase() {
+class CreateDlangClassDeclarationActionTest : LightPlatform4TestCase() {
 
     private val action = CreateDlangClassActionWrapper()
 

@@ -5,9 +5,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import io.github.intellij.dlanguage.psi.DLanguageDeclarationOrStatement;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.interfaces.Statement;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangCatchStub;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public interface DlangCatch extends PsiElement, DNamedElement, StubBasedPsiEleme
     DlangIdentifier getIdentifier();
 
     @Nullable
-    DLanguageDeclarationOrStatement getDeclarationOrStatement();
+    Statement getStatement();
 
     @Override
     default boolean processDeclarations(@NotNull PsiScopeProcessor processor,

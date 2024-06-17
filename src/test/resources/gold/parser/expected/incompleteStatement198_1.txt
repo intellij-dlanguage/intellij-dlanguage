@@ -1,13 +1,6 @@
 D Language File
-  DLanguageDeclarationImpl(DECLARATION)
-    DLanguageTypeImpl(TYPE)
-      DLanguageType_2Impl(TYPE_2)
-        DLanguageTypeIdentifierPartImpl(TYPE_IDENTIFIER_PART)
-          DLanguageIdentifierOrTemplateInstanceImpl(IDENTIFIER_OR_TEMPLATE_INSTANCE)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('a')
-    PsiErrorElement:no identifier for declarator
-      <empty list>
+  PsiErrorElement:Unable to parse this declaration
+    PsiElement(DlangTokenType.ID)('a')
     PsiElement(DlangTokenType.[)('[')
     PsiElement(DlangTokenType.{)('{')
     PsiElement(DlangTokenType.continue)('continue')

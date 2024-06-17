@@ -6,9 +6,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.util.PsiTreeUtil
-import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration
 import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierOrTemplateChain
 import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
@@ -48,7 +46,7 @@ object DUtil {
 
     @JvmStatic
     fun isDunitTestFile(psiFile: PsiFile?): Boolean {
-        val cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration::class.java)
+        val cds = PsiTreeUtil.findChildrenOfType(psiFile, DlangClassDeclaration::class.java)
         for (cd in cds) {
             // if a class contains the UnitTest mixin assume its a valid d-unit test class
             val tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression::class.java)
@@ -69,7 +67,7 @@ object DUtil {
     fun getParentClassOrStructOrTemplateOrInterfaceOrUnion(namedElement: PsiElement?): DNamedElement? {
         return PsiTreeUtil.getParentOfType(
             namedElement,
-            DlangInterfaceOrClass::class.java,
+            DlangClassDeclaration::class.java,
             DlangStructDeclaration::class.java,
             DlangTemplateDeclaration::class.java,
             DlangUnionDeclaration::class.java
@@ -136,14 +134,6 @@ object DUtil {
         }
 
         return list[list.size - 1]
-    }
-
-    fun getEndOfIdentifierList(chain: DLanguageIdentifierOrTemplateChain?): DlangIdentifier? {
-        if (chain == null) return null
-
-        val list = chain.identifierOrTemplateInstances
-
-        return if (list.size > 0) list[list.size - 1].identifier else null
     }
 
     /**

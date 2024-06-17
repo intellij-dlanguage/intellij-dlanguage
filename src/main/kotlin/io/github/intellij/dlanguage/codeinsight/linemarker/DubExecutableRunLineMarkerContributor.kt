@@ -23,12 +23,12 @@ class DubExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
 
     private fun isDMainFunction(element: PsiElement) : Boolean {
         if (!(element.parent.elementType == IDENTIFIER && element.parent.parent is DlangFunctionDeclaration
-            && element.parent.parent.parent.parent is DlangPsiFile && element.text == "main"))
+            && element.parent.parent.parent is DlangPsiFile && element.text == "main"))
             return false
         val funcDecl = element.parent.parent as DlangFunctionDeclaration
         // check return type
         if (!(funcDecl.isAuto ||
-            listOf("void", "int", "noreturn").contains((element.parent.parent as DlangFunctionDeclaration).type?.type_2?.text)))
+            listOf("void", "int", "noreturn").contains(funcDecl.basicType?.text)))
             return false
         if (funcDecl.parameters == null)
             return false
@@ -36,6 +36,6 @@ class DubExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
             return false
 
         val param = funcDecl.parameters!!.parameters.getOrNull(0) ?: return true
-        return param.type?.type_2?.text == "string" && param.type?.typeSuffixs?.size == 1 && param.type?.typeSuffixs?.get(0)?.text == "[]"
+        return param.type?.basicType?.text == "string" && param.type?.typeSuffixs?.size == 1 && param.type?.typeSuffixs?.get(0)?.text == "[]"
     }
 }

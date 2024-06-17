@@ -7,7 +7,8 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.colors.DColor
-import io.github.intellij.dlanguage.psi.DLanguageType_2
+import io.github.intellij.dlanguage.psi.DLanguageBasicType
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.utils.*
 
@@ -23,8 +24,9 @@ class DHighlightingAnnotator : Annotator {
         val (partToHighlight, color) = when (element) {
             is AtAttribute -> element.textRange to DColor.AT_ATTRIBUTE
             is ModuleDeclaration -> element.identifierChain?.textRange to DColor.MODULE_DEFINITION
-            is IdentifierOrTemplateInstance -> highlightReference(element)
-            is TemplateSingleArgument -> highlightReference(element)
+            is ReferenceExpression -> highlightReference(element)
+            is QualifiedIdentifier -> highlightReference(element)
+            is TemplateSingleArgument -> highlightNotReference(element)
             is TemplateParameter -> highlightNotReference(element)
             is Identifier -> highlightIdentifier(element)
             else -> null
@@ -35,8 +37,9 @@ class DHighlightingAnnotator : Annotator {
 
     private fun highlightReference(element: PsiElement): Pair<TextRange, DColor>? {
         val identifier = when (element) {
-            is IdentifierOrTemplateInstance -> element.identifier
+            is ReferenceExpression -> element.identifier
             is TemplateSingleArgument -> element.identifier
+            is QualifiedIdentifier -> element.identifier
             else -> null
         } ?: return null
 
@@ -59,24 +62,26 @@ class DHighlightingAnnotator : Annotator {
     }
 
     private fun highlightIdentifier(element: PsiElement): Pair<TextRange, DColor>? {
-        val parent = element.parent
-        val color = when {
-            parent is FunctionDeclaration -> DColor.FUNCTION_DEFINITION
-            parent is TemplateDeclaration -> DColor.FUNCTION_DEFINITION
-            parent is TemplateInstance -> {
+        val color = when (val parent = element.parent) {
+            is FunctionDeclaration,
+            is TemplateDeclaration,
+            is TemplateMixinDeclaration -> DColor.FUNCTION_DEFINITION
+            is TemplateInstance -> {
                 // don’t colorize templated class/struct/union instantiations as function calls
-                if (PsiTreeUtil.getParentOfType(parent, Type_2::class.java, true, Declaration::class.java) == null)
+                if (PsiTreeUtil.getParentOfType(parent, DLanguageBasicType::class.java, true, Declaration::class.java) == null)
                     DColor.FUNCTION_CALL
                 else
                     null
             }
+
             else -> null
-        }?: return null
+        } ?: return null
 
         return element.textRange to color
     }
 
     private fun colorFor(element: PsiElement): DColor? = when (element) {
+        is TemplateSingleArgument,
         is TemplateTypeParameter,
         is TemplateParameter -> DColor.TYPE_PARAMETER
         else -> null
@@ -87,6 +92,7 @@ class DHighlightingAnnotator : Annotator {
      * @param element: the reference of the element to color
      */
     private fun colorForReferenced(element: PsiElement): DColor? = when (element) {
+        is TemplateSingleArgument,
         is TemplateTypeParameter,
         is TemplateParameter -> DColor.TYPE_PARAMETER
         is FunctionDeclaration -> {
@@ -96,7 +102,8 @@ class DHighlightingAnnotator : Annotator {
             else
                 DColor.FUNCTION_CALL
         }
-        is TemplateDeclaration -> DColor.FUNCTION_CALL
+        is TemplateDeclaration,
+        is TemplateMixinDeclaration -> DColor.FUNCTION_CALL
         is AliasInitializer -> {
             // Colorize standard alias types as if they were keywords
             if (element.identifier?.text in DlangAliasedTypes)
@@ -122,6 +129,8 @@ class DHighlightingAnnotator : Annotator {
             is TemplateValueParameter -> element.identifier
             is TemplateAliasParameter -> element.identifier
             is TemplateThisParameter -> element.templateTypeParameter?.identifier
+            is ReferenceExpression -> element.identifier
+            is TemplateSingleArgument -> element.identifier
             else -> element
         }
 

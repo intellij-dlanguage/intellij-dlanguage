@@ -33,7 +33,7 @@ class AutoFunctionReturnVisitor(val holder: ProblemsHolder) : DlangVisitor() {
         }
         val returnStatements = findChildrenOfType(o, DLanguageReturnStatement::class.java)
         for (returnStatement in returnStatements) {
-            if (returnStatement.expression != null) {
+            if (returnStatement.expressions.isNotEmpty()) {
                 return false;
             }
         }

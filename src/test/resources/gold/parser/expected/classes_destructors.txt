@@ -1,22 +1,18 @@
 D Language File
-  DLanguageDeclarationImpl(DECLARATION)
-    DLanguageClassDeclarationImpl(CLASS_DECLARATION)
-      PsiElement(DlangTokenType.class)('class')
-      INTERFACE_OR_CLASS
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('Foo')
-        DLanguageStructBodyImpl(STRUCT_BODY)
-          PsiElement(DlangTokenType.{)('{')
-          DLanguageDeclarationImpl(DECLARATION)
-            DESTRUCTOR
-              PsiElement(DlangTokenType.~)('~')
-              PsiElement(DlangTokenType.this)('this')
-              PsiElement(DlangTokenType.()('(')
-              PsiElement(DlangTokenType.))(')')
-              PsiComment(DlangTokenType.LINE_COMMENT)('// destructor for Foo')
-              DLanguageFunctionBodyImpl(FUNCTION_BODY)
-                DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
-                  DLanguageBlockStatementImpl(BLOCK_STATEMENT)
-                    PsiElement(DlangTokenType.{)('{')
-                    PsiElement(DlangTokenType.})('}')
-          PsiElement(DlangTokenType.})('}')
+  CLASS_DECLARATION
+    PsiElement(DlangTokenType.class)('class')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('Foo')
+    DLanguageStructBodyImpl(STRUCT_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      DESTRUCTOR
+        PsiElement(DlangTokenType.~)('~')
+        PsiElement(DlangTokenType.this)('this')
+        PsiElement(DlangTokenType.()('(')
+        PsiElement(DlangTokenType.))(')')
+        PsiComment(DlangTokenType.LINE_COMMENT)('// destructor for Foo')
+        DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
+          DLanguageBlockStatementImpl(BLOCK_STATEMENT)
+            PsiElement(DlangTokenType.{)('{')
+            PsiElement(DlangTokenType.})('}')
+      PsiElement(DlangTokenType.})('}')

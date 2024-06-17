@@ -4,6 +4,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.psi.*
+import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration
 import io.github.intellij.dlanguage.structure.Visibility
 import io.github.intellij.dlanguage.structure.fromPsiAttribute
 import io.github.intellij.dlanguage.utils.*
@@ -12,27 +13,25 @@ import javax.swing.Icon
 fun presentableName(psi: PsiElement?): String? = when (psi) {
     is Constructor -> "this"
     is PsiNamedElement -> psi.name
-    is Declaration -> presentableName(psi.functionDeclaration)
     is StructBody -> presentableName(psi.parent)
-    is VariableDeclaration -> {
-        if (psi.autoDeclaration == null) {
-            psi.declarators.firstOrNull()?.identifier?.name
-        } else {
-            psi.autoDeclaration?.autoDeclarationParts?.firstOrNull()?.name
-        }
+    is AutoDeclaration -> {
+        psi.autoAssignments.firstOrNull()?.name
+    }
+    is SpecifiedVariableDeclaration -> {
+        psi.identifierInitializers.firstOrNull()?.identifier?.name
     }
     is AliasDeclaration -> {
         psi.aliasInitializers.joinToString(", ") { it.name }
     }
     is Type -> {
-        if (psi.type_2?.typeIdentifierPart != null)
+        if (psi.basicType?.qualifiedIdentifier != null)
             if (psi.typeSuffixs.isNotEmpty())
                 if (psi.typeSuffixs.first().kW_DELEGATE != null || psi.typeSuffixs.first().kW_FUNCTION != null)
-                    psi.type_2?.typeIdentifierPart?.text + " " +  presentableName(psi.typeSuffixs.first())
+                    psi.basicType?.qualifiedIdentifier?.text + " " +  presentableName(psi.typeSuffixs.first())
                 else
-                    psi.type_2?.typeIdentifierPart?.text +  presentableName(psi.typeSuffixs.first())
+                    psi.basicType?.qualifiedIdentifier?.text +  presentableName(psi.typeSuffixs.first())
             else
-                psi.type_2?.typeIdentifierPart?.text
+                psi.basicType?.qualifiedIdentifier?.text
         else
             psi.text
     }
@@ -60,7 +59,6 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
         }
     }
     is Constructor -> DLanguage.Icons.NODE_METHOD
-    is InterfaceOrClass -> getPresentationIcon(psi.parent)
     is EnumDeclaration -> DLanguage.Icons.NODE_ENUM
     is StructDeclaration -> DLanguage.Icons.NODE_STRUCT
     is UnionDeclaration -> DLanguage.Icons.NODE_UNION
@@ -74,12 +72,11 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
 }
 
 fun psiElementIsProperty(psi: FunctionDeclaration): Boolean {
-    val parent = psi.parent as? DLanguageDeclaration ?: return false
 
-    parent.attributes.forEach {
+    /*parent.attributes.forEach {
         if (it.atAttribute?.identifier?.name == "property")
             return true
-    }
+    }*/
 
     return false
 }
@@ -99,7 +96,6 @@ fun psiElementIsMethod(psi: PsiElement?): Boolean {
 
     while (parent != null) {
         val isMethod = when (parent) {
-            is InterfaceOrClass -> true
             is StructDeclaration -> true
             is UnionDeclaration -> true
             else -> false
@@ -137,11 +133,12 @@ fun psiElementGetVisibility(psi: PsiElement?): Visibility {
         }
 
         when (psi) {
-            is InterfaceOrClass -> return Visibility.PUBLIC
+            is ClassDeclaration -> return Visibility.PUBLIC
+            is InterfaceDeclaration -> return Visibility.PUBLIC
             is StructDeclaration -> return Visibility.PUBLIC
             is EnumDeclaration -> return Visibility.PUBLIC
             is UnionDeclaration -> return Visibility.PUBLIC
-            is Declaration -> {
+            /*is Declaration -> {
                 psi.attributes
                     .map { fromPsiAttribute(it) }
                     .filter { it != Visibility.NONE }
@@ -161,7 +158,7 @@ fun psiElementGetVisibility(psi: PsiElement?): Visibility {
                 }
 
                 return extractNodeVisibility(psi.parent)
-            }
+            }*/
             else -> return extractNodeVisibility(psi.parent)
         }
     }

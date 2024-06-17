@@ -10,13 +10,13 @@ import com.intellij.psi.formatter.common.AbstractBlock
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.TokenSet
 import io.github.intellij.dlanguage.features.formatter.impl.createSpacingBuilder
-import io.github.intellij.dlanguage.psi.DLanguageDeclaration
-import io.github.intellij.dlanguage.psi.DLanguageDeclarationsAndStatements
-import io.github.intellij.dlanguage.psi.DLanguageStatement
 import io.github.intellij.dlanguage.psi.DlangTypes.*
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
+import io.github.intellij.dlanguage.psi.interfaces.Expression
+import io.github.intellij.dlanguage.psi.interfaces.Statement
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
 import io.github.intellij.dlanguage.utils.DUtil.getPrevSiblingOfType
-import io.github.intellij.dlanguage.utils.DeclarationOrStatement
+import io.github.intellij.dlanguage.utils.DeclarationBlock
 import java.util.*
 
 
@@ -69,33 +69,28 @@ class DFormattingModelBuilder : FormattingModelBuilder {
         private fun calcIndent(child: ASTNode): Indent {
             val parentType = myNode.elementType
             val type = child.elementType
-            if (type == DECLARATION_OR_STATEMENT) {
-                if ((child.psi as DeclarationOrStatement).declaration?.oP_BRACES_LEFT != null) {
-                    return Indent.getNoneIndent()
-                }
-                if ((child.psi as DeclarationOrStatement).statement?.statementNoCaseNoDefault?.blockStatement != null) {
-                    return Indent.getNoneIndent()
-                }
-                if (parentType == IF_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-                } else if (parentType == FOREACH_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-                } else if (parentType == FOR_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-                } else if (parentType == WHILE_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-                } else if (parentType == CONDITIONAL_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION_OR_STATEMENT, LINE_COMMENT, BLOCK_COMMENT)
-                }
-            } else if (type == DECLARATION) {
-                if (parentType == CONDITIONAL_DECLARATION) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATION, LINE_COMMENT, BLOCK_COMMENT)
-                }
+
+            if (parentType == CONDITIONAL_DECLARATION) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
             }
-            if (type == DECLARATIONS_AND_STATEMENTS) {
-                if (parentType == CASE_STATEMENT || parentType == CASE_RANGE_STATEMENT || parentType == DEFAULT_STATEMENT) {
-                    return indentOfMultipleDeclarationChild(type, DECLARATIONS_AND_STATEMENTS, LINE_COMMENT, BLOCK_COMMENT)
-                }
+            if ((child.psi as? DeclarationBlock)?.oP_BRACES_LEFT != null) {
+                return Indent.getNoneIndent()
+            }
+            if (parentType == IF_STATEMENT) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+            } else if (parentType == FOREACH_STATEMENT) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+            } else if (parentType == FOR_STATEMENT) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+            } else if (parentType == WHILE_STATEMENT) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+            } else if (parentType == CONDITIONAL_STATEMENT) {
+                return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+            }
+            if (parentType == CASE_STATEMENT || parentType == CASE_RANGE_STATEMENT || parentType == DEFAULT_STATEMENT) {
+                if (type == KW_CASE || type == ARGUMENT_LIST || type == OP_COLON)
+                    return indentOfMultipleDeclarationChild(type, LINE_COMMENT, BLOCK_COMMENT)
+                return Indent.getNormalIndent()
             }
             if (type == OP_BRACES_RIGHT || type == OP_BRACES_LEFT) {
                 return Indent.getNoneIndent()
@@ -134,22 +129,20 @@ class DFormattingModelBuilder : FormattingModelBuilder {
                 val psi1 = n1.psi
                 val psi2 = n2.psi
 
-                if (psi1 is DLanguageDeclaration && psi2 is DLanguageDeclaration) {
+                if (psi1 is Declaration && psi2 is Declaration) {
                     return lineBreak()
-                } else if (psi1.text == "{" && psi2 is DLanguageDeclarationsAndStatements) {
+                } else if (psi1.text == "{" && psi2 is Statement) {
                     return lineBreak()
-                } else if (psi1.text == "{" && psi2 is DLanguageDeclaration) {
+                } else if (psi1.text == "{" && psi2 is Declaration) {
                     return lineBreak()
-                } else if (psi2.text == "}" && psi1 is DLanguageDeclarationsAndStatements) {
+                } else if (psi2.text == "}" && psi1 is Statement) {
                     return lineBreak()
-                } else if (psi2.text == "}" && psi1 is DLanguageDeclaration) {
-                    return lineBreak()
-                } else if (psi1 is DlangModuleDeclaration && psi2 is DLanguageDeclaration) {
+                } else if (psi2.text == "}" && psi1 is Declaration) {
                     return lineBreak()
                 }
 
                 //
-                if (n1.elementType === OP_BRACES_LEFT && psi2 is DLanguageStatement) {
+                if (n1.elementType === OP_BRACES_LEFT && psi2 is Statement) {
                     return lineBreak()
                 }
 //
@@ -165,21 +158,28 @@ class DFormattingModelBuilder : FormattingModelBuilder {
 
         override fun getChildAttributes(newChildIndex: Int): ChildAttributes {
             // This governs the indent on the new line when pressing the ENTER key
-            val childIndent = Indent.getNoneIndent()
 
-            val type = myNode.elementType
-            if (type == BLOCK_STATEMENT || type == STRUCT_BODY || type == TEMPLATE_DECLARATION || type == CONDITIONAL_DECLARATION || type == CONDITIONAL_STATEMENT
-                || type == ENUM_BODY) {
-                return ChildAttributes(Indent.getNormalIndent(), null)
+            if (myNode.psi is Expression) {
+                ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null)
             }
 
-            if (type == EXPRESSION_STATEMENT)
-                return ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null)
-
-            return ChildAttributes(childIndent, null)
+            return when (myNode.elementType) {
+                EXPRESSION_STATEMENT ->
+                    ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null)
+                BLOCK_STATEMENT,
+                CONDITIONAL_DECLARATION,
+                CONDITIONAL_STATEMENT,
+                DECLARATION_BLOCK,
+                ENUM_BODY,
+                STRUCT_BODY,
+                TEMPLATE_DECLARATION ->
+                    ChildAttributes(Indent.getNormalIndent(), null)
+                else ->
+                    ChildAttributes(Indent.getNoneIndent(), null)
+            }
         }
 
-        override fun isLeaf(): Boolean = false // todo implement
+        override fun isLeaf(): Boolean =  node.firstChildNode == null
 
         companion object {
 
@@ -200,10 +200,8 @@ class DFormattingModelBuilder : FormattingModelBuilder {
             )
 
             private fun isTopLevelDeclaration(element: PsiElement): Boolean {
-                return element is DlangModuleDeclaration
-                    || element is io.github.intellij.dlanguage.psi.DLanguageImportDeclaration
-                    || element is DLanguageDeclaration
-                    || element is DLanguageStatement && element.getParent() is io.github.intellij.dlanguage.psi.DlangPsiFile
+                return element is Declaration
+                    || element is Statement && element.getParent() is io.github.intellij.dlanguage.psi.DlangPsiFile
             }
 
             private fun lineBreak(keepLineBreaks: Boolean = true): Spacing {

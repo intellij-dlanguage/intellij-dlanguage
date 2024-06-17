@@ -39,12 +39,13 @@ class DSignatureDocGenerator {
             is UnionDeclaration -> appendUnionSignature(builder, element)
             is MixinTemplateDeclaration -> appendMixinTemplateDeclaration(builder, element)
             is TemplateDeclaration -> appendTemplateDeclaration(builder, element)
-            is InterfaceOrClass -> appendInterfaceOrClassSignature(builder, element)
+            is InterfaceDeclaration -> appendInterfaceSignature(builder, element)
+            is ClassDeclaration -> appendClassSignature(builder, element)
             is Parameter -> appendParameterSignature(builder, element)
-            is Declarator -> {
-                appendType(builder, (element.parent as VariableDeclaration).type)
+            is IdentifierInitializer -> {
+                appendType(builder, (element.parent as SpecifiedVariableDeclaration).basicType!!, (element.parent as SpecifiedVariableDeclaration).typeSuffixs)
                 builder.append(" ").append(element.identifier?.text)}
-            is AutoDeclarationPart -> appendAutoDeclarationPartSignature(builder, element)
+            is AutoAssignment -> appendAutoAssignmentSignature(builder, element)
             is AliasInitializer -> appendAliasInitializerSignature(builder, element)
             is TemplateParameter -> appendTemplateParameter(builder, element)
             is EnumMember -> {
@@ -90,8 +91,8 @@ class DSignatureDocGenerator {
         if (attributes != null) {
             builder.append(getPrefixAttributes(attributes))
         }
-        if (element.type != null)
-            appendType(builder, element.type)
+        if (element.basicType != null)
+            appendType(builder, element.basicType!!, element.typeSuffixes)
         else if (element.autoElem != null)
             HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, element.autoElem.text, highlightingSaturation)
         builder.append(" ")
@@ -131,9 +132,22 @@ class DSignatureDocGenerator {
         builder.append(" ").append(element.identifier?.text)
     }
 
-    private fun appendInterfaceOrClassSignature(builder: StringBuilder, element: InterfaceOrClass) {
-        val type: String = if (element.parent is InterfaceDeclaration) "interface" else "class"
-        HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, type, highlightingSaturation)
+    private fun appendClassSignature(builder: StringBuilder, element: ClassDeclaration) {
+        HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, "class", highlightingSaturation)
+        builder.append(" ")
+        builder.append(element.identifier?.text)
+        builder.append(" ")
+        if (element.templateParameters != null) {
+            appendTemplateParameters(builder, element.templateParameters!!)
+        }
+        if (element.baseClassList?.baseClasss?.isNotEmpty() == true) {
+            builder.append(": ")
+            builder.append(element.baseClassList?.baseClasss?.joinToString(", ") { it.text })
+        }
+    }
+
+    private fun appendInterfaceSignature(builder: StringBuilder, element: InterfaceDeclaration) {
+        HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, "interface", highlightingSaturation)
         builder.append(" ")
         builder.append(element.identifier?.text)
         builder.append(" ")
@@ -159,7 +173,7 @@ class DSignatureDocGenerator {
         // add constraint?
     }
 
-    private fun appendAutoDeclarationPartSignature(builder: StringBuilder, element: AutoDeclarationPart) {
+    private fun appendAutoAssignmentSignature(builder: StringBuilder, element: AutoAssignment) {
         builder.append((element.parent as AutoDeclaration).storageClasss.joinToString(" "){
             HtmlSyntaxInfoUtil.getStyledSpan(DColor.KEYWORD.textAttributesKey, it.text, highlightingSaturation)
         }).append(" ").append(element.identifier?.text)
@@ -358,101 +372,126 @@ class DSignatureDocGenerator {
         return builder.trim().toString()
     }
 
-    private fun appendType(builder: StringBuilder, element: Type?): StringBuilder {
-        element?:return builder
-
-        if (element.type_2 != null) {
-            // Prefix keywords
-            if (element.type_2!!.kW_CONST != null) {
-                HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, "const", highlightingSaturation)
-            }
-            if (element.type_2!!.kW_INOUT != null) {
-                HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, "inout", highlightingSaturation)
-            }
-            if(element.type_2!!.oP_PAR_LEFT != null) {
-                builder.append("(")
-            }
-
-            // type itself
-            if (element.type_2!!.builtinType != null) {
-                HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, element.type_2!!.builtinType!!.text, highlightingSaturation)
-            } else if (element.type_2!!.type != null) {
-                appendType(builder, element.type_2!!.type)
-            } else if (element.type_2!!.typeIdentifierPart != null) {
-                appendTypeIdentifierPart(builder, element.type_2!!.typeIdentifierPart!!)
-            }
-
-            if(element.type_2!!.oP_PAR_RIGHT != null) {
-                builder.append(")")
-            }
-
-            // suffix
-            if (element.typeSuffixs.isNotEmpty()) {
-                if (element.typeSuffixs.size > 1 &&
-                    (element.typeSuffixs.first().oP_ASTERISK == null && element.typeSuffixs.first().oP_BRACKET_LEFT == null)) {
-                    // keep star and [ attached to their type
-                    builder.append(" ")
-                }
-                builder.append(element.typeSuffixs.joinToString("") {
-                    val parametersBuilder = StringBuilder()
-                    if (it.kW_DELEGATE != null) {
-                        HtmlSyntaxInfoUtil.appendStyledSpan(parametersBuilder, DColor.KEYWORD.textAttributesKey, "delegate", highlightingSaturation)
-                    }
-                    if (it.kW_FUNCTION != null) {
-                        HtmlSyntaxInfoUtil.appendStyledSpan(parametersBuilder, DColor.KEYWORD.textAttributesKey, "function", highlightingSaturation)
-                    }
-                    if (it.parameters != null) {
-                        parametersBuilder.append("(")
-                        appendParametersSignature(parametersBuilder, it.parameters)
-                        parametersBuilder.append(")")
-                        return@joinToString parametersBuilder.toString()
-                    }
-                    return@joinToString it.text
-                })
-            }
-        } else {
-            builder.append(element.type_2!!.text)
-            if (element.typeSuffixs.isNotEmpty()) {
-                builder.append(element.typeSuffixs.joinToString("") { it.text })
-            }
+    private fun appendType(builder: StringBuilder, basicType: BasicType, typeSuffixes: List<TypeSuffix>): StringBuilder {
+        // Prefix keywords
+        if (basicType.kW_CONST != null) {
+            HtmlSyntaxInfoUtil.appendStyledSpan(
+                builder,
+                DColor.KEYWORD.textAttributesKey,
+                "const",
+                highlightingSaturation
+            )
+        }
+        if (basicType.kW_INOUT != null) {
+            HtmlSyntaxInfoUtil.appendStyledSpan(
+                builder,
+                DColor.KEYWORD.textAttributesKey,
+                "inout",
+                highlightingSaturation
+            )
+        }
+        if (basicType.oP_PAR_LEFT != null) {
+            builder.append("(")
         }
 
+        // type itself
+        if (basicType.builtinType != null) {
+            HtmlSyntaxInfoUtil.appendStyledSpan(
+                builder,
+                DColor.KEYWORD.textAttributesKey,
+                basicType.builtinType!!.text,
+                highlightingSaturation
+            )
+        } else if (basicType.type != null) {
+            appendType(builder, basicType.type)
+        } else if (basicType.qualifiedIdentifier != null) {
+            appendQualifiedIdentifier(builder, basicType.qualifiedIdentifier!!)
+        }
+
+        if (basicType.oP_PAR_RIGHT != null) {
+            builder.append(")")
+        }
+
+        // suffix
+        if (typeSuffixes.isNotEmpty()) {
+            if (typeSuffixes.size > 1 &&
+                (typeSuffixes.first().oP_ASTERISK == null && typeSuffixes.first().oP_BRACKET_LEFT == null)
+            ) {
+                // keep star and [ attached to their type
+                builder.append(" ")
+            }
+            builder.append(typeSuffixes.joinToString("") {
+                val parametersBuilder = StringBuilder()
+                if (it.kW_DELEGATE != null) {
+                    HtmlSyntaxInfoUtil.appendStyledSpan(
+                        parametersBuilder,
+                        DColor.KEYWORD.textAttributesKey,
+                        "delegate",
+                        highlightingSaturation
+                    )
+                }
+                if (it.kW_FUNCTION != null) {
+                    HtmlSyntaxInfoUtil.appendStyledSpan(
+                        parametersBuilder,
+                        DColor.KEYWORD.textAttributesKey,
+                        "function",
+                        highlightingSaturation
+                    )
+                }
+                if (it.parameters != null) {
+                    parametersBuilder.append("(")
+                    appendParametersSignature(parametersBuilder, it.parameters)
+                    parametersBuilder.append(")")
+                    return@joinToString parametersBuilder.toString()
+                }
+                return@joinToString it.text
+            })
+        }
         return builder
     }
 
-    private fun appendTypeIdentifierPart(builder: StringBuilder, element: TypeIdentifierPart) {
-        if (element.identifierOrTemplateInstance != null) {
-            if (element.identifierOrTemplateInstance!!.identifier != null) {
-                builder.append(element.identifierOrTemplateInstance!!.identifier!!.text)
-            }
-            else {
-                // template instance
-                builder.append(element.identifierOrTemplateInstance!!.templateInstance!!.identifier!!.text)
-                if (element.identifierOrTemplateInstance!!.templateInstance!!.templateArguments?.templateSingleArgument != null) {
-                    builder.append("!")
-                    appendTemplateSingleArgument(builder, element.identifierOrTemplateInstance!!.templateInstance!!.templateArguments!!.templateSingleArgument!!)
-                }
-                else {
-                    builder.append("!(")
-                    appendTemplateArguments(builder, element.identifierOrTemplateInstance!!.templateInstance!!.templateArguments!!)
-                    builder.append(")")
-                }
-            }
 
-            if (element.oP_BRACKET_LEFT != null)
-                builder.append("[")
-            if (element.assignExpression != null)
-                builder.append(element.assignExpression!!.text)
-            if (element.oP_BRACKET_RIGHT != null)
-                builder.append("]")
-
-            if (element.oP_DOT != null) {
-                builder.append(".")
-                appendTypeIdentifierPart(builder, element.typeIdentifierPart!!)
-            }
+    private fun appendType(builder: StringBuilder, element: Type?): StringBuilder {
+        element?:return builder
+        if (element.typeConstructors.isNotEmpty()) {
+            builder.append(element.typeConstructors.joinToString { it.text })
+            builder.append(" ")
+        }
+        if (element.basicType != null) {
+            appendType(builder, element.basicType!!, element.typeSuffixs)
         } else {
             builder.append(element.text)
         }
+        return builder
+    }
+
+    private fun appendQualifiedIdentifier(builder: StringBuilder, element: QualifiedIdentifier) {
+        if (element.qualifiedIdentifier != null) {
+            appendQualifiedIdentifier(builder, element.qualifiedIdentifier!!)
+            builder.append(".")
+        }
+        if (element.identifier != null) {
+            builder.append(element.identifier!!.text)
+        } else {
+            // template instance
+            builder.append(element.templateInstance!!.identifier!!.text)
+            if (element.templateInstance!!.templateArguments?.templateSingleArgument != null) {
+                builder.append("!")
+                appendTemplateSingleArgument(builder, element.templateInstance!!.templateArguments!!.templateSingleArgument!!)
+            }
+            else {
+                builder.append("!(")
+                appendTemplateArguments(builder, element.templateInstance!!.templateArguments!!)
+                builder.append(")")
+            }
+        }
+
+        if (element.oP_BRACKET_LEFT != null)
+            builder.append("[")
+        if (element.expression != null)
+            builder.append(element.expression!!.text)
+        if (element.oP_BRACKET_RIGHT != null)
+            builder.append("]")
     }
 
     private fun appendTemplateArguments(builder: StringBuilder, element: TemplateArguments) {

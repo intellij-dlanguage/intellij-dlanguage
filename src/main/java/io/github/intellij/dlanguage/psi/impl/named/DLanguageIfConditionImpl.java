@@ -5,16 +5,14 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageExpression;
-import io.github.intellij.dlanguage.psi.DLanguageIfCondition;
-import io.github.intellij.dlanguage.psi.DlangTypes;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
+import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.stubs.DlangIfConditionStub;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Created by francis on 7/14/2017.
@@ -49,10 +47,16 @@ public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DlangI
         return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
     }
 
-    @Nullable
+    @NotNull
     @Override
-    public DLanguageExpression getExpression() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageExpression.class);
+    public List<DLanguageAssignExpression> getAssignExpressions() {
+        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageAssignExpression.class);
+    }
+
+    @Override
+    @NotNull
+    public List<PsiElement> getOP_COMMAs() {
+        return findChildrenByType(DlangTypes.OP_COMMA);
     }
 
     @Nullable

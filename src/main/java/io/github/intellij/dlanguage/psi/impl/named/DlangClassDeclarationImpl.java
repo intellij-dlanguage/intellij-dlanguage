@@ -10,37 +10,44 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.named.DlangInterfaceOrClass;
 import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangInterfaceOrClassStub;
+import io.github.intellij.dlanguage.stubs.DlangClassDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static io.github.intellij.dlanguage.psi.DlangTypes.KW_CLASS;
 import static io.github.intellij.dlanguage.psi.DlangTypes.OP_COLON;
 
-public class DlangInterfaceOrClassImpl extends
-    DNamedStubbedPsiElementBase<DlangInterfaceOrClassStub> implements
-    DlangInterfaceOrClass {
+public class DlangClassDeclarationImpl extends
+    DNamedStubbedPsiElementBase<DlangClassDeclarationStub> implements
+    DlangClassDeclaration {
 
-    public DlangInterfaceOrClassImpl(final DlangInterfaceOrClassStub stub, final IStubElementType type) {
+    public DlangClassDeclarationImpl(final DlangClassDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
-    public DlangInterfaceOrClassImpl(final ASTNode node) {
+    public DlangClassDeclarationImpl(final ASTNode node) {
         super(node);
     }
 
     public void accept(@NotNull final DlangVisitor visitor) {
         visitor.visitDNamedElement(this);
-        visitor.visitInterfaceOrClass(this);
+        visitor.visitClassDeclaration(this);
     }
 
     public void accept(@NotNull final PsiElementVisitor visitor) {
         if (visitor instanceof DlangVisitor) accept((DlangVisitor) visitor);
         else super.accept(visitor);
+    }
+
+    @Nullable
+    @Override
+    public PsiElement getKW_CLASS() {
+        return findChildByType(KW_CLASS);
     }
 
     @Override

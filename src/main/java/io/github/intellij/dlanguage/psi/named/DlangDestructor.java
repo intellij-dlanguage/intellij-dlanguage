@@ -3,20 +3,21 @@ package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
 import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
 import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
+import io.github.intellij.dlanguage.psi.interfaces.Declaration;
+import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
 import io.github.intellij.dlanguage.stubs.DlangDestructorStub;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DlangDestructor extends PsiElement, DCompositeElement,
+public interface DlangDestructor extends PsiElement, DCompositeElement, Declaration,
     StubBasedPsiElement<DlangDestructorStub> {
 
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    FunctionBody getFunctionBody();
 
     @Nullable
     PsiElement getOP_SCOLON();

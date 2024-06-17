@@ -22,7 +22,7 @@ class DTopLevelDeclarationsByModule : StringStubIndexExtension<DNamedElement>() 
 
     companion object {
         val KEY: StubIndexKey<String, DNamedElement> = StubIndexKey.createIndexKey("d.globally.accessible.module")
-        val VERSION = 4
+        val VERSION = 5
         fun <S : NamedStubBase<T>, T : DNamedElement> indexTopLevelDeclarationsByModule(stub: S, sink: IndexSink) {
             if (stub !is io.github.intellij.dlanguage.stubs.DlangIdentifierStub && topLevelDeclaration(stub)) {
                 val fileName = (stub.psi.containingFile as DlangPsiFile).getFullyQualifiedModuleName()

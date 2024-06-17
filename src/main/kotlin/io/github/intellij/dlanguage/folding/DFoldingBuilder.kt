@@ -21,17 +21,20 @@ import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.psi.ext.*
 import io.github.intellij.dlanguage.psi.impl.*
 import io.github.intellij.dlanguage.psi.impl.named.DlangTemplateDeclarationImpl
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration
-import io.github.intellij.dlanguage.utils.DeclarationOrStatement
-import io.github.intellij.dlanguage.utils.FunctionBody
+import io.github.intellij.dlanguage.utils.BlockStatement
+import io.github.intellij.dlanguage.utils.DeclarationBlock
+import io.github.intellij.dlanguage.utils.FunctionDeclaration
+import io.github.intellij.dlanguage.utils.ImportDeclaration
 import java.util.ArrayList
 
 class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
     private companion object {
-        val ONE_LINER_PLACEHOLDERS_EXTRA_LENGTH = 4
+        const val ONE_LINER_PLACEHOLDERS_EXTRA_LENGTH = 4
     }
 
-    private fun getPlaceholderTextForPsi(psi: PsiElement): String? =
+    private fun getPlaceholderTextForPsi(psi: PsiElement): String =
         when (psi) {
             is PsiComment -> {
                 "/* ... */"
@@ -41,8 +44,9 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             is DLanguageBlockStatement,
             is DlangTemplateDeclaration,
             is DLanguageStructInitializer,
-            is DLanguageAnonymousEnumDeclarationImpl,
+            is DLanguageAnonymousEnumDeclaration,
             is DLanguageEnumBody,
+            is DLanguageDeclarationBlock,
             is DLanguageConditionalDeclaration -> "{...}"
             is DLanguageLinkageAttribute -> {
                 when {
@@ -53,10 +57,10 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             else -> "..."
         }
 
-    override fun getPlaceholderText(node: ASTNode): String? =
-        when {
-            node.elementType == OP_BRACES_LEFT -> " { "
-            node.elementType == OP_BRACES_RIGHT -> " }"
+    override fun getPlaceholderText(node: ASTNode): String =
+        when (node.elementType) {
+            //OP_BRACES_LEFT -> " { "
+            //OP_BRACES_RIGHT -> " }"
             else -> getPlaceholderTextForPsi(node.psi)
         }
 
@@ -104,6 +108,10 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             fold(o)
         }
 
+        override fun visitDeclarationBlock(o: DLanguageDeclarationBlockImpl) {
+            fold(o)
+        }
+
         override fun visitStructBody(o: DLanguageStructBodyImpl) = fold(o)
 
         override fun visitTemplateDeclaration(o: DlangTemplateDeclarationImpl) =
@@ -122,7 +130,7 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
         override fun visitLinkageAttribute(o: DLanguageLinkageAttributeImpl) {
             if (o.isExternal) {
-                val decl = o.parent.parent as? DLanguageDeclaration ?: return
+                val decl = o.parent as? Declaration ?: return
                 foldBetween(o, decl.leftBraces, decl.rightBraces)
             }
         }
@@ -153,46 +161,24 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         }
 
         override fun visitImportDeclaration(importDecl: DLanguageImportDeclarationImpl) {
-            val decl = importDecl.parent as? DLanguageDeclaration ?: return
-            val insideBody = decl.parent is DeclarationOrStatement
-
             // Skip if previous line is import declaration
-            val prevSibling = if (insideBody) {
-                val prev = importDecl.parent?.parent?.getPrevNonCommentSibling() as? DeclarationOrStatement
-                prev?.declaration
-            } else {
-                importDecl.parent?.getPrevNonCommentSibling()
-            }
-
-            val prevDecl = prevSibling as? DLanguageDeclaration
-            if (prevDecl?.importDeclaration != null) return
+            if (importDecl.getPrevNonCommentSibling() is ImportDeclaration) return
 
             // Fold trailing imports
-            if (decl.importDeclaration == null) return
-            var lastTrailing = decl
+            var lastTrailing: ImportDeclaration = importDecl
 
             while (true) {
-                val nextSibling = if (insideBody) {
-                    lastTrailing.parent.getNextNonCommentSibling()
-                } else {
-                    lastTrailing.getNextNonCommentSibling()
-                }
+                val nextSibling = lastTrailing.getNextNonCommentSibling()
+                if (nextSibling !is ImportDeclaration) break
 
-                val nextDecl = if (insideBody) {
-                    (nextSibling as? DeclarationOrStatement)?.declaration ?: break
-                } else {
-                    nextSibling as? DLanguageDeclaration ?: break
-                }
-                if (nextDecl.importDeclaration == null) break
-
-                lastTrailing = nextDecl
+                lastTrailing = nextSibling
             }
 
             // Don’t fold 1 line imports
-            if (lastTrailing == decl)
+            if (lastTrailing == importDecl)
                 return
 
-            val startOffset = decl.importDeclaration?.kW_IMPORT?.textRange?.endOffset ?: return
+            val startOffset = importDecl.kW_IMPORT?.textRange?.endOffset ?: return
             val endOffset = lastTrailing.textRange.endOffset
             if (startOffset + 1 >= endOffset) return
             val range = TextRange(startOffset + 1, endOffset)
@@ -201,9 +187,6 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
         }
 
         private fun tryFoldBlockWhitespaces(block: DLanguageBlockStatement): Boolean {
-            if (block.parent !is FunctionBody)
-                return false
-
             val doc = PsiDocumentManager.getInstance(block.project).getDocument(block.containingFile) ?: return false
             val maxLength = rightMargin - block.getOffsetInLine(doc) - ONE_LINER_PLACEHOLDERS_EXTRA_LENGTH
             if (!block.isSingleLine(doc, maxLength)) return false
@@ -214,14 +197,15 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             // void foo() { \n
             //     writeln("Hello world"); \n
             // }
-            if (block.text.split('\n').size - 1 > 2) return false
+            if (block.statements.size < 2) return false
 
-            /// Get previous  whitespace if exist as start region
-            val leftEl = leftBrace.parent?.parent?.prevSibling as? PsiWhiteSpace ?: leftBrace
-            val body = block.declarationsAndStatements ?: return false
+            /// Get previous whitespace if exist as start region
+            val leftEl = leftBrace.parent?.prevSibling as? PsiWhiteSpace ?: leftBrace
+            val body = block.statements
+            if (body.isEmpty()) return false
 
-            val range1 = TextRange(leftEl.textOffset, body.textOffset)
-            val range2 = TextRange(body.textRange.endOffset, rightBrace.textRange.endOffset)
+            val range1 = TextRange(leftEl.textOffset, body.first().textOffset)
+            val range2 = TextRange(body.last().textRange.endOffset, rightBrace.textRange.endOffset)
 
             val group = FoldingGroup.newGroup("one-liner")
             descriptors += FoldingDescriptor(leftBrace.node, range1, group)

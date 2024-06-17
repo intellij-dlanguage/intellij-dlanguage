@@ -10,20 +10,21 @@ import io.github.intellij.dlanguage.psi.impl.named.*;
 public interface DlangTypes {
     IElementType IDENTIFIER = DElementTypeFactory.factory("IDENTIFIER");
     IElementType FUNCTION_DECLARATION = DElementTypeFactory.factory("FUNCTION_DECLARATION");
-    IElementType INTERFACE_OR_CLASS = DElementTypeFactory.factory("INTERFACE_OR_CLASS");
+    IElementType CLASS_DECLARATION =DElementTypeFactory.factory("CLASS_DECLARATION");
+    IElementType INTERFACE_DECLARATION = DElementTypeFactory.factory("INTERFACE_DECLARATION");
     IElementType TEMPLATE_DECLARATION = DElementTypeFactory.factory("TEMPLATE_DECLARATION");
     IElementType CONSTRUCTOR = DElementTypeFactory.factory("CONSTRUCTOR");
     IElementType DESTRUCTOR = DElementTypeFactory.factory("DESTRUCTOR");
     IElementType STRUCT_DECLARATION = DElementTypeFactory.factory("STRUCT_DECLARATION");
     IElementType ALIAS_INITIALIZER = DElementTypeFactory.factory("ALIAS_INITIALIZER");
     IElementType MODULE_DECLARATION = DElementTypeFactory.factory("MODULE_DECLARATION");
-    IElementType DECLARATOR = DElementTypeFactory.factory("DECLARATOR");
+    IElementType IDENTIFIER_INITIALIZER = DElementTypeFactory.factory("IDENTIFIER_INITIALIZER");
     IElementType LABELED_STATEMENT = DElementTypeFactory.factory("LABELED_STATEMENT");
     IElementType SHARED_STATIC_CONSTRUCTOR = DElementTypeFactory.factory("SHARED_STATIC_CONSTRUCTOR");
     IElementType SHARED_STATIC_DESTRUCTOR = DElementTypeFactory.factory("SHARED_STATIC_DESTRUCTOR");
     IElementType STATIC_CONSTRUCTOR = DElementTypeFactory.factory("STATIC_CONSTRUCTOR");
     IElementType STATIC_DESTRUCTOR = DElementTypeFactory.factory("STATIC_DESTRUCTOR");
-    IElementType AUTO_DECLARATION_PART = DElementTypeFactory.factory("AUTO_DECLARATION_PART");
+    IElementType AUTO_ASSIGNMENT = DElementTypeFactory.factory("AUTO_ASSIGNMENT");
     IElementType ENUM_DECLARATION = DElementTypeFactory.factory("ENUM_DECLARATION");
     IElementType UNION_DECLARATION = DElementTypeFactory.factory("UNION_DECLARATION");
     IElementType SINGLE_IMPORT = DElementTypeFactory.factory("SINGLE_IMPORT");
@@ -33,7 +34,6 @@ public interface DlangTypes {
     IElementType FOREACH_TYPE = DElementTypeFactory.factory("FOREACH_TYPE");
     IElementType PARAMETER = DElementTypeFactory.factory("PARAMETER");
     IElementType TEMPLATE_PARAMETER = DElementTypeFactory.factory("TEMPLATE_PARAMETER");
-    IElementType EPONYMOUS_TEMPLATE_DECLARATION = DElementTypeFactory.factory("EPONYMOUS_TEMPLATE_DECLARATION");
     IElementType ENUM_MEMBER = DElementTypeFactory.factory("ENUM_MEMBER");
     IElementType NAMED_IMPORT_BIND = DElementTypeFactory.factory("NAMED_IMPORT_BIND");
     IElementType VERSION_SPECIFICATION = DElementTypeFactory.factory("VERSION_SPECIFICATION");
@@ -48,6 +48,7 @@ public interface DlangTypes {
     DlangElementType ANONYMOUS_ENUM_DECLARATION = new DlangElementType("ANONYMOUS_ENUM_DECLARATION");
     DlangElementType ARGUMENT_LIST = new DlangElementType("ARGUMENT_LIST");
     DlangElementType ARGUMENTS = new DlangElementType("ARGUMENTS");
+    DlangElementType ARRAY_ACCESS_EXPRESSION = new DlangElementType("ARRAY_ACCESS_EXPRESSION");
     DlangElementType ARRAY_INITIALIZER = new DlangElementType("ARRAY_INITIALIZER");
     DlangElementType ARRAY_LITERAL = new DlangElementType("ARRAY_LITERAL");
     DlangElementType ARRAY_MEMBER_INITIALIZATION = new DlangElementType("ARRAY_MEMBER_INITIALIZATION");
@@ -74,10 +75,11 @@ public interface DlangTypes {
     DlangElementType ASSOC_ARRAY_LITERAL = new DlangElementType("ASSOC_ARRAY_LITERAL");
     DlangElementType AT_ATTRIBUTE = new DlangElementType("AT_ATTRIBUTE");
     DlangElementType ATTRIBUTE = new DlangElementType("ATTRIBUTE");
-    DlangElementType ATTRIBUTE_DECLARATION = new DlangElementType("ATTRIBUTE_DECLARATION");
+    DlangElementType ATTRIBUTE_SPECIFIER = new DlangElementType("ATTRIBUTE_SPECIFIER");
     DlangElementType AUTO_DECLARATION = new DlangElementType("AUTO_DECLARATION");
     DlangElementType BASE_CLASS = new DlangElementType("BASE_CLASS");
     DlangElementType BASE_CLASS_LIST = new DlangElementType("BASE_CLASS_LIST");
+    DlangElementType BASIC_TYPE = new DlangElementType("BASIC_TYPE");
     DlangElementType BLOCK_STATEMENT = new DlangElementType("BLOCK_STATEMENT");
     DlangElementType BREAK_STATEMENT = new DlangElementType("BREAK_STATEMENT");
     DlangElementType CASE_RANGE_STATEMENT = new DlangElementType("CASE_RANGE_STATEMENT");
@@ -85,26 +87,26 @@ public interface DlangTypes {
     DlangElementType CAST_EXPRESSION = new DlangElementType("CAST_EXPRESSION");
     DlangElementType CAST_QUALIFIER = new DlangElementType("CAST_QUALIFIER");
     DlangElementType CATCHES = new DlangElementType("CATCHES");
-    DlangElementType CMP_EXPRESSION = new DlangElementType("CMP_EXPRESSION");
+    DlangElementType COMMA_EXPRESSION = new DlangElementType("COMMA_EXPRESSION");
     DlangElementType COMPILE_CONDITION = new DlangElementType("COMPILE_CONDITION");
     DlangElementType CONDITIONAL_DECLARATION = new DlangElementType("CONDITIONAL_DECLARATION");
     DlangElementType CONDITIONAL_STATEMENT = new DlangElementType("CONDITIONAL_STATEMENT");
     DlangElementType CONSTRAINT = new DlangElementType("CONSTRAINT");
     DlangElementType CONTINUE_STATEMENT = new DlangElementType("CONTINUE_STATEMENT");
-    DlangElementType CLASS_DECLARATION = new DlangElementType("CLASS_DECLARATION");
     DlangElementType DEBUG_CONDITION = new DlangElementType("DEBUG_CONDITION");
     DlangElementType DEBUG_SPECIFICATION = new DlangElementType("DEBUG_SPECIFICATION");
-    DlangElementType DECLARATION = new DlangElementType("DECLARATION");
-    DlangElementType DECLARATION_OR_STATEMENT = new DlangElementType("DECLARATION_OR_STATEMENT");
-    DlangElementType DECLARATIONS_AND_STATEMENTS = new DlangElementType("DECLARATIONS_AND_STATEMENTS");
+    DlangElementType DECLARATION_BLOCK = new DlangElementType("DECLARATION_BLOCK");
+    DlangElementType DECLARATION_STATEMENT = new DlangElementType("DECLARATION_STATEMENT");
     DlangElementType DEFAULT_STATEMENT = new DlangElementType("DEFAULT_STATEMENT");
     DlangElementType DELETE_EXPRESSION = new DlangElementType("DELETE_EXPRESSION");
     DlangElementType DEPRECATED = new DlangElementType("DEPRECATED");
     DlangElementType DO_STATEMENT = new DlangElementType("DO_STATEMENT");
+    DlangElementType DOLLAR_EXPRESSION = new DlangElementType("DOLLAR_EXPRESSION");
+    DlangElementType EMPTY_DECLARATION = new DlangElementType("EMPTY_DECLARATION");
+    DlangElementType EMPTY_STATEMENT = new DlangElementType("EMPTY_STATEMENT");
     DlangElementType ENUM_BODY = new DlangElementType("ENUM_BODY");
     DlangElementType ENUM_MEMBER_ATTRIBUTE = new DlangElementType("ENUM_MEMBER_ATTRIBUTE");
     DlangElementType EQUAL_EXPRESSION = new DlangElementType("EQUAL_EXPRESSION");
-    DlangElementType EXPRESSION = new DlangElementType("EXPRESSION");
     DlangElementType EXPRESSION_STATEMENT = new DlangElementType("EXPRESSION_STATEMENT");
     DlangElementType FINAL_SWITCH_STATEMENT = new DlangElementType("FINAL_SWITCH_STATEMENT");
     DlangElementType FINALLY = new DlangElementType("FINALLY");
@@ -112,14 +114,13 @@ public interface DlangTypes {
     DlangElementType FOREACH_STATEMENT = new DlangElementType("FOREACH_STATEMENT");
     DlangElementType FOREACH_TYPE_LIST = new DlangElementType("FOREACH_TYPE_LIST");
     DlangElementType FUNCTION_ATTRIBUTE = new DlangElementType("FUNCTION_ATTRIBUTE");
-    DlangElementType FUNCTION_BODY = new DlangElementType("FUNCTION_BODY");
     DlangElementType FUNCTION_CALL_EXPRESSION = new DlangElementType("FUNCTION_CALL_EXPRESSION");
     DlangElementType FUNCTION_CONTRACT = new DlangElementType("FUNCTION_CONTRACT");
     DlangElementType FUNCTION_LITERAL_EXPRESSION = new DlangElementType("FUNCTION_LITERAL_EXPRESSION");
+    DlangElementType FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION = new DlangElementType("FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION");
+    DlangElementType FUNDAMENTAL_TYPE_PROPERTY_EXPRESSION = new DlangElementType("FUNDAMENTAL_TYPE_PROPERTY_EXPRESSION");
     DlangElementType GOTO_STATEMENT = new DlangElementType("GOTO_STATEMENT");
     DlangElementType IDENTIFIER_CHAIN = new DlangElementType("IDENTIFIER_CHAIN");
-    DlangElementType IDENTIFIER_OR_TEMPLATE_CHAIN = new DlangElementType("IDENTIFIER_OR_TEMPLATE_CHAIN");
-    DlangElementType IDENTIFIER_OR_TEMPLATE_INSTANCE = new DlangElementType("IDENTIFIER_OR_TEMPLATE_INSTANCE");
     DlangElementType IDENTITY_EXPRESSION = new DlangElementType("IDENTITY_EXPRESSION");
     DlangElementType IF_STATEMENT = new DlangElementType("IF_STATEMENT");
     DlangElementType IMPORT_BIND = new DlangElementType("IMPORT_BIND");
@@ -131,39 +132,40 @@ public interface DlangTypes {
     DlangElementType IN_OUT_CONTRACT_EXPRESSION = new DlangElementType("IN_OUT_CONTRACT_EXPRESSION");
     DlangElementType IN_OUT_STATEMENT = new DlangElementType("IN_OUT_STATEMENT");
     DlangElementType IN_STATEMENT = new DlangElementType("IN_STATEMENT");
-    DlangElementType INDEX = new DlangElementType("INDEX");
     DlangElementType INDEX_EXPRESSION = new DlangElementType("INDEX_EXPRESSION");
     DlangElementType INITIALIZER = new DlangElementType("INITIALIZER");
-    DlangElementType INTERFACE_DECLARATION = new DlangElementType("INTERFACE_DECLARATION");
     DlangElementType INVARIANT = new DlangElementType("INVARIANT");
     DlangElementType IS_EXPRESSION = new DlangElementType("IS_EXPRESSION");
     DlangElementType KEY_VALUE_PAIR = new DlangElementType("KEY_VALUE_PAIR");
     DlangElementType KEY_VALUE_PAIRS = new DlangElementType("KEY_VALUE_PAIRS");
     DlangElementType LAST_CATCH = new DlangElementType("LAST_CATCH");
     DlangElementType LINKAGE_ATTRIBUTE = new DlangElementType("LINKAGE_ATTRIBUTE");
+    DlangElementType LITERAL_EXPRESSION = new DlangElementType("LITERAL_EXPRESSION");
+    DlangElementType MAGIC_LITERAL_EXPRESSION = new DlangElementType("MAGIC_LITERAL_EXPRESSION");
     DlangElementType MEMBER_FUNCTION_ATTRIBUTE = new DlangElementType("MEMBER_FUNCTION_ATTRIBUTE");
     DlangElementType MISSING_FUNCTION_BODY = new DlangElementType("MISSING_FUNCTION_BODY");
     DlangElementType MIXIN_DECLARATION = new DlangElementType("MIXIN_DECLARATION");
-    DlangElementType MIXIN_EXPRESSION = new DlangElementType("MIXIN_EXPRESSION");
-    DlangElementType MIXIN_TEMPLATE_DECLARATION = new DlangElementType("MIXIN_TEMPLATE_DECLARATION");
+    DlangElementType MIXIN_TYPE = new DlangElementType("MIXIN_TYPE");
+    DlangElementType MIXIN_QUALIFIED_IDENTIFIER = new DlangElementType("MIXIN_QUALIFIED_IDENTIFIER");
     DlangElementType MIXIN_TEMPLATE_NAME = new DlangElementType("MIXIN_TEMPLATE_NAME");
     DlangElementType MUL_EXPRESSION = new DlangElementType("MUL_EXPRESSION");
     DlangElementType NAMESPACE_LIST = new DlangElementType("NAMESPACE_LIST");
     DlangElementType NEW_ANON_CLASS_EXPRESSION = new DlangElementType("NEW_ANON_CLASS_EXPRESSION");
     DlangElementType NEW_EXPRESSION = new DlangElementType("NEW_EXPRESSION");
-    DlangElementType NON_VOID_INITIALIZER = new DlangElementType("NON_VOID_INITIALIZER");
     DlangElementType OPERANDS = new DlangElementType("OPERANDS");
     DlangElementType OR_EXPRESSION = new DlangElementType("OR_EXPRESSION");
     DlangElementType OR_OR_EXPRESSION = new DlangElementType("OR_OR_EXPRESSION");
     DlangElementType OUT_CONTRACT_EXPRESSION = new DlangElementType("OUT_CONTRACT_EXPRESSION");
     DlangElementType OUT_STATEMENT = new DlangElementType("OUT_STATEMENT");
     DlangElementType PARAMETERS = new DlangElementType("PARAMETERS");
+    DlangElementType PARENTHESISED_EXPRESSION = new DlangElementType("PARENTHESISED_EXPRESSION");
     DlangElementType POSTBLIT = new DlangElementType("POSTBLIT");
+    DlangElementType POSTFIX_EXPRESSION = new DlangElementType("POSTFIX_EXPRESSION");
     DlangElementType POW_EXPRESSION = new DlangElementType("POW_EXPRESSION");
-    DlangElementType PRAGMA_DECLARATION = new DlangElementType("PRAGMA_DECLARATION");
     DlangElementType PRAGMA_EXPRESSION = new DlangElementType("PRAGMA_EXPRESSION");
     DlangElementType PRAGMA_STATEMENT = new DlangElementType("PRAGMA_STATEMENT");
-    DlangElementType PRIMARY_EXPRESSION = new DlangElementType("PRIMARY_EXPRESSION");
+    DlangElementType QUALIFIED_IDENTIFIER = new DlangElementType("QUALIFIED_IDENTIFIER");
+    DlangElementType REFERENCE_EXPRESSION = new DlangElementType("REFERENCE_EXPRESSION");
     DlangElementType REGISTER = new DlangElementType("REGISTER");
     DlangElementType REL_EXPRESSION = new DlangElementType("REL_EXPRESSION");
     DlangElementType RETURN_STATEMENT = new DlangElementType("RETURN_STATEMENT");
@@ -171,8 +173,6 @@ public interface DlangTypes {
     DlangElementType SHIFT_EXPRESSION = new DlangElementType("SHIFT_EXPRESSION");
     DlangElementType SHORTENED_FUNCTION_BODY = new DlangElementType("SHORTENED_FUNCTION_BODY");
     DlangElementType SPECIFIED_FUNCTION_BODY = new DlangElementType("SPECIFIED_FUNCTION_BODY");
-    DlangElementType STATEMENT = new DlangElementType("STATEMENT");
-    DlangElementType STATEMENT_NO_CASE_NO_DEFAULT = new DlangElementType("STATEMENT_NO_CASE_NO_DEFAULT");
     DlangElementType STATIC_ASSERT_DECLARATION = new DlangElementType("STATIC_ASSERT_DECLARATION");
     DlangElementType STATIC_ASSERT_STATEMENT = new DlangElementType("STATIC_ASSERT_STATEMENT");
     DlangElementType STATIC_IF_CONDITION = new DlangElementType("STATIC_IF_CONDITION");
@@ -182,14 +182,14 @@ public interface DlangTypes {
     DlangElementType STRUCT_MEMBER_INITIALIZER = new DlangElementType("STRUCT_MEMBER_INITIALIZER");
     DlangElementType STRUCT_MEMBER_INITIALIZERS = new DlangElementType("STRUCT_MEMBER_INITIALIZERS");
     DlangElementType SWITCH_STATEMENT = new DlangElementType("SWITCH_STATEMENT");
-    DlangElementType SYMBOL = new DlangElementType("SYMBOL");
     DlangElementType SYNCHRONIZED_STATEMENT = new DlangElementType("SYNCHRONIZED_STATEMENT");
     DlangElementType TEMPLATE_ALIAS_PARAMETER = new DlangElementType("TEMPLATE_ALIAS_PARAMETER");
     DlangElementType TEMPLATE_ARGUMENT = new DlangElementType("TEMPLATE_ARGUMENT");
     DlangElementType TEMPLATE_ARGUMENT_LIST = new DlangElementType("TEMPLATE_ARGUMENT_LIST");
     DlangElementType TEMPLATE_ARGUMENTS = new DlangElementType("TEMPLATE_ARGUMENTS");
     DlangElementType TEMPLATE_INSTANCE = new DlangElementType("TEMPLATE_INSTANCE");
-    DlangElementType TEMPLATE_MIXIN_EXPRESSION = new DlangElementType("TEMPLATE_MIXIN_EXPRESSION");
+    DlangElementType TEMPLATE_MIXIN = new DlangElementType("TEMPLATE_MIXIN");
+    DlangElementType TEMPLATE_MIXIN_DECLARATION = new DlangElementType("TEMPLATE_MIXIN_DECLARATION");
     DlangElementType TEMPLATE_PARAMETER_LIST = new DlangElementType("TEMPLATE_PARAMETER_LIST");
     DlangElementType TEMPLATE_PARAMETERS = new DlangElementType("TEMPLATE_PARAMETERS");
     DlangElementType TEMPLATE_SINGLE_ARGUMENT = new DlangElementType("TEMPLATE_SINGLE_ARGUMENT");
@@ -203,8 +203,8 @@ public interface DlangTypes {
     DlangElementType TRAITS_EXPRESSION = new DlangElementType("TRAITS_EXPRESSION");
     DlangElementType TRY_STATEMENT = new DlangElementType("TRY_STATEMENT");
     DlangElementType TYPE = new DlangElementType("TYPE");
-    DlangElementType TYPE_2 = new DlangElementType("TYPE_2");
-    DlangElementType TYPE_IDENTIFIER_PART = new DlangElementType("TYPE_IDENTIFIER_PART");
+    DlangElementType TYPE_CONSTRUCT_EXPRESSION = new DlangElementType("TYPE_CONSTRUCT_EXPRESSION");
+    DlangElementType TYPE_PROPERTY_EXPRESSION = new DlangElementType("TYPE_PROPERTY_EXPRESSION");
     DlangElementType TYPE_SPECIALIZATION = new DlangElementType("TYPE_SPECIALIZATION");
     DlangElementType TYPE_SUFFIX = new DlangElementType("TYPE_SUFFIX");
     DlangElementType TYPEID_EXPRESSION = new DlangElementType("TYPEID_EXPRESSION");
@@ -472,6 +472,8 @@ public interface DlangTypes {
                 return new DLanguageArgumentListImpl(node);
             } else if (type == ARGUMENTS) {
                 return new DLanguageArgumentsImpl(node);
+            } else if (type == ARRAY_ACCESS_EXPRESSION) {
+                return new DLanguageArrayAccessExpressionImpl(node);
             } else if (type == ARRAY_INITIALIZER) {
                 return new DLanguageArrayInitializerImpl(node);
             } else if (type == ARRAY_LITERAL) {
@@ -524,16 +526,18 @@ public interface DlangTypes {
                 return new DLanguageAtAttributeImpl(node);
             } else if (type == ATTRIBUTE) {
                 return new DLanguageAttributeImpl(node);
-            } else if (type == ATTRIBUTE_DECLARATION) {
-                return new DLanguageAttributeDeclarationImpl(node);
+            } else if (type == ATTRIBUTE_SPECIFIER) {
+                return new DLanguageAttributeSpecifierImpl(node);
             } else if (type == AUTO_DECLARATION) {
                 return new DLanguageAutoDeclarationImpl(node);
-            } else if (type == AUTO_DECLARATION_PART) {
-                return new DLanguageAutoDeclarationPartImpl(node);
+            } else if (type == AUTO_ASSIGNMENT) {
+                return new DLanguageAutoAssignmentImpl(node);
             } else if (type == BASE_CLASS) {
                 return new DLanguageBaseClassImpl(node);
             } else if (type == BASE_CLASS_LIST) {
                 return new DLanguageBaseClassListImpl(node);
+            } else if (type == BASIC_TYPE) {
+                return new DLanguageBasicTypeImpl(node);
             } else if (type == BLOCK_STATEMENT) {
                 return new DLanguageBlockStatementImpl(node);
             } else if (type == BREAK_STATEMENT) {
@@ -550,8 +554,8 @@ public interface DlangTypes {
                 return new DLanguageCatchImpl(node);
             } else if (type == CATCHES) {
                 return new DLanguageCatchesImpl(node);
-            } else if (type == CMP_EXPRESSION) {
-                return new DLanguageCmpExpressionImpl(node);
+            } else if (type == COMMA_EXPRESSION) {
+                return new DLanguageCommaExpressionImpl(node);
             } else if (type == COMPILE_CONDITION) {
                 return new DLanguageCompileConditionImpl(node);
             } else if (type == CONDITIONAL_DECLARATION) {
@@ -566,14 +570,12 @@ public interface DlangTypes {
                 return new DLanguageDebugConditionImpl(node);
             } else if (type == DEBUG_SPECIFICATION) {
                 return new DLanguageDebugSpecificationImpl(node);
-            } else if (type == DECLARATION) {
-                return new DLanguageDeclarationImpl(node);
-            } else if (type == DECLARATION_OR_STATEMENT) {
-                return new DLanguageDeclarationOrStatementImpl(node);
-            } else if (type == DECLARATIONS_AND_STATEMENTS) {
-                return new DLanguageDeclarationsAndStatementsImpl(node);
-            } else if (type == DECLARATOR) {
-                return new DLanguageDeclaratorImpl(node);
+            } else if (type == DECLARATION_BLOCK) {
+                return new DLanguageDeclarationBlockImpl(node);
+            } else if (type == DECLARATION_STATEMENT) {
+                return new DLanguageDeclarationStatementImpl(node);
+            } else if (type == IDENTIFIER_INITIALIZER) {
+                return new DLanguageIdentifierInitializerImpl(node);
             } else if (type == DEFAULT_STATEMENT) {
                 return new DLanguageDefaultStatementImpl(node);
             } else if (type == DELETE_EXPRESSION) {
@@ -582,14 +584,16 @@ public interface DlangTypes {
                 return new DLanguageDeprecatedImpl(node);
             } else if (type == DO_STATEMENT) {
                 return new DLanguageDoStatementImpl(node);
+            } else if (type == DOLLAR_EXPRESSION) {
+                return new DLanguageDollarExpressionImpl(node);
+            } else if (type == EMPTY_DECLARATION) {
+                return new DLanguageEmptyDeclarationImpl(node);
+            } else if (type == EMPTY_STATEMENT) {
+                return new DLanguageEmptyStatementImpl(node);
             } else if (type == ENUM_BODY) {
                 return new DLanguageEnumBodyImpl(node);
-            } else if (type == EPONYMOUS_TEMPLATE_DECLARATION) {
-                return new DLanguageEponymousTemplateDeclarationImpl(node);
             } else if (type == EQUAL_EXPRESSION) {
                 return new DLanguageEqualExpressionImpl(node);
-            } else if (type == EXPRESSION) {
-                return new DLanguageExpressionImpl(node);
             } else if (type == EXPRESSION_STATEMENT) {
                 return new DLanguageExpressionStatementImpl(node);
             } else if (type == FINAL_SWITCH_STATEMENT) {
@@ -604,8 +608,6 @@ public interface DlangTypes {
                 return new DLanguageForeachTypeListImpl(node);
             } else if (type == FUNCTION_ATTRIBUTE) {
                 return new DLanguageFunctionAttributeImpl(node);
-            } else if (type == FUNCTION_BODY) {
-                return new DLanguageFunctionBodyImpl(node);
             } else if (type == FUNCTION_CALL_EXPRESSION) {
                 return new DLanguageFunctionCallExpressionImpl(node);
             } else if (type == FUNCTION_CONTRACT) {
@@ -614,16 +616,18 @@ public interface DlangTypes {
                 return new DLanguageFunctionDeclarationImpl(node);
             } else if (type == FUNCTION_LITERAL_EXPRESSION) {
                 return new DLanguageFunctionLiteralExpressionImpl(node);
+            } else if (type == FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION) {
+                return new DLanguageFundamentalTypeConstructExpressionImpl(node);
+            } else if (type == FUNDAMENTAL_TYPE_PROPERTY_EXPRESSION) {
+                return new DLanguageFundamentalTypePropertyExpressionImpl(node);
             } else if (type == GOTO_STATEMENT) {
                 return new DLanguageGotoStatementImpl(node);
             } else if (type == IDENTIFIER_CHAIN) {
                 return new DLanguageIdentifierChainImpl(node);
             } else if (type == DECLARATOR_IDENTIFIER) {
                 return new DlangDeclaratorIdentifierImpl(node);
-            } else if (type == IDENTIFIER_OR_TEMPLATE_CHAIN) {
-                return new DLanguageIdentifierOrTemplateChainImpl(node);
-            } else if (type == IDENTIFIER_OR_TEMPLATE_INSTANCE) {
-                return new DLanguageIdentifierOrTemplateInstanceImpl(node);
+            } else if (type == MIXIN_QUALIFIED_IDENTIFIER) {
+                return new DLanguageMixinQualifiedIdentifierImpl(node);
             } else if (type == IDENTITY_EXPRESSION) {
                 return new DLanguageIdentityExpressionImpl(node);
             } else if (type == IF_STATEMENT) {
@@ -646,8 +650,6 @@ public interface DlangTypes {
                 return new DLanguageInOutStatementImpl(node);
             } else if (type == IN_STATEMENT) {
                 return new DLanguageInStatementImpl(node);
-            } else if (type == INDEX) {
-                return new DLanguageIndexImpl(node);
             } else if (type == INDEX_EXPRESSION) {
                 return new DLanguageIndexExpressionImpl(node);
             } else if (type == INITIALIZER) {
@@ -664,16 +666,18 @@ public interface DlangTypes {
                 return new DLanguageLastCatchImpl(node);
             } else if (type == LINKAGE_ATTRIBUTE) {
                 return new DLanguageLinkageAttributeImpl(node);
+            } else if (type == LITERAL_EXPRESSION) {
+                return new DLanguageLiteralExpressionImpl(node);
+            } else if (type == MAGIC_LITERAL_EXPRESSION) {
+                return new DLanguageMagicLiteralExpressionImpl(node);
             } else if (type == MEMBER_FUNCTION_ATTRIBUTE) {
                 return new DLanguageMemberFunctionAttributeImpl(node);
             } else if (type == MISSING_FUNCTION_BODY) {
                 return new DLanguageMissingFunctionBodyImpl(node);
             } else if (type == MIXIN_DECLARATION) {
                 return new DLanguageMixinDeclarationImpl(node);
-            } else if (type == MIXIN_EXPRESSION) {
-                return new DLanguageMixinExpressionImpl(node);
-            } else if (type == MIXIN_TEMPLATE_DECLARATION) {
-                return new DLanguageMixinTemplateDeclarationImpl(node);
+            } else if (type == MIXIN_TYPE) {
+                return new DLanguageMixinTypeImpl(node);
             } else if (type == MIXIN_TEMPLATE_NAME) {
                 return new DLanguageMixinTemplateNameImpl(node);
             } else if (type == MUL_EXPRESSION) {
@@ -684,8 +688,6 @@ public interface DlangTypes {
                 return new DLanguageNewAnonClassExpressionImpl(node);
             } else if (type == NEW_EXPRESSION) {
                 return new DLanguageNewExpressionImpl(node);
-            } else if (type == NON_VOID_INITIALIZER) {
-                return new DLanguageNonVoidInitializerImpl(node);
             } else if (type == OPERANDS) {
                 return new DLanguageOperandsImpl(node);
             } else if (type == OR_EXPRESSION) {
@@ -698,18 +700,20 @@ public interface DlangTypes {
                 return new DLanguageOutStatementImpl(node);
             } else if (type == PARAMETERS) {
                 return new DLanguageParametersImpl(node);
+            } else if (type == PARENTHESISED_EXPRESSION) {
+                return new DLanguageParenthesisedExpressionImpl(node);
             } else if (type == POSTBLIT) {
                 return new DLanguagePostblitImpl(node);
+            } else if (type == POSTFIX_EXPRESSION) {
+                return new DLanguagePostfixExpressionImpl(node);
             } else if (type == POW_EXPRESSION) {
                 return new DLanguagePowExpressionImpl(node);
-            } else if (type == PRAGMA_DECLARATION) {
-                return new DLanguagePragmaDeclarationImpl(node);
             } else if (type == PRAGMA_EXPRESSION) {
                 return new DLanguagePragmaExpressionImpl(node);
             } else if (type == PRAGMA_STATEMENT) {
                 return new DLanguagePragmaStatementImpl(node);
-            } else if (type == PRIMARY_EXPRESSION) {
-                return new DLanguagePrimaryExpressionImpl(node);
+            } else if (type == REFERENCE_EXPRESSION) {
+                return new DLanguageReferenceExpressionImpl(node);
             } else if (type == REGISTER) {
                 return new DLanguageRegisterImpl(node);
             } else if (type == REL_EXPRESSION) {
@@ -726,10 +730,6 @@ public interface DlangTypes {
                 return new DLanguageSpecifiedFunctionBodyImpl(node);
             } else if (type == SINGLE_IMPORT) {
                 return new DlangSingleImportImpl(node);
-            } else if (type == STATEMENT) {
-                return new DLanguageStatementImpl(node);
-            } else if (type == STATEMENT_NO_CASE_NO_DEFAULT) {
-                return new DLanguageStatementNoCaseNoDefaultImpl(node);
             } else if (type == STATIC_ASSERT_DECLARATION) {
                 return new DLanguageStaticAssertDeclarationImpl(node);
             } else if (type == STATIC_ASSERT_STATEMENT) {
@@ -748,8 +748,6 @@ public interface DlangTypes {
                 return new DLanguageStructMemberInitializersImpl(node);
             } else if (type == SWITCH_STATEMENT) {
                 return new DLanguageSwitchStatementImpl(node);
-            } else if (type == SYMBOL) {
-                return new DLanguageSymbolImpl(node);
             } else if (type == SYNCHRONIZED_STATEMENT) {
                 return new DLanguageSynchronizedStatementImpl(node);
             } else if (type == TEMPLATE_ALIAS_PARAMETER) {
@@ -762,8 +760,10 @@ public interface DlangTypes {
                 return new DLanguageTemplateArgumentsImpl(node);
             } else if (type == TEMPLATE_INSTANCE) {
                 return new DLanguageTemplateInstanceImpl(node);
-            } else if (type == TEMPLATE_MIXIN_EXPRESSION) {
-                return new DLanguageTemplateMixinExpressionImpl(node);
+            } else if (type == TEMPLATE_MIXIN) {
+                return new DLanguageTemplateMixinImpl(node);
+            } else if (type == TEMPLATE_MIXIN_DECLARATION) {
+                return new DLanguageTemplateMixinDeclarationImpl(node);
             } else if (type == TEMPLATE_PARAMETER_LIST) {
                 return new DLanguageTemplateParameterListImpl(node);
             } else if (type == TEMPLATE_PARAMETERS) {
@@ -790,10 +790,12 @@ public interface DlangTypes {
                 return new DLanguageTryStatementImpl(node);
             } else if (type == TYPE) {
                 return new DLanguageTypeImpl(node);
-            } else if (type == TYPE_2) {
-                return new DLanguageType_2Impl(node);
-            } else if (type == TYPE_IDENTIFIER_PART) {
-                return new DLanguageTypeIdentifierPartImpl(node);
+            } else if (type == TYPE_CONSTRUCT_EXPRESSION) {
+                return new DLanguageTypeConstructExpressionImpl(node);
+            } else if (type == QUALIFIED_IDENTIFIER) {
+                return new DLanguageQualifiedIdentifierImpl(node);
+            } else if (type == TYPE_PROPERTY_EXPRESSION) {
+                return new DLanguageTypePropertyExpressionImpl(node);
             } else if (type == TYPE_SPECIALIZATION) {
                 return new DLanguageTypeSpecializationImpl(node);
             } else if (type == TYPE_SUFFIX) {
@@ -805,7 +807,7 @@ public interface DlangTypes {
             } else if (type == UNARY_EXPRESSION) {
                 return new DLanguageUnaryExpressionImpl(node);
             } else if (type == VARIABLE_DECLARATION) {
-                return new DLanguageVariableDeclarationImpl(node);
+                return new DLanguageSpecifiedVariableDeclarationImpl(node);
             } else if (type == VARIADIC_ARGUMENTS_ATTRIBUTE) {
                 return new DLanguageVariadicArgumentsAttributeImpl(node);
             } else if (type == VARIADIC_ARGUMENTS_ATTRIBUTES) {
@@ -825,13 +827,11 @@ public interface DlangTypes {
             } else if (type == ADD_EXPRESSION) {
                 return new DLanguageAddExpressionImpl(node);
             } else if (type == CLASS_DECLARATION) {
-                return new DLanguageClassDeclarationImpl(node);
+                return new DlangClassDeclarationImpl(node);
             } else if (type == UNITTEST) {
                 return new DlangUnittestImpl(node);
-            } else if (type == INTERFACE_OR_CLASS) {
-                return new DlangInterfaceOrClassImpl(node);
             } else if (type == INTERFACE_DECLARATION) {
-                return new DLanguageInterfaceDeclarationImpl(node);
+                return new DlangInterfaceDeclarationImpl(node);
             } else if (type == IF_CONDITION) {
                 return new DLanguageIfConditionImpl(node);
             } else if (type == BUILTIN_TYPE) {
@@ -845,7 +845,6 @@ public interface DlangTypes {
             } else if (type == ALIAS_ASSIGN) {
                 return new DLanguageAliasAssignImpl(node);
             }
-
 
             throw new AssertionError("Unknown element type: " + type);
         }

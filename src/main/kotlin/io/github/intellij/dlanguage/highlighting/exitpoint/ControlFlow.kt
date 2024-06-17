@@ -17,7 +17,7 @@ sealed class ExitPoint {
 
     companion object {
         fun process(fn: FunctionDeclaration, sink: (ExitPoint) -> Unit) =
-            fn.functionBody?.acceptChildren(ExitPointVisitor(sink))
+            fn.acceptChildren(ExitPointVisitor(sink))
 
         fun process(fn: FunctionLiteralExpression, sink: (ExitPoint) -> Unit) =
             fn.specifiedFunctionBody?.acceptChildren(ExitPointVisitor(sink))

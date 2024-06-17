@@ -3,6 +3,7 @@ package io.github.intellij.dlanguage.resolve
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
+import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.utils.*
 
 /**
@@ -17,131 +18,95 @@ object ScopeProcessorImplUtil {
                            lastParent: PsiElement?,
                            place: PsiElement): Boolean {
         var toContinue = true
-        if (def.aliasDeclaration?.aliasInitializers?.isNotEmpty() == true) {
-            for (varDeclaration in def.aliasDeclaration?.aliasInitializers!!) {
-                toContinue = processor.execute(varDeclaration, state)
-            }
-            return toContinue
+        if (def is AliasInitializer) {
+            return processor.execute(def, state)
         }
-        if (def.aliasDeclaration?.declaratorIdentifiers?.isNotEmpty() == true) {
-            for (varDeclaration in def.aliasDeclaration?.declaratorIdentifiers!!) {
-                toContinue = processor.execute(varDeclaration, state)
+        if (def is AliasDeclaration) {
+            if (def.aliasInitializers.isNotEmpty()) {
+                for (varDeclaration in def.aliasInitializers) {
+                    toContinue = processor.execute(varDeclaration, state)
+                }
+                return toContinue
             }
-            return toContinue
+            if (def.declaratorIdentifiers.isNotEmpty()) {
+                for (varDeclaration in def.declaratorIdentifiers) {
+                    toContinue = processor.execute(varDeclaration, state)
+                }
+                return toContinue
+            }
         }
-        if (def.aliasThisDeclaration != null) {
+        if (def is AliasThisDeclaration) {
             return true
         }
-        if (def.classDeclaration?.interfaceOrClass?.structBody?.declarations != null) {
-            for (declaration in def.classDeclaration!!.interfaceOrClass!!.structBody!!.declarations) {
+        if ((def as? ClassDeclaration)?.structBody?.declarations != null) {
+            for (declaration in def.structBody!!.declarations) {
                 if (!processDeclaration(declaration, processor, state, lastParent, place)) {
                     toContinue = false
                 }
             }
-            if (!processor.execute(def.classDeclaration!!.interfaceOrClass!!, state)) {
+            if (!processor.execute(def, state)) {
                 return false
             }
             return toContinue
         }
-        if (def.conditionalDeclaration != null) {
-            return ScopeProcessorImplUtil.processConditionalDeclaration(def.conditionalDeclaration!!, processor, state, lastParent, place)
+        if (def is ConditionalDeclaration) {
+            return processConditionalDeclaration(def, processor, state, lastParent, place)
         }
-        if (def.constructor != null) {
-            return processor.execute(def.constructor!!, state)
+        if (def is Constructor) {
+            return processor.execute(def, state)
         }
-        if (def.destructor != null) {
+        if (def is Destructor) {
 
         }
-        if (def.enumDeclaration != null) {
-            if (def.enumDeclaration!!.identifier == null && def.enumDeclaration!!.enumBody?.enumMembers != null) {
-                for (enumMember in def.enumDeclaration!!.enumBody!!.enumMembers) {
+        if (def is EnumDeclaration) {
+            if (def.identifier == null && def.enumBody?.enumMembers != null) {
+                for (enumMember in def.enumBody!!.enumMembers) {
                     if (!processor.execute(enumMember, state)) {
                         toContinue = false
                     }
                 }
             }
-            if (!processor.execute(def.enumDeclaration!!, state)) {
+            if (!processor.execute(def, state)) {
                 toContinue = false
             }
             return toContinue
         }
-        if (def.anonymousEnumDeclaration != null) {
-            if (def.anonymousEnumDeclaration?.enumMembers != null) {
-                for (enumMember in def.anonymousEnumDeclaration!!.enumMembers) {
-                    if (!processor.execute(enumMember, state)) {
-                        toContinue = false
-                    }
+        if (def is AnonymousEnumDeclaration) {
+            for (enumMember in def.enumMembers) {
+                if (!processor.execute(enumMember, state)) {
+                    toContinue = false
                 }
             }
             return toContinue
         }
-        if (def.functionDeclaration != null) {
-            return processor.execute(def.functionDeclaration!!, state)
+        if (def is FunctionDeclaration) {
+            return processor.execute(def, state)
         }
-        if (def.importDeclaration != null) {
-            for (import in def.importDeclaration!!.singleImports) {
+        if (def is ImportDeclaration) {
+            for (import in def.singleImports) {
                 if (!processor.execute(import, state)) {
                     toContinue = false
                 }
             }
             return toContinue
         }
-        if (def.interfaceDeclaration != null) {
-            if (def.interfaceDeclaration!!.interfaceOrClass?.structBody != null) {
-                for (d in def.interfaceDeclaration!!.interfaceOrClass?.structBody!!.declarations) {
+        if (def is InterfaceDeclaration) {
+            if (def.structBody != null) {
+                for (d in def.structBody!!.declarations) {
                     if (!processDeclaration(d, processor, state, lastParent, place)) {
                         toContinue = false
                     }
                 }
             }
-            if (!processor.execute(def.interfaceDeclaration!!.interfaceOrClass!!, state)) {
+            if (!processor.execute(def, state)) {
                 toContinue = false
             }
             return toContinue
         }
-        if (def.mixinDeclaration != null) {
+        if (def is MixinDeclaration) {
 
         }
-        if (def.mixinTemplateDeclaration != null) {
-            for (declaration in def.mixinTemplateDeclaration!!.templateDeclaration!!.declarations) {
-                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
-                    toContinue = false
-                }
-            }
-            if (!processor.execute(def.mixinTemplateDeclaration!!.templateDeclaration!!, state)) {
-                return false
-            }
-            return toContinue
-        }
-        if (def.sharedStaticConstructor != null) {
-
-        }
-        if (def.sharedStaticDestructor != null) {
-
-        }
-        if (def.staticAssertDeclaration != null) {
-
-        }
-        if (def.staticConstructor != null) {
-
-        }
-        if (def.staticDestructor != null) {
-
-        }
-        if (def.structDeclaration != null) {
-            if (def.structDeclaration!!.structBody?.declarations != null) {
-                for (declaration in def.structDeclaration!!.structBody!!.declarations) {
-                    if (!processDeclaration(declaration, processor, state, lastParent, place)) {
-                        toContinue = false
-                    }
-                }
-            }
-            if (!processor.execute(def.structDeclaration!!, state)) {
-                return false
-            }
-            return toContinue
-        }
-        if (def.templateDeclaration != null) {
+        if (def is MixinTemplateDeclaration) {
             for (declaration in def.templateDeclaration!!.declarations) {
                 if (!processDeclaration(declaration, processor, state, lastParent, place)) {
                     toContinue = false
@@ -152,58 +117,95 @@ object ScopeProcessorImplUtil {
             }
             return toContinue
         }
-        if (def.unionDeclaration != null) {
-            if (def.unionDeclaration!!.structBody?.declarations != null) {
-                for (declaration in def.unionDeclaration!!.structBody!!.declarations) {
+        if (def is SharedStaticConstructor) {
+
+        }
+        if (def is SharedStaticDestructor) {
+
+        }
+        if (def is StaticAssertDeclaration) {
+
+        }
+        if (def is StaticConstructor) {
+
+        }
+        if (def is StaticDestructor) {
+
+        }
+        if (def is StructDeclaration) {
+            if (def.structBody?.declarations != null) {
+                for (declaration in def.structBody!!.declarations) {
                     if (!processDeclaration(declaration, processor, state, lastParent, place)) {
                         toContinue = false
                     }
                 }
             }
-            if (!processor.execute(def.unionDeclaration!!, state)) {
+            if (!processor.execute(def, state)) {
                 return false
             }
             return toContinue
         }
-        if (def.unittest != null) {
+        if (def is TemplateDeclaration) {
+            for (declaration in def.declarations) {
+                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+            if (!processor.execute(def, state)) {
+                return false
+            }
+            return toContinue
+        }
+        if (def is UnionDeclaration) {
+            if (def.structBody?.declarations != null) {
+                for (declaration in def.structBody!!.declarations) {
+                    if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                        toContinue = false
+                    }
+                }
+            }
+            if (!processor.execute(def, state)) {
+                return false
+            }
+            return toContinue
+        }
+        if (def is Unittest) {
 
         }
-        if (def.variableDeclaration?.autoDeclaration?.autoDeclarationParts != null) {
-            for (initializer in def.variableDeclaration!!.autoDeclaration!!.autoDeclarationParts) {
+        if (def is AutoDeclaration) {
+            for (initializer in def.autoAssignments) {
                 if (!processor.execute(initializer, state)) {
                     toContinue = false
                 }
             }
             return toContinue
         }
-        if (def.variableDeclaration?.declarators != null) {
-            for (declarator in def.variableDeclaration!!.declarators) {
+        if (def is SpecifiedVariableDeclaration) {
+            for (declarator in def.identifierInitializers) {
                 if (!processor.execute(declarator, state)) {
                     toContinue = false
                 }
             }
             return toContinue
         }
-        if (def.eponymousTemplateDeclaration != null) {
-            return processor.execute(def.eponymousTemplateDeclaration!!, state)
+        if (def is DeclarationStatement) {
+            if (def.declaration != null && !processor.execute(def.declaration!!, state)) {
+                toContinue = false
+            }
+            return toContinue
         }
-        if (def.attributeDeclaration != null) {
+        if (def is AttributeSpecifier) {
 
         }
-        if (def.invariant != null) {
+        if (def is Invariant) {
 
         }
-        if (def.versionSpecification != null) {
-            if (!processor.execute(def.versionSpecification!!, state)) {
+        if (def is VersionSpecification) {
+            if (!processor.execute(def, state)) {
                 toContinue = false
             }
         }
-        if (def.debugSpecification != null) {
-        }
-        for (decl in def.declarations) {
-            if (!processDeclaration(decl, processor, state, lastParent, place)) {
-                toContinue = false
-            }
+        if (def is DebugSpecification) {
         }
         return toContinue
     }
@@ -232,7 +234,7 @@ object ScopeProcessorImplUtil {
         //always recurse in since this is a compile time condition
         //handle place and lastParent
         var toContinue = true
-        for (dLangStatement in element.declarationOrStatements) {
+        for (dLangStatement in element.statements) {
             if (!dLangStatement.processDeclarations(processor, state, lastParent, place)) {
                 toContinue = false
             }
@@ -266,21 +268,6 @@ object ScopeProcessorImplUtil {
             }
         }
         return true
-    }
-
-    fun processDeclarationsOrStatements(declarationOrStatements: List<DeclarationOrStatement>, processor: PsiScopeProcessor, state: ResolveState, lastParent: PsiElement?, place: PsiElement): Boolean {
-        var toContinue = true
-        for (declarationOrStatement in declarationOrStatements) {
-            if (declarationOrStatement.declaration != null) {
-                if (!ScopeProcessorImplUtil.processDeclaration(declarationOrStatement.declaration!!, processor, state, lastParent, place)) {
-                    toContinue = false
-                }
-            }
-            if (declarationOrStatement.statement?.statementNoCaseNoDefault?.labeledStatement != null) {
-                toContinue = declarationOrStatement.statement!!.statementNoCaseNoDefault!!.labeledStatement!!.processDeclarations(processor, state, lastParent, place)
-            }
-        }
-        return toContinue
     }
 
 }

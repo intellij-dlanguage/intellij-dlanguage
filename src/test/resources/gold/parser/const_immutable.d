@@ -1,3 +1,14 @@
+immutable int z;
+void test()
+{
+    z = 3; // error, z is immutable
+}
+
+static this()
+{
+    z = 3; // ok, can set immutable that doesn't
+    // have static initializer
+}
 unittest
 {
 immutable int x = 3;  // x is set to 3
@@ -6,17 +17,6 @@ char[x] s;    // s is an array of 3 char's
 
 immutable y = 4; // y is of type int
 y = 5;           // error, y is immutable
-
-immutable int z;
-void test()
-{
-    z = 3; // error, z is immutable
-}
-static this()
-{
-    z = 3; // ok, can set immutable that doesn't
-           // have static initializer
-}
 
 int foo(int f) { return f * 3; }
 int i = 5;

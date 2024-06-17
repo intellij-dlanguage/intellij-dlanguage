@@ -5,14 +5,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.scope.PsiScopeProcessor;
-import io.github.intellij.dlanguage.psi.DLanguageConstraint;
-import io.github.intellij.dlanguage.psi.DLanguageFunctionBody;
-import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
-import io.github.intellij.dlanguage.psi.DLanguageParameters;
-import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
-import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
-import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.interfaces.Declaration;
+import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub;
 import java.util.List;
@@ -20,11 +16,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DlangFunctionDeclaration extends PsiElement, DNamedElement,
+public interface DlangFunctionDeclaration extends PsiElement, DNamedElement, Declaration,
     StubBasedPsiElement<DlangFunctionDeclarationStub> {
 
     @Nullable
-    DLanguageType getType();
+    DLanguageBasicType getBasicType();
+
+    @NotNull
+    List<DLanguageTypeSuffix> getTypeSuffixes();
 
     @Nullable
     DlangIdentifier getIdentifier();
@@ -39,7 +38,7 @@ public interface DlangFunctionDeclaration extends PsiElement, DNamedElement,
     DLanguageConstraint getConstraint();
 
     @Nullable
-    DLanguageFunctionBody getFunctionBody();
+    FunctionBody getFunctionBody();
 
     @NotNull
     List<DLanguageMemberFunctionAttribute> getMemberFunctionAttributes();

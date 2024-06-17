@@ -12,21 +12,7 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.named.DlangAliasInitializer;
-import io.github.intellij.dlanguage.psi.named.DlangAutoDeclarationPart;
-import io.github.intellij.dlanguage.psi.named.DlangCatch;
-import io.github.intellij.dlanguage.psi.named.DlangConstructor;
-import io.github.intellij.dlanguage.psi.named.DlangDeclarator;
-import io.github.intellij.dlanguage.psi.named.DlangEnumDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangEnumMember;
-import io.github.intellij.dlanguage.psi.named.DlangForeachType;
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
-import io.github.intellij.dlanguage.psi.named.DlangInterfaceOrClass;
-import io.github.intellij.dlanguage.psi.named.DlangParameter;
-import io.github.intellij.dlanguage.psi.named.DlangStructDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangUnionDeclaration;
+import io.github.intellij.dlanguage.psi.named.*;
 import io.github.intellij.dlanguage.psi.impl.DElementFactory;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.references.DReference;
@@ -101,7 +87,8 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                     @Override
                     public boolean value(final PsiElement element) {
                         return element instanceof DlangFunctionDeclaration
-                            || element instanceof DlangInterfaceOrClass
+                            || element instanceof DlangClassDeclaration
+                            || element instanceof DlangInterfaceDeclaration
                             || element instanceof DlangTemplateDeclaration
                             || element instanceof DlangUnionDeclaration
                             || element instanceof DlangStructDeclaration
@@ -115,19 +102,11 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                 });
                 final PsiNamedElement funcDecl = (PsiNamedElement) DUtil
                     .findParentOfType(DlangIdentifierImpl.this, DlangFunctionDeclaration.class);
-                final PsiNamedElement classDecl;
-                if (DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageClassDeclaration.class) == null) {
-                    classDecl = null;
-                } else
-                    classDecl = ((DLanguageClassDeclaration) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageClassDeclaration.class)).getInterfaceOrClass();
+                final PsiNamedElement classDecl = DUtil.findParentOfType(DlangIdentifierImpl.this, DlangClassDeclaration.class);
                 final PsiNamedElement templateDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DlangTemplateDeclaration.class);
                 final PsiNamedElement unionDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DlangUnionDeclaration.class);
                 final PsiNamedElement structDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DlangStructDeclaration.class);
-                final PsiNamedElement interfaceDecl;
-                if (DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageInterfaceDeclaration.class) == null) {
-                    interfaceDecl = null;
-                } else
-                    interfaceDecl = ((DLanguageInterfaceDeclaration) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageInterfaceDeclaration.class)).getInterfaceOrClass();
+                final PsiNamedElement interfaceDecl = DUtil.findParentOfType(DlangIdentifierImpl.this, DlangInterfaceDeclaration.class);
                 final PsiNamedElement parameterDecl = (PsiNamedElement) DUtil
                     .findParentOfType(DlangIdentifierImpl.this, DlangParameter.class);
                 final PsiNamedElement templateParameterDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageTemplateParameter.class);
@@ -138,18 +117,17 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                     .findParentOfType(DlangIdentifierImpl.this, DlangCatch.class);
 
                 final PsiNamedElement autoDeclarationDecl = (PsiNamedElement) DUtil
-                    .findParentOfType(DlangIdentifierImpl.this, DlangAutoDeclarationPart.class);
+                    .findParentOfType(DlangIdentifierImpl.this, DLanguageAutoAssignment.class);
                 final PsiNamedElement ifConditionDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageIfCondition.class);
                 final PsiNamedElement foreachTypeDecl = (PsiNamedElement) DUtil
                     .findParentOfType(DlangIdentifierImpl.this, DlangForeachType.class);
                 final PsiNamedElement declaratorDecl = (PsiNamedElement) DUtil
-                    .findParentOfType(DlangIdentifierImpl.this, DlangDeclarator.class);
+                    .findParentOfType(DlangIdentifierImpl.this, DLanguageIdentifierInitializer.class);
                 final PsiNamedElement aliasInitializerDecl = (PsiNamedElement) DUtil
                     .findParentOfType(DlangIdentifierImpl.this, DlangAliasInitializer.class);
                 final PsiNamedElement labeledStatementDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageLabeledStatement.class);
                 final PsiNamedElement constructorDecl = (PsiNamedElement) DUtil
                     .findParentOfType(DlangIdentifierImpl.this, DlangConstructor.class);
-                final PsiNamedElement eponymousTemplateDeclarationDecl = (PsiNamedElement) DUtil.findParentOfType(DlangIdentifierImpl.this, DLanguageEponymousTemplateDeclaration.class);
 
 
                 String description = "";
@@ -207,10 +185,6 @@ public class DlangIdentifierImpl extends DNamedStubbedPsiElementBase<DlangIdenti
                 if (constructorDecl != null && constructorDecl == firstMatch) {
                     description = " [Constructor] (" + constructorDecl.getName() + ")";
                 }
-                if (eponymousTemplateDeclarationDecl != null && eponymousTemplateDeclarationDecl == firstMatch) {
-                    description = " [Eponymous Template Declaration] (" + eponymousTemplateDeclarationDecl.getName() + ")";
-                }
-
 
                 return getName() + description;
             }

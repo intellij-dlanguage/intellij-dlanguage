@@ -7,6 +7,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
+import io.github.intellij.dlanguage.psi.DLanguageSpecifiedVariableDeclaration;
 import io.github.intellij.dlanguage.psi.DlangPsiFile;
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
@@ -25,14 +26,10 @@ public class DElementFactory {
      */
     @Nullable
     public static DlangIdentifier createDLanguageIdentifierFromText(@NotNull final Project project, @NotNull final String name) {
-        @Nullable PsiElement element = createExpressionFromText(project, name);
-
-        final DlangIdentifier e;
-        if (element instanceof DlangIdentifier) {
-            e = (DlangIdentifier) element;
-        } else {
-            e = findChildOfType(element, DlangIdentifier.class);
-        }
+        if (name.isBlank()) return null;
+        @Nullable PsiElement element = createExpressionFromText(project, "int " + name + ";");
+        assert element != null;
+        final DlangIdentifier e = ((DLanguageSpecifiedVariableDeclaration) element).getIdentifierInitializers().get(0).getIdentifier();
 
         return e != null && e.getName().equals(name) ? e : null;
     }
@@ -46,13 +43,7 @@ public class DElementFactory {
 
         @Nullable final PsiElement firstChild = fileFromText.getFirstChild();
 
-        // todo: this whole chain could do with being more defensive
-        return firstChild != null ? firstChild
-            .getFirstChild()
-            .getLastChild()
-            .getLastChild()
-            .getLastChild()
-            .getLastChild() : null;
+        return firstChild;
     }
 
     /**
@@ -62,7 +53,7 @@ public class DElementFactory {
     private static DlangPsiFile createFileFromText(@NotNull final Project project,
                                                 @NotNull final String text) {
         return (DlangPsiFile) PsiFileFactory.getInstance(project)
-            .createFileFromText("A.hs", DLanguage.INSTANCE, text);
+            .createFileFromText("A.d", DLanguage.INSTANCE, text);
     }
 
     @Nullable

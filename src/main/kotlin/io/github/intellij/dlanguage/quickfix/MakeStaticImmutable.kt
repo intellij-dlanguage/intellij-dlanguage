@@ -5,7 +5,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import io.github.intellij.dlanguage.utils.AutoDeclaration
-import io.github.intellij.dlanguage.utils.AutoDeclarationPart
 
 /**
  * Created by francis on 1/5/2018.
@@ -21,7 +20,6 @@ class MakeStaticImmutable(elem: PsiElement) : LocalQuickFixOnPsiElement(elem) {
     override fun getText(): String = "Make Static Immutable"
 
     override fun invoke(project: Project, file: PsiFile, startElement: PsiElement, endElement: PsiElement) {
-//        val decl = startElement as AutoDeclarationPart
         val autoDeclarationOverall = startElement.parent as AutoDeclaration
         for (storageClasss in autoDeclarationOverall.storageClasss) {
             if (storageClasss.kW_ENUM != null) {

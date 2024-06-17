@@ -81,8 +81,8 @@ object SpecialCaseResolve {
         return out
     }
 
-    private fun resolvePackage(parents: MutableList<DlangIdentifier>): Set<PsiNamedElement> {
-        if (parents.size == 0)
+    private fun resolvePackage(parents: List<DlangIdentifier>): Set<PsiNamedElement> {
+        if (parents.isEmpty())
             return emptySet()
         val last = parents.last()
         var name = ""
@@ -105,6 +105,9 @@ object SpecialCaseResolve {
             .toSet()
     }
 
+    private fun resolveModule(path: QualifiedIdentifier): Set<PsiNamedElement> {
+        return newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.text, GlobalSearchScope.allScope(path.project)))
+    }
 
     private fun resolveModule(path: IdentifierChain): Set<PsiNamedElement> {
         return newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.importText, GlobalSearchScope.allScope(path.project)))
@@ -157,31 +160,14 @@ object SpecialCaseResolve {
     }
 
     fun tryPackageResolve(e: Identifier): Set<PsiNamedElement> {
-        fun inIdentifierOrTemplateChain(identifier: Identifier): IdentifierOrTemplateChain? {
-            return PsiTreeUtil.getTopmostParentOfType(identifier, IdentifierOrTemplateChain::class.java)
+        fun inMixinQualifiedIdentifier(identifier: Identifier): MixinQualifiedIdentifier? {
+            return PsiTreeUtil.getTopmostParentOfType(identifier, MixinQualifiedIdentifier::class.java)
         }
 
-        fun inIdentifierOrTemplateInstance(identifier: Identifier): IdentifierOrTemplateInstance? {
-            return PsiTreeUtil.getTopmostParentOfType(identifier, IdentifierOrTemplateInstance::class.java)
-        }
-
-        if (inIdentifierOrTemplateChain(e) != null) {
-            val instances = inIdentifierOrTemplateChain(e)!!.identifierOrTemplateInstances
-            val endIndex = instances.indexOf(inIdentifierOrTemplateInstance(e))
-            val parents = instances.subList(0, endIndex + 1)
-            if (parents.size == 0) {
-                return emptySet()
-            }
-            val last = parents.last()
-            var name = ""
-            for (parent in parents) {
-                if (parent != last) {
-                    name += (parent.text + ".")
-                } else {
-                    name += parent.text
-                }
-            }
-            val directoryResolve = resolvePackageFromName(e.project, name)
+        if (inMixinQualifiedIdentifier(e) != null) {
+            val mixinName = inMixinQualifiedIdentifier(e)!!.mixinQualifiedIdentifier
+            mixinName?: return emptySet()
+            val directoryResolve = resolvePackageFromName(e.project, mixinName.text)
             return directoryResolve//todo do a file resolve as well
         }
         return emptySet()

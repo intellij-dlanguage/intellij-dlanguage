@@ -7,7 +7,7 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageDeclarationOrStatement;
+import io.github.intellij.dlanguage.psi.interfaces.Statement;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DLanguageLabeledStatement;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
@@ -53,8 +53,8 @@ public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<D
 
     @Nullable
     @Override
-    public DLanguageDeclarationOrStatement getDeclarationOrStatement() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageDeclarationOrStatement.class);
+    public Statement getStatement() {
+        return PsiTreeUtil.getChildOfType(this, Statement.class);
     }
 
     @Nullable
