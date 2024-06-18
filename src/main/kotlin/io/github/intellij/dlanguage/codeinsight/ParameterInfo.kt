@@ -25,14 +25,6 @@ class ParameterInfo : ParameterInfoHandler<FunctionCallExpression, Pair<Template
 
     }
 
-    override fun getParametersForDocumentation(p: Pair<TemplateParameters?, Parameters>?, context: ParameterInfoContext?): Array<Any>? {
-        TODO("this doesn't need to be implemented b/c it is not used by intellij-core")
-    }
-
-    override fun tracksParameterIndex(): Boolean {
-        TODO("this doesn't need to be implemented b/c it is not used by intellij-core")
-    }
-
     override fun showParameterInfo(functionCallExpression: FunctionCallExpression, context: CreateParameterInfoContext) {
         /*var reference = functionCallExpression.unaryExpression?.prmaryExpression?.identifierOrTemplateInstance?.identifier?.reference
         if (reference == null) {
@@ -71,19 +63,6 @@ class ParameterInfo : ParameterInfoHandler<FunctionCallExpression, Pair<Template
         return functionCallExpression
     }
 
-    override fun getParameterCloseChars(): String? {
-        TODO("this doesn't need to be implemented because it is not used by intellij-core")
-    }
-
-    override fun getParametersForLookup(item: LookupElement, context: ParameterInfoContext): Array<Any>? {
-        //todo I'm not sure what this is meant to do. However going off of intellij source and other plugins it is safe to return null
-        return null
-    }
-
-    override fun couldShowInLookup(): Boolean {
-        return true
-    }
-
     override fun findElementForParameterInfo(context: CreateParameterInfoContext): FunctionCallExpression? {
         val listStart = context.offset
         val file = context.file
@@ -99,14 +78,6 @@ class ParameterInfo : ParameterInfoHandler<FunctionCallExpression, Pair<Template
 class ConstructorParameterInfo : ParameterInfoHandler<NewExpression, Parameters> {
     override fun updateParameterInfo(parameterOwner: NewExpression, context: UpdateParameterInfoContext) {
 
-    }
-
-    override fun getParametersForDocumentation(p: Parameters?, context: ParameterInfoContext?): Array<Any>? {
-        TODO("this doesn't need to be implemented b/c it is not used by intellij-core")
-    }
-
-    override fun tracksParameterIndex(): Boolean {
-        TODO("this doesn't need to be implemented b/c it is not used by intellij-core")
     }
 
     override fun showParameterInfo(newExpression: NewExpression, context: CreateParameterInfoContext) {
@@ -127,19 +98,6 @@ class ConstructorParameterInfo : ParameterInfoHandler<NewExpression, Parameters>
 
     override fun findElementForUpdatingParameterInfo(context: UpdateParameterInfoContext): NewExpression? {
         return findNewExpressionFromCursor(context)
-    }
-
-    override fun getParameterCloseChars(): String? {
-        TODO("this doesn't need to be implemented because it is not used by intellij-core")
-    }
-
-    override fun getParametersForLookup(item: LookupElement, context: ParameterInfoContext): Array<Any>? {
-        //todo I'm not sure what this is meant to do. However going off of intellij source and other plugins it is safe to return null
-        return null
-    }
-
-    override fun couldShowInLookup(): Boolean {
-        return true
     }
 
     override fun findElementForParameterInfo(context: CreateParameterInfoContext): NewExpression? {
@@ -163,14 +121,6 @@ class TemplateParameterInfo : ParameterInfoHandler<TemplateInstance, TemplatePar
 
     }
 
-    override fun getParametersForDocumentation(p: TemplateParameters?, context: ParameterInfoContext?): Array<Any>? {
-        TODO("this doesn't need to be implemented b/c it is not used by intellij-core")
-    }
-
-    override fun tracksParameterIndex(): Boolean {
-        TODO("this doesn't need to be implemented b/c it is not used by intellij-core")
-    }
-
     override fun showParameterInfo(templateExpression: TemplateInstance, context: CreateParameterInfoContext) {
         val reference = templateExpression.identifier?.reference
         if (reference == null || reference !is DReference) {
@@ -188,19 +138,6 @@ class TemplateParameterInfo : ParameterInfoHandler<TemplateInstance, TemplatePar
 
     override fun findElementForUpdatingParameterInfo(context: UpdateParameterInfoContext): TemplateInstance? {
         return findTemplateInstanceFromCursor(context)
-    }
-
-    override fun getParameterCloseChars(): String? {
-        TODO("this doesn't need to be implemented because it is not used by intellij-core")
-    }
-
-    override fun getParametersForLookup(item: LookupElement, context: ParameterInfoContext): Array<Any>? {
-        //todo I'm not sure what this is meant to do. However going off of intellij source and other plugins it is safe to return null
-        return null
-    }
-
-    override fun couldShowInLookup(): Boolean {
-        return true
     }
 
     override fun findElementForParameterInfo(context: CreateParameterInfoContext): TemplateInstance? {
