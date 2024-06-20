@@ -20,14 +20,7 @@ plugins {
 //    id("com.github.kt3k.coveralls") version "2.10.2"
 }
 
-version = properties("version")
-
-val javaVersion = properties("javaVersion")
 val ideaVersion = properties("ideaVersion")
-
-val publishChannels = listOf(properties("publishChannels"))
-
-val baseIDE = "idea"
 
 // When testing, set to "true" if you want to have expected data written (to easily update lexer/parser tests)
 val overrideTestData = "false"

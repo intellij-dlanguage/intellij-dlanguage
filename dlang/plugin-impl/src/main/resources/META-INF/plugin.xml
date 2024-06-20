@@ -1,7 +1,6 @@
 <idea-plugin xmlns:xi="http://www.w3.org/2001/XInclude" allow-bundled-update="true">
     <id>net.masterthought.dlanguage</id>
     <name>D Language</name>
-    <version>${version}</version>
     <vendor url="https://intellij-dlanguage.github.io/">D Language</vendor>
 
     <description><![CDATA[
@@ -28,9 +27,6 @@
         </ul>
     ]]>
     </change-notes>
-
-    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="233" until-build="241.*"/>
 
     <!-- We want to support IntelliJ IDEA and CLion
         see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products

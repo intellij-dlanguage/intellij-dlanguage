@@ -7,14 +7,6 @@ plugins {
     alias(libs.plugins.gradleIntelliJPlatform)
 }
 
-val javaVersion = properties("javaVersion")
-val ideaVersion = properties("ideaVersion")
-val pluginVersion = properties("version")
-
-val publishChannels = listOf(properties("publishChannels"))
-
-val baseIDE = "idea"
-
 // cobertura.coverageFormats = ["html", "xml"] // coveralls plugin depends on xml format report
 // cobertura.coverageSourceDirs = [sourceSets.main.java.srcDirs, sourceSets.main.kotlin.srcDirs, "gen"]
 // cobertura.coverageEncoding = "UTF-8"
@@ -34,23 +26,17 @@ intellijPlatform {
     projectName = project.name
 
     pluginConfiguration {
-        id = "net.masterthought.dlanguage"
-        name = "D Language"
-        version = pluginVersion
+        version = properties("pluginVersion")
         ideaVersion {
-            sinceBuild = "233"
-            untilBuild = "242.2.*"
-        }
-        vendor {
-            name = "D Language"
-            url = "https://intellij-dlanguage.github.io/"
+            sinceBuild = properties("pluginSinceBuild")
+            untilBuild = properties("pluginUntilBuild")
         }
     }
     publishing {
         token = provider {
             System.getenv("JETBRAINS_TOKEN")
         }
-        channels = publishChannels
+        channels = listOf(properties("publishChannels"))
     }
     verifyPlugin {
         ides {
@@ -84,7 +70,7 @@ dependencies {
         pluginModule(implementation (project(":sdlang")))
         pluginModule(implementation (project(":dub")))
 
-        intellijIdeaCommunity(ideaVersion)
+        intellijIdeaCommunity(properties("ideaVersion"))
 
         bundledPlugins(
             "com.intellij.java",
