@@ -42,7 +42,7 @@
     <!--<depends>com.intellij.modules.xdebugger</depends>-->
     <depends optional="true" config-file="META-INF/idea-only.xml-only.xml">com.intellij.modules.java</depends>
     <!--<depends optional="true" config-file="idea-ultimate-only.xml">com.intellij.modules.ultimate</depends>-->
-    <depends optional="true" config-file="META-INF/copyright.xmlright.xml">com.intellij.copyright</depends>
+    <depends optional="true" config-file="META-INF/copyright.xml">com.intellij.copyright</depends>
 
     <!-- Both AppCode and CLion use cidr.lang -->
     <depends optional="true" config-file="META-INF/clion-only.xml-only.xml">com.intellij.modules.cidr.lang</depends>
