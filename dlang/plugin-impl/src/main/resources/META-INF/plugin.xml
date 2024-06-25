@@ -160,7 +160,6 @@
         <!-- Tab in IntelliJ -> Preferences -->
 
         <!-- References/navigation -->
-        <psi.referenceContributor language="D" implementation="io.github.intellij.dlanguage.psi.references.DReferenceContributor"/>
         <lang.findUsagesProvider language="D"
                                  implementationClass="io.github.intellij.dlanguage.codeinsight.DFindUsagesProvider"/>
 
