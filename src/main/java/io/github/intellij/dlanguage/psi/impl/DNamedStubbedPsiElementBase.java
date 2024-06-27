@@ -45,6 +45,11 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
             : DReference.Companion.getNAME_NOT_FOUND_STRING();
     }
 
+    @Override
+    public int getTextOffset() {
+        return getNameIdentifier() != null ? getNameIdentifier().getTextOffset(): super.getTextOffset();
+    }
+
     @NotNull
     public PsiElement setName(@NotNull final String newName) {
         if (getNameIdentifier() == null) {
