@@ -2,17 +2,14 @@ package io.github.intellij.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
 import io.github.intellij.dlanguage.psi.impl.DElementFactory;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.stubs.DlangModuleDeclarationStub;
 import io.github.intellij.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
@@ -58,11 +55,6 @@ public class DlangModuleDeclarationImpl extends DNamedStubbedPsiElementBase<Dlan
             return null;
         }
         return DUtil.getEndOfIdentifierList(getIdentifierChain());
-    }
-
-    @NotNull
-    public PsiReference getReference() {
-        return new DReference(this, TextRange.from(0, (this).getName().length()));
     }
 
     @NotNull

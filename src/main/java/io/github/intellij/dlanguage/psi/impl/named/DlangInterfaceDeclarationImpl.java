@@ -1,10 +1,8 @@
 package io.github.intellij.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
@@ -12,7 +10,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.named.DlangInterfaceDeclaration;
-import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangInterfaceDeclarationStub;
 import org.jetbrains.annotations.NotNull;
@@ -90,11 +87,6 @@ public class DlangInterfaceDeclarationImpl extends
     @Nullable
     public PsiElement getNameIdentifier() {
         return getIdentifier();
-    }
-
-    @NotNull
-    public PsiReference getReference() {
-        return new DReference(this, TextRange.from(0, (this).getName().length()));
     }
 
     public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {

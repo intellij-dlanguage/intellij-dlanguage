@@ -2,9 +2,7 @@ package io.github.intellij.dlanguage.psi.impl;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.PsiImplUtil;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.IncorrectOperationException;
@@ -75,11 +73,6 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
         finder.recurseUp();
         return finder.getAttributes();
     }
-
-    @NotNull
-    public PsiReference getReference() {
-        return new DReference(this, TextRange.from(0, (this).getName().length()));
-    }//not sure if this should only be implemented for identifier todo
 
     @Override
     public Visibility visibility() {
