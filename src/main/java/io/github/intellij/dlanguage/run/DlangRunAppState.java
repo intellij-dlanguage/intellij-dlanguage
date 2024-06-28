@@ -126,12 +126,17 @@ public class DlangRunAppState extends CommandLineState {
 
     @NotNull
     private String getOutputFilePath(final Module module) {
-        String filename = module.getName();
-        if (SystemInfo.isWindows) {
-            filename += ".exe";
-        }
-        final String outputDirUrl = getOutputDir(module);
-        final File outputFile = new File(VfsUtilCore.urlToPath(outputDirUrl), filename);
+        final String filename = SystemInfo.isWindows ?
+            module.getName() + ".exe" :
+            module.getName();
+
+        @Nullable final String outputDirUrl = getOutputDir(module);
+
+        // try and get compiler output dir but it's likely to be null so default to project root
+        final File outputFile = StringUtil.isNotEmpty(outputDirUrl) ?
+            new File(VfsUtilCore.urlToPath(outputDirUrl), filename) :
+            new File(module.getProject().getBasePath(), filename);
+
         return outputFile.getPath();
     }
 
