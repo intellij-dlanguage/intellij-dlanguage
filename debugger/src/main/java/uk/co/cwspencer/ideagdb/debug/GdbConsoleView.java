@@ -24,9 +24,14 @@
 
 package uk.co.cwspencer.ideagdb.debug;
 
-import com.intellij.execution.impl.ConsoleViewImpl;
+import com.intellij.execution.filters.TextConsoleBuilder;
+import com.intellij.execution.filters.TextConsoleBuilderFactory;
+import com.intellij.execution.filters.TextConsoleBuilderImpl;
+import com.intellij.execution.ui.ConsoleView;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.jetbrains.annotations.NotNull;
 import uk.co.cwspencer.gdb.Gdb;
 
@@ -37,8 +42,10 @@ import java.awt.event.ActionListener;
 
 /**
  * Console tab for GDB input and output.
+ *
+ * This class should probably implement ConsoleView and potentially ObservableConsoleView
  */
-public class GdbConsoleView {
+public class GdbConsoleView extends JPanel {
 
     private static final Logger m_log = Logger.getInstance(GdbConsoleView.class);
 
@@ -47,16 +54,38 @@ public class GdbConsoleView {
     private JPanel m_consoleContainer;
 
     private final Gdb m_gdb;
+    //private final Project project;
 
     // The actual console
-    private final ConsoleViewImpl m_console;
+    private ConsoleView m_console;
 
     // The last command that was sent
     private String m_lastCommand;
 
-    public GdbConsoleView(Gdb gdb, @NotNull Project project) {
-        m_gdb = gdb;
-        m_console = new ConsoleViewImpl(project, true);
+    /*
+    * The GDB Console is displayed in a tab alongside the GDB Raw Output console.
+    */
+    public GdbConsoleView(@NotNull final Gdb gdb, @NotNull final Project project) {
+        this.m_gdb = gdb;
+
+        // Shouldn't have to instantiate these as they should be bound to the form
+        if (m_contentPanel == null)
+            m_contentPanel = new JPanel(new GridLayoutManager(1, 1));
+
+        if (m_prompt == null)
+            m_prompt = new JTextField();
+
+        if (m_consoleContainer == null)
+            m_consoleContainer = new JPanel(new BorderLayout());
+
+        // The builder is used with the equivalent of calling new ConsoleViewImpl(project, true)
+        final TextConsoleBuilder builder = TextConsoleBuilderFactory.getInstance()
+            .createBuilder(project, GlobalSearchScope.allScope(project)); // todo: find out if allScope or projectScope should be used
+        ((TextConsoleBuilderImpl)builder).setUsePredefinedMessageFilter(true);
+        builder.setViewer(true);
+
+        m_console = builder.getConsole(); // was previously: new ConsoleViewImpl(project, true);
+
         m_consoleContainer.add(m_console.getComponent(), BorderLayout.CENTER);
         m_prompt.addActionListener(new ActionListener() {
             @Override
@@ -75,7 +104,7 @@ public class GdbConsoleView {
         });
     }
 
-    public ConsoleViewImpl getConsole() {
+    public ConsoleView getConsole() {
         return m_console;
     }
 
