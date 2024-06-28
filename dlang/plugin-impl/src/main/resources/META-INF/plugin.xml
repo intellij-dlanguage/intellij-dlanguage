@@ -30,7 +30,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="232" until-build="241.*"/>
+    <idea-version since-build="233" until-build="241.*"/>
 
     <!-- We want to support IntelliJ IDEA and CLion
         see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
