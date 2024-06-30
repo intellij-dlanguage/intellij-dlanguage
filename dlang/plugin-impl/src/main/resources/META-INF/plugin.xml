@@ -14,17 +14,17 @@
        <li>Supports code analysis via <a href="https://github.com/dlang-community/D-Scanner/">D-Scanner</a></li>
        <li>Supports formatting via <a href="https://github.com/dlang-community/dfmt/">dfmt</a></li>
        <li>Supports D-Unit Test Runner</li>
-       <li>Adds debugger support via GDB</li>
+       <li>Adds debugger support via GDB (see <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/wiki/Debugger-Support">Debugger Support</a> wiki page)</li>
      </ul>
      <p>Get involved with the project on <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/">GitHub</a>.</p>
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>1.34</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/56?closed=1">changelist</a>)<br/>
+        <b>1.34.2</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/58?closed=1">changelist</a>)<br/>
         <ul>
-            <li>Supports IntelliJ IDEA 2023.2.* - 2024.1.*</li>
+            <li>Supports IntelliJ IDEA 2023.3.* - 2024.1.*</li>
             <li>overhaul the parser</li>
-            <li>various bug fixes</li>
+            <li>various bug fixes, debugger working again</li>
         </ul>
     ]]>
     </change-notes>
