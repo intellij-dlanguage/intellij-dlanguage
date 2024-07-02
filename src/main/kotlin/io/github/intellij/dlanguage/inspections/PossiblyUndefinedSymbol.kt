@@ -10,6 +10,7 @@ import com.intellij.openapi.roots.ModuleRootModificationUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiReference
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
@@ -35,19 +36,31 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
         private val objectDotDContents = setOf("string", "size_t", "ptrdiff_t", "_d_newclass", "rt_finalize", "object", "sizediff_t", "hash_t", "equals_t", "wstring", "dstring", "selector", "Object", "toString", "toHash", "opCmp", "opEquals", "Monitor", "lock", "unlock", "factory", "opEquals", "_d_setSameMutex", "setSameMutex", "Interface", "classinfo", "vtbl", "offset", "OffsetTypeInfo", "ti", "TypeInfo", "getHash", "equals", "compare", "tsize", "swap", "next", "initializer", "init", "flags", "offTi", "destroy", "postblit", "talign", "argTypes", "rtInfo", "TypeInfo_Typedef", "base", "name", "m_init", "TypeInfo_Enum", "TypeInfo_Pointer", "m_next", "TypeInfo_Array", "TypeInfo_StaticArray", "value", "len", "TypeInfo_AssociativeArray", "value", "key", "TypeInfo_Vector", "TypeInfo_Function", "deco", "TypeInfo_Delegate", "TypeInfo_Class", "interfaces", "ClassFlags", "classInvariant", "m_flags", "deallocator", "m_offTi", "defaultConstructor", "m_RTInfo", "find", "create", "ClassInfo", "TypeInfo_Interface", "TypeInfo_Struct", "xtoHash", "xopEquals", "xopCmp", "xtoString", "StructFlags", "hasPointers", "isDynamicType", "m_flags", "xdtor", "xdtorti", "xpostblit", "m_align", "TypeInfo_Tuple", "elements", "TypeInfo_Invariant", "TypeInfo_Const", "TypeInfo_Shared", "TypeInfo_Inout", "MIctorstart", "MIctordone", "MIstandalone", "MItlsctor", "MItlsdtor", "MIctor", "MIdtor", "MIxgetMembers", "MIictor", "MIunitTest", "MIimportedModules", "MIlocalClasses", "MIname", "ModuleInfo", "_flags", "_index", "opAssign", "ctor", "dtor", "ictor", "Throwable", "TraceInfo", "Exception", "Error")//todo this isn't all public symbols in object.d, and this is probably not the best way of detecting if runtime is not configured
         private val log: Logger = Logger.getInstance(this::class.java)
 
-        override fun visitDNamedElement(element: DNamedElement) {
+        override fun visitElement(element: PsiElement) {
             val start = System.currentTimeMillis()
+            if (element.reference == null && element.references.isEmpty())
+                return
+
             if (DResolveUtil.getInstance(element.project).shouldNotResolveToAnything(element)) {
                 return
             }
-//            if(SpecialCaseResolve.isApplicable(identifier)){
-//                if(SpecialCaseResolve.findDefinitionNode(identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)){
-//                    holder.registerProblem(identifier, "Possibly undefined symbol")
-//                }
-//            } else if (BasicResolve.findDefinitionNode(identifier.project, identifier).isEmpty() && !symbolIsDefinedByDefault(identifier)) {
-//                holder.registerProblem(identifier, "Possibly undefined symbol")
-//            }
-            if (DResolveUtil.getInstance(element.project).findDefinitionNode(element, false).isEmpty() && !symbolIsDefinedByDefault(element)) {
+            if (element.reference != null) {
+                handleReference(element.reference!!)
+            } else {
+                for (ref in element.references) {
+                    handleReference(ref)
+                }
+            }
+            val end = System.currentTimeMillis()
+            if (end - start > 50) {
+                log.info("resolve took a while" + (end - start))
+                DResolveUtil.getInstance(element.project).findDefinitionNode(element, true)
+            }
+        }
+
+        private fun handleReference(reference: PsiReference) {
+            val element = reference.element
+            if (reference.resolve() == null && !symbolIsDefinedByDefault(element)) {
                 if (element.parent is IdentifierChain && element.parent.parent is SingleImport) {
                     if ((element.parent as IdentifierChain).identifiers.last() == element) {
                         holder.registerProblem(element.parent, "Unresolved import", ProblemHighlightType.ERROR)
@@ -55,7 +68,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                     // else it’s a package. Packages may not reflect a real folder, it’s fine
                 } else if (element.parent is SingleImport) {
                     // Its new name of a renamed import, it’s a new identifier fine
-                } else if (objectDotDContents.contains(element.name))
+                } else if (objectDotDContents.contains(element.text))
                     holder.registerProblem(
                         element,
                         "Possibly undefined symbol - SDK not setup", // todo: add internationalization string to message bundle
@@ -65,13 +78,18 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                     // If version identifier is not defined, this mean that the version is not enabled
                 } else if (element.parent is DebugCondition) {
                     // If version identifier is not defined, this mean that the debug is not enabled
-                } else
-                    holder.registerProblem(element, "Possibly undefined symbol") // todo: add quick fix
-            }
-            val end = System.currentTimeMillis()
-            if (end - start > 50) {
-                log.info("resolve took a while" + (end - start))
-                DResolveUtil.getInstance(element.project).findDefinitionNode(element, true)
+                } else {
+                    var elementToRegister = element
+                    if (element is QualifiedIdentifier) {
+                        element.identifier?:return
+                        elementToRegister = element.identifier!!
+                    }
+                    else if (element is ReferenceExpression) {
+                        element.identifier ?: return
+                        elementToRegister = element.identifier!!
+                    }
+                    holder.registerProblem(elementToRegister, "Possibly undefined symbol") // todo: add quick fix
+                }
             }
         }
     }
