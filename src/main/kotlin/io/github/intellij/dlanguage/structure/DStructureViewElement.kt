@@ -30,15 +30,13 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                 }
             }
 
-        } else {
+        } else if (element is SpecifiedVariableDeclaration) {
             var attributes = ""
-
-            /*(element.parent as? AttributeSpecifier)?.attributes?.forEach {
+            element.storageClasss.forEach {
                 if (it.text in allowedAttributes) {
                     attributes += it.text + " "
                 }
-            }*/
-
+            }
             return attributes.trim()
         }
 
@@ -75,7 +73,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
             when (element) {
                 is FunctionDeclaration -> {
                     when {
-                        psiElementIsGetter(element) -> append(" : ${element.basicType?.text}${element.typeSuffixes.joinToString{ it.text }}")
+                        psiElementIsGetter(element) -> append(" : ${element.basicType?.text}${element.typeSuffixes.joinToString(""){ it.text }}")
                         psiElementIsSetter(element) -> {
                             val parametersNode = element.parameters
                             appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
@@ -83,7 +81,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                         else -> {
                             val parametersNode = element.parameters
                             appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
-                            append(" : ${element.basicType?.text}")
+                            append(" : ${element.basicType?.text}${element.typeSuffixes.joinToString(""){ it.text }}")
                         }
                     }
                 }
@@ -92,7 +90,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                     appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
                 }
                 is SpecifiedVariableDeclaration -> {
-                    append(" : ${element.basicType?.text}${element.typeSuffixs.joinToString { it.text }}")
+                    append(" : ${element.basicType?.text}${element.typeSuffixs.joinToString("") { it.text }}")
 
                     val initializer = element.identifierInitializers.firstOrNull()?.initializer
 
@@ -165,6 +163,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
         is VariableDeclaration -> listOf(psi)
         is AliasDeclaration -> listOf(psi)
         is MixinTemplateDeclaration -> listOf(psi.templateDeclaration)
+        is ConditionalDeclaration -> psi.declarations
         else -> emptyList()
     }
 
