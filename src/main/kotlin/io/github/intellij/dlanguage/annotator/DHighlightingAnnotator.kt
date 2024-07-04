@@ -66,7 +66,7 @@ class DHighlightingAnnotator : Annotator {
     }
 
     private fun highlightIdentifier(element: PsiElement): Pair<TextRange, DColor>? {
-        val color = when (val parent = element) {
+        val color = when (val parent = element.parent) {
             is FunctionDeclaration,
             is TemplateDeclaration,
             is TemplateMixinDeclaration -> DColor.FUNCTION_DEFINITION

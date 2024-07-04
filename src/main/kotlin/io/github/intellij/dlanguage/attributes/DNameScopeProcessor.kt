@@ -63,7 +63,7 @@ class DNameScopeProcessor(var start: PsiElement, val profile: Boolean = false) :
         if (currentlyAlreadyDone.contains(import))
             return true
         if (import.importedModuleName == "")
-            throw IllegalArgumentException()
+            return true
 
         val startSize = result.size
         val imports = DPublicImportIndex.recursivelyGetAllPublicImports(import)
