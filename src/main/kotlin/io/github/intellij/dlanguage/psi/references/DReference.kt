@@ -35,33 +35,12 @@ class DReference(element: PsiElement, textRange: TextRange) : PsiReferenceBase<P
      * Resolves references to a set of results.
      */
     override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
-        //        // We should only be resolving ddfunction_definition.
-        //        if (!(myElement instanceof DDefinitionFunction)) {
-        //            return EMPTY_RESOLVE_RESULT;
-        //        }
-        //        // Make sure that we only complete the last conid in a qualified expression.
-        //        if (myElement instanceof HaskellConid) {
-        //            // Don't resolve a module import to a constructor.
-        //            if (PsiTreeUtil.getParentOfType(myElement, HaskellImpdecl.class) != null) { return EMPTY_RESOLVE_RESULT; }
-        //            HaskellQconid qconid = PsiTreeUtil.getParentOfType(myElement, HaskellQconid.class);
-        //            if (qconid == null) { return EMPTY_RESOLVE_RESULT; }
-        //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
-        //        }
-
-
         val project = myElement.project
-        val namedElements = DResolveUtil.getInstance(project).findDefinitionNode(myElement, false).map {
-            if (it is PsiNameIdentifierOwner && it !is ModuleDeclaration && it !is SingleImport && it !is Constructor)
-                if (it.nameIdentifier != null)
-                    it.nameIdentifier!!
-                else it
-            else it
-        }
+        val namedElements = DResolveUtil.getInstance(project).findDefinitionNode(myElement, false)
         val results = mutableListOf<PsiElementResolveResult>()
         for (property in namedElements) {
             results.add(PsiElementResolveResult(property))
         }
-//        DirectoryIndex.getInstance(project).getDirectoriesByPackageName()
         return results.toTypedArray()
     }
 

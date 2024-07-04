@@ -82,7 +82,7 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
                         (element!!.parent as DlangFunctionDeclaration).name)
             } else {
                 assertNotNull("Could not resolve expected reference.", element)
-                assertEquals("Could not resolve expected reference.", resolvedElement, element!!.parent)
+                assertEquals("Could not resolve expected reference.", resolvedElement, element!!)
             }
         } else {
             if (resolvedElement == null) {
@@ -108,7 +108,7 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         val psiFile2 = myFixture.configureByText("file2.d", file2Text)
         val psiFile = myFixture.configureByText("main.d", mainFileText)
         referencedElement = psiFile.findReferenceAt(referencedOffset)
-        resolvedElement = psiFile2.findElementAt(resolvedOffset)
+        resolvedElement = psiFile2.findElementAt(resolvedOffset)!!.parent
         doCheck(succeed)
     }
 
