@@ -10,12 +10,16 @@ import std.stdio;
 import std.format;
 import std.algorithm;
 
+enum defaultParentClassName = "ASTWrapperPsiElement";
 
 string[][string] types_children;
 
 string[][string] stub_children;
 
 string[][string] types_extra_interfaces;
+
+/// If an entry appear here, then the element will inherit from it, otherwise it will inherit from ASTWrapperPsiElement
+string[string] types_mixins;
 
 /**
  * Contain the name of Psi elements that are named elements
@@ -263,8 +267,10 @@ static this() {
     types_extra_interfaces["PragmaExpression"] = ["Expression"];
     types_children["PragmaStatement"] = ["PragmaExpression", "OP_SCOLON", "DefaultStatement","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","CaseStatement","CaseRangeStatement"];
     types_children["QualifiedIdentifier"] = ["Identifier", "TemplateInstance", "OP_BRACKET_LEFT", "OP_BRACKET_RIGHT", "Expression", "OP_DOT", "QualifiedIdentifier"];
+    types_mixins["QualifiedIdentifier"] = "DLanguageQualifiedIdentifierImplMixin";
     types_children["ReferenceExpression"] = ["OP_DOT", "Identifier", "TemplateInstance", "ReferenceExpression"];
     types_extra_interfaces["ReferenceExpression"] = ["Expression"];
+    types_mixins["ReferenceExpression"] = "DLanguageReferenceExpressionImplMixin";
     types_children["Register"] = ["Identifier","INTEGER_LITERAL", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
     types_children["RelExpression"] = ["Expression*", "OP_GT","OP_GT_EQ","OP_LESS","OP_LESS_EQ","OP_NOT_GR","OP_NOT_GR_EQ","OP_NOT_LESS","OP_NOT_LESS_EQ"];
     types_extra_interfaces["RelExpression"] = ["Expression"];
@@ -586,7 +592,6 @@ static immutable string[] defaultInterfaceImports = [
 ];
 
 static immutable string[] defaultImplImports = [
-    "import com.intellij.extapi.psi.ASTWrapperPsiElement;",
     "import com.intellij.lang.ASTNode;",
     "import com.intellij.psi.PsiElement;",
     "import com.intellij.psi.PsiElementVisitor;",
@@ -614,7 +619,7 @@ immutable string implFileTemplate =
 %s
 
 
-public class %s extends ASTWrapperPsiElement implements
+public class %s extends %s implements
     %s {
 
     public %s(ASTNode node) {
@@ -756,9 +761,14 @@ string formatImplImports(const string[] staticImports, const string[] normalImpo
     return importString;
 }
 
-string getImplImports(string[] elements, string key) {
+string getImplImports(string[] elements, string key, string parentClassName = null) {
     string[] normalImports = defaultImplImports.dup;
     string[] staticImports;
+    if (parentClassName != null && parentClassName != defaultParentClassName) {
+        normalImports ~= "import io.github.intellij.dlanguage.psi.ext." ~ parentClassName ~ ";";
+    } else {
+        normalImports ~= "import com.intellij.extapi.psi.ASTWrapperPsiElement;";
+    }
     getImplImportsElements(elements, key, staticImports, normalImports);
     return formatImplImports(staticImports, normalImports);
 }
@@ -921,7 +931,8 @@ int main(string[] args) {
         import std.string;
         string interfaceClassName = "DLanguage" ~ key;
         string implClassName = "DLanguage" ~ key ~ "Impl";
-        string implFile = implFileTemplate.format(getImplImports(types_children[key], key), implClassName, interfaceClassName, implClassName, key);
+        string parentClassName = key in types_mixins ? types_mixins[key] : defaultParentClassName;
+        string implFile = implFileTemplate.format(getImplImports(types_children[key], key, parentClassName), implClassName, parentClassName, interfaceClassName, implClassName, key);
         foreach(string toget; types_children[key]){
             implFile ~= getterMethod(toget);
         }

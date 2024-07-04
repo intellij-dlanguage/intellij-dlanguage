@@ -68,7 +68,8 @@ class DResolveUtil private constructor(val project: Project) {
         }
 
         if (isModuleScopeOperator(e)) {
-            return DTopLevelDeclarationIndex.getTopLevelSymbols(e.text, (e.containingFile as DlangPsiFile).getFullyQualifiedModuleName(), project)
+            val name = (e as ReferenceExpression).identifier!!.text
+            return DTopLevelDeclarationIndex.getTopLevelSymbols(name, (e.containingFile as DlangPsiFile).getFullyQualifiedModuleName(), project)
         }
 
         var basicResolveResult = BasicResolve.getInstance(project, profile).findDefinitionNode(e)
@@ -81,7 +82,7 @@ class DResolveUtil private constructor(val project: Project) {
 
 
     fun resolvingConstructorCall(e: PsiElement): Boolean {
-        return e.parent is QualifiedIdentifier && e.parent.parent is BasicType
+        return e is QualifiedIdentifier && e.parent is BasicType
             && DPsiUtil.getParent(e, setOf(NEW_EXPRESSION), setOf(BLOCK_STATEMENT, STRUCT_BODY)) is NewExpression
     }
 

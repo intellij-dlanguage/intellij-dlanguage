@@ -41,7 +41,7 @@ class DReferenceTest : LightPlatformCodeInsightFixture4TestCase() {
 
         myFixture.configureByText(DlangFileType, source)
 
-        val element = myFixture.elementAtCaret as DNamedElement // DlangIdentifier
+        val element = myFixture.elementAtCaret
 
         assertTrue(element is Constructor)
     }
@@ -68,7 +68,7 @@ class DReferenceTest : LightPlatformCodeInsightFixture4TestCase() {
 
         myFixture.configureByText(DlangFileType, source)
 
-        val element = myFixture.elementAtCaret as PsiNamedElement
+        val element = myFixture.elementAtCaret.parent
         val textRange: TextRange = element.textRange
 
         val ref = DReference(element, textRange)
@@ -86,15 +86,4 @@ class DReferenceTest : LightPlatformCodeInsightFixture4TestCase() {
         assertTrue(results.size > 110) // got different size locally compared to CI. Either way there's at least 110
     }
 
-    @Test
-    fun `test DReference handleElementRename with Identifier`() {
-        val element: PsiElement = DElementFactory.createDLanguageIdentifierFromText(project, "myvar")!!
-
-        val ref = DReference(element, element.textRange)
-
-        WriteCommandAction.runWriteCommandAction(project) {
-            val result = ref.handleElementRename("betterName")
-            assertEquals("betterName", result.text)
-        }
-    }
 }
