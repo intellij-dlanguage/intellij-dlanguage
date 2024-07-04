@@ -518,7 +518,8 @@ D Language File
     PsiElement(DlangTokenType.;)(';')
   ENUM_DECLARATION
     PsiElement(DlangTokenType.enum)('enum')
-    PsiElement(DlangTokenType.ID)('E')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('E')
     PsiElement(DlangTokenType.:)(':')
     DLanguageTypeImpl(TYPE)
       DLanguageBasicTypeImpl(BASIC_TYPE)

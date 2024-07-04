@@ -116,7 +116,7 @@ static this() {
     types_children["AssocArrayLiteral"] = ["KeyValuePairs","OP_BRACKET_RIGHT","OP_BRACKET_LEFT"];
     types_children["AtAttribute"] = ["OP_AT","OP_PAR_LEFT","OP_PAR_RIGHT","Identifier", "ArgumentList","FunctionCallExpression"];
     types_children["Attribute"] = ["PragmaExpression", "KW_SYNCHRONIZED","KW_ABSTRACT","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_THROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC","KW_EXPORT", "KW_PRIVATE","KW_PROTECTED","KW_PUBLIC","AlignAttribute","Deprecated","AtAttribute","KW_PACKAGE","IdentifierChain","LinkageAttribute","KW_CONST"];
-    types_children["AttributeSpecifier"] = ["OP_COLON","Attribute"];
+    types_children["AttributeSpecifier"] = ["OP_COLON","Attribute","DeclarationBlock"];
     types_extra_interfaces["AttributeSpecifier"] = ["Declaration"];
     types_children["AutoDeclaration"] = ["StorageClass*","OP_COMMA*","OP_SCOLON","AutoAssignment*"];
     types_extra_interfaces["AutoDeclaration"] = ["VariableDeclaration"];

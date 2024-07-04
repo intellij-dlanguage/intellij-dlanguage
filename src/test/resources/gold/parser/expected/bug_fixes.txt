@@ -24,7 +24,8 @@ D Language File
     PsiComment(DlangTokenType.LINE_COMMENT)('// error')
   ENUM_DECLARATION
     PsiElement(DlangTokenType.enum)('enum')
-    PsiElement(DlangTokenType.ID)('SE')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('SE')
     DLanguageEnumBodyImpl(ENUM_BODY)
       PsiElement(DlangTokenType.{)('{')
       ENUM_MEMBER
@@ -167,7 +168,8 @@ D Language File
     PsiElement(DlangTokenType.})('}')
   ENUM_DECLARATION
     PsiElement(DlangTokenType.enum)('enum')
-    PsiElement(DlangTokenType.ID)('var1')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('var1')
     PsiElement(DlangTokenType.;)(';')
   DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
     DLanguageStorageClassImpl(STORAGE_CLASS)
@@ -182,7 +184,8 @@ D Language File
     PsiElement(DlangTokenType.;)(';')
   ENUM_DECLARATION
     PsiElement(DlangTokenType.enum)('enum')
-    PsiElement(DlangTokenType.ID)('var')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('var')
     PsiElement(DlangTokenType.;)(';')
   FUNCTION_DECLARATION
     DLanguageBasicTypeImpl(BASIC_TYPE)

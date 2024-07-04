@@ -23,7 +23,7 @@ object DLanguage : Language("D") {
             @JvmField val LIBRARY = FILE
 
             @JvmField val SRC_FILE = IconLoader.getIcon("/icons/d-file.png", DLanguage::class.java)
-            @JvmField val SRC_FILE_RUNNABLE: Icon = LayeredIcon(SRC_FILE, AllIcons.Nodes.RunnableMark)
+            @JvmField val SRC_FILE_RUNNABLE: Icon = LayeredIcon.layeredIcon(arrayOf(SRC_FILE, AllIcons.Nodes.RunnableMark))
             @JvmField val SRC_FILE_PACKAGE = IconLoader.getIcon("/icons/d-file-package.png", DLanguage::class.java)
 
             @JvmField val CLASS = FILE
@@ -33,6 +33,7 @@ object DLanguage : Language("D") {
             @JvmField val NODE_STRUCT = IconLoader.getIcon("/icons/nodes/struct.png", DLanguage::class.java)
             @JvmField val NODE_UNION = IconLoader.getIcon("/icons/nodes/union.png", DLanguage::class.java)
             @JvmField val NODE_ENUM = AllIcons.Nodes.Enum
+            @JvmField val NODE_ENUM_MEMBER =LayeredIcon.layeredIcon(arrayOf(AllIcons.Nodes.Field, AllIcons.Nodes.StaticMark, AllIcons.Nodes.FinalMark))
             @JvmField val NODE_FUNCTION = IconLoader.getIcon("/icons/nodes/function.png", DLanguage::class.java)
             @JvmField val NODE_METHOD = AllIcons.Nodes.Method
             @JvmField val NODE_FIELD = AllIcons.Nodes.Field

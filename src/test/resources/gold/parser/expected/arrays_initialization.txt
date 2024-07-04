@@ -31,7 +31,8 @@ D Language File
     PsiComment(DlangTokenType.LINE_COMMENT)('// a[0] = 0, a[1] = 2, a[2] = 3')
   ENUM_DECLARATION
     PsiElement(DlangTokenType.enum)('enum')
-    PsiElement(DlangTokenType.ID)('Color')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('Color')
     DLanguageEnumBodyImpl(ENUM_BODY)
       PsiElement(DlangTokenType.{)('{')
       ENUM_MEMBER

@@ -2793,7 +2793,7 @@ class DLangParser {
             m.done(ANONYMOUS_ENUM_DECLARATION);
             return true;
         }
-        builder.advanceLexer();
+        advance();
         if (currentIs(OP_COLON)) {
             advance(); // skip ':'
             if (!parseType()) {

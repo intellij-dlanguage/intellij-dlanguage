@@ -24,7 +24,8 @@ D Language File
       PsiElement(DlangTokenType.})('}')
   ENUM_DECLARATION
     PsiElement(DlangTokenType.enum)('enum')
-    PsiElement(DlangTokenType.ID)('Enum')
+    IDENTIFIER
+      PsiElement(DlangTokenType.ID)('Enum')
     DLanguageEnumBodyImpl(ENUM_BODY)
       PsiElement(DlangTokenType.{)('{')
       ENUM_MEMBER
