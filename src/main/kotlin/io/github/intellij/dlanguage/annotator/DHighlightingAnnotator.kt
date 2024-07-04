@@ -44,7 +44,7 @@ class DHighlightingAnnotator : Annotator {
             is ReferenceExpression -> element.identifier
             is TemplateSingleArgument -> element.identifier
             is QualifiedIdentifier -> element.identifier
-            else -> null
+            else -> element
         } ?: return null
 
         val basicResolveResult = BasicResolve.getInstance(element.project, false)
@@ -53,7 +53,7 @@ class DHighlightingAnnotator : Annotator {
         val result = basicResolveResult.firstOrNull() ?: return null
 
         val color = colorForReferenced(result) ?: return null
-        val part = partToHighlight(element) ?: return null
+        val part = partToHighlight(identifier) ?: return null
 
         return part to color
     }
