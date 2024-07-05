@@ -5,11 +5,12 @@ import com.intellij.ide.structureView.StructureViewTreeElement
 import com.intellij.ide.util.treeView.smartTree.TreeElement
 import com.intellij.navigation.ItemPresentation
 import com.intellij.pom.Navigatable
-import com.intellij.psi.NavigatablePsiElement
 import com.intellij.psi.PsiElement
 import com.intellij.ui.RowIcon
 import com.intellij.util.PlatformIcons
+import com.intellij.util.containers.mapSmartNotNull
 import io.github.intellij.dlanguage.presentation.*
+import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration
 import io.github.intellij.dlanguage.utils.*
@@ -30,15 +31,13 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                 }
             }
 
-        } else {
+        } else if (element is SpecifiedVariableDeclaration) {
             var attributes = ""
-
-            /*(element.parent as? AttributeSpecifier)?.attributes?.forEach {
+            element.storageClasss.forEach {
                 if (it.text in allowedAttributes) {
                     attributes += it.text + " "
                 }
-            }*/
-
+            }
             return attributes.trim()
         }
 
@@ -75,7 +74,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
             when (element) {
                 is FunctionDeclaration -> {
                     when {
-                        psiElementIsGetter(element) -> append(" : ${element.basicType?.text}${element.typeSuffixes.joinToString{ it.text }}")
+                        psiElementIsGetter(element) -> append(" : ${element.basicType?.text}${element.typeSuffixes.joinToString(""){ it.text }}")
                         psiElementIsSetter(element) -> {
                             val parametersNode = element.parameters
                             appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
@@ -83,7 +82,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                         else -> {
                             val parametersNode = element.parameters
                             appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
-                            append(" : ${element.basicType?.text}")
+                            append(" : ${element.basicType?.text}${element.typeSuffixes.joinToString(""){ it.text }}")
                         }
                     }
                 }
@@ -92,7 +91,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                     appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
                 }
                 is SpecifiedVariableDeclaration -> {
-                    append(" : ${element.basicType?.text}${element.typeSuffixs.joinToString { it.text }}")
+                    append(" : ${element.basicType?.text}${element.typeSuffixs.joinToString("") { it.text }}")
 
                     val initializer = element.identifierInitializers.firstOrNull()?.initializer
 
@@ -117,6 +116,14 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                         append(" = ${psiElementShortText(element.type!!)}")
                     }
                 }
+                is EnumMember -> {
+                    var elementType = ""
+                    if (element.parent is AnonymousEnumDeclaration)
+                        elementType = (element.parent as AnonymousEnumDeclaration).type?.text?:""
+                    else if (element.parent is EnumBody && element.parent.parent is EnumDeclaration)
+                        elementType = (element.parent.parent as EnumDeclaration).type?.text?: (element.parent.parent as EnumDeclaration).identifier!!.text
+                    append(": ${elementType}")
+                }
             }
         }
 
@@ -136,11 +143,8 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
     override fun getChildren(): Array<TreeElement> {
         val treeElements = ArrayList<TreeElement>()
 
-        element.children.forEach {
-            val nodes = findContentNode(it).filterNotNull()
-            nodes.forEach {
-                treeElements.add(DStructureViewElement(it))
-            }
+        findChildrenNodes(element).forEach {
+            treeElements.add(DStructureViewElement(it))
         }
 
         return treeElements.toTypedArray()
@@ -154,19 +158,39 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
 
     override fun canNavigateToSource(): Boolean = (element is Navigatable) && element.canNavigateToSource()
 
-    private fun findContentNode(psi: PsiElement?): List<PsiElement?> = when (psi) {
-        is ClassDeclaration -> listOf(psi.structBody)
-        is InterfaceDeclaration -> listOf(psi.structBody)
-        is FunctionDeclaration -> listOf(psi)
-        is EnumDeclaration -> listOf(psi)
-        is StructDeclaration -> listOf(psi.structBody)
-        is UnionDeclaration -> listOf(psi.structBody)
-        is Constructor -> listOf(psi)
-        is VariableDeclaration -> listOf(psi)
-        is AliasDeclaration -> listOf(psi)
-        is MixinTemplateDeclaration -> listOf(psi.templateDeclaration)
-        else -> emptyList()
+    private fun findChildrenNodes(psi: PsiElement?): List<PsiElement> {
+        val elements = when (psi) {
+            is DlangPsiFile -> {
+                psi.children.filter { it !is ModuleDeclaration }
+                    .filterIsInstance<Declaration>()
+            }
+            is ClassDeclaration -> psi.structBody?.declarations?: emptyList()
+            is InterfaceDeclaration -> psi.structBody?.declarations?: emptyList()
+            is FunctionDeclaration -> emptyList()
+            is EnumDeclaration -> psi.enumBody?.enumMembers?: emptyList()
+            is AnonymousEnumDeclaration -> psi.enumMembers
+            is StructDeclaration -> psi.structBody?.declarations?: emptyList()
+            is UnionDeclaration -> psi.structBody?.declarations?: emptyList()
+            is Constructor -> emptyList()
+            is VariableDeclaration -> emptyList()
+            is AliasDeclaration -> emptyList()
+            is MixinTemplateDeclaration -> psi.templateDeclaration?.declarations?: emptyList()
+            is ConditionalDeclaration -> psi.declarations
+            is AttributeSpecifier -> psi.declarationBlock?.declarations?: emptyList()
+            else -> emptyList()
+        }
+        return findInnerDeclarations(elements)
     }
+
+    private fun findInnerDeclarations(declarations: List<PsiElement>): List<PsiElement> =
+        declarations.filter { it !is ImportDeclaration && it !is EmptyDeclaration && it !is Unittest }
+            .flatMap {
+                when (it) {
+                    is AttributeSpecifier -> findInnerDeclarations(it.declarationBlock?.declarations?: emptyList())
+                    is ConditionalDeclaration -> findInnerDeclarations(it.declarations)
+                    else -> listOf(it)
+                }
+            }
 
     override fun getValue(): Any = element
 

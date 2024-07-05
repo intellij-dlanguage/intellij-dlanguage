@@ -92,6 +92,7 @@ typealias DefaultStatement = io.github.intellij.dlanguage.psi.DLanguageDefaultSt
 typealias DeleteExpression = io.github.intellij.dlanguage.psi.DLanguageDeleteExpression
 typealias Deprecated = io.github.intellij.dlanguage.psi.DLanguageDeprecated
 typealias DoStatement = io.github.intellij.dlanguage.psi.DLanguageDoStatement
+typealias EmptyDeclaration = io.github.intellij.dlanguage.psi.DLanguageEmptyDeclaration
 typealias EnumBody = io.github.intellij.dlanguage.psi.DLanguageEnumBody
 typealias EnumMemberAttribute = io.github.intellij.dlanguage.psi.DLanguageEnumMemberAttribute
 typealias EqualExpression = io.github.intellij.dlanguage.psi.DLanguageEqualExpression

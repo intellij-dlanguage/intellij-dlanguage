@@ -6,14 +6,13 @@ import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration
 import io.github.intellij.dlanguage.structure.Visibility
-import io.github.intellij.dlanguage.structure.fromPsiAttribute
 import io.github.intellij.dlanguage.utils.*
 import javax.swing.Icon
 
 fun presentableName(psi: PsiElement?): String? = when (psi) {
     is Constructor -> "this"
     is PsiNamedElement -> psi.name
-    is StructBody -> presentableName(psi.parent)
+    is AnonymousEnumDeclaration -> "<unnamed>"
     is AutoDeclaration -> {
         psi.autoAssignments.firstOrNull()?.name
     }
@@ -60,13 +59,14 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
     }
     is Constructor -> DLanguage.Icons.NODE_METHOD
     is EnumDeclaration -> DLanguage.Icons.NODE_ENUM
+    is AnonymousEnumDeclaration -> DLanguage.Icons.NODE_ENUM
+    is EnumMember -> DLanguage.Icons.NODE_ENUM_MEMBER
     is StructDeclaration -> DLanguage.Icons.NODE_STRUCT
     is UnionDeclaration -> DLanguage.Icons.NODE_UNION
-    is StructBody -> getPresentationIcon(psi.parent)
     is VariableDeclaration -> DLanguage.Icons.NODE_FIELD
     is AliasDeclaration -> DLanguage.Icons.NODE_ALIAS
     is MixinTemplateDeclaration -> DLanguage.Icons.NODE_MIXIN
-    is TemplateDeclaration -> getPresentationIcon(psi.parent)
+    is TemplateDeclaration -> DLanguage.Icons.NODE_FUNCTION
     is DlangPsiFile -> DLanguage.Icons.FILE
     else -> null
 }
