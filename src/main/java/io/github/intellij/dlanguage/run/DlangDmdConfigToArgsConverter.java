@@ -212,13 +212,11 @@ public class DlangDmdConfigToArgsConverter {
         }
     }
 
+    // todo: should we add -gdwarf=3 (3, 4, or 5), -gf, and -gs ?
     private static void buildDebugParameters(final DlangRunDmdConfiguration config,
         final List<String> parameters) {
         if (config.isAddSymbolicDebugInfo()) {
             parameters.add("-g");
-        }
-        if (config.isAddSymbolicDebugInfoC()) {
-            parameters.add("-gc");
         }
         if (config.isGenerateStandardStackFrame()) {
             parameters.add("-gs");

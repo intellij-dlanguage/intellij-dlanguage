@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="io.github.intellij.dlanguage.run.DlangRunDmdConfigurationEditor">
   <tabbedpane id="d3601" binding="myMainPanel">
     <constraints>
-      <xy x="20" y="20" width="591" height="473"/>
+      <xy x="20" y="20" width="770" height="736"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -453,14 +453,6 @@
             </constraints>
             <properties>
               <text value="Add symbolic debug info"/>
-            </properties>
-          </component>
-          <component id="3f6be" class="javax.swing.JCheckBox" binding="cbAddSymbolicDebugInfoC">
-            <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Add symbolic debug info, pretend to be C"/>
             </properties>
           </component>
           <vspacer id="cfab">

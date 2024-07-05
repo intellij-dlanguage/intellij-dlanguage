@@ -81,7 +81,6 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
 
     //"Debug" tab
     private JCheckBox cbAddSymbolicDebugInfo;
-    private JCheckBox cbAddSymbolicDebugInfoC;
     private JCheckBox cbGenerateStandardStackFrame;
     private JTextField textSymbolicLibrary;
     private JCheckBox cbProfile;
@@ -234,7 +233,6 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
 
     private void resetDebugTabForm(final DlangRunDmdConfiguration config) {
         cbAddSymbolicDebugInfo.setSelected(config.isAddSymbolicDebugInfo());
-        cbAddSymbolicDebugInfoC.setSelected(config.isAddSymbolicDebugInfoC());
         cbGenerateStandardStackFrame.setSelected(config.isGenerateStandardStackFrame());
         textSymbolicLibrary.setText(config.getSymbolicLibrary());
         cbProfile.setSelected(config.isProfile());
@@ -305,7 +303,6 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
 
     private void applyDebugTabForm(final DlangRunDmdConfiguration config) {
         config.setAddSymbolicDebugInfo(cbAddSymbolicDebugInfo.isSelected());
-        config.setAddSymbolicDebugInfoC(cbAddSymbolicDebugInfoC.isSelected());
         config.setGenerateStandardStackFrame(cbGenerateStandardStackFrame.isSelected());
         config.setSymbolicLibrary(textSymbolicLibrary.getText());
         config.setProfile(cbProfile.isSelected());

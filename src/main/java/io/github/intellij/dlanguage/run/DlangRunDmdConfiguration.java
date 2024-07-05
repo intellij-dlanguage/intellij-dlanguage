@@ -62,7 +62,6 @@ public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfig
 
     //Debug settings properties
     private boolean addSymbolicDebugInfo;
-    private boolean addSymbolicDebugInfoC;
     private boolean generateStandardStackFrame;
     private String symbolicLibrary;
     private boolean profile;
@@ -403,14 +402,6 @@ public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfig
 
     public void setAddSymbolicDebugInfo(final boolean addSymbolicDebugInfo) {
         this.addSymbolicDebugInfo = addSymbolicDebugInfo;
-    }
-
-    public boolean isAddSymbolicDebugInfoC() {
-        return addSymbolicDebugInfoC;
-    }
-
-    public void setAddSymbolicDebugInfoC(final boolean addSymbolicDebugInfoC) {
-        this.addSymbolicDebugInfoC = addSymbolicDebugInfoC;
     }
 
     public boolean isGenerateStandardStackFrame() {

@@ -222,7 +222,6 @@
                             "coverage",
                             "coverageCTFE",
                             "debugInfo",
-                            "debugInfoC",
                             "alwaysStackFrame",
                             "stackStomping",
                             "inline",
