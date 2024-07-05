@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="504" height="634"/>
+      <xy x="20" y="20" width="534" height="949"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -179,7 +179,9 @@
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <toolTipText resource-bundle="i18n/text" key="d.ui.runconfig.runDubConfigurationEditor.build.tooltip"/>
+                        </properties>
                       </component>
                       <component id="4a54d" class="javax.swing.JTextField" binding="tfConfig">
                         <constraints>
@@ -187,7 +189,9 @@
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <toolTipText resource-bundle="i18n/text" key="d.ui.runconfig.runDubConfigurationEditor.config.tooltip"/>
+                        </properties>
                       </component>
                       <component id="bf42f" class="javax.swing.JTextField" binding="tfArch">
                         <constraints>
@@ -195,7 +199,9 @@
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <toolTipText resource-bundle="i18n/text" key="d.ui.runconfig.runDubConfigurationEditor.arch.tooltip"/>
+                        </properties>
                       </component>
                       <component id="e3721" class="com.intellij.openapi.ui.TextFieldWithBrowseButton" binding="pathWorkingDir">
                         <constraints>
@@ -253,7 +259,9 @@
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <toolTipText resource-bundle="i18n/text" key="d.ui.runconfig.runDubConfigurationEditor.compiler.tooltip"/>
+                        </properties>
                       </component>
                       <component id="d07b1" class="javax.swing.JLabel">
                         <constraints>

@@ -22,7 +22,7 @@ class DlangRunDubConfigurationEditor : SettingsEditor<DlangRunDubConfiguration>(
     private lateinit var comboModules: ModulesComboBox
     private lateinit var comboGeneralDubOptions: JComboBox<*>
 
-    // Common
+    // Common (note that some fields have tooltips configured in DlangRunDubConfigurationEditor.form)
     private lateinit var cbRdmd: JCheckBox
     private lateinit var cbForce: JCheckBox
     private lateinit var cbNoDeps: JCheckBox
