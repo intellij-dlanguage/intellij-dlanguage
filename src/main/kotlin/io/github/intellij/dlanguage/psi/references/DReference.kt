@@ -23,13 +23,8 @@ import java.util.*
 /**
  * Resolves references to elements.
  */
-class DReference(element: PsiElement, textRange: TextRange) : PsiReferenceBase<PsiElement>(element, textRange), PsiPolyVariantReference {
-
-    private val name: String
-
-    init {
-        name = element.text!!
-    }
+class DReference(element: PsiElement, textRange: TextRange, private val qualifier: PsiElement?, private val referenceName: String?)
+    : PsiReferenceBase<PsiElement>(element, textRange), PsiPolyVariantReference, PsiQualifiedReference {
 
     /**
      * Resolves references to a set of results.
@@ -76,6 +71,14 @@ class DReference(element: PsiElement, textRange: TextRange) : PsiReferenceBase<P
         }
         addKeywords(result)
         return result.toTypedArray()
+    }
+
+    override fun getQualifier(): PsiElement? {
+        return qualifier
+    }
+
+    override fun getReferenceName(): String? {
+        return referenceName
     }
 
     private fun addModuleVariants(result: MutableList<String>, element: PsiElement) {
@@ -236,10 +239,6 @@ class DReference(element: PsiElement, textRange: TextRange) : PsiReferenceBase<P
 
     private fun addAllModules(result: MutableList<String>, project: Project) {
         result.addAll(StubIndex.getInstance().getAllKeys(DTopLevelDeclarationsByModule.KEY, project))
-    }
-
-    override fun getRangeInElement(): TextRange {
-        return TextRange(0, this.element.node.textLength)
     }
 
     /**

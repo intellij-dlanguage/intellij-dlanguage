@@ -71,7 +71,7 @@ class DReferenceTest : LightPlatformCodeInsightFixture4TestCase() {
         val element = myFixture.elementAtCaret.parent
         val textRange: TextRange = element.textRange
 
-        val ref = DReference(element, textRange)
+        val ref = DReference(element, textRange, null, null)
 
         PropertiesComponent.getInstance().setValue("USE_NATIVE_CODE_COMPLETION", false)
 
