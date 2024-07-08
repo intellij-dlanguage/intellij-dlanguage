@@ -63,7 +63,7 @@ class DubConfigFileListener(
         @JvmStatic
         fun getDubFileFromModule(module: Module): VirtualFile? {
             val projectDir = module.project.guessProjectDir()
-            if (projectDir != null) {
+            if (projectDir != null && projectDir.children != null) {
                 for (file in projectDir.children) {
                     if (file.isValid &&
                         (file.name.equals("dub.json", ignoreCase = true) ||
