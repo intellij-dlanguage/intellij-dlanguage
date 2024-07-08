@@ -74,10 +74,8 @@ class DlangDmdConfigToArgsConverterTest : LightDlangTestCase() {
     fun `test Get DMD Parameters Should throw NoSourcesException when no D src files found`() {
         val config = mock(DlangRunDmdConfiguration::class.java)
 
-        try {
-            DlangDmdConfigToArgsConverter.getDmdParameters(config, getModule())
-            TestCase.fail("There should be a NoSourcesException if no .d files are in the project")
-        } catch (e: NoSourcesException) {
+        assertThrows(NoSourcesException::class.java) {
+            DlangDmdConfigToArgsConverter.getDmdParameters(config, module)
         }
     }
 }
