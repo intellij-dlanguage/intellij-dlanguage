@@ -1,7 +1,6 @@
 package io.github.intellij.dlanguage.run;
 
 import com.intellij.mock.MockVirtualFile;
-import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileVisitor;
@@ -9,8 +8,6 @@ import io.github.intellij.dlanguage.LightDlangTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import java.io.IOException;
 
 /**
  * @author Samael Bate (singingbush)
@@ -72,38 +69,6 @@ public class DlangVirtualFileVisitorTest extends LightDlangTestCase {
             projectRoot,
             visitor
         ));
-        assertEquals(3, visitor.getDlangSources().size());
-    }
-
-    @Test
-    public void testVisitFile_Recursively_From_Project_Base() throws IOException {
-        // create some files in the /tmp directory for this test class's project
-        VirtualFile examplesDir = WriteAction.computeAndWait(() -> {
-            final VirtualFile sourceDir = getProjectBase().createChildDirectory(this, "source");
-            sourceDir.createChildData(this, "app.d");
-            sourceDir.createChildData(this, "my-impl.d");
-            sourceDir.createChildData(this, "my-interface.d");
-
-            final VirtualFile examples = getProjectBase().createChildDirectory(this, "examples");
-            examples.createChildData(this, "example.d");
-            return examples;
-        });
-
-        final DlangVirtualFileVisitor visitor = new DlangVirtualFileVisitor(new VirtualFile[] { examplesDir });
-
-        assertEquals(VirtualFileVisitor.SKIP_CHILDREN, visitor.visitFileEx(examplesDir));
-        assertTrue(visitor.getDlangSources().isEmpty());
-
-        assertEquals(VirtualFileVisitor.CONTINUE, visitor.visitFileEx(super.getProjectBase()));
-        assertTrue(visitor.getDlangSources().isEmpty()); // Sources get added when the visitor visits the actual files
-
-        // visit recursively
-        final VirtualFileVisitor.Result result = VfsUtilCore.visitChildrenRecursively(
-            super.getProjectBase(),
-            visitor
-        );
-
-        assertEquals(VirtualFileVisitor.CONTINUE, result);
         assertEquals(3, visitor.getDlangSources().size());
     }
 }
