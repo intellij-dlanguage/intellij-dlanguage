@@ -1,4 +1,5 @@
 import org.jetbrains.grammarkit.tasks.*
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
@@ -12,21 +13,11 @@ plugins {
     id("org.gradle.idea")
     id("java")
     alias(libs.plugins.kotlin)
-    alias(libs.plugins.gradleIntelliJPlugin)
+    alias(libs.plugins.gradleIntelliJModule)
+    alias(libs.plugins.gradleIntelliJPlatform).apply(false) // required to prevent resolution error
     alias(libs.plugins.grammarkit)
 //    id("net.saliman.cobertura") version "4.0.0"
 //    id("com.github.kt3k.coveralls") version "2.10.2"
-}
-
-
-sourceSets {
-    main {
-        java.srcDirs("src/main/java", "src/main/kotlin", "gen" , "src/main/jflex")
-        // resources.srcDirs("src/main/resources") // specifying the default causes a problem with processResources on Gradle 7
-    }
-    test {
-        java.srcDirs("src/test/java", "src/test/kotlin")
-    }
 }
 
 version = properties("version")
@@ -46,14 +37,7 @@ val overrideTestData = "false"
 // cobertura.coverageEncoding = "UTF-8"
 // cobertura.coverageExcludes = [ ".*uk.co.cwspencer.*" ]
 
-
-
 allprojects {
-
-    repositories {
-        mavenCentral()
-    }
-
     tasks {
         withType<JavaCompile> {
             sourceCompatibility = JavaVersion.VERSION_17.majorVersion
@@ -64,8 +48,8 @@ allprojects {
 
         withType<KotlinCompile> {
             compilerOptions {
-                apiVersion.set(KotlinVersion.KOTLIN_1_7)
-                languageVersion.set(KotlinVersion.KOTLIN_1_8)
+                apiVersion.set(KotlinVersion.KOTLIN_1_9)
+                languageVersion.set(KotlinVersion.KOTLIN_1_9)
                 jvmTarget.set(JvmTarget.JVM_17)
                 //allWarningsAsErrors.set(true)
             }
@@ -74,62 +58,25 @@ allprojects {
         withType<Test> {
             systemProperty("idea.tests.overwrite.data", overrideTestData)
             systemProperty("java.awt.headless", "true") // avoid "Must be precomputed" error, because IDE is not started (LoadingState.APP_STARTED.isOccurred is false)
-
-//            jvmArgs = listOf(
-//                "--illegal-access=warn",
-//                "--add-opens=java.base/java.lang=ALL-UNNAMED",
-//                "--add-opens=java.base/java.io=ALL-UNNAMED",
-//                "--add-opens=java.desktop/sun.awt=ALL-UNNAMED",
-//                "--add-opens=java.desktop/java.awt=ALL-UNNAMED",
-//                "--add-opens=java.desktop/java.awt.event=ALL-UNNAMED",
-//                "--add-opens=java.desktop/javax.swing=ALL-UNNAMED"
-//            )
         }
     }
 
 }
 
-intellij {
-    version.set(ideaVersion)
-
-    val pluginList = mutableListOf(
-        "org.intellij.intelliLang",
-        "com.intellij.copyright"
-    )
-
-    if (baseIDE == "idea") {
-        pluginList += listOf(
-            "com.intellij.java",
-            "com.intellij.java.ide"
-        )
+repositories {
+    mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
     }
-    else if (baseIDE == "clion" || baseIDE == "appcode") {
-        pluginList += listOf(
-            "com.intellij.cidr.base",
-            "com.intellij.cidr.lang"
-        )
-        if (baseIDE == "clion")
-            pluginList += listOf(
-                "com.intellij.clion"
-            )
-    }
-    plugins.set(pluginList)
+}
 
-    tasks {
-        buildPlugin { enabled = false }
-        buildSearchableOptions { enabled = false }
-        downloadRobotServerPlugin { enabled = false }
-        jarSearchableOptions { enabled = false }
-        patchPluginXml { enabled = false }
-        prepareSandbox { enabled = false }
-        prepareTestingSandbox { enabled = false }
-        prepareUiTestingSandbox { enabled = false }
-        publishPlugin { enabled = false }
-        runIde { enabled = false }
-        runIdeForUiTests { enabled = false }
-        runPluginVerifier { enabled = false }
-        signPlugin { enabled = false }
-        verifyPlugin { enabled = false }
+sourceSets {
+    main {
+        java.srcDirs("src/main/java", "src/main/kotlin", "gen" , "src/main/jflex")
+        // resources.srcDirs("src/main/resources") // specifying the default causes a problem with processResources on Gradle 7
+    }
+    test {
+        java.srcDirs("src/test/java", "src/test/kotlin")
     }
 }
 
@@ -185,23 +132,11 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 dependencies {
-    // According to https://www.jetbrains.org/intellij/sdk/docs/tutorials/kotlin.html
-    // we should not need to include kotlin-runtime and kotlin-stdlib jars with a plugin
-    // as it's bundled with Intellij, however if we support multiple Intellij versions (which
-    // we do) then it may be worth bundling our own kotlin jars
-    //compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    //compileOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-
-    // todo: When updating the gradle intellij plugin we'll most likely need to set
-    // some project dependencies with the 'instrumentedJar' configuration
-    // see:
-    //  https://github.com/JetBrains/gradle-intellij-plugin/issues/1412
-    //  https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#multi-module-project
     implementation (project(":utils"))
     implementation (project(":errorreporting"))
     implementation (project(":debugger"))
     implementation (project(":sdlang"))
-    testImplementation(project(":dlang:plugin-impl"))
+    testImplementation (project(":dlang:plugin-impl"))
 
     implementation (libs.gson) // used by dub parser
 
@@ -209,10 +144,16 @@ dependencies {
 
     testImplementation (libs.junit.engine)
     testRuntimeOnly (libs.junit.engine)
-}
 
-idea {
-    module {
-        generatedSourceDirs.add(file("gen"))
+    intellijPlatform {
+        intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
+        bundledPlugins(
+            "com.intellij.java",
+            "com.intellij.java.ide",
+            "org.intellij.intelliLang",
+            "com.intellij.copyright"
+        )
+        instrumentationTools()
+        testFramework(TestFrameworkType.Plugin.Java)
     }
 }

@@ -1,5 +1,6 @@
 import org.jetbrains.grammarkit.tasks.GenerateLexerTask
 import org.jetbrains.grammarkit.tasks.GenerateParserTask
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
@@ -7,31 +8,28 @@ plugins {
     id("java")
     alias(libs.plugins.kotlin)
     alias(libs.plugins.grammarkit)
-    alias(libs.plugins.gradleIntelliJPlugin)
+    alias(libs.plugins.gradleIntelliJModule)
 }
 
-// Disable all Gradle Tasks for the gradle-intellij-plugin as we only use the plugin for the dependencies
-tasks {
-    buildPlugin { enabled = false }
-    buildSearchableOptions { enabled = false }
-    downloadRobotServerPlugin { enabled = false }
-    jarSearchableOptions { enabled = false }
-    patchPluginXml { enabled = false }
-    prepareSandbox { enabled = false }
-    prepareTestingSandbox { enabled = false }
-    prepareUiTestingSandbox { enabled = false }
-    publishPlugin { enabled = false }
-    runIde { enabled = false }
-    runIdeForUiTests { enabled = false }
-    runPluginVerifier { enabled = false }
-    signPlugin { enabled = false }
-    verifyPlugin { enabled = false }
-    test { enabled = true }
+
+repositories {
+    mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
-intellij {
-    version.set(providers.gradleProperty("ideaVersion").get())
+dependencies {
+    testImplementation (libs.junit.engine)
+    testRuntimeOnly (libs.junit.engine)
+
+    intellijPlatform {
+        intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
+        instrumentationTools()
+        testFramework(TestFrameworkType.Platform)
+    }
 }
+
 
 sourceSets {
     main {

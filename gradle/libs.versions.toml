@@ -8,12 +8,13 @@ mockito-kotlin = "4.0+"
 sentry = "7+"
 
 # plugins
-gradleIntelliJPlugin = "1.17.4"
+gradleIntelliJPlatformPlugin = "2.0.0-rc2"
 grammarkit = "2022.3.2.2"
 kotlin = "1.9.23"
 
 [plugins]
-gradleIntelliJPlugin = { id = "org.jetbrains.intellij", version.ref = "gradleIntelliJPlugin" }
+gradleIntelliJPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "gradleIntelliJPlatformPlugin" }
+gradleIntelliJModule = { id = "org.jetbrains.intellij.platform.module", version.ref = "gradleIntelliJPlatformPlugin" }
 grammarkit = { id = "org.jetbrains.grammarkit", version.ref = "grammarkit" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 

@@ -1,29 +1,24 @@
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+
 plugins {
     id("java")
-    // todo: Rework the utils module to just use com.jetbrains.intellij.platform:core and com.jetbrains.intellij.platform:lang
-    // so that there's no need to use 'org.jetbrains.intellij' plugin in this module
-    alias(libs.plugins.gradleIntelliJPlugin)
+    alias(libs.plugins.gradleIntelliJModule)
 }
 
 
-// Disable all Gradle Tasks for the gradle-intellij-plugin as we only use the plugin for the dependencies
-tasks {
-    buildPlugin { enabled = false }
-    buildSearchableOptions { enabled = false }
-    downloadRobotServerPlugin { enabled = false }
-    jarSearchableOptions { enabled = false }
-    patchPluginXml { enabled = false }
-    prepareSandbox { enabled = false }
-    prepareTestingSandbox { enabled = false }
-    prepareUiTestingSandbox { enabled = false }
-    publishPlugin { enabled = false }
-    runIde { enabled = false }
-    runIdeForUiTests { enabled = false }
-    runPluginVerifier { enabled = false }
-    signPlugin { enabled = false }
-    verifyPlugin { enabled = false }
+repositories {
+    mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
-intellij {
-    version.set(providers.gradleProperty("ideaVersion").get())
+dependencies {
+    testImplementation (libs.junit.engine)
+    testRuntimeOnly (libs.junit.engine)
+    intellijPlatform {
+        intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
+        instrumentationTools()
+        testFramework(TestFrameworkType.Platform)
+    }
 }
