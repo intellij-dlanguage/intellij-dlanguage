@@ -23,7 +23,7 @@ repositories {
 intellijPlatform {
     buildSearchableOptions = false
     instrumentCode = true
-    projectName = project.name
+    projectName = "intellij-dlanguage"
 
     pluginConfiguration {
         version = properties("pluginVersion")
@@ -48,7 +48,12 @@ intellijPlatform {
 tasks {
     runIde {
         jvmArgumentProviders += CommandLineArgumentProvider {
-            listOf("-Dide.show.tips.on.startup.default.value=false")
+            listOf(
+                "-Dide.show.tips.on.startup.default.value=false",
+                "-Dide.debug.mode=true",
+                // The package names have to be prefixed with a #
+                "-Didea.log.debug.categories=#io.github.intellij.dlanguage"
+                )
         }
     }
 }
