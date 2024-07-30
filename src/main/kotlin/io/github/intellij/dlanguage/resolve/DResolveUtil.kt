@@ -68,7 +68,7 @@ class DResolveUtil private constructor(val project: Project) {
         }
 
         if (isModuleScopeOperator(e)) {
-            val name = (e as ReferenceExpression).identifier!!.text
+            val name = (e as ReferenceExpression).identifier?.text?:return emptySet()
             return DTopLevelDeclarationIndex.getTopLevelSymbols(name, (e.containingFile as DlangPsiFile).getFullyQualifiedModuleName(), project)
         }
 

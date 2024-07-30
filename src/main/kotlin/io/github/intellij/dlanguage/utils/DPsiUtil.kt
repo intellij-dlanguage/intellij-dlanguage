@@ -106,6 +106,7 @@ object DPsiUtil {
 }
 
 fun getImportText(chain: IdentifierChain): String {
+    chain.identifier?: return ""
     var text = chain.identifier!!.text
     if (chain.identifierChain != null)
         text = getImportText(chain.identifierChain!!) + "." + text

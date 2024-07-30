@@ -36,6 +36,8 @@ class DHighlightingAnnotator : Annotator {
                     else null
         } ?: return
 
+        partToHighlight?:return
+
         holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(partToHighlight).textAttributes(color.textAttributesKey).create()
     }
 
