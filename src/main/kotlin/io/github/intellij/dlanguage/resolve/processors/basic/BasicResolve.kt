@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.attributes.DNameScopeProcessor
 import io.github.intellij.dlanguage.index.DModuleIndex
+import io.github.intellij.dlanguage.psi.DLanguageImportBind
 import io.github.intellij.dlanguage.psi.DLanguageQualifiedIdentifier
 import io.github.intellij.dlanguage.psi.DLanguageReferenceExpression
 import io.github.intellij.dlanguage.psi.DlangPsiFile

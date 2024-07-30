@@ -200,6 +200,7 @@ static this() {
     types_children["IfStatement"] = [/*"Identifier","AssignExpression*","OP_COMMA*",*/"Statement","KW_ELSE","KW_IF","OP_PAR_LEFT","OP_PAR_RIGHT"/*,"KW_AUTO","Type","OP_EQ"*/,"IfCondition"];
     types_extra_interfaces["IfStatement"] = ["Statement"];
     types_children["ImportBind"] = ["Identifier","NamedImportBind"];
+    types_mixins["ImportBind"] = "DLanguageImportBindImplMixin";
     types_children["ImportBindings"] = ["OP_COMMA*","ImportBind*","SingleImport","OP_COLON"];
     types_children["ImportDeclaration"] = ["KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
     types_extra_interfaces["ImportDeclaration"] = ["Statement", "Declaration"];

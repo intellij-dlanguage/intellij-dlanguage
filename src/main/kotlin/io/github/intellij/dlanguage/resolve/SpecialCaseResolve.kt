@@ -47,8 +47,7 @@ object SpecialCaseResolve {
             return resolvePackage(identifiers.subList(0, identifiers.indexOf(e) + 1))
         }
         if (inImportBind(e) != null) {
-            return (inImportBind(e)!!.parent as ImportDeclaration).singleImports.flatMap { resolveScopedSymbol(it, e.text, e.project) }.toSet()
-
+            return (inImportBind(e)!!.parent as ImportDeclaration).singleImports.flatMap { resolveScopedSymbol(it, (e as ImportBind).identifier!!.text, e.project) }.toSet()
         }
 //        if(inVersionCondition(e) != null){
 //            return resolveVersion(e)
@@ -135,7 +134,7 @@ object SpecialCaseResolve {
 
 
     fun isApplicable(e: PsiElement): Boolean {
-        return inModuleDeclaration(e) != null /*|| inSingleImport(e) != null || inImportBind(e) != null || resolvingLabel(e) || inPackageAttribute(e)*/
+        return inModuleDeclaration(e) != null || inSingleImport(e) != null || inImportBind(e) != null || resolvingLabel(e) || inPackageAttribute(e)
     }
 
     private fun inPackageAttribute(identifier: PsiElement): Boolean {

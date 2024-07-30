@@ -80,13 +80,21 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                     // If version identifier is not defined, this mean that the debug is not enabled
                 } else {
                     var elementToRegister = element
-                    if (element is QualifiedIdentifier) {
-                        element.identifier?:return
-                        elementToRegister = element.identifier!!
-                    }
-                    else if (element is ReferenceExpression) {
-                        element.identifier ?: return
-                        elementToRegister = element.identifier!!
+                    when (element) {
+                        is QualifiedIdentifier -> {
+                            element.identifier?:return
+                            elementToRegister = element.identifier!!
+                        }
+
+                        is ReferenceExpression -> {
+                            element.identifier ?: return
+                            elementToRegister = element.identifier!!
+                        }
+
+                        is ImportBind -> {
+                            element.identifier ?: return
+                            elementToRegister = element.identifier!!
+                        }
                     }
                     holder.registerProblem(elementToRegister, "Possibly undefined symbol") // todo: add quick fix
                 }
