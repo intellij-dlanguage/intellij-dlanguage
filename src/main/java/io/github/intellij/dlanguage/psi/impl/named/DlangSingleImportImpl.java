@@ -19,10 +19,11 @@ import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
 
 import java.util.*;
 
+import io.github.intellij.dlanguage.utils.DPsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.github.intellij.dlanguage.resolve.SpecialCaseResolveKt.getImportText;
+import static io.github.intellij.dlanguage.utils.DPsiUtilKt.getImportText;
 
 /**
  * Created by francis on 7/14/2017.
@@ -132,7 +133,7 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
         if (getIdentifierChain() == null) {
             return DReference.Companion.getNAME_NOT_FOUND_STRING();
         }
-        if (getIdentifierChain().getText().isEmpty()) {
+        if (getIdentifierChain().getIdentifier() == null) {
             Logger.getInstance(getClass())
                 .warn("getIdentifier chain was: \"\". Complete text of symbol: " + getText());
             return DReference.Companion.getNAME_NOT_FOUND_STRING();

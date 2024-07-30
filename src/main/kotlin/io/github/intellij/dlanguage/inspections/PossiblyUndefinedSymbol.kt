@@ -61,8 +61,9 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
         private fun handleReference(reference: PsiReference) {
             val element = reference.element
             if (reference.resolve() == null && !symbolIsDefinedByDefault(element)) {
-                if (element.parent is IdentifierChain && element.parent.parent is SingleImport) {
-                    if ((element.parent as IdentifierChain).identifiers.last() == element) {
+                if (element is IdentifierChain) {
+                    val importElt = PsiTreeUtil.getParentOfType(element, SingleImport::class.java)
+                    if (importElt != null && importElt.identifierChain == element) {
                         holder.registerProblem(element.parent, "Unresolved import", ProblemHighlightType.ERROR)
                     }
                     // else it’s a package. Packages may not reflect a real folder, it’s fine

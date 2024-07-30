@@ -105,3 +105,10 @@ object DPsiUtil {
     }
 }
 
+fun getImportText(chain: IdentifierChain): String {
+    var text = chain.identifier!!.text
+    if (chain.identifierChain != null)
+        text = getImportText(chain.identifierChain!!) + "." + text
+    return text
+}
+

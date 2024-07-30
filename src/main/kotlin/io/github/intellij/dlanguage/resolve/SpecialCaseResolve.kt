@@ -33,18 +33,18 @@ object SpecialCaseResolve {
     fun findDefinitionNode(e: PsiElement): Set<PsiNamedElement> {
 
         if (inModuleDeclaration(e) != null) {
-            val identifiers = inModuleDeclaration(e)!!.identifierChain!!.identifiers
-            if (identifiers.last() == e) {
-                return resolveModule(inModuleDeclaration(e)!!.identifierChain!!)
+            val identifiers = inModuleDeclaration(e)!!.identifierChain!!
+            if (identifiers == e) {
+                return resolveModule(identifiers)
             }
-            return resolvePackage(identifiers.subList(0, identifiers.indexOf(e) + 1))
+            return resolvePackage(identifiers.identifierChain!!)
         }
         if (inSingleImport(e) != null) {
-            val identifiers = inSingleImport(e)!!.identifierChain!!.identifiers
-            if (identifiers.last() == e) {
-                return resolveModule(inSingleImport(e)!!.identifierChain!!)
+            val identifiers = inSingleImport(e)!!.identifierChain!!
+            if (identifiers == e) {
+                return resolveModule(identifiers)
             }
-            return resolvePackage(identifiers.subList(0, identifiers.indexOf(e) + 1))
+            return resolvePackage(identifiers.identifierChain!!)
         }
         if (inImportBind(e) != null) {
             return (inImportBind(e)!!.parent as ImportDeclaration).singleImports.flatMap { resolveScopedSymbol(it, (e as ImportBind).identifier!!.text, e.project) }.toSet()
@@ -53,12 +53,11 @@ object SpecialCaseResolve {
 //            return resolveVersion(e)
 //        }
         if (inPackageAttribute(e)) {
-            val chain = e.parent as IdentifierChain
-            val identifiers = chain.identifiers
-            if (identifiers.last() == e) {
-                return resolveModule(chain)
+            val topIdentifier = PsiTreeUtil.getTopmostParentOfType(e, IdentifierChain::class.java)
+            if (topIdentifier == e) {
+                return resolveModule(topIdentifier)
             }
-            return resolvePackage(identifiers.subList(0, identifiers.indexOf(e) + 1))
+            return resolvePackage(e as IdentifierChain)
         }
         if (resolvingLabel(e)) {
             return resolveLabel(e)
@@ -82,20 +81,10 @@ object SpecialCaseResolve {
         return out
     }
 
-    private fun resolvePackage(parents: List<PsiElement>): Set<PsiNamedElement> {
-        if (parents.isEmpty())
-            return emptySet()
-        val last = parents.last()
-        var name = ""
-        for (parent in parents) {
-            if (parent != last) {
-                name += (parent.text + ".")
-            } else {
-                name += parent.text
-            }
-        }
-        val project = last.project
-        return resolvePackageFromName(project, name)
+    private fun resolvePackage(parents: IdentifierChain): Set<PsiNamedElement> {
+        val project = parents.project
+        val text = getImportText(parents)
+        return resolvePackageFromName(project, text)
     }
 
     private fun resolvePackageFromName(project: Project, name: String): Set<PsiDirectory> {
@@ -106,12 +95,8 @@ object SpecialCaseResolve {
             .toSet()
     }
 
-    private fun resolveModule(path: QualifiedIdentifier): Set<PsiNamedElement> {
-        return newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.text, GlobalSearchScope.allScope(path.project)))
-    }
-
     private fun resolveModule(path: IdentifierChain): Set<PsiNamedElement> {
-        return newHashSet(DModuleIndex.getFilesByModuleName(path.project, path.importText, GlobalSearchScope.allScope(path.project)))
+        return newHashSet(DModuleIndex.getFilesByModuleName(path.project, getImportText(path), GlobalSearchScope.allScope(path.project)))
     }
 
     private fun resolveScopedSymbol(import: SingleImport, scope: String, project: Project): Set<PsiNamedElement> {
@@ -172,8 +157,3 @@ object SpecialCaseResolve {
     }
 
 }
-
-val IdentifierChain.importText: String
-    get() {
-        return identifiers.stream().map(PsiElement::getText).collect(Collectors.joining("."))
-    }

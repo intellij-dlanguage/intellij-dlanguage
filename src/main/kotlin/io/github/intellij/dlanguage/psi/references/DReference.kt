@@ -12,6 +12,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.processors.DCompletionProcessor
 import io.github.intellij.dlanguage.psi.DlangPsiFile
+import io.github.intellij.dlanguage.psi.impl.DElementFactory
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.resolve.DResolveUtil
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
@@ -246,13 +247,60 @@ class DReference(element: PsiElement, textRange: TextRange, private val qualifie
      */
     @Throws(IncorrectOperationException::class)
     override fun handleElementRename(newElementName: String): PsiElement {
-        val element: PsiElement?
-        if (myElement is DNamedElement) {
+        if (myElement is IdentifierChain) {
+            if ((myElement as IdentifierChain).identifier == null)
+                throw IncorrectOperationException()
             // Renaming files is tricky: we don't want to change `RenamePsiFileProcessor`,
             // If it’s end by `.d` then it’s because we renamed a file
             val newName = StringUtil.trimEnd(newElementName, ".d")
-            element = (myElement as DNamedElement).setName(newName)
-            return element
+            (myElement as IdentifierChain).identifier!!.replace(DElementFactory.createDLanguageIdentifierFromText(myElement.project, newName)!!)
+            return myElement
+        }
+        if (myElement is ImportBind) {
+            if ((myElement as ImportBind).identifier == null)
+                throw IncorrectOperationException()
+            (myElement as ImportBind).identifier!!.replace(DElementFactory.createDLanguageIdentifierFromText(myElement.project, newElementName)!!)
+            return myElement
+        }
+        if (myElement is ReferenceExpression) {
+            if ((myElement as ReferenceExpression).identifier != null) {
+                (myElement as ReferenceExpression).identifier!!.replace(
+                    DElementFactory.createDLanguageIdentifierFromText(
+                        myElement.project,
+                        newElementName
+                    )!!
+                )
+            } else if ((myElement as ReferenceExpression).templateInstance != null && (myElement as ReferenceExpression).templateInstance!!.identifier != null) {
+                (myElement as ReferenceExpression).templateInstance!!.identifier!!.replace(
+                    DElementFactory.createDLanguageIdentifierFromText(
+                        myElement.project,
+                        newElementName
+                    )!!
+                )
+            } else {
+                throw IncorrectOperationException()
+            }
+            return myElement
+        }
+        if (myElement is QualifiedIdentifier) {
+            if ((myElement as QualifiedIdentifier).identifier != null) {
+                (myElement as QualifiedIdentifier).identifier!!.replace(
+                    DElementFactory.createDLanguageIdentifierFromText(
+                        myElement.project,
+                        newElementName
+                    )!!
+                )
+            } else if ((myElement as QualifiedIdentifier).templateInstance != null && (myElement as QualifiedIdentifier).templateInstance!!.identifier != null) {
+                (myElement as QualifiedIdentifier).templateInstance!!.identifier!!.replace(
+                    DElementFactory.createDLanguageIdentifierFromText(
+                        myElement.project,
+                        newElementName
+                    )!!
+                )
+            } else {
+                throw IncorrectOperationException()
+            }
+            return myElement
         }
         return super.handleElementRename(newElementName)
     }

@@ -125,16 +125,6 @@ object DUtil {
             .orElse(null)
     }
 
-    @JvmStatic
-    fun getEndOfIdentifierList(chain: DLanguageIdentifierChain): PsiElement? {
-        val list = chain.identifiers
-        if (list.isEmpty()) {
-            return null
-        }
-
-        return list[list.size - 1]
-    }
-
     /**
      * D file names should be composed of the ASCII characters lower case letters, digits or _ and should also not be a Keyword.
      * @param name a filename to check

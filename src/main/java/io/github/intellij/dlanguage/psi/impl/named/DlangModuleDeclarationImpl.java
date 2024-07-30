@@ -11,7 +11,6 @@ import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
 import io.github.intellij.dlanguage.psi.impl.DElementFactory;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.stubs.DlangModuleDeclarationStub;
-import io.github.intellij.dlanguage.utils.DUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,10 +50,7 @@ public class DlangModuleDeclarationImpl extends DNamedStubbedPsiElementBase<Dlan
 
     @Nullable
     public PsiElement getNameIdentifier() {
-        if (getIdentifierChain() == null) {
-            return null;
-        }
-        return DUtil.getEndOfIdentifierList(getIdentifierChain());
+        return getIdentifierChain();
     }
 
     @NotNull
@@ -74,14 +70,7 @@ public class DlangModuleDeclarationImpl extends DNamedStubbedPsiElementBase<Dlan
     }
 
     public boolean hasAName() {
-        try {
-            if (getIdentifierChain() == null) {
-                return false;
-            }
-            return getIdentifierChain().getIdentifiers().size() > 0;
-        } catch (final NullPointerException e) {
-            return false;
-        }
+        return getIdentifierChain() != null;
     }
 
     @Nullable

@@ -193,7 +193,8 @@ static this() {
     types_extra_interfaces["FunctionLiteralExpression"] = ["Expression"];
     types_children["GotoStatement"] = ["Identifier","AssignExpression*","OP_COMMA*","KW_DEFAULT","KW_CASE","KW_GOTO","OP_SCOLON"];
     types_extra_interfaces["GotoStatement"] = ["Statement"];
-    types_children["IdentifierChain"] = ["Identifier*", "OP_DOT*"];
+    types_children["IdentifierChain"] = ["Identifier", "OP_DOT", "IdentifierChain"];
+    types_mixins["IdentifierChain"] = "DLanguageIdentifierChainImplMixin";
     types_children["IdentityExpression"] = ["Expression*","KW_IS","OP_NOT"];
     types_extra_interfaces["IdentityExpression"] = ["Expression"];
     stub_children ["IfCondition"] = ["Identifier",  "AssignExpression*","OP_COMMA*", "KW_AUTO", "KW_SCOPE","Type", "OP_EQ"];
