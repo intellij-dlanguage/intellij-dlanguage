@@ -79,7 +79,7 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
             } else if (super.getTestName(true) == "scopedImportsMembers") {
                 assertNotNull("Could not resolve expected reference.", element)
                 assertEquals("Could not resolve expected reference.", "struct_member",
-                        (element!!.parent as DlangFunctionDeclaration).name)
+                        (element as DlangFunctionDeclaration).name)
             } else {
                 assertNotNull("Could not resolve expected reference.", element)
                 assertEquals("Could not resolve expected reference.", resolvedElement, element!!)
