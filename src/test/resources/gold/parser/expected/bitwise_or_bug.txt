@@ -7,8 +7,7 @@ D Language File
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('assertEquals')
+            PsiElement(DlangTokenType.ID)('assertEquals')
           PsiElement(DlangTokenType.()('(')
           DLanguageArgumentListImpl(ARGUMENT_LIST)
             DLanguageOrExpressionImpl(OR_EXPRESSION)
@@ -27,8 +26,7 @@ D Language File
     DLanguageStorageClassImpl(STORAGE_CLASS)
       PsiElement(DlangTokenType.auto)('auto')
     AUTO_ASSIGNMENT
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('x')
+      PsiElement(DlangTokenType.ID)('x')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageOrExpressionImpl(OR_EXPRESSION)

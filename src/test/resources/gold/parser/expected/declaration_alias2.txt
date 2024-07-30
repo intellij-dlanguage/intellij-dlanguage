@@ -1,42 +1,36 @@
 D Language File
   TEMPLATE_DECLARATION
     PsiElement(DlangTokenType.template)('template')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('Foo2')
+    PsiElement(DlangTokenType.ID)('Foo2')
     DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
         TEMPLATE_PARAMETER
           DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('T')
+            PsiElement(DlangTokenType.ID)('T')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
       PsiElement(DlangTokenType.alias)('alias')
       ALIAS_INITIALIZER
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('t')
+        PsiElement(DlangTokenType.ID)('t')
         PsiElement(DlangTokenType.=)('=')
         DLanguageTypeImpl(TYPE)
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('T')
+              PsiElement(DlangTokenType.ID)('T')
       PsiElement(DlangTokenType.;)(';')
     PsiElement(DlangTokenType.})('}')
   DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
     PsiElement(DlangTokenType.alias)('alias')
     ALIAS_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('t1')
+      PsiElement(DlangTokenType.ID)('t1')
       PsiElement(DlangTokenType.=)('=')
       DLanguageTypeImpl(TYPE)
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
             DLanguageTemplateInstanceImpl(TEMPLATE_INSTANCE)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('Foo2')
+              PsiElement(DlangTokenType.ID)('Foo2')
               DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                 PsiElement(DlangTokenType.!)('!')
                 PsiElement(DlangTokenType.()('(')
@@ -51,15 +45,13 @@ D Language File
   DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
     PsiElement(DlangTokenType.alias)('alias')
     ALIAS_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('t2')
+      PsiElement(DlangTokenType.ID)('t2')
       PsiElement(DlangTokenType.=)('=')
       DLanguageTypeImpl(TYPE)
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
             DLanguageTemplateInstanceImpl(TEMPLATE_INSTANCE)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('Foo2')
+              PsiElement(DlangTokenType.ID)('Foo2')
               DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
                 PsiElement(DlangTokenType.!)('!')
                 PsiElement(DlangTokenType.()('(')
@@ -71,78 +63,63 @@ D Language File
                           PsiElement(DlangTokenType.int)('int')
                 PsiElement(DlangTokenType.))(')')
             PsiElement(DlangTokenType..)('.')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('t')
+            PsiElement(DlangTokenType.ID)('t')
     PsiElement(DlangTokenType.;)(';')
   DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
     PsiElement(DlangTokenType.alias)('alias')
     ALIAS_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('t3')
+      PsiElement(DlangTokenType.ID)('t3')
       PsiElement(DlangTokenType.=)('=')
       DLanguageTypeImpl(TYPE)
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
             DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('t1')
+              PsiElement(DlangTokenType.ID)('t1')
               PsiElement(DlangTokenType..)('.')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('t')
+            PsiElement(DlangTokenType.ID)('t')
     PsiElement(DlangTokenType.;)(';')
   DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
     PsiElement(DlangTokenType.alias)('alias')
     ALIAS_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('t4')
+      PsiElement(DlangTokenType.ID)('t4')
       PsiElement(DlangTokenType.=)('=')
       DLanguageTypeImpl(TYPE)
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('t2')
+            PsiElement(DlangTokenType.ID)('t2')
     PsiElement(DlangTokenType.;)(';')
   DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
         DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('t1')
+          PsiElement(DlangTokenType.ID)('t1')
           PsiElement(DlangTokenType..)('.')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('t')
+        PsiElement(DlangTokenType.ID)('t')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('v1')
+      PsiElement(DlangTokenType.ID)('v1')
     PsiElement(DlangTokenType.;)(';')
     PsiComment(DlangTokenType.LINE_COMMENT)('// v1 is type int')
   DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('t2')
+        PsiElement(DlangTokenType.ID)('t2')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('v2')
+      PsiElement(DlangTokenType.ID)('v2')
     PsiElement(DlangTokenType.;)(';')
     PsiComment(DlangTokenType.LINE_COMMENT)('// v2 is type int')
   DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('t3')
+        PsiElement(DlangTokenType.ID)('t3')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('v3')
+      PsiElement(DlangTokenType.ID)('v3')
     PsiElement(DlangTokenType.;)(';')
     PsiComment(DlangTokenType.LINE_COMMENT)('// v3 is type int')
   DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('t4')
+        PsiElement(DlangTokenType.ID)('t4')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('v4')
+      PsiElement(DlangTokenType.ID)('v4')
     PsiElement(DlangTokenType.;)(';')
     PsiComment(DlangTokenType.LINE_COMMENT)('// v4 is type int')

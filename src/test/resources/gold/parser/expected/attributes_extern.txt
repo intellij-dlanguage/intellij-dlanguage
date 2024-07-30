@@ -4,16 +4,14 @@ D Language File
       DLanguageLinkageAttributeImpl(LINKAGE_ATTRIBUTE)
         PsiElement(DlangTokenType.extern)('extern')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('C')
+        PsiElement(DlangTokenType.ID)('C')
         PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.:)(':')
   FUNCTION_DECLARATION
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.int)('int')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('foo')
+    PsiElement(DlangTokenType.ID)('foo')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PsiElement(DlangTokenType.))(')')
@@ -25,8 +23,7 @@ D Language File
       DLanguageLinkageAttributeImpl(LINKAGE_ATTRIBUTE)
         PsiElement(DlangTokenType.extern)('extern')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('D')
+        PsiElement(DlangTokenType.ID)('D')
         PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.:)(':')
   DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
@@ -34,8 +31,7 @@ D Language File
       DLanguageLinkageAttributeImpl(LINKAGE_ATTRIBUTE)
         PsiElement(DlangTokenType.extern)('extern')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('Windows')
+        PsiElement(DlangTokenType.ID)('Windows')
         PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.:)(':')
   FUNCTION_DECLARATION
@@ -44,8 +40,7 @@ D Language File
         PsiElement(DlangTokenType.void)('void')
     DLanguageTypeSuffixImpl(TYPE_SUFFIX)
       PsiElement(DlangTokenType.*)('*')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('VirtualAlloc')
+    PsiElement(DlangTokenType.ID)('VirtualAlloc')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PARAMETER
@@ -55,32 +50,28 @@ D Language File
               PsiElement(DlangTokenType.void)('void')
           DLanguageTypeSuffixImpl(TYPE_SUFFIX)
             PsiElement(DlangTokenType.*)('*')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('lpAddress')
+        PsiElement(DlangTokenType.ID)('lpAddress')
       PsiElement(DlangTokenType.,)(',')
       PARAMETER
         DLanguageTypeImpl(TYPE)
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
               PsiElement(DlangTokenType.uint)('uint')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('dwSize')
+        PsiElement(DlangTokenType.ID)('dwSize')
       PsiElement(DlangTokenType.,)(',')
       PARAMETER
         DLanguageTypeImpl(TYPE)
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
               PsiElement(DlangTokenType.uint)('uint')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('flAllocationType')
+        PsiElement(DlangTokenType.ID)('flAllocationType')
       PsiElement(DlangTokenType.,)(',')
       PARAMETER
         DLanguageTypeImpl(TYPE)
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
               PsiElement(DlangTokenType.uint)('uint')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('flProtect')
+        PsiElement(DlangTokenType.ID)('flProtect')
       PsiElement(DlangTokenType.))(')')
     DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
       PsiElement(DlangTokenType.;)(';')

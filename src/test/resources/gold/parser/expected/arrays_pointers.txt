@@ -6,6 +6,5 @@ D Language File
     DLanguageTypeSuffixImpl(TYPE_SUFFIX)
       PsiElement(DlangTokenType.*)('*')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('p')
+      PsiElement(DlangTokenType.ID)('p')
     PsiElement(DlangTokenType.;)(';')

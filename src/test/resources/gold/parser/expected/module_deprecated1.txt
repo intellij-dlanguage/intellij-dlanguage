@@ -4,6 +4,5 @@ D Language File
       PsiElement(DlangTokenType.deprecated)('deprecated')
     PsiElement(DlangTokenType.module)('module')
     DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('foo')
+      PsiElement(DlangTokenType.ID)('foo')
     PsiElement(DlangTokenType.;)(';')

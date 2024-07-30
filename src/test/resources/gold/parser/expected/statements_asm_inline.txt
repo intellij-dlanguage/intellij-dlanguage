@@ -3,8 +3,7 @@ D Language File
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.int)('int')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('gethardware')
+    PsiElement(DlangTokenType.ID)('gethardware')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PsiElement(DlangTokenType.))(')')
@@ -15,8 +14,7 @@ D Language File
           PsiElement(DlangTokenType.asm)('asm')
           PsiElement(DlangTokenType.{)('{')
           DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('mov')
+            PsiElement(DlangTokenType.ID)('mov')
             DLanguageOperandsImpl(OPERANDS)
               DLanguageAsmExpImpl(ASM_EXP)
                 DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -33,8 +31,7 @@ D Language File
                                       DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                         DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                           DLanguageRegisterImpl(REGISTER)
-                                            IDENTIFIER
-                                              PsiElement(DlangTokenType.ID)('EAX')
+                                            PsiElement(DlangTokenType.ID)('EAX')
               PsiElement(DlangTokenType.,)(',')
               DLanguageAsmExpImpl(ASM_EXP)
                 DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -50,10 +47,8 @@ D Language File
                                     DLanguageAsmBrExpImpl(ASM_BR_EXP)
                                       DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                         DLanguageAsmTypePrefixImpl(ASM_TYPE_PREFIX)
-                                          IDENTIFIER
-                                            PsiElement(DlangTokenType.ID)('dword')
-                                          IDENTIFIER
-                                            PsiElement(DlangTokenType.ID)('ptr')
+                                          PsiElement(DlangTokenType.ID)('dword')
+                                          PsiElement(DlangTokenType.ID)('ptr')
                                         DLanguageAsmExpImpl(ASM_EXP)
                                           DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
                                             DLanguageAsmLogAndExpImpl(ASM_LOG_AND_EXP)

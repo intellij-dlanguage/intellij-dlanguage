@@ -4,8 +4,7 @@ D Language File
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('lib')
+        PsiElement(DlangTokenType.ID)('lib')
         PsiElement(DlangTokenType.,)(',')
         DLanguageArgumentListImpl(ARGUMENT_LIST)
           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -17,8 +16,7 @@ D Language File
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('mangle')
+        PsiElement(DlangTokenType.ID)('mangle')
         PsiElement(DlangTokenType.,)(',')
         DLanguageArgumentListImpl(ARGUMENT_LIST)
           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -28,14 +26,12 @@ D Language File
       DLanguageLinkageAttributeImpl(LINKAGE_ATTRIBUTE)
         PsiElement(DlangTokenType.extern)('extern')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('C')
+        PsiElement(DlangTokenType.ID)('C')
         PsiElement(DlangTokenType.))(')')
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.void)('void')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('body_func')
+    PsiElement(DlangTokenType.ID)('body_func')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PsiElement(DlangTokenType.))(')')
@@ -46,8 +42,7 @@ D Language File
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('msg')
+        PsiElement(DlangTokenType.ID)('msg')
         PsiElement(DlangTokenType.,)(',')
         DLanguageArgumentListImpl(ARGUMENT_LIST)
           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -64,8 +59,7 @@ D Language File
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.void)('void')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('foo')
+    PsiElement(DlangTokenType.ID)('foo')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PsiElement(DlangTokenType.))(')')
@@ -78,13 +72,11 @@ D Language File
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('startaddress')
+        PsiElement(DlangTokenType.ID)('startaddress')
         PsiElement(DlangTokenType.,)(',')
         DLanguageArgumentListImpl(ARGUMENT_LIST)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('foo')
+            PsiElement(DlangTokenType.ID)('foo')
         PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
   DLanguageAttributeSpecifierImpl(ATTRIBUTE_SPECIFIER)
@@ -92,8 +84,7 @@ D Language File
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('DigitalMars_funky_extension')
+        PsiElement(DlangTokenType.ID)('DigitalMars_funky_extension')
         PsiElement(DlangTokenType.))(')')
     DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
       PsiElement(DlangTokenType.{)('{')
@@ -103,8 +94,7 @@ D Language File
       DLanguageVersionConditionImpl(VERSION_CONDITION)
         PsiElement(DlangTokenType.version)('version')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('DigitalMars')
+        PsiElement(DlangTokenType.ID)('DigitalMars')
         PsiElement(DlangTokenType.))(')')
     DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
       PsiElement(DlangTokenType.{)('{')
@@ -113,8 +103,7 @@ D Language File
           DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
             PsiElement(DlangTokenType.pragma)('pragma')
             PsiElement(DlangTokenType.()('(')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('DigitalMars_funky_extension')
+            PsiElement(DlangTokenType.ID)('DigitalMars_funky_extension')
             PsiElement(DlangTokenType.))(')')
         DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
           PsiElement(DlangTokenType.{)('{')

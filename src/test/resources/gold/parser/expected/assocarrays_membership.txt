@@ -11,14 +11,12 @@ D Language File
           DLanguageTypeSuffixImpl(TYPE_SUFFIX)
             PsiElement(DlangTokenType.*)('*')
           IDENTIFIER_INITIALIZER
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('p')
+            PsiElement(DlangTokenType.ID)('p')
           PsiElement(DlangTokenType.;)(';')
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('p')
+            PsiElement(DlangTokenType.ID)('p')
           PsiElement(DlangTokenType.=)('=')
           DLanguageParenthesisedExpressionImpl(PARENTHESISED_EXPRESSION)
             PsiElement(DlangTokenType.()('(')
@@ -27,8 +25,7 @@ D Language File
                 PsiElement(DlangTokenType.DOUBLE_QUOTED_STRING)('"hello"')
               PsiElement(DlangTokenType.in)('in')
               DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('aa')
+                PsiElement(DlangTokenType.ID)('aa')
             PsiElement(DlangTokenType.))(')')
         PsiElement(DlangTokenType.;)(';')
       DLanguageIfStatementImpl(IF_STATEMENT)
@@ -36,8 +33,7 @@ D Language File
         PsiElement(DlangTokenType.()('(')
         DLanguageIdentityExpressionImpl(IDENTITY_EXPRESSION)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('p')
+            PsiElement(DlangTokenType.ID)('p')
           PsiElement(DlangTokenType.!)('!')
           PsiElement(DlangTokenType.is)('is')
           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -50,8 +46,7 @@ D Language File
               DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                 PsiElement(DlangTokenType.*)('*')
                 DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('p')
+                  PsiElement(DlangTokenType.ID)('p')
               PsiElement(DlangTokenType.=)('=')
               DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
                 PsiElement(DlangTokenType.INTEGER_LITERAL)('4')
@@ -65,8 +60,7 @@ D Language File
                 DLanguageEqualExpressionImpl(EQUAL_EXPRESSION)
                   DLanguageArrayAccessExpressionImpl(ARRAY_ACCESS_EXPRESSION)
                     DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                      IDENTIFIER
-                        PsiElement(DlangTokenType.ID)('aa')
+                      PsiElement(DlangTokenType.ID)('aa')
                     DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
                       PsiElement(DlangTokenType.[)('[')
                       DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
