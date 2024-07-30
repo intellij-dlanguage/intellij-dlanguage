@@ -38,7 +38,7 @@ intellijPlatform {
         }
         channels = listOf(properties("publishChannels"))
     }
-    verifyPlugin {
+    pluginVerification {
         ides {
             recommended()
         }
