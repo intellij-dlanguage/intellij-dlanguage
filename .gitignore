@@ -2,6 +2,7 @@ out/
 .DS_Store
 .gradle/
 build/
+.intellijPlatform/
 
 .classpath
 .project

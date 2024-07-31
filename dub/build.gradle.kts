@@ -1,37 +1,37 @@
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+
 plugins {
     id("java")
     alias(libs.plugins.kotlin)
-    alias(libs.plugins.gradleIntelliJPlugin)
+    alias(libs.plugins.gradleIntelliJModule)
 }
 
-
-// Disable all Gradle Tasks for the gradle-intellij-plugin as we only use the plugin for the dependencies
-tasks {
-    buildPlugin { enabled = false }
-    buildSearchableOptions { enabled = false }
-    downloadRobotServerPlugin { enabled = false }
-    jarSearchableOptions { enabled = false }
-    patchPluginXml { enabled = false }
-    prepareSandbox { enabled = false }
-    prepareTestingSandbox { enabled = false }
-    prepareUiTestingSandbox { enabled = false }
-    publishPlugin { enabled = false }
-    runIde { enabled = false }
-    runIdeForUiTests { enabled = false }
-    runPluginVerifier { enabled = false }
-    signPlugin { enabled = false }
-    verifyPlugin { enabled = false }
-}
-
-intellij {
-    version.set(providers.gradleProperty("ideaVersion").get())
-    plugins.set(listOf("org.intellij.intelliLang", "com.intellij.java", "com.intellij.java.ide")) // IDEA only (plugin was previously "java")
+repositories {
+    mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 dependencies {
-    api(project(":", "instrumentedJar"))
-    implementation(project(":utils", "instrumentedJar"))
-    implementation(project(":errorreporting", "instrumentedJar"))
+    api(project(":"))
+    implementation(project(":utils"))
+    implementation(project(":errorreporting"))
     testImplementation(project(":"))
     testImplementation(project(":dlang:plugin-impl"))
+
+    testImplementation (libs.junit.engine)
+    testRuntimeOnly (libs.junit.engine)
+
+    intellijPlatform {
+        intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
+        bundledPlugins(
+            "com.intellij.java",
+            "com.intellij.java.ide",
+            "org.intellij.intelliLang",
+            "com.intellij.copyright"
+        )
+        instrumentationTools()
+        testFramework(TestFrameworkType.Platform)
+    }
 }
