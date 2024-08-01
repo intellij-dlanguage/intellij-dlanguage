@@ -22,7 +22,7 @@ public interface DlangStructDeclaration extends PsiElement, DNamedElement, Decla
     PsiElement getKW_STRUCT();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     DLanguageTemplateParameters getTemplateParameters();

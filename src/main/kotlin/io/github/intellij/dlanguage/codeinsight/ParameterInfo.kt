@@ -81,7 +81,7 @@ class ConstructorParameterInfo : ParameterInfoHandler<NewExpression, Parameters>
     }
 
     override fun showParameterInfo(newExpression: NewExpression, context: CreateParameterInfoContext) {
-        val reference = newExpression.type?.basicType?.qualifiedIdentifier?.identifier?.reference
+        val reference = newExpression.type?.basicType?.qualifiedIdentifier?.reference
         if (reference == null || reference !is DReference) {
             return
         }
@@ -122,7 +122,7 @@ class TemplateParameterInfo : ParameterInfoHandler<TemplateInstance, TemplatePar
     }
 
     override fun showParameterInfo(templateExpression: TemplateInstance, context: CreateParameterInfoContext) {
-        val reference = templateExpression.identifier?.reference
+        val reference = templateExpression.reference
         if (reference == null || reference !is DReference) {
             return
         }

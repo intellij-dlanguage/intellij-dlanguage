@@ -11,8 +11,7 @@ D Language File
             PsiElement(DlangTokenType.DOUBLE_QUOTED_STRING)('"hello"')
           PsiElement(DlangTokenType.in)('in')
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('foo')
+            PsiElement(DlangTokenType.ID)('foo')
         PsiElement(DlangTokenType.))(')')
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
           PsiElement(DlangTokenType.{)('{')

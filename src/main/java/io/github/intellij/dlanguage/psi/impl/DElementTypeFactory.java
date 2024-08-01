@@ -11,8 +11,6 @@ public class DElementTypeFactory {
     @NotNull
     public static IElementType factory(@NotNull final String name) {
         switch (name) {
-            case "IDENTIFIER":
-                return new IdentifierStubElementType(name);
             case "FUNCTION_DECLARATION":
                 return new FunctionDeclarationStubElementType(name);
             case "CLASS_DECLARATION":

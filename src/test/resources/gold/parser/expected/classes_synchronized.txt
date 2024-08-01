@@ -3,16 +3,14 @@ D Language File
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.synchronized)('synchronized')
     PsiElement(DlangTokenType.class)('class')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('Foo')
+    PsiElement(DlangTokenType.ID)('Foo')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       FUNCTION_DECLARATION
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.void)('void')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('bar')
+        PsiElement(DlangTokenType.ID)('bar')
         DLanguageParametersImpl(PARAMETERS)
           PsiElement(DlangTokenType.()('(')
           PsiElement(DlangTokenType.))(')')
@@ -25,16 +23,14 @@ D Language File
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.synchronized)('synchronized')
     PsiElement(DlangTokenType.class)('class')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('Foo')
+    PsiElement(DlangTokenType.ID)('Foo')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       FUNCTION_DECLARATION
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.void)('void')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('bar')
+        PsiElement(DlangTokenType.ID)('bar')
         DLanguageParametersImpl(PARAMETERS)
           PsiElement(DlangTokenType.()('(')
           PsiElement(DlangTokenType.))(')')
@@ -54,8 +50,7 @@ D Language File
       PsiElement(DlangTokenType.})('}')
   CLASS_DECLARATION
     PsiElement(DlangTokenType.class)('class')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('Foo')
+    PsiElement(DlangTokenType.ID)('Foo')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       FUNCTION_DECLARATION
@@ -64,8 +59,7 @@ D Language File
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.void)('void')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('foo')
+        PsiElement(DlangTokenType.ID)('foo')
         DLanguageParametersImpl(PARAMETERS)
           PsiElement(DlangTokenType.()('(')
           PsiElement(DlangTokenType.))(')')
@@ -79,16 +73,14 @@ D Language File
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.synchronized)('synchronized')
     PsiElement(DlangTokenType.class)('class')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('Bar')
+    PsiElement(DlangTokenType.ID)('Bar')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       FUNCTION_DECLARATION
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.void)('void')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('bar')
+        PsiElement(DlangTokenType.ID)('bar')
         DLanguageParametersImpl(PARAMETERS)
           PsiElement(DlangTokenType.()('(')
           PsiElement(DlangTokenType.))(')')
@@ -102,8 +94,7 @@ D Language File
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.synchronized)('synchronized')
     PsiElement(DlangTokenType.class)('class')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('Foo')
+    PsiElement(DlangTokenType.ID)('Foo')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -111,8 +102,7 @@ D Language File
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.int)('int')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('foo')
+          PsiElement(DlangTokenType.ID)('foo')
         PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// disallowed: public field')
       PsiElement(DlangTokenType.})('}')
@@ -120,8 +110,7 @@ D Language File
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.synchronized)('synchronized')
     PsiElement(DlangTokenType.class)('class')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('Bar')
+    PsiElement(DlangTokenType.ID)('Bar')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -131,8 +120,7 @@ D Language File
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.int)('int')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('bar')
+          PsiElement(DlangTokenType.ID)('bar')
         PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
       PsiElement(DlangTokenType.})('}')

@@ -7,11 +7,9 @@ D Language File
         DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('aa')
+              PsiElement(DlangTokenType.ID)('aa')
             PsiElement(DlangTokenType..)('.')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('remove')
+            PsiElement(DlangTokenType.ID)('remove')
           PsiElement(DlangTokenType.()('(')
           DLanguageArgumentListImpl(ARGUMENT_LIST)
             DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)

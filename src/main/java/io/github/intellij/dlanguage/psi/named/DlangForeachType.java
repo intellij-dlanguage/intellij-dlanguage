@@ -29,7 +29,7 @@ public interface DlangForeachType extends PsiElement, DNamedElement,
     DLanguageType getType();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @NotNull
     List<DLanguageTypeConstructor> getTypeConstructors();

@@ -3,7 +3,7 @@ package io.github.intellij.dlanguage.refactoring
 import com.intellij.lang.refactoring.RefactoringSupportProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier
+import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.resolve.DResolveUtil.Companion.getInstance
 
 /**
@@ -11,7 +11,7 @@ import io.github.intellij.dlanguage.resolve.DResolveUtil.Companion.getInstance
  */
 class DRefactoringSupportProvider : RefactoringSupportProvider() {
     override fun isSafeDeleteAvailable(element: PsiElement): Boolean {
-        if (element !is DlangIdentifier) return false
+        if (element !is DNamedElement) return false
         val resolve = getInstance(element.getProject()).findDefinitionNode(
             (element as PsiNamedElement), false
         )

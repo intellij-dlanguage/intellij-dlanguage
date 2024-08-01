@@ -5,6 +5,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiNamedElement
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.DlangTypes.*
+import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import io.github.intellij.dlanguage.utils.*
@@ -27,7 +28,7 @@ class DResolveUtil private constructor(val project: Project) {
 
 //    private val resolveCache: MutableMap<PsiFile, Pair<Long, MutableMap<PsiNamedElement, Set<PsiNamedElement>>>> = mutableMapOf()
 
-    fun findDefinitionNode(e: PsiNamedElement, profile: Boolean): Set<PsiNamedElement> {
+    fun findDefinitionNode(e: PsiElement, profile: Boolean): Set<PsiNamedElement> {
 //        fun invalidateCache(file: PsiFile) {
 //            resolveCache.remove(file)
 //        }
@@ -41,11 +42,7 @@ class DResolveUtil private constructor(val project: Project) {
 //        return fileResolveCache.second.getOrPut(e, { findDefinitionNodeImpl(e, profile) })
     }
 
-    fun findDefinitionNodeImpl(e: PsiNamedElement, profile: Boolean): Set<PsiNamedElement> {
-        if (e !is Identifier) {
-            return emptySet()
-        }
-
+    fun findDefinitionNodeImpl(e: PsiElement, profile: Boolean): Set<PsiNamedElement> {
         if (shouldNotResolveToAnything(e)) {
             return emptySet()
         }
@@ -70,21 +67,22 @@ class DResolveUtil private constructor(val project: Project) {
             return if (constructors?.isNotEmpty() == true) constructors.toSet() else result
         }
 
-        if (isModuleScopeOperator(e.parent)) {
-            return DTopLevelDeclarationIndex.getTopLevelSymbols(e.name, (e.containingFile as DlangPsiFile).getFullyQualifiedModuleName(), project)
+        if (isModuleScopeOperator(e)) {
+            val name = (e as ReferenceExpression).identifier?.text?:return emptySet()
+            return DTopLevelDeclarationIndex.getTopLevelSymbols(name, (e.containingFile as DlangPsiFile).getFullyQualifiedModuleName(), project)
         }
 
         var basicResolveResult = BasicResolve.getInstance(project, profile).findDefinitionNode(e)
         basicResolveResult = basicResolveResult.filter { it !is Constructor }.toSet()
 
-        if (basicResolveResult.isEmpty())
-            return SpecialCaseResolve.tryPackageResolve(e)
+        /*if (basicResolveResult.isEmpty())
+            return SpecialCaseResolve.tryPackageResolve(e)*/
         return basicResolveResult
     }
 
 
     fun resolvingConstructorCall(e: PsiElement): Boolean {
-        return e.parent is QualifiedIdentifier && e.parent.parent is BasicType
+        return e is QualifiedIdentifier && e.parent is BasicType
             && DPsiUtil.getParent(e, setOf(NEW_EXPRESSION), setOf(BLOCK_STATEMENT, STRUCT_BODY)) is NewExpression
     }
 
@@ -103,14 +101,8 @@ class DResolveUtil private constructor(val project: Project) {
     val externAttributeIdentifiers = setOf("C","D","Windows","System","Pascal","Objective-C")
 
 
-    fun shouldNotResolveToAnything(e: PsiNamedElement): Boolean {
-        if (e !is io.github.intellij.dlanguage.psi.interfaces.DNamedElement) {
-            return true
-        }
-        if (e !is Identifier) {
-            return true
-        }
-        val name = e.name
+    fun shouldNotResolveToAnything(e: PsiElement): Boolean {
+        val name = e.text
         val parent = e.parent
         if (name.length > 2)
             if (name.substring(0, 2) == "__")

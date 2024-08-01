@@ -24,7 +24,6 @@ object DUtil {
      * Precondition: Element is in a DLanguage file.
      */
     fun definitionNode(e: PsiNamedElement): Boolean {
-        if (e is DlangIdentifier) return true
         return e is Declaration
     }
 
@@ -124,16 +123,6 @@ object DUtil {
         return Optional.ofNullable(element.parent)
             .map { parent: PsiElement -> findParentOfType(parent, className) }
             .orElse(null)
-    }
-
-    @JvmStatic
-    fun getEndOfIdentifierList(chain: DLanguageIdentifierChain): DlangIdentifier? {
-        val list = chain.identifiers
-        if (list.isEmpty()) {
-            return null
-        }
-
-        return list[list.size - 1]
     }
 
     /**

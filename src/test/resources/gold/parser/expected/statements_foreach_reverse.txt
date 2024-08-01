@@ -8,12 +8,10 @@ D Language File
         PsiElement(DlangTokenType.()('(')
         DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
           FOREACH_TYPE
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('e')
+            PsiElement(DlangTokenType.ID)('e')
         PsiElement(DlangTokenType.;)(';')
         DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('range')
+          PsiElement(DlangTokenType.ID)('range')
         PsiElement(DlangTokenType.))(')')
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
           PsiElement(DlangTokenType.{)('{')

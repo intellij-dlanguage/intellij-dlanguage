@@ -7,7 +7,6 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.stubs.DlangIfConditionStub;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,14 +36,14 @@ public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DlangI
 
     @Nullable
     @Override
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         return getIdentifier();
     }
 
     @Nullable
     @Override
-    public DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
+    public PsiElement getIdentifier() {
+        return findChildByType(DlangTypes.ID);
     }
 
     @NotNull

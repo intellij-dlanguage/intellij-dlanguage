@@ -3,8 +3,7 @@ D Language File
     DLanguageStorageClassImpl(STORAGE_CLASS)
       PsiElement(DlangTokenType.auto)('auto')
     AUTO_ASSIGNMENT
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('a')
+      PsiElement(DlangTokenType.ID)('a')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageFundamentalTypeConstructExpressionImpl(FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION)
@@ -21,8 +20,7 @@ D Language File
     DLanguageStorageClassImpl(STORAGE_CLASS)
       PsiElement(DlangTokenType.auto)('auto')
     AUTO_ASSIGNMENT
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('b')
+      PsiElement(DlangTokenType.ID)('b')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageFundamentalTypeConstructExpressionImpl(FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION)
@@ -31,8 +29,7 @@ D Language File
             PsiElement(DlangTokenType.()('(')
             DLanguageArgumentListImpl(ARGUMENT_LIST)
               DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('a')
+                PsiElement(DlangTokenType.ID)('a')
             PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
     PsiComment(DlangTokenType.LINE_COMMENT)('// implicitly convert a short variable 'a' to double')
@@ -40,8 +37,7 @@ D Language File
     DLanguageStorageClassImpl(STORAGE_CLASS)
       PsiElement(DlangTokenType.auto)('auto')
     AUTO_ASSIGNMENT
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('c')
+      PsiElement(DlangTokenType.ID)('c')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageFundamentalTypeConstructExpressionImpl(FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION)
@@ -58,8 +54,7 @@ D Language File
     DLanguageStorageClassImpl(STORAGE_CLASS)
       PsiElement(DlangTokenType.auto)('auto')
     AUTO_ASSIGNMENT
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('a')
+      PsiElement(DlangTokenType.ID)('a')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageFundamentalTypeConstructExpressionImpl(FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION)
@@ -73,8 +68,7 @@ D Language File
     DLanguageStorageClassImpl(STORAGE_CLASS)
       PsiElement(DlangTokenType.auto)('auto')
     AUTO_ASSIGNMENT
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('b')
+      PsiElement(DlangTokenType.ID)('b')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageFundamentalTypeConstructExpressionImpl(FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION)
@@ -88,8 +82,7 @@ D Language File
     DLanguageStorageClassImpl(STORAGE_CLASS)
       PsiElement(DlangTokenType.auto)('auto')
     AUTO_ASSIGNMENT
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('c')
+      PsiElement(DlangTokenType.ID)('c')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageFundamentalTypeConstructExpressionImpl(FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION)

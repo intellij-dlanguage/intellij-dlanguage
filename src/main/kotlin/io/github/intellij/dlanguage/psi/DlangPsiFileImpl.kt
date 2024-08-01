@@ -11,14 +11,12 @@ import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangFileType
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.stubs.DlangFileStub
-import org.apache.commons.collections.CollectionUtils
+import io.github.intellij.dlanguage.utils.getImportText
 import org.apache.commons.lang3.StringUtils
 import java.util.*
-import java.util.stream.Collectors
 import javax.swing.Icon
 
 // todo: consider making this class abstract so that there can be x2 classes that inherit from it.
@@ -41,13 +39,7 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
             )
         )
             .map { obj: DlangModuleDeclaration -> obj.identifierChain }
-            .map { obj: DLanguageIdentifierChain? -> obj!!.identifiers }
-            .filter { coll: List<DlangIdentifier?>? -> CollectionUtils.isNotEmpty(coll) }
-            .map { identifiers: List<DlangIdentifier?> ->
-                identifiers.stream()
-                    .map { obj: DlangIdentifier? -> obj!!.text }
-                    .collect(Collectors.joining("."))
-            }
+            .map { obj: DLanguageIdentifierChain? -> getImportText(obj!!) }
     }
 
     /**

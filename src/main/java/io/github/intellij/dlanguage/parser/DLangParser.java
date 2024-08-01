@@ -945,7 +945,7 @@ class DLangParser {
                     }
                 }
             } else {
-                if (!parseIdentifierChain()) {
+                if (parseIdentifierChain() == null) {
                     cleanup(m, ASM_PRIMARY_EXP);
                     return false;
                 }
@@ -1440,7 +1440,7 @@ class DLangParser {
             advance();
             if (currentIs(OP_PAR_LEFT)) {
                 expect(OP_PAR_LEFT);
-                if (!parseIdentifierChain()) {
+                if (parseIdentifierChain() == null) {
                     cleanup(m, ATTRIBUTE);
                     return false;
                 }
@@ -3552,21 +3552,19 @@ class DLangParser {
      * $(LITERAL Identifier) ($(LITERAL '.') $(LITERAL Identifier))*
      * ;)
      */
-    boolean parseIdentifierChain() {
-        final Marker m = builder.mark();
-        while (moreTokens()) {
-            final IElementType ident = expect(ID);
-            if (ident == null) {
-                cleanup(m, IDENTIFIER_CHAIN);
-                return false;
-            }
-            if (currentIs(OP_DOT)) {
-                advance();
-            } else
-                break;
+    Marker parseIdentifierChain() {
+        if (builder.getTokenType() != ID)
+            return null;
+        Marker m = builder.mark();
+        builder.advanceLexer();
+        m.done(IDENTIFIER_CHAIN);
+        while (builder.getTokenType() == OP_DOT) {
+            m = m.precede();
+            builder.advanceLexer();
+            expect(ID);
+            m.done(IDENTIFIER_CHAIN);
         }
-        exit_section_modified(builder, m, IDENTIFIER_CHAIN, true);
-        return true;
+        return m;
     }
 
     /**
@@ -4677,7 +4675,7 @@ class DLangParser {
             m.done(MODULE_DECLARATION);
             return;
         }
-        if (!parseIdentifierChain()) {
+        if (parseIdentifierChain() == null) {
             m.done(MODULE_DECLARATION);
             return;
         }
@@ -5807,7 +5805,7 @@ class DLangParser {
             advance(); // identifier
             advance(); // =
         }
-        if (!parseIdentifierChain()) {
+        if (parseIdentifierChain() == null) {
             cleanup(m, SINGLE_IMPORT);
             return false;
         }
@@ -8243,15 +8241,8 @@ class DLangParser {
      * Advances to the next token and returns the current token
      */
     private IElementType advance() {
-        Marker identifierMarker = null;
-        if (currentIs(ID)) {
-            identifierMarker = builder.mark();
-        }
         IElementType token = builder.getTokenType();
         builder.advanceLexer();
-        if (identifierMarker != null) {
-            identifierMarker.done(IDENTIFIER);
-        }
         return token;
     }
 

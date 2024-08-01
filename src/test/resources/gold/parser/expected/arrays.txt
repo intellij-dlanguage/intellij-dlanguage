@@ -6,8 +6,7 @@ D Language File
     DLanguageTypeSuffixImpl(TYPE_SUFFIX)
       PsiElement(DlangTokenType.*)('*')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('p')
+      PsiElement(DlangTokenType.ID)('p')
     PsiElement(DlangTokenType.;)(';')
   DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -19,8 +18,7 @@ D Language File
         PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
       PsiElement(DlangTokenType.])(']')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('s')
+      PsiElement(DlangTokenType.ID)('s')
     PsiElement(DlangTokenType.;)(';')
   DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -30,8 +28,7 @@ D Language File
       PsiElement(DlangTokenType.[)('[')
       PsiElement(DlangTokenType.])(']')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('a')
+      PsiElement(DlangTokenType.ID)('a')
     PsiElement(DlangTokenType.;)(';')
   DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -40,8 +37,7 @@ D Language File
     DLanguageTypeSuffixImpl(TYPE_SUFFIX)
       PsiElement(DlangTokenType.*)('*')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('q')
+      PsiElement(DlangTokenType.ID)('q')
     PsiElement(DlangTokenType.;)(';')
   DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -53,8 +49,7 @@ D Language File
         PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
       PsiElement(DlangTokenType.])(']')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('t')
+      PsiElement(DlangTokenType.ID)('t')
     PsiElement(DlangTokenType.;)(';')
   DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -64,8 +59,7 @@ D Language File
       PsiElement(DlangTokenType.[)('[')
       PsiElement(DlangTokenType.])(']')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('b')
+      PsiElement(DlangTokenType.ID)('b')
     PsiElement(DlangTokenType.;)(';')
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
@@ -74,64 +68,52 @@ D Language File
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('p')
+            PsiElement(DlangTokenType.ID)('p')
           PsiElement(DlangTokenType.=)('=')
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('q')
+            PsiElement(DlangTokenType.ID)('q')
         PsiElement(DlangTokenType.;)(';')
       PsiComment(DlangTokenType.LINE_COMMENT)('// p points to the same thing q does.')
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('p')
+            PsiElement(DlangTokenType.ID)('p')
           PsiElement(DlangTokenType.=)('=')
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('s')
+              PsiElement(DlangTokenType.ID)('s')
             PsiElement(DlangTokenType..)('.')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('ptr')
+            PsiElement(DlangTokenType.ID)('ptr')
         PsiElement(DlangTokenType.;)(';')
       PsiComment(DlangTokenType.LINE_COMMENT)('// p points to the first element of the array s.')
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('p')
+            PsiElement(DlangTokenType.ID)('p')
           PsiElement(DlangTokenType.=)('=')
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('a')
+              PsiElement(DlangTokenType.ID)('a')
             PsiElement(DlangTokenType..)('.')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('ptr')
+            PsiElement(DlangTokenType.ID)('ptr')
         PsiElement(DlangTokenType.;)(';')
       PsiComment(DlangTokenType.LINE_COMMENT)('// p points to the first element of the array a.')
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('a')
+            PsiElement(DlangTokenType.ID)('a')
           PsiElement(DlangTokenType.=)('=')
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('s')
+            PsiElement(DlangTokenType.ID)('s')
         PsiElement(DlangTokenType.;)(';')
       PsiComment(DlangTokenType.LINE_COMMENT)('// a is initialized to point to the s array')
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('a')
+            PsiElement(DlangTokenType.ID)('a')
           PsiElement(DlangTokenType.=)('=')
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('b')
+            PsiElement(DlangTokenType.ID)('b')
         PsiElement(DlangTokenType.;)(';')
       PsiComment(DlangTokenType.LINE_COMMENT)('// a points to the same array as b does')
       PsiElement(DlangTokenType.})('}')

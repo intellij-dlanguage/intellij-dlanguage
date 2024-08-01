@@ -2,20 +2,16 @@ D Language File
   DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
     PsiElement(DlangTokenType.alias)('alias')
     ALIAS_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('myint')
+      PsiElement(DlangTokenType.ID)('myint')
       PsiElement(DlangTokenType.=)('=')
       DLanguageTypeImpl(TYPE)
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
             DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
               DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('abc')
+                PsiElement(DlangTokenType.ID)('abc')
                 PsiElement(DlangTokenType..)('.')
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('Foo')
+              PsiElement(DlangTokenType.ID)('Foo')
               PsiElement(DlangTokenType..)('.')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('bar')
+            PsiElement(DlangTokenType.ID)('bar')
     PsiElement(DlangTokenType.;)(';')

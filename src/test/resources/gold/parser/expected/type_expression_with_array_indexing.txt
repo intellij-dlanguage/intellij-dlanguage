@@ -3,31 +3,26 @@ D Language File
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
         DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('T')
+          PsiElement(DlangTokenType.ID)('T')
           PsiElement(DlangTokenType.[)('[')
           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
             PsiElement(DlangTokenType.INTEGER_LITERAL)('1')
           PsiElement(DlangTokenType.])(']')
           PsiElement(DlangTokenType..)('.')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('Y')
+        PsiElement(DlangTokenType.ID)('Y')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('y')
+      PsiElement(DlangTokenType.ID)('y')
     PsiElement(DlangTokenType.;)(';')
   DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageBasicTypeImpl(BASIC_TYPE)
       PsiElement(DlangTokenType..)('.')
       DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
         DLanguageTemplateInstanceImpl(TEMPLATE_INSTANCE)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('T')
+          PsiElement(DlangTokenType.ID)('T')
           DLanguageTemplateArgumentsImpl(TEMPLATE_ARGUMENTS)
             PsiElement(DlangTokenType.!)('!')
             DLanguageTemplateSingleArgumentImpl(TEMPLATE_SINGLE_ARGUMENT)
               PsiElement(DlangTokenType.DOUBLE_QUOTED_STRING)('"oof"')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('toof')
+      PsiElement(DlangTokenType.ID)('toof')
     PsiElement(DlangTokenType.;)(';')

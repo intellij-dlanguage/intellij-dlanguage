@@ -2,13 +2,11 @@ package io.github.intellij.dlanguage.psi.impl;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.PsiImplUtil;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.IncorrectOperationException;
 import io.github.intellij.dlanguage.psi.DlangItemPresentation;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
@@ -17,6 +15,8 @@ import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFin
 import io.github.intellij.dlanguage.stubs.DNamedStubBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> extends
     DStubbedPsiElementBase<T> implements DNamedElement {
@@ -30,7 +30,7 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
     }
 
     @Nullable
-    public abstract DlangIdentifier getNameIdentifier();
+    public abstract PsiElement getNameIdentifier();
 
     @NotNull
     public String getName() {
@@ -40,9 +40,14 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
             return name;
         }
 
-        final DlangIdentifier identifier = getNameIdentifier();
-        return identifier != null ? identifier.getName()
+        final PsiElement identifier = getNameIdentifier();
+        return identifier != null ? identifier.getText()
             : DReference.Companion.getNAME_NOT_FOUND_STRING();
+    }
+
+    @Override
+    public int getTextOffset() {
+        return getNameIdentifier() != null ? getNameIdentifier().getTextOffset(): super.getTextOffset();
     }
 
     @NotNull
@@ -50,7 +55,8 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
         if (getNameIdentifier() == null) {
             throw new IncorrectOperationException("Cannot rename. Identifier was Null");
         }
-        return getNameIdentifier().setName(newName);
+        PsiImplUtil.setName(Objects.requireNonNull(getNameIdentifier()), newName);
+        return this;
     }
 
     public ItemPresentation getPresentation() {
@@ -72,11 +78,6 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
         finder.recurseUp();
         return finder.getAttributes();
     }
-
-    @NotNull
-    public PsiReference getReference() {
-        return new DReference(this, TextRange.from(0, (this).getName().length()));
-    }//not sure if this should only be implemented for identifier todo
 
     @Override
     public Visibility visibility() {

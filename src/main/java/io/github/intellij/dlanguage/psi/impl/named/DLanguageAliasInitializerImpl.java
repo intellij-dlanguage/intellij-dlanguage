@@ -1,7 +1,7 @@
 package io.github.intellij.dlanguage.psi.impl.named;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_COMMA;
 import static io.github.intellij.dlanguage.psi.DlangTypes.OP_EQ;
+import static io.github.intellij.dlanguage.psi.DlangTypes.ID;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -14,7 +14,6 @@ import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.named.DlangAliasInitializer;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
@@ -46,8 +45,8 @@ public class DLanguageAliasInitializerImpl extends
 
     @Override
     @Nullable
-    public DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
+    public PsiElement getIdentifier() {
+        return findChildByType(ID);
     }
 
     @Nullable
@@ -75,7 +74,7 @@ public class DLanguageAliasInitializerImpl extends
     }
 
     @Nullable
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         return getIdentifier();
     }
 

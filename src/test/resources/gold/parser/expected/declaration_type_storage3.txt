@@ -1,8 +1,7 @@
 D Language File
   STRUCT_DECLARATION
     PsiElement(DlangTokenType.struct)('struct')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('S')
+    PsiElement(DlangTokenType.ID)('S')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       PsiComment(DlangTokenType.LINE_COMMENT)('// Is const here a type qualifier or a storage class?')
@@ -14,8 +13,7 @@ D Language File
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.int)('int')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('func')
+        PsiElement(DlangTokenType.ID)('func')
         DLanguageParametersImpl(PARAMETERS)
           PsiElement(DlangTokenType.()('(')
           PsiElement(DlangTokenType.))(')')

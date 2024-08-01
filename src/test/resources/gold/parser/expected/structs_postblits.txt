@@ -1,8 +1,7 @@
 D Language File
   STRUCT_DECLARATION
     PsiElement(DlangTokenType.struct)('struct')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('S')
+    PsiElement(DlangTokenType.ID)('S')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -13,8 +12,7 @@ D Language File
           PsiElement(DlangTokenType.[)('[')
           PsiElement(DlangTokenType.])(']')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('a')
+          PsiElement(DlangTokenType.ID)('a')
         PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// array is privately owned by this instance')
       DLanguagePostblitImpl(POSTBLIT)
@@ -28,31 +26,26 @@ D Language File
             DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
               DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                 DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('a')
+                  PsiElement(DlangTokenType.ID)('a')
                 PsiElement(DlangTokenType.=)('=')
                 DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
                   DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('a')
+                    PsiElement(DlangTokenType.ID)('a')
                   PsiElement(DlangTokenType..)('.')
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('dup')
+                  PsiElement(DlangTokenType.ID)('dup')
               PsiElement(DlangTokenType.;)(';')
             PsiElement(DlangTokenType.})('}')
       PsiElement(DlangTokenType.})('}')
   STRUCT_DECLARATION
     PsiElement(DlangTokenType.struct)('struct')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('T')
+    PsiElement(DlangTokenType.ID)('T')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       DLanguagePostblitImpl(POSTBLIT)
         DLanguageAttributeImpl(ATTRIBUTE)
           DLanguageAtAttributeImpl(AT_ATTRIBUTE)
             PsiElement(DlangTokenType.@)('@')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('disable')
+            PsiElement(DlangTokenType.ID)('disable')
         PsiElement(DlangTokenType.this)('this')
         PsiElement(DlangTokenType.()('(')
         PsiElement(DlangTokenType.this)('this')
@@ -62,18 +55,15 @@ D Language File
       PsiElement(DlangTokenType.})('}')
   STRUCT_DECLARATION
     PsiElement(DlangTokenType.struct)('struct')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('S')
+    PsiElement(DlangTokenType.ID)('S')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('T')
+            PsiElement(DlangTokenType.ID)('T')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('t')
+          PsiElement(DlangTokenType.ID)('t')
         PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// uncopyable member makes S also not copyable')
       PsiElement(DlangTokenType.})('}')
@@ -81,8 +71,7 @@ D Language File
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.void)('void')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('main')
+    PsiElement(DlangTokenType.ID)('main')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PsiElement(DlangTokenType.))(')')
@@ -93,26 +82,21 @@ D Language File
           DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
             DLanguageBasicTypeImpl(BASIC_TYPE)
               DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('S')
+                PsiElement(DlangTokenType.ID)('S')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('s')
+              PsiElement(DlangTokenType.ID)('s')
             PsiElement(DlangTokenType.;)(';')
         DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
           DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
             DLanguageBasicTypeImpl(BASIC_TYPE)
               DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('S')
+                PsiElement(DlangTokenType.ID)('S')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('t')
+              PsiElement(DlangTokenType.ID)('t')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('s')
+                  PsiElement(DlangTokenType.ID)('s')
             PsiElement(DlangTokenType.;)(';')
             PsiComment(DlangTokenType.LINE_COMMENT)('// error, S is not copyable')
         PsiElement(DlangTokenType.})('}')

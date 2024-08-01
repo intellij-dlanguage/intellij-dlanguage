@@ -5,9 +5,13 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.colors.DColor
 import io.github.intellij.dlanguage.psi.DLanguageBasicType
+import io.github.intellij.dlanguage.psi.DlangTokenType
+import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.utils.*
@@ -28,9 +32,11 @@ class DHighlightingAnnotator : Annotator {
             is QualifiedIdentifier -> highlightReference(element)
             is TemplateSingleArgument -> highlightNotReference(element)
             is TemplateParameter -> highlightNotReference(element)
-            is Identifier -> highlightIdentifier(element)
-            else -> null
+            else -> if (element.elementType == DlangTypes.ID) { highlightIdentifier(element) }
+                    else null
         } ?: return
+
+        partToHighlight?:return
 
         holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(partToHighlight).textAttributes(color.textAttributesKey).create()
     }
@@ -40,16 +46,16 @@ class DHighlightingAnnotator : Annotator {
             is ReferenceExpression -> element.identifier
             is TemplateSingleArgument -> element.identifier
             is QualifiedIdentifier -> element.identifier
-            else -> null
+            else -> element
         } ?: return null
 
         val basicResolveResult = BasicResolve.getInstance(element.project, false)
-            .findDefinitionNode(identifier)
+            .findDefinitionNode(element)
 
         val result = basicResolveResult.firstOrNull() ?: return null
 
         val color = colorForReferenced(result) ?: return null
-        val part = partToHighlight(element) ?: return null
+        val part = partToHighlight(identifier) ?: return null
 
         return part to color
     }

@@ -7,8 +7,7 @@ D Language File
         PsiElement(DlangTokenType.switch)('switch')
         PsiElement(DlangTokenType.()('(')
         DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('i')
+          PsiElement(DlangTokenType.ID)('i')
         PsiElement(DlangTokenType.))(')')
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
           PsiElement(DlangTokenType.{)('{')

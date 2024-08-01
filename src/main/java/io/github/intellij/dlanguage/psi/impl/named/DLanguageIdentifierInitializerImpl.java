@@ -10,7 +10,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageInitializer;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.named.DLanguageIdentifierInitializer;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
@@ -40,8 +39,8 @@ public class DLanguageIdentifierInitializerImpl extends
     }
 
     @Nullable
-    public DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getChildOfType(this, DlangIdentifier.class);
+    public PsiElement getIdentifier() {
+        return findChildByType(DlangTypes.ID);
     }
 
     @Nullable
@@ -61,7 +60,7 @@ public class DLanguageIdentifierInitializerImpl extends
 
     @Nullable
     @Override
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         return getIdentifier();
     }
 

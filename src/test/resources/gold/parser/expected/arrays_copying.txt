@@ -9,8 +9,7 @@ D Language File
         PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
       PsiElement(DlangTokenType.])(']')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('s')
+      PsiElement(DlangTokenType.ID)('s')
     PsiElement(DlangTokenType.;)(';')
   DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
     DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -22,8 +21,7 @@ D Language File
         PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
       PsiElement(DlangTokenType.])(']')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('t')
+      PsiElement(DlangTokenType.ID)('t')
     PsiElement(DlangTokenType.;)(';')
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
@@ -33,31 +31,27 @@ D Language File
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
           DLanguageArrayAccessExpressionImpl(ARRAY_ACCESS_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('s')
+              PsiElement(DlangTokenType.ID)('s')
             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
               PsiElement(DlangTokenType.[)('[')
               PsiElement(DlangTokenType.])(']')
           PsiElement(DlangTokenType.=)('=')
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('t')
+            PsiElement(DlangTokenType.ID)('t')
         PsiElement(DlangTokenType.;)(';')
       PsiComment(DlangTokenType.LINE_COMMENT)('// the 3 elements of t[3] are copied into s[3]')
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
           DLanguageArrayAccessExpressionImpl(ARRAY_ACCESS_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('s')
+              PsiElement(DlangTokenType.ID)('s')
             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
               PsiElement(DlangTokenType.[)('[')
               PsiElement(DlangTokenType.])(']')
           PsiElement(DlangTokenType.=)('=')
           DLanguageArrayAccessExpressionImpl(ARRAY_ACCESS_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('t')
+              PsiElement(DlangTokenType.ID)('t')
             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
               PsiElement(DlangTokenType.[)('[')
               PsiElement(DlangTokenType.])(']')
@@ -67,8 +61,7 @@ D Language File
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
           DLanguageArrayAccessExpressionImpl(ARRAY_ACCESS_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('s')
+              PsiElement(DlangTokenType.ID)('s')
             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
               PsiElement(DlangTokenType.[)('[')
               DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -80,8 +73,7 @@ D Language File
           PsiElement(DlangTokenType.=)('=')
           DLanguageArrayAccessExpressionImpl(ARRAY_ACCESS_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('t')
+              PsiElement(DlangTokenType.ID)('t')
             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
               PsiElement(DlangTokenType.[)('[')
               DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -96,8 +88,7 @@ D Language File
         DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
           DLanguageArrayAccessExpressionImpl(ARRAY_ACCESS_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('s')
+              PsiElement(DlangTokenType.ID)('s')
             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
               PsiElement(DlangTokenType.[)('[')
               DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -109,8 +100,7 @@ D Language File
           PsiElement(DlangTokenType.=)('=')
           DLanguageArrayAccessExpressionImpl(ARRAY_ACCESS_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('t')
+              PsiElement(DlangTokenType.ID)('t')
             DLanguageIndexExpressionImpl(INDEX_EXPRESSION)
               PsiElement(DlangTokenType.[)('[')
               DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)

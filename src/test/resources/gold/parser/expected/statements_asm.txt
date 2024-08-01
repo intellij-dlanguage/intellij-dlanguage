@@ -9,8 +9,7 @@ D Language File
             DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
               PsiElement(DlangTokenType.int)('int')
           IDENTIFIER_INITIALIZER
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('x')
+            PsiElement(DlangTokenType.ID)('x')
             PsiElement(DlangTokenType.=)('=')
             DLanguageInitializerImpl(INITIALIZER)
               DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -20,8 +19,7 @@ D Language File
         PsiElement(DlangTokenType.asm)('asm')
         PsiElement(DlangTokenType.{)('{')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('mov')
+          PsiElement(DlangTokenType.ID)('mov')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -38,8 +36,7 @@ D Language File
                                     DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                       DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                         DLanguageRegisterImpl(REGISTER)
-                                          IDENTIFIER
-                                            PsiElement(DlangTokenType.ID)('EAX')
+                                          PsiElement(DlangTokenType.ID)('EAX')
             PsiElement(DlangTokenType.,)(',')
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -56,8 +53,7 @@ D Language File
                                     DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                       DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
-                                          IDENTIFIER
-                                            PsiElement(DlangTokenType.ID)('x')
+                                          PsiElement(DlangTokenType.ID)('x')
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// load x and put it in register EAX')
         PsiElement(DlangTokenType.})('}')

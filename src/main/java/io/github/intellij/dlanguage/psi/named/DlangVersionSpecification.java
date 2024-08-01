@@ -19,7 +19,7 @@ public interface DlangVersionSpecification extends PsiElement, DNamedElement, De
     PsiElement getOP_EQ();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     PsiElement getOP_PAR_RIGHT();

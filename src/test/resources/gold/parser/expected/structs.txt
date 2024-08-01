@@ -7,62 +7,51 @@ D Language File
         DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('ABC')
+              PsiElement(DlangTokenType.ID)('ABC')
           IDENTIFIER_INITIALIZER
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('x')
+            PsiElement(DlangTokenType.ID)('x')
           PsiElement(DlangTokenType.;)(';')
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         STRUCT_DECLARATION
           PsiElement(DlangTokenType.struct)('struct')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('S')
+          PsiElement(DlangTokenType.ID)('S')
           PsiElement(DlangTokenType.;)(';')
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         UNION_DECLARATION
           PsiElement(DlangTokenType.union)('union')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('U')
+          PsiElement(DlangTokenType.ID)('U')
           PsiElement(DlangTokenType.;)(';')
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         STRUCT_DECLARATION
           PsiElement(DlangTokenType.struct)('struct')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('S')
+          PsiElement(DlangTokenType.ID)('S')
           PsiElement(DlangTokenType.;)(';')
       DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
         DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('S')
+            PsiElement(DlangTokenType.ID)('S')
           PsiElement(DlangTokenType..)('.')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('sizeof')
+          PsiElement(DlangTokenType.ID)('sizeof')
         PsiElement(DlangTokenType.;)(';')
       PsiComment(DlangTokenType.LINE_COMMENT)('// error, size is not known')
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('S')
+              PsiElement(DlangTokenType.ID)('S')
           IDENTIFIER_INITIALIZER
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('s')
+            PsiElement(DlangTokenType.ID)('s')
           PsiElement(DlangTokenType.;)(';')
           PsiComment(DlangTokenType.LINE_COMMENT)('// error, cannot initialize unknown contents')
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('S')
+              PsiElement(DlangTokenType.ID)('S')
           DLanguageTypeSuffixImpl(TYPE_SUFFIX)
             PsiElement(DlangTokenType.*)('*')
           IDENTIFIER_INITIALIZER
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('p')
+            PsiElement(DlangTokenType.ID)('p')
           PsiElement(DlangTokenType.;)(';')
           PsiComment(DlangTokenType.LINE_COMMENT)('// ok, knowledge of members is not necessary')
       PsiElement(DlangTokenType.})('}')

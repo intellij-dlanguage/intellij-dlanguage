@@ -12,7 +12,6 @@ import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport
 import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration
 import io.github.intellij.dlanguage.utils.*
@@ -30,8 +29,8 @@ class DAttributesFinder {
         this.startingPoint = startingPoint
 
         val elem: DNamedElement
-        if (startingPoint !is DNamedElement || startingPoint is DlangIdentifier) {
-            val parentNamedElement = PsiTreeUtil.findFirstParent(startingPoint, Condition { it is DNamedElement && it !is DlangIdentifier })
+        if (startingPoint !is DNamedElement) {
+            val parentNamedElement = PsiTreeUtil.findFirstParent(startingPoint, { it is DNamedElement })
             if (parentNamedElement == null) {
                 throw IllegalArgumentException("Asked for attributes of something that isn't a DNamedElement, or the child of a DNamedElement")
             }
@@ -369,7 +368,7 @@ class DAttributesFinder {
                     bulkAttributeApplied.static = true
                 }
             } else if (attribute.alignAttribute != null) {
-            } else if (attribute.atAttribute?.identifier?.name == "property") {
+            } else if (attribute.atAttribute?.identifier?.text == "property") {
                 if (bulkAttributeApplied.property == null) {
                     bulkAttributeApplied.property = true
                 }

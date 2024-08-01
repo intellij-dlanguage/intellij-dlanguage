@@ -97,10 +97,10 @@ class DDocumentationProvider : AbstractDocumentationProvider() {
     override fun generateDoc(element: PsiElement?, originalElement: PsiElement?): String? {
         if (element is DNamedElement) {
             val builder = StringBuilder()
-            var declarationElement = element.parent
+            var declarationElement = element
             if (declarationElement is TemplateDeclaration && declarationElement.parent is MixinTemplateDeclaration)
                 declarationElement = declarationElement.parent
-            DSignatureDocGenerator().appendDeclarationHeader(builder, declarationElement, element)
+            DSignatureDocGenerator().appendDeclarationHeader(builder, declarationElement!!, element)
             val doc = DDocGenerator().generateDoc(element)
             builder.append(doc)
             return builder.toString().ifBlank { null }

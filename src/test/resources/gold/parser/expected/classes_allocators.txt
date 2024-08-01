@@ -6,8 +6,7 @@ D Language File
   PsiComment(DlangTokenType.LINE_COMMENT)('//}')
   CLASS_DECLARATION
     PsiElement(DlangTokenType.class)('class')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('Foo')
+    PsiElement(DlangTokenType.ID)('Foo')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       CONSTRUCTOR
@@ -22,8 +21,7 @@ D Language File
               DLanguageTypeSuffixImpl(TYPE_SUFFIX)
                 PsiElement(DlangTokenType.[)('[')
                 PsiElement(DlangTokenType.])(']')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('a')
+            PsiElement(DlangTokenType.ID)('a')
           PsiElement(DlangTokenType.))(')')
         DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
           DLanguageBlockStatementImpl(BLOCK_STATEMENT)

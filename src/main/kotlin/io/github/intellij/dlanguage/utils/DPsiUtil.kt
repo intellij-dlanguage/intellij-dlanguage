@@ -84,7 +84,7 @@ object DPsiUtil {
                 continue
             }
             val param = parameter.type?.basicType?.qualifiedIdentifier?.identifier
-            if (param is Identifier) {
+            if (param != null) {
                 val resolve = param.reference?.resolve()
                 if (resolve is TemplateParameter) {//todo make this identifier resolving proof
                     if (resolve.templateTupleParameter != null) {
@@ -103,5 +103,13 @@ object DPsiUtil {
         return ParameterCountRange(min, max)
 
     }
+}
+
+fun getImportText(chain: IdentifierChain): String {
+    chain.identifier?: return ""
+    var text = chain.identifier!!.text
+    if (chain.identifierChain != null)
+        text = getImportText(chain.identifierChain!!) + "." + text
+    return text
 }
 

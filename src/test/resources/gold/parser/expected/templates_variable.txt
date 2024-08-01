@@ -4,63 +4,53 @@ D Language File
       PsiElement(DlangTokenType.enum)('enum')
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('string')
+        PsiElement(DlangTokenType.ID)('string')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('constant')
+      PsiElement(DlangTokenType.ID)('constant')
       DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
         PsiElement(DlangTokenType.()('(')
         DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
           TEMPLATE_PARAMETER
             DLanguageTemplateTupleParameterImpl(TEMPLATE_TUPLE_PARAMETER)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('TL')
+              PsiElement(DlangTokenType.ID)('TL')
               PsiElement(DlangTokenType....)('...')
         PsiElement(DlangTokenType.))(')')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('TL')
+            PsiElement(DlangTokenType.ID)('TL')
           PsiElement(DlangTokenType..)('.')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('stringof')
+          PsiElement(DlangTokenType.ID)('stringof')
     PsiElement(DlangTokenType.;)(';')
   PsiComment(DlangTokenType.LINE_COMMENT)('//ubyte[T.sizeof] storage(T) = 0;//not valid d')
   DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
     DLanguageStorageClassImpl(STORAGE_CLASS)
       PsiElement(DlangTokenType.auto)('auto')
     AUTO_ASSIGNMENT
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('array')
+      PsiElement(DlangTokenType.ID)('array')
       DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
         PsiElement(DlangTokenType.()('(')
         DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
           TEMPLATE_PARAMETER
             DLanguageTemplateAliasParameterImpl(TEMPLATE_ALIAS_PARAMETER)
               PsiElement(DlangTokenType.alias)('alias')
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('a')
+              PsiElement(DlangTokenType.ID)('a')
         PsiElement(DlangTokenType.))(')')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('a')
+          PsiElement(DlangTokenType.ID)('a')
     PsiElement(DlangTokenType.;)(';')
   TEMPLATE_DECLARATION
     PsiElement(DlangTokenType.template)('template')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('constant')
+    PsiElement(DlangTokenType.ID)('constant')
     DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
         TEMPLATE_PARAMETER
           DLanguageTemplateTupleParameterImpl(TEMPLATE_TUPLE_PARAMETER)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('TL')
+            PsiElement(DlangTokenType.ID)('TL')
             PsiElement(DlangTokenType....)('...')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
@@ -69,33 +59,27 @@ D Language File
         PsiElement(DlangTokenType.enum)('enum')
       DLanguageBasicTypeImpl(BASIC_TYPE)
         DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('string')
+          PsiElement(DlangTokenType.ID)('string')
       IDENTIFIER_INITIALIZER
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('constant')
+        PsiElement(DlangTokenType.ID)('constant')
         PsiElement(DlangTokenType.=)('=')
         DLanguageInitializerImpl(INITIALIZER)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('TL')
+              PsiElement(DlangTokenType.ID)('TL')
             PsiElement(DlangTokenType..)('.')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('stringof')
+            PsiElement(DlangTokenType.ID)('stringof')
       PsiElement(DlangTokenType.;)(';')
     PsiElement(DlangTokenType.})('}')
   TEMPLATE_DECLARATION
     PsiElement(DlangTokenType.template)('template')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('storage')
+    PsiElement(DlangTokenType.ID)('storage')
     DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
         TEMPLATE_PARAMETER
           DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('T')
+            PsiElement(DlangTokenType.ID)('T')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -108,15 +92,12 @@ D Language File
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
               DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('T')
+                PsiElement(DlangTokenType.ID)('T')
                 PsiElement(DlangTokenType..)('.')
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('sizeof')
+              PsiElement(DlangTokenType.ID)('sizeof')
         PsiElement(DlangTokenType.])(']')
       IDENTIFIER_INITIALIZER
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('storage')
+        PsiElement(DlangTokenType.ID)('storage')
         PsiElement(DlangTokenType.=)('=')
         DLanguageInitializerImpl(INITIALIZER)
           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -125,28 +106,24 @@ D Language File
     PsiElement(DlangTokenType.})('}')
   TEMPLATE_DECLARATION
     PsiElement(DlangTokenType.template)('template')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('array')
+    PsiElement(DlangTokenType.ID)('array')
     DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
         TEMPLATE_PARAMETER
           DLanguageTemplateAliasParameterImpl(TEMPLATE_ALIAS_PARAMETER)
             PsiElement(DlangTokenType.alias)('alias')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('a')
+            PsiElement(DlangTokenType.ID)('a')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     DLanguageAutoDeclarationImpl(AUTO_DECLARATION)
       DLanguageStorageClassImpl(STORAGE_CLASS)
         PsiElement(DlangTokenType.auto)('auto')
       AUTO_ASSIGNMENT
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('array')
+        PsiElement(DlangTokenType.ID)('array')
         PsiElement(DlangTokenType.=)('=')
         DLanguageInitializerImpl(INITIALIZER)
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('a')
+            PsiElement(DlangTokenType.ID)('a')
       PsiElement(DlangTokenType.;)(';')
     PsiElement(DlangTokenType.})('}')

@@ -3,8 +3,7 @@ D Language File
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.void)('void')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('foo')
+    PsiElement(DlangTokenType.ID)('foo')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PsiElement(DlangTokenType.))(')')
@@ -19,8 +18,7 @@ D Language File
               DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                 PsiElement(DlangTokenType.int)('int')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('n')
+              PsiElement(DlangTokenType.ID)('n')
             PsiElement(DlangTokenType.;)(';')
         DLanguageIfStatementImpl(IF_STATEMENT)
           PsiElement(DlangTokenType.if)('if')
@@ -29,8 +27,7 @@ D Language File
             DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
               PsiElement(DlangTokenType.++)('++')
               DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('n')
+                PsiElement(DlangTokenType.ID)('n')
             PsiElement(DlangTokenType.==)('==')
             DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
               PsiElement(DlangTokenType.INTEGER_LITERAL)('100')
@@ -38,8 +35,7 @@ D Language File
           DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
             DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
               DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('writeln')
+                PsiElement(DlangTokenType.ID)('writeln')
               PsiElement(DlangTokenType.()('(')
               DLanguageArgumentListImpl(ARGUMENT_LIST)
                 DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -51,8 +47,7 @@ D Language File
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.void)('void')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('main')
+    PsiElement(DlangTokenType.ID)('main')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PsiElement(DlangTokenType.))(')')
@@ -69,8 +64,7 @@ D Language File
                 DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                   PsiElement(DlangTokenType.int)('int')
               IDENTIFIER_INITIALIZER
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('x')
+                PsiElement(DlangTokenType.ID)('x')
               PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
@@ -83,8 +77,7 @@ D Language File
                 DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                   PsiElement(DlangTokenType.int)('int')
               IDENTIFIER_INITIALIZER
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('x')
+                PsiElement(DlangTokenType.ID)('x')
               PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
         PsiComment(DlangTokenType.LINE_COMMENT)('// error')
@@ -96,8 +89,7 @@ D Language File
                 DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                   PsiElement(DlangTokenType.int)('int')
               IDENTIFIER_INITIALIZER
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('i')
+                PsiElement(DlangTokenType.ID)('i')
               PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
         DLanguageBlockStatementImpl(BLOCK_STATEMENT)
@@ -108,8 +100,7 @@ D Language File
                 DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                   PsiElement(DlangTokenType.int)('int')
               IDENTIFIER_INITIALIZER
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('i')
+                PsiElement(DlangTokenType.ID)('i')
               PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
         PsiComment(DlangTokenType.LINE_COMMENT)('// ok')

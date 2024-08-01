@@ -9,7 +9,6 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.named.DlangStructDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DlangStructDeclarationStub;
@@ -66,8 +65,8 @@ public class DlangStructDeclarationImpl extends
 
     @Override
     @Nullable
-    public DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
+    public PsiElement getIdentifier() {
+        return findChildByType(DlangTypes.ID);
     }
 
     @Override
@@ -78,7 +77,7 @@ public class DlangStructDeclarationImpl extends
 
     @Nullable
     @Override
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         return getIdentifier();
     }
 

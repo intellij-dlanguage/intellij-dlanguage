@@ -12,8 +12,8 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.processors.DCompletionProcessor
 import io.github.intellij.dlanguage.psi.DlangPsiFile
+import io.github.intellij.dlanguage.psi.impl.DElementFactory
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import io.github.intellij.dlanguage.resolve.DResolveUtil
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationsByModule
@@ -24,45 +24,19 @@ import java.util.*
 /**
  * Resolves references to elements.
  */
-class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceBase<PsiNamedElement>(element, textRange), PsiPolyVariantReference {
-
-    private val name: String
-
-    init {
-        name = element.name!!
-    }
+class DReference(element: PsiElement, textRange: TextRange, private val qualifier: PsiElement?, private val referenceName: String?)
+    : PsiReferenceBase<PsiElement>(element, textRange), PsiPolyVariantReference, PsiQualifiedReference {
 
     /**
      * Resolves references to a set of results.
      */
     override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
-        //        // We should only be resolving ddfunction_definition.
-        //        if (!(myElement instanceof DDefinitionFunction)) {
-        //            return EMPTY_RESOLVE_RESULT;
-        //        }
-        //        // Make sure that we only complete the last conid in a qualified expression.
-        //        if (myElement instanceof HaskellConid) {
-        //            // Don't resolve a module import to a constructor.
-        //            if (PsiTreeUtil.getParentOfType(myElement, HaskellImpdecl.class) != null) { return EMPTY_RESOLVE_RESULT; }
-        //            HaskellQconid qconid = PsiTreeUtil.getParentOfType(myElement, HaskellQconid.class);
-        //            if (qconid == null) { return EMPTY_RESOLVE_RESULT; }
-        //            if (!myElement.equals(Iterables.getLast(qconid.getConidList()))) { return EMPTY_RESOLVE_RESULT; }
-        //        }
-
-
         val project = myElement.project
-        val namedElements = DResolveUtil.getInstance(project).findDefinitionNode(myElement, false).map {
-            if (it is PsiNameIdentifierOwner && it !is ModuleDeclaration && it !is SingleImport && it !is Constructor)
-                if (it.nameIdentifier != null)
-                    it.nameIdentifier!!
-                else it
-            else it
-        }
+        val namedElements = DResolveUtil.getInstance(project).findDefinitionNode(myElement, false)
         val results = mutableListOf<PsiElementResolveResult>()
         for (property in namedElements) {
             results.add(PsiElementResolveResult(property))
         }
-//        DirectoryIndex.getInstance(project).getDirectoriesByPackageName()
         return results.toTypedArray()
     }
 
@@ -100,7 +74,15 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         return result.toTypedArray()
     }
 
-    private fun addModuleVariants(result: MutableList<String>, element: PsiNamedElement) {
+    override fun getQualifier(): PsiElement? {
+        return qualifier
+    }
+
+    override fun getReferenceName(): String? {
+        return referenceName
+    }
+
+    private fun addModuleVariants(result: MutableList<String>, element: PsiElement) {
         val moduleSoFar: IdentifierChain
         if (element is SingleImport) {
             moduleSoFar = element.identifierChain!!
@@ -260,22 +242,65 @@ class DReference(element: PsiNamedElement, textRange: TextRange) : PsiReferenceB
         result.addAll(StubIndex.getInstance().getAllKeys(DTopLevelDeclarationsByModule.KEY, project))
     }
 
-    override fun getRangeInElement(): TextRange {
-        return TextRange(0, this.element.node.textLength)
-    }
-
     /**
      * Called when renaming refactoring tries to rename the Psi tree.
      */
     @Throws(IncorrectOperationException::class)
     override fun handleElementRename(newElementName: String): PsiElement {
-        val element: PsiElement?
-        if (myElement is DlangIdentifier) {
+        if (myElement is IdentifierChain) {
+            if ((myElement as IdentifierChain).identifier == null)
+                throw IncorrectOperationException()
             // Renaming files is tricky: we don't want to change `RenamePsiFileProcessor`,
             // If it’s end by `.d` then it’s because we renamed a file
             val newName = StringUtil.trimEnd(newElementName, ".d")
-            element = myElement.setName(newName)
-            return element
+            (myElement as IdentifierChain).identifier!!.replace(DElementFactory.createDLanguageIdentifierFromText(myElement.project, newName)!!)
+            return myElement
+        }
+        if (myElement is ImportBind) {
+            if ((myElement as ImportBind).identifier == null)
+                throw IncorrectOperationException()
+            (myElement as ImportBind).identifier!!.replace(DElementFactory.createDLanguageIdentifierFromText(myElement.project, newElementName)!!)
+            return myElement
+        }
+        if (myElement is ReferenceExpression) {
+            if ((myElement as ReferenceExpression).identifier != null) {
+                (myElement as ReferenceExpression).identifier!!.replace(
+                    DElementFactory.createDLanguageIdentifierFromText(
+                        myElement.project,
+                        newElementName
+                    )!!
+                )
+            } else if ((myElement as ReferenceExpression).templateInstance != null && (myElement as ReferenceExpression).templateInstance!!.identifier != null) {
+                (myElement as ReferenceExpression).templateInstance!!.identifier!!.replace(
+                    DElementFactory.createDLanguageIdentifierFromText(
+                        myElement.project,
+                        newElementName
+                    )!!
+                )
+            } else {
+                throw IncorrectOperationException()
+            }
+            return myElement
+        }
+        if (myElement is QualifiedIdentifier) {
+            if ((myElement as QualifiedIdentifier).identifier != null) {
+                (myElement as QualifiedIdentifier).identifier!!.replace(
+                    DElementFactory.createDLanguageIdentifierFromText(
+                        myElement.project,
+                        newElementName
+                    )!!
+                )
+            } else if ((myElement as QualifiedIdentifier).templateInstance != null && (myElement as QualifiedIdentifier).templateInstance!!.identifier != null) {
+                (myElement as QualifiedIdentifier).templateInstance!!.identifier!!.replace(
+                    DElementFactory.createDLanguageIdentifierFromText(
+                        myElement.project,
+                        newElementName
+                    )!!
+                )
+            } else {
+                throw IncorrectOperationException()
+            }
+            return myElement
         }
         return super.handleElementRename(newElementName)
     }

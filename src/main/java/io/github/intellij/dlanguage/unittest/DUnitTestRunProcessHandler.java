@@ -35,7 +35,6 @@ import io.github.intellij.dlanguage.psi.DLanguageAtAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression;
 import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.settings.ToolKey;
 
 import java.io.File;
@@ -91,7 +90,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSP
                     final Collection<DLanguageTemplateMixinExpression> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression.class);
                     for (final DLanguageTemplateMixinExpression tmi : tmis) {
                         if (tmi.getText().contains("UnitTest")) {
-                            final DlangIdentifier classIdentifier = cd.getIdentifier();
+                            final PsiElement classIdentifier = cd.getIdentifier();
                             if (classIdentifier != null) {
                                 testClassName = classIdentifier.getText();
                             }

@@ -1,12 +1,12 @@
 package io.github.intellij.dlanguage.psi.impl.named;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.stubs.DlangTemplateParameterStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +62,7 @@ public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<
     }
 
     @Nullable
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         if (getTemplateAliasParameter() != null) {
             return getTemplateAliasParameter().getIdentifier();
         }

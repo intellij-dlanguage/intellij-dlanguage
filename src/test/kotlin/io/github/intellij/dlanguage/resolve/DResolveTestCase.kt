@@ -13,7 +13,6 @@ import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
 import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration
 import io.github.intellij.dlanguage.psi.named.DlangConstructor
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier
 import org.intellij.lang.annotations.Language
 import java.io.File
 
@@ -51,43 +50,11 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
             }
             val psiFile = myFixture.configureByText(file.name, text)
             if (referencedOffset != -1) {
-                referencedElement = psiFile.findElementAt(referencedOffset)!!.parent.reference!!
+                referencedElement = psiFile.findReferenceAt(referencedOffset)!!
             }
             if (resolvedOffset != -1) {
-                findResolvedInFile(psiFile, resolvedOffset)
+                resolvedElement = psiFile.findElementAt(resolvedOffset)!!.parent
             }
-        }
-    }
-
-    private fun findResolvedInFile(psiFile: PsiElement, resolvedOffset: Int) {
-        var element = psiFile.findElementAt(resolvedOffset)
-        while (element!!.reference == null || element.reference is DlangIdentifier) {
-            element = element.parent
-        }
-        val ref = element.reference
-        if (ref == null) {
-            fail("Reference was null in " + psiFile.containingFile.name)
-        }
-        resolvedElement = ref!!.element
-        ensureResolvedNotNull(psiFile.containingFile.name)
-        // container elements like DEFINITION_FUNCTION need to be looked up by .getElement().getParent()
-        if (resolvedElement is DlangIdentifier) {
-            resolvedElement = ref.element.parent
-        }
-        //if we're resolving something within a class don't resolve the class
-        if (ref is PsiMultiReference && resolvedElement is DlangClassDeclaration) {
-            for (psiReference in ref.references) {
-                if (psiReference.element !is DlangClassDeclaration) {
-                    resolvedElement = psiReference.element
-                }
-            }
-        }
-        ensureResolvedNotNull(psiFile.containingFile.name)
-    }
-
-    private fun ensureResolvedNotNull(fileName: String) {
-        if (resolvedElement == null) {
-            fail("Reference returned null element in $fileName")
         }
     }
 
@@ -112,10 +79,10 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
             } else if (super.getTestName(true) == "scopedImportsMembers") {
                 assertNotNull("Could not resolve expected reference.", element)
                 assertEquals("Could not resolve expected reference.", "struct_member",
-                        (element!!.parent as DlangFunctionDeclaration).name)
+                        (element as DlangFunctionDeclaration).name)
             } else {
                 assertNotNull("Could not resolve expected reference.", element)
-                assertEquals("Could not resolve expected reference.", resolvedElement, element!!.parent)
+                assertEquals("Could not resolve expected reference.", resolvedElement, element!!)
             }
         } else {
             if (resolvedElement == null) {
@@ -141,7 +108,7 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         val psiFile2 = myFixture.configureByText("file2.d", file2Text)
         val psiFile = myFixture.configureByText("main.d", mainFileText)
         referencedElement = psiFile.findReferenceAt(referencedOffset)
-        findResolvedInFile(psiFile2, resolvedOffset)
+        resolvedElement = psiFile2.findElementAt(resolvedOffset)!!.parent
         doCheck(succeed)
     }
 

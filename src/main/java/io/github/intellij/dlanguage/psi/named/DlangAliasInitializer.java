@@ -18,7 +18,7 @@ public interface DlangAliasInitializer extends PsiElement, DNamedElement, Declar
     StubBasedPsiElement<DlangAliasInitializerStub> {
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     PsiElement getOP_EQ();

@@ -8,7 +8,6 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.named.DlangUnionDeclaration;
 import io.github.intellij.dlanguage.stubs.DlangUnionDeclarationStub;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
@@ -58,8 +57,8 @@ public class DlangUnionDeclarationImpl extends
 
     @Override
     @Nullable
-    public DlangIdentifier getIdentifier() {
-        return PsiTreeUtil.getStubChildOfType(this, DlangIdentifier.class);
+    public PsiElement getIdentifier() {
+        return findChildByType(DlangTypes.ID);
     }
 
     @Override
@@ -70,7 +69,7 @@ public class DlangUnionDeclarationImpl extends
 
     @Nullable
     @Override
-    public DlangIdentifier getNameIdentifier() {
+    public PsiElement getNameIdentifier() {
         return getIdentifier();
     }
 

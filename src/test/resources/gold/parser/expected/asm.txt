@@ -6,8 +6,7 @@ D Language File
     DLanguageTypeSuffixImpl(TYPE_SUFFIX)
       PsiElement(DlangTokenType.*)('*')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('pc')
+      PsiElement(DlangTokenType.ID)('pc')
     PsiElement(DlangTokenType.;)(';')
   UNITTEST
     PsiElement(DlangTokenType.unittest)('unittest')
@@ -17,8 +16,7 @@ D Language File
         PsiElement(DlangTokenType.asm)('asm')
         PsiElement(DlangTokenType.{)('{')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('call')
+          PsiElement(DlangTokenType.ID)('call')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -35,17 +33,14 @@ D Language File
                                     DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                       DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
-                                          IDENTIFIER
-                                            PsiElement(DlangTokenType.ID)('L1')
+                                          PsiElement(DlangTokenType.ID)('L1')
           PsiElement(DlangTokenType.;)(';')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('L1')
+          PsiElement(DlangTokenType.ID)('L1')
           PsiElement(DlangTokenType.:)(':')
           PsiElement(DlangTokenType.;)(';')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('pop')
+          PsiElement(DlangTokenType.ID)('pop')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -62,12 +57,10 @@ D Language File
                                     DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                       DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                         DLanguageRegisterImpl(REGISTER)
-                                          IDENTIFIER
-                                            PsiElement(DlangTokenType.ID)('EBX')
+                                          PsiElement(DlangTokenType.ID)('EBX')
           PsiElement(DlangTokenType.;)(';')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('mov')
+          PsiElement(DlangTokenType.ID)('mov')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -84,8 +77,7 @@ D Language File
                                     DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                       DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                         DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
-                                          IDENTIFIER
-                                            PsiElement(DlangTokenType.ID)('pc')
+                                          PsiElement(DlangTokenType.ID)('pc')
                                     PsiElement(DlangTokenType.[)('[')
                                     DLanguageAsmExpImpl(ASM_EXP)
                                       DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -102,8 +94,7 @@ D Language File
                                                             DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                               DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                                                 DLanguageRegisterImpl(REGISTER)
-                                                                  IDENTIFIER
-                                                                    PsiElement(DlangTokenType.ID)('EBP')
+                                                                  PsiElement(DlangTokenType.ID)('EBP')
                                     PsiElement(DlangTokenType.])(']')
             PsiElement(DlangTokenType.,)(',')
             DLanguageAsmExpImpl(ASM_EXP)
@@ -121,8 +112,7 @@ D Language File
                                     DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                       DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                         DLanguageRegisterImpl(REGISTER)
-                                          IDENTIFIER
-                                            PsiElement(DlangTokenType.ID)('EBX')
+                                          PsiElement(DlangTokenType.ID)('EBX')
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// pc now points to code at L1')
         PsiElement(DlangTokenType.})('}')
@@ -130,8 +120,7 @@ D Language File
         PsiElement(DlangTokenType.asm)('asm')
         PsiElement(DlangTokenType.{)('{')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('db')
+          PsiElement(DlangTokenType.ID)('db')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -183,8 +172,7 @@ D Language File
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// insert bytes 0x05, 0x06, and 0x83 into code')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('ds')
+          PsiElement(DlangTokenType.ID)('ds')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -204,8 +192,7 @@ D Language File
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// insert bytes 0x34, 0x12')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('di')
+          PsiElement(DlangTokenType.ID)('di')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -225,8 +212,7 @@ D Language File
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// insert bytes 0x34, 0x12, 0x00, 0x00')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('dl')
+          PsiElement(DlangTokenType.ID)('dl')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -246,8 +232,7 @@ D Language File
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// insert bytes 0x34, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('df')
+          PsiElement(DlangTokenType.ID)('df')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -267,8 +252,7 @@ D Language File
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// insert float 1.234')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('dd')
+          PsiElement(DlangTokenType.ID)('dd')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -288,8 +272,7 @@ D Language File
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// insert double 1.234')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('de')
+          PsiElement(DlangTokenType.ID)('de')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -309,8 +292,7 @@ D Language File
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// insert real 1.234')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('db')
+          PsiElement(DlangTokenType.ID)('db')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -330,8 +312,7 @@ D Language File
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// insert bytes 0x61, 0x62, and 0x63')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('ds')
+          PsiElement(DlangTokenType.ID)('ds')
           DLanguageOperandsImpl(OPERANDS)
             DLanguageAsmExpImpl(ASM_EXP)
               DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -355,31 +336,26 @@ D Language File
         PsiElement(DlangTokenType.asm)('asm')
         PsiElement(DlangTokenType.{)('{')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('rep')
+          PsiElement(DlangTokenType.ID)('rep')
           PsiElement(DlangTokenType.;)(';')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('movsb')
+          PsiElement(DlangTokenType.ID)('movsb')
           PsiElement(DlangTokenType.;)(';')
         PsiElement(DlangTokenType.})('}')
       DLanguageAsmStatementImpl(ASM_STATEMENT)
         PsiElement(DlangTokenType.asm)('asm')
         PsiElement(DlangTokenType.{)('{')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('rep')
+          PsiElement(DlangTokenType.ID)('rep')
           PsiElement(DlangTokenType.;)(';')
         DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('nop')
+          PsiElement(DlangTokenType.ID)('nop')
           PsiElement(DlangTokenType.;)(';')
         PsiElement(DlangTokenType.})('}')
       PsiElement(DlangTokenType.})('}')
   STRUCT_DECLARATION
     PsiElement(DlangTokenType.struct)('struct')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('Foo')
+    PsiElement(DlangTokenType.ID)('Foo')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -387,36 +363,30 @@ D Language File
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.int)('int')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('a')
+          PsiElement(DlangTokenType.ID)('a')
         PsiElement(DlangTokenType.,)(',')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('b')
+          PsiElement(DlangTokenType.ID)('b')
         PsiElement(DlangTokenType.,)(',')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('c')
+          PsiElement(DlangTokenType.ID)('c')
         PsiElement(DlangTokenType.;)(';')
       PsiElement(DlangTokenType.})('}')
   FUNCTION_DECLARATION
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.int)('int')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('bar')
+    PsiElement(DlangTokenType.ID)('bar')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PARAMETER
         DLanguageTypeImpl(TYPE)
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('Foo')
+              PsiElement(DlangTokenType.ID)('Foo')
           DLanguageTypeSuffixImpl(TYPE_SUFFIX)
             PsiElement(DlangTokenType.*)('*')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('f')
+        PsiElement(DlangTokenType.ID)('f')
       PsiElement(DlangTokenType.))(')')
     DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
       DLanguageBlockStatementImpl(BLOCK_STATEMENT)
@@ -425,8 +395,7 @@ D Language File
           PsiElement(DlangTokenType.asm)('asm')
           PsiElement(DlangTokenType.{)('{')
           DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('mov')
+            PsiElement(DlangTokenType.ID)('mov')
             DLanguageOperandsImpl(OPERANDS)
               DLanguageAsmExpImpl(ASM_EXP)
                 DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -443,8 +412,7 @@ D Language File
                                       DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                         DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                           DLanguageRegisterImpl(REGISTER)
-                                            IDENTIFIER
-                                              PsiElement(DlangTokenType.ID)('EBX')
+                                            PsiElement(DlangTokenType.ID)('EBX')
               PsiElement(DlangTokenType.,)(',')
               DLanguageAsmExpImpl(ASM_EXP)
                 DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -461,12 +429,10 @@ D Language File
                                       DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                         DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                           DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
-                                            IDENTIFIER
-                                              PsiElement(DlangTokenType.ID)('f')
+                                            PsiElement(DlangTokenType.ID)('f')
             PsiElement(DlangTokenType.;)(';')
           DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('mov')
+            PsiElement(DlangTokenType.ID)('mov')
             DLanguageOperandsImpl(OPERANDS)
               DLanguageAsmExpImpl(ASM_EXP)
                 DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -483,8 +449,7 @@ D Language File
                                       DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                         DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                           DLanguageRegisterImpl(REGISTER)
-                                            IDENTIFIER
-                                              PsiElement(DlangTokenType.ID)('EAX')
+                                            PsiElement(DlangTokenType.ID)('EAX')
               PsiElement(DlangTokenType.,)(',')
               DLanguageAsmExpImpl(ASM_EXP)
                 DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -501,14 +466,13 @@ D Language File
                                       DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                         DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                           DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
-                                            IDENTIFIER
-                                              PsiElement(DlangTokenType.ID)('Foo')
-                                            PsiElement(DlangTokenType..)('.')
-                                            IDENTIFIER
+                                            DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
+                                              DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
+                                                PsiElement(DlangTokenType.ID)('Foo')
+                                              PsiElement(DlangTokenType..)('.')
                                               PsiElement(DlangTokenType.ID)('b')
                                             PsiElement(DlangTokenType..)('.')
-                                            IDENTIFIER
-                                              PsiElement(DlangTokenType.ID)('offsetof')
+                                            PsiElement(DlangTokenType.ID)('offsetof')
                                       PsiElement(DlangTokenType.[)('[')
                                       DLanguageAsmExpImpl(ASM_EXP)
                                         DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -525,8 +489,7 @@ D Language File
                                                               DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                                 DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                                                   DLanguageRegisterImpl(REGISTER)
-                                                                    IDENTIFIER
-                                                                      PsiElement(DlangTokenType.ID)('EBX')
+                                                                    PsiElement(DlangTokenType.ID)('EBX')
                                       PsiElement(DlangTokenType.])(']')
             PsiElement(DlangTokenType.;)(';')
           PsiElement(DlangTokenType.})('}')
@@ -535,8 +498,7 @@ D Language File
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.void)('void')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('main')
+    PsiElement(DlangTokenType.ID)('main')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PsiElement(DlangTokenType.))(')')
@@ -547,17 +509,14 @@ D Language File
           DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
             DLanguageBasicTypeImpl(BASIC_TYPE)
               DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('Foo')
+                PsiElement(DlangTokenType.ID)('Foo')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('f')
+              PsiElement(DlangTokenType.ID)('f')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
                   DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('Foo')
+                    PsiElement(DlangTokenType.ID)('Foo')
                   PsiElement(DlangTokenType.()('(')
                   DLanguageArgumentListImpl(ARGUMENT_LIST)
                     DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -578,15 +537,13 @@ D Language File
               DLanguageEqualExpressionImpl(EQUAL_EXPRESSION)
                 DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
                   DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('bar')
+                    PsiElement(DlangTokenType.ID)('bar')
                   PsiElement(DlangTokenType.()('(')
                   DLanguageArgumentListImpl(ARGUMENT_LIST)
                     DLanguageUnaryExpressionImpl(UNARY_EXPRESSION)
                       PsiElement(DlangTokenType.&)('&')
                       DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                        IDENTIFIER
-                          PsiElement(DlangTokenType.ID)('f')
+                        PsiElement(DlangTokenType.ID)('f')
                   PsiElement(DlangTokenType.))(')')
                 PsiElement(DlangTokenType.==)('==')
                 DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -596,8 +553,7 @@ D Language File
         PsiElement(DlangTokenType.})('}')
   STRUCT_DECLARATION
     PsiElement(DlangTokenType.struct)('struct')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('Foo')
+    PsiElement(DlangTokenType.ID)('Foo')
     PsiComment(DlangTokenType.LINE_COMMENT)('// or class')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
@@ -606,23 +562,19 @@ D Language File
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.int)('int')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('a')
+          PsiElement(DlangTokenType.ID)('a')
         PsiElement(DlangTokenType.,)(',')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('b')
+          PsiElement(DlangTokenType.ID)('b')
         PsiElement(DlangTokenType.,)(',')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('c')
+          PsiElement(DlangTokenType.ID)('c')
         PsiElement(DlangTokenType.;)(';')
       FUNCTION_DECLARATION
         DLanguageBasicTypeImpl(BASIC_TYPE)
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.int)('int')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('bar')
+        PsiElement(DlangTokenType.ID)('bar')
         DLanguageParametersImpl(PARAMETERS)
           PsiElement(DlangTokenType.()('(')
           PsiElement(DlangTokenType.))(')')
@@ -634,8 +586,7 @@ D Language File
               PsiElement(DlangTokenType.{)('{')
               PsiComment(DlangTokenType.LINE_COMMENT)('//mov EBX, this   ; //todo check if this is valid')
               DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('mov')
+                PsiElement(DlangTokenType.ID)('mov')
                 DLanguageOperandsImpl(OPERANDS)
                   DLanguageAsmExpImpl(ASM_EXP)
                     DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -652,8 +603,7 @@ D Language File
                                           DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                             DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                               DLanguageRegisterImpl(REGISTER)
-                                                IDENTIFIER
-                                                  PsiElement(DlangTokenType.ID)('EAX')
+                                                PsiElement(DlangTokenType.ID)('EAX')
                   PsiElement(DlangTokenType.,)(',')
                   DLanguageAsmExpImpl(ASM_EXP)
                     DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -670,8 +620,7 @@ D Language File
                                           DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                             DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                               DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
-                                                IDENTIFIER
-                                                  PsiElement(DlangTokenType.ID)('b')
+                                                PsiElement(DlangTokenType.ID)('b')
                                           PsiElement(DlangTokenType.[)('[')
                                           DLanguageAsmExpImpl(ASM_EXP)
                                             DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -688,8 +637,7 @@ D Language File
                                                                   DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                                     DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                                                       DLanguageRegisterImpl(REGISTER)
-                                                                        IDENTIFIER
-                                                                          PsiElement(DlangTokenType.ID)('EBX')
+                                                                        PsiElement(DlangTokenType.ID)('EBX')
                                           PsiElement(DlangTokenType.])(']')
                 PsiElement(DlangTokenType.;)(';')
               PsiElement(DlangTokenType.})('}')
@@ -699,8 +647,7 @@ D Language File
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.void)('void')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('main')
+    PsiElement(DlangTokenType.ID)('main')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PsiElement(DlangTokenType.))(')')
@@ -711,17 +658,14 @@ D Language File
           DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
             DLanguageBasicTypeImpl(BASIC_TYPE)
               DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('Foo')
+                PsiElement(DlangTokenType.ID)('Foo')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('f')
+              PsiElement(DlangTokenType.ID)('f')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
                   DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('Foo')
+                    PsiElement(DlangTokenType.ID)('Foo')
                   PsiElement(DlangTokenType.()('(')
                   DLanguageArgumentListImpl(ARGUMENT_LIST)
                     DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -743,11 +687,9 @@ D Language File
                 DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
                   DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
                     DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                      IDENTIFIER
-                        PsiElement(DlangTokenType.ID)('f')
+                      PsiElement(DlangTokenType.ID)('f')
                     PsiElement(DlangTokenType..)('.')
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('bar')
+                    PsiElement(DlangTokenType.ID)('bar')
                   PsiElement(DlangTokenType.()('(')
                   PsiElement(DlangTokenType.))(')')
                 PsiElement(DlangTokenType.==)('==')
@@ -760,8 +702,7 @@ D Language File
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.int)('int')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('foo')
+    PsiElement(DlangTokenType.ID)('foo')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PARAMETER
@@ -769,8 +710,7 @@ D Language File
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
               PsiElement(DlangTokenType.int)('int')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('x')
+        PsiElement(DlangTokenType.ID)('x')
       PsiElement(DlangTokenType.))(')')
     DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
       DLanguageBlockStatementImpl(BLOCK_STATEMENT)
@@ -779,8 +719,7 @@ D Language File
           PsiElement(DlangTokenType.asm)('asm')
           PsiElement(DlangTokenType.{)('{')
           DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('mov')
+            PsiElement(DlangTokenType.ID)('mov')
             DLanguageOperandsImpl(OPERANDS)
               DLanguageAsmExpImpl(ASM_EXP)
                 DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -797,8 +736,7 @@ D Language File
                                       DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                         DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                           DLanguageRegisterImpl(REGISTER)
-                                            IDENTIFIER
-                                              PsiElement(DlangTokenType.ID)('EAX')
+                                            PsiElement(DlangTokenType.ID)('EAX')
               PsiElement(DlangTokenType.,)(',')
               DLanguageAsmExpImpl(ASM_EXP)
                 DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -815,8 +753,7 @@ D Language File
                                       DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                         DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                           DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
-                                            IDENTIFIER
-                                              PsiElement(DlangTokenType.ID)('x')
+                                            PsiElement(DlangTokenType.ID)('x')
                                       PsiElement(DlangTokenType.[)('[')
                                       DLanguageAsmExpImpl(ASM_EXP)
                                         DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -833,14 +770,12 @@ D Language File
                                                               DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                                                 DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                                                   DLanguageRegisterImpl(REGISTER)
-                                                                    IDENTIFIER
-                                                                      PsiElement(DlangTokenType.ID)('EBP')
+                                                                    PsiElement(DlangTokenType.ID)('EBP')
                                       PsiElement(DlangTokenType.])(']')
             PsiElement(DlangTokenType.;)(';')
           PsiComment(DlangTokenType.LINE_COMMENT)('// loads value of parameter x into EAX')
           DLanguageAsmInstructionImpl(ASM_INSTRUCTION)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('mov')
+            PsiElement(DlangTokenType.ID)('mov')
             DLanguageOperandsImpl(OPERANDS)
               DLanguageAsmExpImpl(ASM_EXP)
                 DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -857,8 +792,7 @@ D Language File
                                       DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                         DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                           DLanguageRegisterImpl(REGISTER)
-                                            IDENTIFIER
-                                              PsiElement(DlangTokenType.ID)('EAX')
+                                            PsiElement(DlangTokenType.ID)('EAX')
               PsiElement(DlangTokenType.,)(',')
               DLanguageAsmExpImpl(ASM_EXP)
                 DLanguageAsmLogOrExpImpl(ASM_LOG_OR_EXP)
@@ -875,8 +809,7 @@ D Language File
                                       DLanguageAsmUnaExpImpl(ASM_UNA_EXP)
                                         DLanguageAsmPrimaryExpImpl(ASM_PRIMARY_EXP)
                                           DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
-                                            IDENTIFIER
-                                              PsiElement(DlangTokenType.ID)('x')
+                                            PsiElement(DlangTokenType.ID)('x')
             PsiElement(DlangTokenType.;)(';')
           PsiComment(DlangTokenType.LINE_COMMENT)('// does the same thing')
           PsiElement(DlangTokenType.})('}')

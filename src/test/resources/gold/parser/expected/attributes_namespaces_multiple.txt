@@ -4,17 +4,14 @@ D Language File
       DLanguageLinkageAttributeImpl(LINKAGE_ATTRIBUTE)
         PsiElement(DlangTokenType.extern)('extern')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('C')
+        PsiElement(DlangTokenType.ID)('C')
         PsiElement(DlangTokenType.++)('++')
         PsiElement(DlangTokenType.,)(',')
         DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
           DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('N')
+            PsiElement(DlangTokenType.ID)('N')
             PsiElement(DlangTokenType..)('.')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('M')
+          PsiElement(DlangTokenType.ID)('M')
         PsiElement(DlangTokenType.))(')')
     DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
       PsiElement(DlangTokenType.{)('{')
@@ -23,8 +20,7 @@ D Language File
           DLanguageLinkageAttributeImpl(LINKAGE_ATTRIBUTE)
             PsiElement(DlangTokenType.extern)('extern')
             PsiElement(DlangTokenType.()('(')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('C')
+            PsiElement(DlangTokenType.ID)('C')
             PsiElement(DlangTokenType.++)('++')
             PsiElement(DlangTokenType.))(')')
         DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
@@ -34,13 +30,11 @@ D Language File
               DLanguageLinkageAttributeImpl(LINKAGE_ATTRIBUTE)
                 PsiElement(DlangTokenType.extern)('extern')
                 PsiElement(DlangTokenType.()('(')
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('C')
+                PsiElement(DlangTokenType.ID)('C')
                 PsiElement(DlangTokenType.++)('++')
                 PsiElement(DlangTokenType.,)(',')
                 DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('R')
+                  PsiElement(DlangTokenType.ID)('R')
                 PsiElement(DlangTokenType.))(')')
             DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
               PsiElement(DlangTokenType.{)('{')
@@ -48,8 +42,7 @@ D Language File
                 DLanguageBasicTypeImpl(BASIC_TYPE)
                   DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                     PsiElement(DlangTokenType.void)('void')
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('foo')
+                PsiElement(DlangTokenType.ID)('foo')
                 DLanguageParametersImpl(PARAMETERS)
                   PsiElement(DlangTokenType.()('(')
                   PsiElement(DlangTokenType.))(')')
@@ -68,17 +61,13 @@ D Language File
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
               DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
                 DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('N')
+                  PsiElement(DlangTokenType.ID)('N')
                 PsiElement(DlangTokenType..)('.')
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('M')
+                PsiElement(DlangTokenType.ID)('M')
               PsiElement(DlangTokenType..)('.')
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('R')
+              PsiElement(DlangTokenType.ID)('R')
             PsiElement(DlangTokenType..)('.')
-            IDENTIFIER
-              PsiElement(DlangTokenType.ID)('foo')
+            PsiElement(DlangTokenType.ID)('foo')
           PsiElement(DlangTokenType.()('(')
           PsiElement(DlangTokenType.))(')')
         PsiElement(DlangTokenType.;)(';')

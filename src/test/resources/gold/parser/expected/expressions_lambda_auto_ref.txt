@@ -3,8 +3,7 @@ D Language File
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.void)('void')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('foo')
+    PsiElement(DlangTokenType.ID)('foo')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PsiElement(DlangTokenType.))(')')
@@ -16,8 +15,7 @@ D Language File
             DLanguageStorageClassImpl(STORAGE_CLASS)
               PsiElement(DlangTokenType.auto)('auto')
             AUTO_ASSIGNMENT
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('bar1')
+              PsiElement(DlangTokenType.ID)('bar1')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageFunctionLiteralExpressionImpl(FUNCTION_LITERAL_EXPRESSION)
@@ -33,8 +31,7 @@ D Language File
             DLanguageStorageClassImpl(STORAGE_CLASS)
               PsiElement(DlangTokenType.auto)('auto')
             AUTO_ASSIGNMENT
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('bar2')
+              PsiElement(DlangTokenType.ID)('bar2')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageFunctionLiteralExpressionImpl(FUNCTION_LITERAL_EXPRESSION)
@@ -51,8 +48,7 @@ D Language File
             DLanguageStorageClassImpl(STORAGE_CLASS)
               PsiElement(DlangTokenType.auto)('auto')
             AUTO_ASSIGNMENT
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('bar3')
+              PsiElement(DlangTokenType.ID)('bar3')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageFunctionLiteralExpressionImpl(FUNCTION_LITERAL_EXPRESSION)
@@ -70,8 +66,7 @@ D Language File
             DLanguageStorageClassImpl(STORAGE_CLASS)
               PsiElement(DlangTokenType.auto)('auto')
             AUTO_ASSIGNMENT
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('bar4')
+              PsiElement(DlangTokenType.ID)('bar4')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageFunctionLiteralExpressionImpl(FUNCTION_LITERAL_EXPRESSION)
@@ -88,8 +83,7 @@ D Language File
             DLanguageStorageClassImpl(STORAGE_CLASS)
               PsiElement(DlangTokenType.auto)('auto')
             AUTO_ASSIGNMENT
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('bar5')
+              PsiElement(DlangTokenType.ID)('bar5')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageFunctionLiteralExpressionImpl(FUNCTION_LITERAL_EXPRESSION)
@@ -107,8 +101,7 @@ D Language File
             DLanguageStorageClassImpl(STORAGE_CLASS)
               PsiElement(DlangTokenType.auto)('auto')
             AUTO_ASSIGNMENT
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('bar6')
+              PsiElement(DlangTokenType.ID)('bar6')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageFunctionLiteralExpressionImpl(FUNCTION_LITERAL_EXPRESSION)

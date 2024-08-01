@@ -4,8 +4,7 @@ D Language File
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('msg')
+        PsiElement(DlangTokenType.ID)('msg')
         PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
     PsiComment(DlangTokenType.LINE_COMMENT)('// just by itself')
@@ -14,15 +13,13 @@ D Language File
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('msg')
+        PsiElement(DlangTokenType.ID)('msg')
         PsiElement(DlangTokenType.))(')')
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.int)('int')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('x')
+      PsiElement(DlangTokenType.ID)('x')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -34,8 +31,7 @@ D Language File
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('msg')
+        PsiElement(DlangTokenType.ID)('msg')
         PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.:)(':')
     PsiComment(DlangTokenType.LINE_COMMENT)('// influence subsequent declarations')
@@ -44,8 +40,7 @@ D Language File
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.float)('float')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('y')
+      PsiElement(DlangTokenType.ID)('y')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -56,8 +51,7 @@ D Language File
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.double)('double')
     IDENTIFIER_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('a')
+      PsiElement(DlangTokenType.ID)('a')
       PsiElement(DlangTokenType.=)('=')
       DLanguageInitializerImpl(INITIALIZER)
         DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -68,8 +62,7 @@ D Language File
       DLanguagePragmaExpressionImpl(PRAGMA_EXPRESSION)
         PsiElement(DlangTokenType.pragma)('pragma')
         PsiElement(DlangTokenType.()('(')
-        IDENTIFIER
-          PsiElement(DlangTokenType.ID)('msg')
+        PsiElement(DlangTokenType.ID)('msg')
         PsiElement(DlangTokenType.))(')')
     PsiComment(DlangTokenType.LINE_COMMENT)('// influence block of declarations')
     DLanguageDeclarationBlockImpl(DECLARATION_BLOCK)
@@ -79,8 +72,7 @@ D Language File
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.long)('long')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('b')
+          PsiElement(DlangTokenType.ID)('b')
           PsiElement(DlangTokenType.=)('=')
           DLanguageInitializerImpl(INITIALIZER)
             DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -91,8 +83,7 @@ D Language File
           DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
             PsiElement(DlangTokenType.ulong)('ulong')
         IDENTIFIER_INITIALIZER
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('c')
+          PsiElement(DlangTokenType.ID)('c')
           PsiElement(DlangTokenType.=)('=')
           DLanguageInitializerImpl(INITIALIZER)
             DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)

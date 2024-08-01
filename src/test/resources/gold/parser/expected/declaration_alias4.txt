@@ -2,8 +2,7 @@ D Language File
   DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
     PsiElement(DlangTokenType.alias)('alias')
     ALIAS_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('Fun')
+      PsiElement(DlangTokenType.ID)('Fun')
       PsiElement(DlangTokenType.=)('=')
       DLanguageTypeImpl(TYPE)
         DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -15,26 +14,22 @@ D Language File
           DLanguageTypeImpl(TYPE)
             DLanguageBasicTypeImpl(BASIC_TYPE)
               DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('string')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('p')
+                PsiElement(DlangTokenType.ID)('string')
+          PsiElement(DlangTokenType.ID)('p')
         PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
   FUNCTION_DECLARATION
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.int)('int')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('fun')
+    PsiElement(DlangTokenType.ID)('fun')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PARAMETER
         DLanguageTypeImpl(TYPE)
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('string')
+              PsiElement(DlangTokenType.ID)('string')
       PsiElement(DlangTokenType.))(')')
     DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
       DLanguageBlockStatementImpl(BLOCK_STATEMENT)
@@ -60,24 +55,21 @@ D Language File
                 PsiElement(DlangTokenType.typeof)('typeof')
                 PsiElement(DlangTokenType.()('(')
                 DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('fun')
+                  PsiElement(DlangTokenType.ID)('fun')
                 PsiElement(DlangTokenType.))(')')
           PsiElement(DlangTokenType.==)('==')
           DLanguageTypeSpecializationImpl(TYPE_SPECIALIZATION)
             DLanguageTypeImpl(TYPE)
               DLanguageBasicTypeImpl(BASIC_TYPE)
                 DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('Fun')
+                  PsiElement(DlangTokenType.ID)('Fun')
           PsiElement(DlangTokenType.))(')')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
   DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
     PsiElement(DlangTokenType.alias)('alias')
     ALIAS_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('MemberFun1')
+      PsiElement(DlangTokenType.ID)('MemberFun1')
       PsiElement(DlangTokenType.=)('=')
       DLanguageTypeImpl(TYPE)
         DLanguageBasicTypeImpl(BASIC_TYPE)
@@ -92,8 +84,7 @@ D Language File
   DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)
     PsiElement(DlangTokenType.alias)('alias')
     ALIAS_INITIALIZER
-      IDENTIFIER
-        PsiElement(DlangTokenType.ID)('MemberFun2')
+      PsiElement(DlangTokenType.ID)('MemberFun2')
       PsiElement(DlangTokenType.=)('=')
       DLanguageStorageClassImpl(STORAGE_CLASS)
         PsiElement(DlangTokenType.const)('const')
@@ -118,15 +109,13 @@ D Language File
           DLanguageTypeImpl(TYPE)
             DLanguageBasicTypeImpl(BASIC_TYPE)
               DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('MemberFun1')
+                PsiElement(DlangTokenType.ID)('MemberFun1')
           PsiElement(DlangTokenType.==)('==')
           DLanguageTypeSpecializationImpl(TYPE_SPECIALIZATION)
             DLanguageTypeImpl(TYPE)
               DLanguageBasicTypeImpl(BASIC_TYPE)
                 DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('MemberFun2')
+                  PsiElement(DlangTokenType.ID)('MemberFun2')
           PsiElement(DlangTokenType.))(')')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')

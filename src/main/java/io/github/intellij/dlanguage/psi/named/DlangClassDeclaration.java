@@ -23,7 +23,7 @@ public interface DlangClassDeclaration extends PsiElement, DNamedElement, Declar
     PsiElement getKW_CLASS();
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     DLanguageTemplateParameters getTemplateParameters();

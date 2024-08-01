@@ -10,12 +10,16 @@ import std.stdio;
 import std.format;
 import std.algorithm;
 
+enum defaultParentClassName = "ASTWrapperPsiElement";
 
 string[][string] types_children;
 
 string[][string] stub_children;
 
 string[][string] types_extra_interfaces;
+
+/// If an entry appear here, then the element will inherit from it, otherwise it will inherit from ASTWrapperPsiElement
+string[string] types_mixins;
 
 /**
  * Contain the name of Psi elements that are named elements
@@ -32,7 +36,6 @@ string[] named_children = [
     "EnumMember",
     "ForeachType",
     "FunctionDeclaration",
-    "Identifier",
     "IdentifierInitializer",
     "IfCondition",
     "InterfaceDeclaration",
@@ -190,13 +193,15 @@ static this() {
     types_extra_interfaces["FunctionLiteralExpression"] = ["Expression"];
     types_children["GotoStatement"] = ["Identifier","AssignExpression*","OP_COMMA*","KW_DEFAULT","KW_CASE","KW_GOTO","OP_SCOLON"];
     types_extra_interfaces["GotoStatement"] = ["Statement"];
-    types_children["IdentifierChain"] = ["Identifier*", "OP_DOT*"];
+    types_children["IdentifierChain"] = ["Identifier", "OP_DOT", "IdentifierChain"];
+    types_mixins["IdentifierChain"] = "DLanguageIdentifierChainImplMixin";
     types_children["IdentityExpression"] = ["Expression*","KW_IS","OP_NOT"];
     types_extra_interfaces["IdentityExpression"] = ["Expression"];
     stub_children ["IfCondition"] = ["Identifier",  "AssignExpression*","OP_COMMA*", "KW_AUTO", "KW_SCOPE","Type", "OP_EQ"];
     types_children["IfStatement"] = [/*"Identifier","AssignExpression*","OP_COMMA*",*/"Statement","KW_ELSE","KW_IF","OP_PAR_LEFT","OP_PAR_RIGHT"/*,"KW_AUTO","Type","OP_EQ"*/,"IfCondition"];
     types_extra_interfaces["IfStatement"] = ["Statement"];
     types_children["ImportBind"] = ["Identifier","NamedImportBind"];
+    types_mixins["ImportBind"] = "DLanguageImportBindImplMixin";
     types_children["ImportBindings"] = ["OP_COMMA*","ImportBind*","SingleImport","OP_COLON"];
     types_children["ImportDeclaration"] = ["KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
     types_extra_interfaces["ImportDeclaration"] = ["Statement", "Declaration"];
@@ -264,8 +269,10 @@ static this() {
     types_extra_interfaces["PragmaExpression"] = ["Expression"];
     types_children["PragmaStatement"] = ["PragmaExpression", "OP_SCOLON", "DefaultStatement","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","CaseStatement","CaseRangeStatement"];
     types_children["QualifiedIdentifier"] = ["Identifier", "TemplateInstance", "OP_BRACKET_LEFT", "OP_BRACKET_RIGHT", "Expression", "OP_DOT", "QualifiedIdentifier"];
+    types_mixins["QualifiedIdentifier"] = "DLanguageQualifiedIdentifierImplMixin";
     types_children["ReferenceExpression"] = ["OP_DOT", "Identifier", "TemplateInstance", "ReferenceExpression"];
     types_extra_interfaces["ReferenceExpression"] = ["Expression"];
+    types_mixins["ReferenceExpression"] = "DLanguageReferenceExpressionImplMixin";
     types_children["Register"] = ["Identifier","INTEGER_LITERAL", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
     types_children["RelExpression"] = ["Expression*", "OP_GT","OP_GT_EQ","OP_LESS","OP_LESS_EQ","OP_NOT_GR","OP_NOT_GR_EQ","OP_NOT_LESS","OP_NOT_LESS_EQ"];
     types_extra_interfaces["RelExpression"] = ["Expression"];
@@ -587,7 +594,6 @@ static immutable string[] defaultInterfaceImports = [
 ];
 
 static immutable string[] defaultImplImports = [
-    "import com.intellij.extapi.psi.ASTWrapperPsiElement;",
     "import com.intellij.lang.ASTNode;",
     "import com.intellij.psi.PsiElement;",
     "import com.intellij.psi.PsiElementVisitor;",
@@ -615,7 +621,7 @@ immutable string implFileTemplate =
 %s
 
 
-public class %s extends ASTWrapperPsiElement implements
+public class %s extends %s implements
     %s {
 
     public %s(ASTNode node) {
@@ -683,7 +689,9 @@ public interface %s extends PsiElement`;
 }
 
 bool isToken(string toget) {
-    return toget.canFind("OP") || toget.canFind("KW") || toget.canFind("LITERAL") || toget.canFind("STRING") || toget.canFind("ID");
+    import std.array : replace;
+    toget = toget.replace("*", "");
+    return toget.canFind("OP") || toget.canFind("KW") || toget.canFind("LITERAL") || toget.canFind("STRING") || toget == "Identifier";
 }
 
 bool isExtraInterface(string toget) {
@@ -711,16 +719,14 @@ string getNonTokenImport(string toget, string key) {
     string import_;
     if (toget.canFind("*")) {
         toget = toget.replace("*", "");
-        if (toget == "Identifier")
-            import_ = psiDlangNamedImportTemplate.format(toget);
-        else if ((named_children.canFind(toget) && toget !in stub_children))
+        if ((named_children.canFind(toget) && toget !in stub_children))
             import_ = "import io.github.intellij.dlanguage.psi.named.DLanguage%s;".format(toget);
         else if (isExtraInterface(toget))
             import_ = psiDlangExtraInterfaceImportTemplate.format(toget);
         else
             import_ = psiDlangImportTemplate.format(toget);
     } else {
-        if (toget == "Identifier" || (named_children.canFind(toget) && toget !in stub_children))
+        if (named_children.canFind(toget) && toget !in stub_children)
             import_ = psiDlangNamedImportTemplate.format(toget);
         else if (isExtraInterface(toget))
             import_ = psiDlangExtraInterfaceImportTemplate.format(toget);
@@ -738,6 +744,8 @@ void getImplImportsElements(string[] elements, string key, ref string[] staticIm
         if (isToken(toget)) {
             toget = toget.replace("*", "");
             // tokens are imported statically
+            if (toget == "Identifier")
+                toget = "ID";
             staticImports ~= "import static io.github.intellij.dlanguage.psi.DlangTypes.%s;".format(toget);
         } else {
             normalImports ~= getNonTokenImport(toget, key);
@@ -755,9 +763,14 @@ string formatImplImports(const string[] staticImports, const string[] normalImpo
     return importString;
 }
 
-string getImplImports(string[] elements, string key) {
+string getImplImports(string[] elements, string key, string parentClassName = null) {
     string[] normalImports = defaultImplImports.dup;
     string[] staticImports;
+    if (parentClassName != null && parentClassName != defaultParentClassName) {
+        normalImports ~= "import io.github.intellij.dlanguage.psi.ext." ~ parentClassName ~ ";";
+    } else {
+        normalImports ~= "import com.intellij.extapi.psi.ASTWrapperPsiElement;";
+    }
     getImplImportsElements(elements, key, staticImports, normalImports);
     return formatImplImports(staticImports, normalImports);
 }
@@ -779,8 +792,6 @@ string getterMethod(string toget) {
     string type;
     if (isToken(toget))
         type = "PsiElement";
-    else if (toget == "Identifier")
-        type = "DlangIdentifier";
     else if (isExtraInterface(toget))
         type = toget;
     else
@@ -788,12 +799,15 @@ string getterMethod(string toget) {
 
     if (hasMultiple) {
         if (isToken(toget)) {
+            auto typeToGet = toget;
+            if (toget == "Identifier")
+                typeToGet = "ID";
             return `
     @NotNull
     public List<PsiElement> get%ss() {
         return findChildrenByType(%s);
     }
-`.format(toget,toget);
+`.format(toget,typeToGet);
         }
         else {
             return `
@@ -806,12 +820,15 @@ string getterMethod(string toget) {
     }
 
     if (isToken(toget)) {
+        auto typeToGet = toget;
+        if (toget == "Identifier")
+            typeToGet = "ID";
         return `
     @Nullable
     public PsiElement get%s() {
         return findChildByType(%s);
     }
-`.format(toget,toget);
+`.format(toget,typeToGet);
     }
     else {
         return `
@@ -886,8 +903,6 @@ string getterMethodInterface(string toget) {
 
     if (isToken(toget))
         type = "PsiElement";
-    else if (toget == "Identifier")
-        type = "DlangIdentifier";
     else if (isExtraInterface(toget))
         type = toget;
     else
@@ -918,7 +933,8 @@ int main(string[] args) {
         import std.string;
         string interfaceClassName = "DLanguage" ~ key;
         string implClassName = "DLanguage" ~ key ~ "Impl";
-        string implFile = implFileTemplate.format(getImplImports(types_children[key], key), implClassName, interfaceClassName, implClassName, key);
+        string parentClassName = key in types_mixins ? types_mixins[key] : defaultParentClassName;
+        string implFile = implFileTemplate.format(getImplImports(types_children[key], key, parentClassName), implClassName, parentClassName, interfaceClassName, implClassName, key);
         foreach(string toget; types_children[key]){
             implFile ~= getterMethod(toget);
         }

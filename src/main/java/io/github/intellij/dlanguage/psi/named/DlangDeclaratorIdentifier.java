@@ -10,7 +10,7 @@ public interface DlangDeclaratorIdentifier extends PsiElement, DNamedElement,
     StubBasedPsiElement<DlangDeclaratorIdentifierStub> {
 
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     PsiElement getOP_COMMA();

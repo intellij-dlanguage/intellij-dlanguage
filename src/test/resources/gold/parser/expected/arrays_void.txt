@@ -3,8 +3,7 @@ D Language File
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
         PsiElement(DlangTokenType.void)('void')
-    IDENTIFIER
-      PsiElement(DlangTokenType.ID)('main')
+    PsiElement(DlangTokenType.ID)('main')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       PsiElement(DlangTokenType.))(')')
@@ -20,8 +19,7 @@ D Language File
               PsiElement(DlangTokenType.[)('[')
               PsiElement(DlangTokenType.])(']')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('data1')
+              PsiElement(DlangTokenType.ID)('data1')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageArrayLiteralImpl(ARRAY_LITERAL)
@@ -49,8 +47,7 @@ D Language File
               PsiElement(DlangTokenType.[)('[')
               PsiElement(DlangTokenType.])(']')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('data2')
+              PsiElement(DlangTokenType.ID)('data2')
             PsiElement(DlangTokenType.;)(';')
         DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
           DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -61,13 +58,11 @@ D Language File
               PsiElement(DlangTokenType.[)('[')
               PsiElement(DlangTokenType.])(']')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('arr')
+              PsiElement(DlangTokenType.ID)('arr')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('data1')
+                  PsiElement(DlangTokenType.ID)('data1')
             PsiElement(DlangTokenType.;)(';')
             PsiComment(DlangTokenType.LINE_COMMENT)('// OK, int[] implicit converts to void[].')
         DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
@@ -78,11 +73,9 @@ D Language File
               DLanguageEqualExpressionImpl(EQUAL_EXPRESSION)
                 DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
                   DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('data1')
+                    PsiElement(DlangTokenType.ID)('data1')
                   PsiElement(DlangTokenType..)('.')
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('length')
+                  PsiElement(DlangTokenType.ID)('length')
                 PsiElement(DlangTokenType.==)('==')
                 DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
                   PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
@@ -96,11 +89,9 @@ D Language File
               DLanguageEqualExpressionImpl(EQUAL_EXPRESSION)
                 DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
                   DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('arr')
+                    PsiElement(DlangTokenType.ID)('arr')
                   PsiElement(DlangTokenType..)('.')
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('length')
+                  PsiElement(DlangTokenType.ID)('length')
                 PsiElement(DlangTokenType.==)('==')
                 DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
                   PsiElement(DlangTokenType.INTEGER_LITERAL)('12')
@@ -118,8 +109,7 @@ D Language File
               PsiElement(DlangTokenType.[)('[')
               PsiElement(DlangTokenType.])(']')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('data3')
+              PsiElement(DlangTokenType.ID)('data3')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageCastExpressionImpl(CAST_EXPRESSION)
@@ -134,15 +124,13 @@ D Language File
                       PsiElement(DlangTokenType.])(']')
                   PsiElement(DlangTokenType.))(')')
                   DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('arr')
+                    PsiElement(DlangTokenType.ID)('arr')
             PsiElement(DlangTokenType.;)(';')
             PsiComment(DlangTokenType.LINE_COMMENT)('// OK, can convert with explicit cast.')
         DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
           DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('data2')
+              PsiElement(DlangTokenType.ID)('data2')
             PsiElement(DlangTokenType.=)('=')
             DLanguageCastExpressionImpl(CAST_EXPRESSION)
               PsiElement(DlangTokenType.cast)('cast')
@@ -156,8 +144,7 @@ D Language File
                   PsiElement(DlangTokenType.])(']')
               PsiElement(DlangTokenType.))(')')
               DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('arr')
+                PsiElement(DlangTokenType.ID)('arr')
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// Runtime error: long.sizeof == 8, which')
         PsiComment(DlangTokenType.LINE_COMMENT)('// does not divide arr.length, which is 12')
@@ -173,8 +160,7 @@ D Language File
                 PsiElement(DlangTokenType.INTEGER_LITERAL)('2')
               PsiElement(DlangTokenType.])(']')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('x')
+              PsiElement(DlangTokenType.ID)('x')
             PsiElement(DlangTokenType.;)(';')
         DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
           DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -187,8 +173,7 @@ D Language File
                 PsiElement(DlangTokenType.INTEGER_LITERAL)('2')
               PsiElement(DlangTokenType.])(']')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('y')
+              PsiElement(DlangTokenType.ID)('y')
             PsiElement(DlangTokenType.;)(';')
         DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
           DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -201,13 +186,11 @@ D Language File
                 PsiElement(DlangTokenType.INTEGER_LITERAL)('2')
               PsiElement(DlangTokenType.])(']')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('a')
+              PsiElement(DlangTokenType.ID)('a')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('x')
+                  PsiElement(DlangTokenType.ID)('x')
             PsiElement(DlangTokenType.;)(';')
             PsiComment(DlangTokenType.LINE_COMMENT)('// OK, lengths match')
         DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
@@ -221,13 +204,11 @@ D Language File
                 PsiElement(DlangTokenType.INTEGER_LITERAL)('2')
               PsiElement(DlangTokenType.])(']')
             IDENTIFIER_INITIALIZER
-              IDENTIFIER
-                PsiElement(DlangTokenType.ID)('b')
+              PsiElement(DlangTokenType.ID)('b')
               PsiElement(DlangTokenType.=)('=')
               DLanguageInitializerImpl(INITIALIZER)
                 DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('y')
+                  PsiElement(DlangTokenType.ID)('y')
             PsiElement(DlangTokenType.;)(';')
             PsiComment(DlangTokenType.LINE_COMMENT)('// Error: int[2] is 8 bytes long, doesn't fit in 2 bytes.')
         PsiElement(DlangTokenType.})('}')

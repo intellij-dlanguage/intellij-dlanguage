@@ -9,7 +9,6 @@ import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.stubs.DlangEnumDeclarationStub;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 public interface DlangEnumDeclaration extends PsiElement, DNamedElement, Declaration,
     StubBasedPsiElement<DlangEnumDeclarationStub>, HasMembers<DlangEnumDeclarationStub> {
     @Nullable
-    DlangIdentifier getIdentifier();
+    PsiElement getIdentifier();
 
     @Nullable
     PsiElement getOP_COLON();

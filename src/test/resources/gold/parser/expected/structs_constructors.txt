@@ -6,8 +6,7 @@ D Language File
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         STRUCT_DECLARATION
           PsiElement(DlangTokenType.struct)('struct')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('S')
+          PsiElement(DlangTokenType.ID)('S')
           DLanguageStructBodyImpl(STRUCT_BODY)
             PsiElement(DlangTokenType.{)('{')
             DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -15,12 +14,10 @@ D Language File
                 DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                   PsiElement(DlangTokenType.int)('int')
               IDENTIFIER_INITIALIZER
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('x')
+                PsiElement(DlangTokenType.ID)('x')
               PsiElement(DlangTokenType.,)(',')
               IDENTIFIER_INITIALIZER
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('y')
+                PsiElement(DlangTokenType.ID)('y')
               PsiElement(DlangTokenType.;)(';')
             CONSTRUCTOR
               PsiElement(DlangTokenType.this)('this')
@@ -41,16 +38,14 @@ D Language File
                     DLanguageBasicTypeImpl(BASIC_TYPE)
                       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                         PsiElement(DlangTokenType.int)('int')
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('a')
+                  PsiElement(DlangTokenType.ID)('a')
                 PsiElement(DlangTokenType.,)(',')
                 PARAMETER
                   DLanguageTypeImpl(TYPE)
                     DLanguageBasicTypeImpl(BASIC_TYPE)
                       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                         PsiElement(DlangTokenType.int)('int')
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('b')
+                  PsiElement(DlangTokenType.ID)('b')
                 PsiElement(DlangTokenType.))(')')
               DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
                 DLanguageBlockStatementImpl(BLOCK_STATEMENT)
@@ -58,22 +53,18 @@ D Language File
                   DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                        IDENTIFIER
-                          PsiElement(DlangTokenType.ID)('x')
+                        PsiElement(DlangTokenType.ID)('x')
                       PsiElement(DlangTokenType.=)('=')
                       DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                        IDENTIFIER
-                          PsiElement(DlangTokenType.ID)('a')
+                        PsiElement(DlangTokenType.ID)('a')
                     PsiElement(DlangTokenType.;)(';')
                   DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                        IDENTIFIER
-                          PsiElement(DlangTokenType.ID)('y')
+                        PsiElement(DlangTokenType.ID)('y')
                       PsiElement(DlangTokenType.=)('=')
                       DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                        IDENTIFIER
-                          PsiElement(DlangTokenType.ID)('b')
+                        PsiElement(DlangTokenType.ID)('b')
                     PsiElement(DlangTokenType.;)(';')
                   PsiElement(DlangTokenType.})('}')
             PsiElement(DlangTokenType.})('}')
@@ -82,8 +73,7 @@ D Language File
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
               PsiElement(DlangTokenType.void)('void')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('main')
+          PsiElement(DlangTokenType.ID)('main')
           DLanguageParametersImpl(PARAMETERS)
             PsiElement(DlangTokenType.()('(')
             PsiElement(DlangTokenType.))(')')
@@ -94,17 +84,14 @@ D Language File
                 DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                      IDENTIFIER
-                        PsiElement(DlangTokenType.ID)('S')
+                      PsiElement(DlangTokenType.ID)('S')
                   IDENTIFIER_INITIALIZER
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('a')
+                    PsiElement(DlangTokenType.ID)('a')
                     PsiElement(DlangTokenType.=)('=')
                     DLanguageInitializerImpl(INITIALIZER)
                       DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
                         DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                          IDENTIFIER
-                            PsiElement(DlangTokenType.ID)('S')
+                          PsiElement(DlangTokenType.ID)('S')
                         PsiElement(DlangTokenType.()('(')
                         DLanguageArgumentListImpl(ARGUMENT_LIST)
                           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -119,14 +106,12 @@ D Language File
                   DLanguageStorageClassImpl(STORAGE_CLASS)
                     PsiElement(DlangTokenType.auto)('auto')
                   AUTO_ASSIGNMENT
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('b')
+                    PsiElement(DlangTokenType.ID)('b')
                     PsiElement(DlangTokenType.=)('=')
                     DLanguageInitializerImpl(INITIALIZER)
                       DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
                         DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                          IDENTIFIER
-                            PsiElement(DlangTokenType.ID)('S')
+                          PsiElement(DlangTokenType.ID)('S')
                         PsiElement(DlangTokenType.()('(')
                         PsiElement(DlangTokenType.))(')')
                   PsiElement(DlangTokenType.;)(';')
@@ -135,8 +120,7 @@ D Language File
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         STRUCT_DECLARATION
           PsiElement(DlangTokenType.struct)('struct')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('S1')
+          PsiElement(DlangTokenType.ID)('S1')
           DLanguageStructBodyImpl(STRUCT_BODY)
             PsiElement(DlangTokenType.{)('{')
             DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -147,8 +131,7 @@ D Language File
                 PsiElement(DlangTokenType.[)('[')
                 PsiElement(DlangTokenType.])(']')
               IDENTIFIER_INITIALIZER
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('a')
+                PsiElement(DlangTokenType.ID)('a')
               PsiElement(DlangTokenType.;)(';')
             CONSTRUCTOR
               PsiElement(DlangTokenType.this)('this')
@@ -159,8 +142,7 @@ D Language File
                     DLanguageBasicTypeImpl(BASIC_TYPE)
                       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                         PsiElement(DlangTokenType.int)('int')
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('n')
+                  PsiElement(DlangTokenType.ID)('n')
                 PsiElement(DlangTokenType.))(')')
               DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
                 DLanguageBlockStatementImpl(BLOCK_STATEMENT)
@@ -168,8 +150,7 @@ D Language File
                   DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                        IDENTIFIER
-                          PsiElement(DlangTokenType.ID)('a')
+                        PsiElement(DlangTokenType.ID)('a')
                       PsiElement(DlangTokenType.=)('=')
                       DLanguageNewExpressionImpl(NEW_EXPRESSION)
                         PsiElement(DlangTokenType.new)('new')
@@ -184,8 +165,7 @@ D Language File
                           PsiElement(DlangTokenType.()('(')
                           DLanguageArgumentListImpl(ARGUMENT_LIST)
                             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                              IDENTIFIER
-                                PsiElement(DlangTokenType.ID)('n')
+                              PsiElement(DlangTokenType.ID)('n')
                           PsiElement(DlangTokenType.))(')')
                     PsiElement(DlangTokenType.;)(';')
                   PsiElement(DlangTokenType.})('}')
@@ -193,8 +173,7 @@ D Language File
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         STRUCT_DECLARATION
           PsiElement(DlangTokenType.struct)('struct')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('S2')
+          PsiElement(DlangTokenType.ID)('S2')
           DLanguageStructBodyImpl(STRUCT_BODY)
             PsiElement(DlangTokenType.{)('{')
             DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -205,8 +184,7 @@ D Language File
                 PsiElement(DlangTokenType.[)('[')
                 PsiElement(DlangTokenType.])(']')
               IDENTIFIER_INITIALIZER
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('a')
+                PsiElement(DlangTokenType.ID)('a')
               PsiElement(DlangTokenType.;)(';')
             CONSTRUCTOR
               PsiElement(DlangTokenType.this)('this')
@@ -217,8 +195,7 @@ D Language File
                     DLanguageBasicTypeImpl(BASIC_TYPE)
                       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                         PsiElement(DlangTokenType.int)('int')
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('n')
+                  PsiElement(DlangTokenType.ID)('n')
                 PsiElement(DlangTokenType.))(')')
               DLanguageMemberFunctionAttributeImpl(MEMBER_FUNCTION_ATTRIBUTE)
                 PsiElement(DlangTokenType.immutable)('immutable')
@@ -228,8 +205,7 @@ D Language File
                   DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                        IDENTIFIER
-                          PsiElement(DlangTokenType.ID)('a')
+                        PsiElement(DlangTokenType.ID)('a')
                       PsiElement(DlangTokenType.=)('=')
                       DLanguageNewExpressionImpl(NEW_EXPRESSION)
                         PsiElement(DlangTokenType.new)('new')
@@ -244,8 +220,7 @@ D Language File
                           PsiElement(DlangTokenType.()('(')
                           DLanguageArgumentListImpl(ARGUMENT_LIST)
                             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                              IDENTIFIER
-                                PsiElement(DlangTokenType.ID)('n')
+                              PsiElement(DlangTokenType.ID)('n')
                           PsiElement(DlangTokenType.))(')')
                     PsiElement(DlangTokenType.;)(';')
                   PsiElement(DlangTokenType.})('}')
@@ -255,8 +230,7 @@ D Language File
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
               PsiElement(DlangTokenType.void)('void')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('main')
+          PsiElement(DlangTokenType.ID)('main')
           DLanguageParametersImpl(PARAMETERS)
             PsiElement(DlangTokenType.()('(')
             PsiElement(DlangTokenType.))(')')
@@ -268,17 +242,14 @@ D Language File
                 DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                      IDENTIFIER
-                        PsiElement(DlangTokenType.ID)('S1')
+                      PsiElement(DlangTokenType.ID)('S1')
                   IDENTIFIER_INITIALIZER
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('m1')
+                    PsiElement(DlangTokenType.ID)('m1')
                     PsiElement(DlangTokenType.=)('=')
                     DLanguageInitializerImpl(INITIALIZER)
                       DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
                         DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                          IDENTIFIER
-                            PsiElement(DlangTokenType.ID)('S1')
+                          PsiElement(DlangTokenType.ID)('S1')
                         PsiElement(DlangTokenType.()('(')
                         DLanguageArgumentListImpl(ARGUMENT_LIST)
                           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -292,17 +263,14 @@ D Language File
                     PsiElement(DlangTokenType.const)('const')
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                      IDENTIFIER
-                        PsiElement(DlangTokenType.ID)('S1')
+                      PsiElement(DlangTokenType.ID)('S1')
                   IDENTIFIER_INITIALIZER
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('c1')
+                    PsiElement(DlangTokenType.ID)('c1')
                     PsiElement(DlangTokenType.=)('=')
                     DLanguageInitializerImpl(INITIALIZER)
                       DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
                         DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                          IDENTIFIER
-                            PsiElement(DlangTokenType.ID)('S1')
+                          PsiElement(DlangTokenType.ID)('S1')
                         PsiElement(DlangTokenType.()('(')
                         DLanguageArgumentListImpl(ARGUMENT_LIST)
                           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -324,19 +292,16 @@ D Language File
                     PsiElement(DlangTokenType.const)('const')
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                      IDENTIFIER
-                        PsiElement(DlangTokenType.ID)('S2')
+                      PsiElement(DlangTokenType.ID)('S2')
                   IDENTIFIER_INITIALIZER
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('c2')
+                    PsiElement(DlangTokenType.ID)('c2')
                     PsiElement(DlangTokenType.=)('=')
                     DLanguageInitializerImpl(INITIALIZER)
                       DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                         PsiElement(DlangTokenType.immutable)('immutable')
                         DLanguageBasicTypeImpl(BASIC_TYPE)
                           DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                            IDENTIFIER
-                              PsiElement(DlangTokenType.ID)('S2')
+                            PsiElement(DlangTokenType.ID)('S2')
                         PsiElement(DlangTokenType.()('(')
                         DLanguageArgumentListImpl(ARGUMENT_LIST)
                           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -349,16 +314,14 @@ D Language File
                   DLanguageStorageClassImpl(STORAGE_CLASS)
                     PsiElement(DlangTokenType.immutable)('immutable')
                   AUTO_ASSIGNMENT
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('i2')
+                    PsiElement(DlangTokenType.ID)('i2')
                     PsiElement(DlangTokenType.=)('=')
                     DLanguageInitializerImpl(INITIALIZER)
                       DLanguagePostfixExpressionImpl(POSTFIX_EXPRESSION)
                         PsiElement(DlangTokenType.immutable)('immutable')
                         DLanguageBasicTypeImpl(BASIC_TYPE)
                           DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                            IDENTIFIER
-                              PsiElement(DlangTokenType.ID)('S2')
+                            PsiElement(DlangTokenType.ID)('S2')
                         PsiElement(DlangTokenType.()('(')
                         DLanguageArgumentListImpl(ARGUMENT_LIST)
                           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
@@ -369,8 +332,7 @@ D Language File
       DLanguageDeclarationStatementImpl(DECLARATION_STATEMENT)
         STRUCT_DECLARATION
           PsiElement(DlangTokenType.struct)('struct')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('S')
+          PsiElement(DlangTokenType.ID)('S')
           DLanguageStructBodyImpl(STRUCT_BODY)
             PsiElement(DlangTokenType.{)('{')
             DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -378,16 +340,14 @@ D Language File
                 DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                   PsiElement(DlangTokenType.int)('int')
               IDENTIFIER_INITIALIZER
-                IDENTIFIER
-                  PsiElement(DlangTokenType.ID)('x')
+                PsiElement(DlangTokenType.ID)('x')
               PsiElement(DlangTokenType.;)(';')
             PsiComment(DlangTokenType.LINE_COMMENT)('// Disables default construction, function body can be empty.')
             CONSTRUCTOR
               DLanguageAttributeImpl(ATTRIBUTE)
                 DLanguageAtAttributeImpl(AT_ATTRIBUTE)
                   PsiElement(DlangTokenType.@)('@')
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('disable')
+                  PsiElement(DlangTokenType.ID)('disable')
               PsiElement(DlangTokenType.this)('this')
               DLanguageParametersImpl(PARAMETERS)
                 PsiElement(DlangTokenType.()('(')
@@ -402,8 +362,7 @@ D Language File
                     DLanguageBasicTypeImpl(BASIC_TYPE)
                       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                         PsiElement(DlangTokenType.int)('int')
-                  IDENTIFIER
-                    PsiElement(DlangTokenType.ID)('v')
+                  PsiElement(DlangTokenType.ID)('v')
                 PsiElement(DlangTokenType.))(')')
               DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
                 DLanguageBlockStatementImpl(BLOCK_STATEMENT)
@@ -411,12 +370,10 @@ D Language File
                   DLanguageExpressionStatementImpl(EXPRESSION_STATEMENT)
                     DLanguageAssignExpressionImpl(ASSIGN_EXPRESSION)
                       DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                        IDENTIFIER
-                          PsiElement(DlangTokenType.ID)('x')
+                        PsiElement(DlangTokenType.ID)('x')
                       PsiElement(DlangTokenType.=)('=')
                       DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                        IDENTIFIER
-                          PsiElement(DlangTokenType.ID)('v')
+                        PsiElement(DlangTokenType.ID)('v')
                     PsiElement(DlangTokenType.;)(';')
                   PsiElement(DlangTokenType.})('}')
             PsiElement(DlangTokenType.})('}')
@@ -425,8 +382,7 @@ D Language File
           DLanguageBasicTypeImpl(BASIC_TYPE)
             DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
               PsiElement(DlangTokenType.void)('void')
-          IDENTIFIER
-            PsiElement(DlangTokenType.ID)('main')
+          PsiElement(DlangTokenType.ID)('main')
           DLanguageParametersImpl(PARAMETERS)
             PsiElement(DlangTokenType.()('(')
             PsiElement(DlangTokenType.))(')')
@@ -439,17 +395,14 @@ D Language File
                 DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
                   DLanguageBasicTypeImpl(BASIC_TYPE)
                     DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-                      IDENTIFIER
-                        PsiElement(DlangTokenType.ID)('S')
+                      PsiElement(DlangTokenType.ID)('S')
                   IDENTIFIER_INITIALIZER
-                    IDENTIFIER
-                      PsiElement(DlangTokenType.ID)('s')
+                    PsiElement(DlangTokenType.ID)('s')
                     PsiElement(DlangTokenType.=)('=')
                     DLanguageInitializerImpl(INITIALIZER)
                       DLanguageFunctionCallExpressionImpl(FUNCTION_CALL_EXPRESSION)
                         DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-                          IDENTIFIER
-                            PsiElement(DlangTokenType.ID)('S')
+                          PsiElement(DlangTokenType.ID)('S')
                         PsiElement(DlangTokenType.()('(')
                         DLanguageArgumentListImpl(ARGUMENT_LIST)
                           DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
