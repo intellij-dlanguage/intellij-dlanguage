@@ -55,7 +55,12 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
         if (getNameIdentifier() == null) {
             throw new IncorrectOperationException("Cannot rename. Identifier was Null");
         }
-        PsiImplUtil.setName(Objects.requireNonNull(getNameIdentifier()), newName);
+        getNameIdentifier().replace(
+            Objects.requireNonNull(DElementFactory.createDLanguageIdentifierFromText(
+                getProject(),
+                newName
+            ))
+        );
         return this;
     }
 
