@@ -12,9 +12,9 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 ## Supported IntelliJ based IDEs:
 
-The primary focus for the project is to support Intellij IDEA (both IC and IU) with some work being done to try and support CLion. It may work on other IDEs such as AppCode, Android Studio, PyCharm, etc but this is not tested by the dev team.
+The primary focus for the project is to support Intellij IDEA (both IC and IU). Some work has been done to try and support CLion but it's not currently usable. It may work on other IDEs such as AppCode, Android Studio, PyCharm, etc but this is not tested by the dev team.
 
-We are currently targeting *Intellij 2023.2 and above*.
+We generally try to support the last years worth of IDE releases. The current build targets *Intellij 2023.3 - 2024.2*.
 
 For a list of older releases and their supported IDE versions see our [Compatibility Matrix](https://github.com/intellij-dlanguage/intellij-dlanguage/wiki/Compatibility-Matrix).
 

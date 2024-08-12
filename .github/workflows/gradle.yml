@@ -5,14 +5,16 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     name: IDEA ${{ matrix.idea }} & JDK ${{ matrix.jdk }}
     strategy:
       fail-fast: false
       matrix:
-        idea: [ '2023.3', '2023.3.4', '2023.3.6', '2024.1', '2024.1.2', '2024.1.4' ]
+        idea: [ '2023.3', '2023.3.7', '2024.1', '2024.1.6', '2024.2' ]
         jdk: [ '17' ]
         #os: [ubuntu-latest, windows-latest, macOS-latest]
+        include:
+          - { idea: '2024.2', jdk: '21' }
 
     steps:
     - uses: actions/checkout@v4
