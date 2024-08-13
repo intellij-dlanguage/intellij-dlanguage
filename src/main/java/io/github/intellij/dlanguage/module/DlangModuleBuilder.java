@@ -8,10 +8,6 @@ import com.intellij.execution.configurations.ModuleBasedConfiguration;
 import com.intellij.execution.impl.RunConfigurationBeforeRunProvider;
 import com.intellij.execution.impl.RunManagerImpl;
 import com.intellij.ide.util.projectWizard.ModuleBuilder;
-import com.intellij.ide.util.projectWizard.ModuleWizardStep;
-import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
-import com.intellij.ide.util.projectWizard.WizardContext;
-import com.intellij.openapi.Disposable;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.options.ConfigurationException;
@@ -201,22 +197,6 @@ public class DlangModuleBuilder extends ModuleBuilder {
     @Override
     public ModuleType<DlangModuleBuilder> getModuleType() {
         return DlangModuleType.getInstance();
-    }
-
-    @Nullable
-    @Override
-    public ModuleWizardStep getCustomOptionsStep(WizardContext context, Disposable parentDisposable) {
-        // todo: instead of using ProjectJdkForModuleStep, create a new ModuleWizardStep specific to D
-        //  in which we can configure a compiler and optionally setup dub (so will no longer need DlangDubModuleBuilder).
-        //  instead of the following code there would simply be one line, something like: return new DlangCompilerWizardStep(context, this);
-
-        final DlangModuleBuilder moduleBuilder = this;
-        return new ProjectJdkForModuleStep(context, DlangSdkType.getInstance()) {
-            public void updateDataModel() {
-                super.updateDataModel();
-                moduleBuilder.setModuleJdk(getJdk());
-            }
-        };
     }
 
     private boolean createSourceDirIfNotExists(@NonNls final String path) {
