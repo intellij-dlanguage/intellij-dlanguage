@@ -82,6 +82,10 @@ dependencies {
             "com.intellij.copyright"
         )
 
+        // If not run by CICD, add some useful dev plugins
+        if (providers.environmentVariable("CI").orNull == null)
+            plugin("psiViewer:${properties("psiViewerVersion")}")
+
         pluginVerifier()
         zipSigner()
         instrumentationTools()
