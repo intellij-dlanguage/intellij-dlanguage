@@ -27,8 +27,12 @@ jobs:
             - name: Install D compiler
               uses: dlang-community/setup-dlang@v1
 
-            - name: Kover coveralls.io
-              # Disable configuration cache for this task for now https://github.com/kt3k/coveralls-gradle-plugin/issues/117
-              run: ./gradlew --no-configuration-cache koverXmlReport coveralls
+            - name: Kover
+              run: ./gradlew koverXmlReport
               env:
                   COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+            - name: push to coveralls.io
+              # Disable configuration cache for this task for now https://github.com/kt3k/coveralls-gradle-plugin/issues/117
+              run: ./gradlew --no-configuration-cache coveralls
+              env:
+                COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
