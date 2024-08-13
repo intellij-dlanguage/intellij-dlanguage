@@ -5,13 +5,11 @@ plugins {
     id("org.gradle.idea")
     id("java")
     alias(libs.plugins.gradleIntelliJPlatform)
+    alias(libs.plugins.kover)
+    alias(libs.plugins.coveralls)
 }
 
-// cobertura.coverageFormats = ["html", "xml"] // coveralls plugin depends on xml format report
-// cobertura.coverageSourceDirs = [sourceSets.main.java.srcDirs, sourceSets.main.kotlin.srcDirs, "gen"]
-// cobertura.coverageEncoding = "UTF-8"
-// cobertura.coverageExcludes = [ ".*uk.co.cwspencer.*" ]
-
+coveralls.jacocoReportPath = "build/reports/kover/report.xml"
 
 repositories {
     mavenCentral()
@@ -88,4 +86,12 @@ dependencies {
         zipSigner()
         instrumentationTools()
     }
+
+    // theses kover lines are here to generate a merged report of all the projects
+    kover(project(":"))
+    kover(project(":utils"))
+    kover(project(":errorreporting"))
+    kover(project(":debugger"))
+    kover(project(":sdlang"))
+    kover(project(":dub"))
 }

@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin)
     alias(libs.plugins.grammarkit)
     alias(libs.plugins.gradleIntelliJModule)
+    alias(libs.plugins.kover)
 }
 
 
