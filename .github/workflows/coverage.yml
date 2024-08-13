@@ -24,6 +24,8 @@ jobs:
               with:
                   distribution: temurin
                   java-version: 21
+            - name: Install D compiler
+              uses: dlang-community/setup-dlang@v1
 
             - name: Kover coveralls.io
               # Disable configuration cache for this task for now https://github.com/kt3k/coveralls-gradle-plugin/issues/117
