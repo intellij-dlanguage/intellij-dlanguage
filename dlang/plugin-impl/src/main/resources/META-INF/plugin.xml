@@ -34,12 +34,12 @@
     <!--<depends>com.intellij.modules.vcs</depends>-->
     <!--<depends>com.intellij.modules.xml</depends>-->
     <!--<depends>com.intellij.modules.xdebugger</depends>-->
-    <depends optional="true" config-file="META-INF/idea-only.xml-only.xml">com.intellij.modules.java</depends>
+    <depends optional="true" config-file="META-INF/idea-only.xml">com.intellij.modules.java</depends>
     <!--<depends optional="true" config-file="idea-ultimate-only.xml">com.intellij.modules.ultimate</depends>-->
     <depends optional="true" config-file="META-INF/copyright.xml">com.intellij.copyright</depends>
 
     <!-- Both AppCode and CLion use cidr.lang -->
-    <depends optional="true" config-file="META-INF/clion-only.xml-only.xml">com.intellij.modules.cidr.lang</depends>
+    <depends optional="true" config-file="META-INF/clion-only.xml">com.intellij.modules.cidr.lang</depends>
     <!--<depends optional="true" config-file="clion-only.xml">com.intellij.modules.clion</depends>-->
     <!--<depends optional="true" config-file="appcode-only.xml">com.intellij.modules.appcode</depends>-->
 
@@ -137,13 +137,6 @@
         <gotoSymbolContributor implementation="io.github.intellij.dlanguage.features.DChooseByNameContributor"/>
         <gotoClassContributor implementation="io.github.intellij.dlanguage.features.DClassContributor"/>
         <!-- Project settings -->
-
-        <!-- Tab under compiler in IntelliJ -> Preferences -->
-        <!--<projectConfigurable instance="io.github.intellij.dlanguage.DLanguageCompilerConfigurable"-->
-        <!--parentId="project.propCompiler" id="DMD compiler"-->
-        <!--displayName="DMD Compiler"/>-->
-        <!-- Persistent data + build server communication for compiler settings -->
-        <projectService serviceImplementation="io.github.intellij.dlanguage.settings.DLanguageBuildSettings"/>
 
         <!-- plugin settings are now in: Settings -> Languages &amp; Frameworks -> D Tools -->
         <projectConfigurable groupId="language" order="first"
