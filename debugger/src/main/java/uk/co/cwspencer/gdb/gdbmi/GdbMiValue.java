@@ -103,6 +103,7 @@ public class GdbMiValue {
                 break;
 
             case Tuple: {
+                assert tuple != null;
                 sb.append("{");
                 for (int i = 0; i != tuple.size(); ++i) {
                     sb.append(tuple.get(i));
