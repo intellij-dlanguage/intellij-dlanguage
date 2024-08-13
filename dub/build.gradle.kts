@@ -4,6 +4,7 @@ plugins {
     id("java")
     alias(libs.plugins.kotlin)
     alias(libs.plugins.gradleIntelliJModule)
+    alias(libs.plugins.kover)
 }
 
 repositories {

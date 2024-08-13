@@ -16,19 +16,13 @@ plugins {
     alias(libs.plugins.gradleIntelliJModule)
     alias(libs.plugins.gradleIntelliJPlatform).apply(false) // required to prevent resolution error
     alias(libs.plugins.grammarkit)
-//    id("net.saliman.cobertura") version "4.0.0"
-//    id("com.github.kt3k.coveralls") version "2.10.2"
+    alias(libs.plugins.kover)
 }
 
 val ideaVersion = properties("ideaVersion")
 
 // When testing, set to "true" if you want to have expected data written (to easily update lexer/parser tests)
 val overrideTestData = "false"
-
-// cobertura.coverageFormats = ["html", "xml"] // coveralls plugin depends on xml format report
-// cobertura.coverageSourceDirs = [sourceSets.main.java.srcDirs, sourceSets.main.kotlin.srcDirs, "gen"]
-// cobertura.coverageEncoding = "UTF-8"
-// cobertura.coverageExcludes = [ ".*uk.co.cwspencer.*" ]
 
 allprojects {
     tasks {
