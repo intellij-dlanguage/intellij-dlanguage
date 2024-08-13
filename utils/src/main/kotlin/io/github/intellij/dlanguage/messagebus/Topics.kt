@@ -1,6 +1,5 @@
 package io.github.intellij.dlanguage.messagebus
 
-import com.intellij.ProjectTopics
 import com.intellij.util.messages.Topic
 
 /**
@@ -13,11 +12,6 @@ import com.intellij.util.messages.Topic
 class Topics {
 
     companion object {
-
-        // Topics provided by the Jetbrains API that we're likely to use
-        @JvmField val PROJECT_ROOT_CHANGED = ProjectTopics.PROJECT_ROOTS
-        @JvmField val MODULES_CHANGED = ProjectTopics.MODULES
-
         // a change to the dub.json or dub.sdl file
         @JvmField val DUB_FILE_CHANGE = Topic.create("dub file change", DubChangeNotifier::class.java)
 

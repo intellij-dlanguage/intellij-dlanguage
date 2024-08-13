@@ -12,7 +12,7 @@ object DlangBundle {
 
     val log: Logger = Logger.getInstance(javaClass)
 
-    var dLangBundle: Reference<ResourceBundle>? = null
+    private var dLangBundle: Reference<ResourceBundle>? = null
 
     @NonNls private const val BUNDLE_ID: String = "i18n"
 
@@ -36,7 +36,7 @@ object DlangBundle {
 
         if (bundle == null) {
             bundle = ResourceBundle.getBundle(BUNDLE_ID)
-            dLangBundle = SoftReference<ResourceBundle>(bundle)
+            dLangBundle = SoftReference(bundle)
         }
         return bundle!!
     }
