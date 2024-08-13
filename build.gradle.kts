@@ -33,8 +33,8 @@ val overrideTestData = "false"
 allprojects {
     tasks {
         withType<JavaCompile> {
-            sourceCompatibility = JavaVersion.VERSION_17.majorVersion
-            targetCompatibility = JavaVersion.VERSION_17.majorVersion
+            sourceCompatibility = JavaVersion.VERSION_21.majorVersion
+            targetCompatibility = JavaVersion.VERSION_21.majorVersion
             options.encoding = "UTF-8"
             options.compilerArgs.add("-Xlint:deprecation")
         }
@@ -43,7 +43,7 @@ allprojects {
             compilerOptions {
                 apiVersion.set(KotlinVersion.KOTLIN_1_9)
                 languageVersion.set(KotlinVersion.KOTLIN_1_9)
-                jvmTarget.set(JvmTarget.JVM_17)
+                jvmTarget.set(JvmTarget.JVM_21)
                 //allWarningsAsErrors.set(true)
             }
         }

@@ -20,6 +20,7 @@ dependencies {
 
     intellijPlatform {
         intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
+        bundledPlugins("com.intellij.platform.images")
         instrumentationTools()
         testFramework(TestFrameworkType.Platform)
     }
