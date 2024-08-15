@@ -6,10 +6,10 @@ plugins {
     id("java")
     alias(libs.plugins.gradleIntelliJPlatform)
     alias(libs.plugins.kover)
-    alias(libs.plugins.coveralls)
+    alias(libs.plugins.coverallsJacoco)
 }
 
-coveralls.jacocoReportPath = "build/reports/kover/report.xml"
+coverallsJacoco.reportPath = "build/reports/kover/report.xml"
 
 repositories {
     mavenCentral()
