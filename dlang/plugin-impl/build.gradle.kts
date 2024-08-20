@@ -9,7 +9,11 @@ plugins {
     alias(libs.plugins.coverallsJacoco)
 }
 
-coverallsJacoco.reportPath = "build/reports/kover/report.xml"
+coverallsJacoco {
+    reportPath = "build/reports/kover/report.xml"
+    reportSourceSets += rootProject.allprojects
+        .filter { it.extensions.findByName("sourceSets") != null }
+        .map { it.sourceSets.main.get().allJava.srcDirs }.flatten() }
 
 repositories {
     mavenCentral()
