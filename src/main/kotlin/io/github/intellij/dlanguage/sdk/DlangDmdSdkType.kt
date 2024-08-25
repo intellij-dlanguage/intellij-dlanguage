@@ -44,8 +44,8 @@ class DlangDmdSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, DMD_BINARY_
 //    } else {
 //        // the order of these locations is based on the order of how they typically appear in a users $PATH
 //        arrayOf(
-//            "/usr/local/bin", // Ubuntu package is installed here
 //            "/usr/bin", // Fedora (official .rpm) and Arch Linux use this path
+//            "/usr/local/bin", // Ubuntu package is installed here
 //            "/snap/bin" // snapcraft.io (/snap/bin/dmd is a symlink to /snap/dmd/current/bin/dmd)
 //        )
 //    }
@@ -171,7 +171,9 @@ class DlangDmdSdkType : DlangDependentSdkType(SDK_TYPE_ID, SDK_NAME, DMD_BINARY_
             attachDruntimeSources(sdkModificator, status)
         }
 
-        sdkModificator.commitChanges()
+        ApplicationManager.getApplication().runWriteAction {
+            sdkModificator.commitChanges()
+        }
     }
 
     /*
