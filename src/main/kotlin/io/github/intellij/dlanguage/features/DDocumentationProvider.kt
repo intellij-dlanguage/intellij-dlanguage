@@ -5,7 +5,7 @@ import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.features.documentation.DDocGenerator
 import io.github.intellij.dlanguage.features.documentation.DSignatureDocGenerator
-import io.github.intellij.dlanguage.features.documentation.psi.DlangDocComment
+import io.github.intellij.dlanguage.documentation.psi.DlangDocComment
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement

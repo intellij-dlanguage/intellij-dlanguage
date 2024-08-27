@@ -5,8 +5,8 @@ import com.intellij.lexer.MergingLexerAdapter
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.TokenSet
 import com.intellij.util.text.CharArrayUtil
+import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_LEADING_ASTERISKS
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COMMENT_DATA
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COMMENT_LEADING_ASTERISKS
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_EMBEDDED_CODE_CONTENT
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_MACRO_ARGUMENT
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_WHITESPACE

@@ -5,14 +5,14 @@ import com.intellij.lang.LightPsiParser
 import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
+import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_END
+import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_LEADING_ASTERISKS
+import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_START
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_ANONYMOUS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_AUTHORS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_BUGS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COLON
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COMMENT_DATA
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COMMENT_END
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COMMENT_LEADING_ASTERISKS
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COMMENT_START
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COPYRIGHT_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_DATE_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_DEPRECATED_SECTION

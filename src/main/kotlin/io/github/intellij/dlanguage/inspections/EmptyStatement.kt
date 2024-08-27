@@ -4,8 +4,8 @@ import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import io.github.intellij.dlanguage.DlangBundle
+import io.github.intellij.dlanguage.psi.DLanguageEmptyStatement
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.impl.DLanguageEmptyStatementImpl
 import io.github.intellij.dlanguage.quickfix.RemoveEmptyStatement
 
 /**
@@ -22,7 +22,7 @@ class EmptyStatement : LocalInspectionTool() {
 }
 
 class EmptyStatementVisitor(val holder: ProblemsHolder) : DlangVisitor() {
-    override fun visitEmptyStatement(o: DLanguageEmptyStatementImpl) {
+    override fun visitEmptyStatement(o: DLanguageEmptyStatement) {
         holder.registerProblem(o, "Empty Statement", RemoveEmptyStatement(o))
     }
 }

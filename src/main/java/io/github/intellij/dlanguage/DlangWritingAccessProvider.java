@@ -8,9 +8,6 @@ import com.intellij.openapi.vfs.WritingAccessProvider;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Collections;
-
 public class DlangWritingAccessProvider extends WritingAccessProvider {
 
     private final Project myProject;

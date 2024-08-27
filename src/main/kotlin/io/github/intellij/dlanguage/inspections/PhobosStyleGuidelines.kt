@@ -6,7 +6,7 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.impl.named.*
+import io.github.intellij.dlanguage.psi.named.*
 import java.util.regex.Pattern
 
 /**
@@ -30,7 +30,7 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
             holder.registerProblem(elem, type + " name '" + name + "' does not match style guidelines.")
     }
 
-    override fun visitModuleDeclaration(o: DlangModuleDeclarationImpl) {
+    override fun visitModuleDeclaration(o: DlangModuleDeclaration) {
         var identifierChain = o.identifierChain
         while (identifierChain != null) {
             checkName("Module", identifierChain.identifier!!.text, identifierChain.identifier!!, moduleNameRegex)
@@ -38,31 +38,31 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
         }
     }
 
-    override fun visitDeclarator(o: DLanguageIdentifierInitializerImpl) {
+    override fun visitDeclarator(o: DLanguageIdentifierInitializer) {
         checkName("Variable", StringUtil.decapitalize(o.name), o.nameIdentifier!!, varFunNameRegex)
     }
 
-    override fun visitFunctionDeclaration(o: DLanguageFunctionDeclarationImpl) {
+    override fun visitFunctionDeclaration(o: DlangFunctionDeclaration) {
         checkName("Function", StringUtil.decapitalize(o.name), o.nameIdentifier!!, varFunNameRegex)
     }
 
-    override fun visitClassDeclaration(o: DlangClassDeclarationImpl) {
+    override fun visitClassDeclaration(o: DlangClassDeclaration) {
         checkName("Class", o.name, o, aggregateNameRegex)
     }
 
-    override fun visitInterfaceDeclaration(o: DlangInterfaceDeclarationImpl) {
+    override fun visitInterfaceDeclaration(o: DlangInterfaceDeclaration) {
         checkName("Interface", o.name, o, aggregateNameRegex)
     }
 
-    override fun visitStructDeclaration(o: DlangStructDeclarationImpl) {
+    override fun visitStructDeclaration(o: DlangStructDeclaration) {
         checkName("Struct", o.name, o, aggregateNameRegex)
     }
 
-    override fun visitUnionDeclaration(o: DlangUnionDeclarationImpl) {
+    override fun visitUnionDeclaration(o: DlangUnionDeclaration) {
         checkName("Union", o.name, o, aggregateNameRegex)
     }
 
-    override fun visitEnumDeclaration(o: DlangEnumDeclarationImpl) {
+    override fun visitEnumDeclaration(o: DlangEnumDeclaration) {
         checkName("Enum", o.name, o, aggregateNameRegex)
     }
 }

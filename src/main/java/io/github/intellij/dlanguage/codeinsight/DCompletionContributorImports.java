@@ -8,8 +8,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.processors.DImportScopeProcessor;
-import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.processors.DImportScopeProcessor;
 import org.jetbrains.annotations.NotNull;
 
 /**

@@ -4,8 +4,8 @@ import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import io.github.intellij.dlanguage.DlangBundle
+import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.impl.DLanguageAliasDeclarationImpl
 import io.github.intellij.dlanguage.quickfix.SwitchToNewAliasSyntax
 
 /**
@@ -23,7 +23,7 @@ class OldAliasSyntax : LocalInspectionTool() {
 }
 
 class OldAliasSyntaxVisitor(val holder: ProblemsHolder) : DlangVisitor() {
-    override fun visitAliasDeclaration(o: DLanguageAliasDeclarationImpl) {
+    override fun visitAliasDeclaration(o: DLanguageAliasDeclaration) {
         if (o.type == null)
             return
         holder.registerProblem(o, "Old Alias Syntax in use.", SwitchToNewAliasSyntax(o))

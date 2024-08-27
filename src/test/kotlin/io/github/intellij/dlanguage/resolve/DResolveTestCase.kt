@@ -7,10 +7,8 @@ import com.intellij.openapi.vfs.VirtualFileFilter
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.PsiManagerEx
-import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
 import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
-import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration
 import io.github.intellij.dlanguage.psi.named.DlangConstructor
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
 import org.intellij.lang.annotations.Language

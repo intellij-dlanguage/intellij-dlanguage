@@ -4,8 +4,8 @@ import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import io.github.intellij.dlanguage.DlangBundle
+import io.github.intellij.dlanguage.psi.DLanguageDeleteExpression
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.impl.DLanguageDeleteExpressionImpl
 
 /**
  * Created by francis on 1/5/2018.
@@ -21,7 +21,7 @@ class DeleteIsDeprecated : LocalInspectionTool() {
 }
 
 class DeleteIsDeprecatedVisitor(val holder: ProblemsHolder) : DlangVisitor() {
-    override fun visitDeleteExpression(o: DLanguageDeleteExpressionImpl) {
+    override fun visitDeleteExpression(o: DLanguageDeleteExpression) {
         holder.registerProblem(o, "Avoid using the 'delete' keyword. It is deprecated")
     }
 }

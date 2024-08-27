@@ -8,7 +8,6 @@ import com.intellij.pom.Navigatable
 import com.intellij.psi.PsiElement
 import com.intellij.ui.RowIcon
 import com.intellij.util.PlatformIcons
-import com.intellij.util.containers.mapSmartNotNull
 import io.github.intellij.dlanguage.presentation.*
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.interfaces.Declaration

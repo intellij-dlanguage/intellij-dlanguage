@@ -4,6 +4,7 @@ import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 
 import static io.github.intellij.dlanguage.features.documentation.DDocElementTypes.*;
+import static io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.*;
 
 %%
 
