@@ -123,6 +123,7 @@ dependencies {
     implementation (project(":errorreporting"))
     implementation (project(":debugger"))
     implementation (project(":sdlang"))
+    implementation (project(":dlang:psi-impl"))
     testImplementation (project(":dlang:plugin-impl"))
 
     implementation (libs.gson) // used by dub parser
