@@ -1,7 +1,7 @@
 module with_class;
 
-class A {
-    <resolved>this() {}
+class <resolved>A {
+    this() {}
 }
 
 void usage() {

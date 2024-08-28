@@ -1,8 +1,8 @@
 module contains_class_definition;
 
-class Foo
+class <resolved>Foo
 {
-    <resolved>this()
+    this()
     {
 
     }

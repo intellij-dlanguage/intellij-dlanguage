@@ -20,8 +20,12 @@ class DResolveTest : DResolveTestCase() {
     //test dos not pass for reasons not clear to me. The feature in question does work though. todo
 //    @Test fun testOverloadedParameterCount() = doTest()
 
+    // Note: the constructor call must resolve to the class to properly handle the rename
+    // Another mechanism will handle the goto behavior to allow a redirection to the constructor call
     @Test
-    fun testClassConstructorToConstructorDefinition() = doTest()
+    fun testClassConstructorToClassDefinition() = doTest()
+    @Test
+    fun testConstructorCallShouldResolveClassDeclarationInTheSameFile() = doTest()
 
     @Test
     fun testPublicImports() = doTest()
@@ -80,9 +84,6 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testScopeOperatorXResolveLocal() = doTest()
-
-    @Test
-    fun testConstructorCallShouldResolveConstructorWithClassDeclarationInTheSameFile() = doTest()
 
     @Test
     fun testConstructorCallResolveParameters() = doTest()
