@@ -24,6 +24,31 @@ object PsiScopesUtil {
         return true
     }
 
+    fun walkChildrenScopes(
+        thisElement: PsiElement,
+        processor: PsiScopeProcessor,
+        state: ResolveState,
+        lastParent: PsiElement?,
+        place: PsiElement?
+    ): Boolean {
+        var child: PsiElement? = null
+
+        if (lastParent != null && lastParent.parent === thisElement) {
+            child = lastParent.prevSibling
+            if (child == null) return true // first element
+        }
+        if (child == null) {
+            child = thisElement.lastChild
+        }
+
+        while (child != null) {
+            if (!child.processDeclarations(processor, state, null, place!!)) return false
+            child = child.prevSibling
+        }
+
+        return true
+    }
+
     fun resolveAndWalk(processor: PsiScopeProcessor, reference: PsiQualifiedReference, maxScope: PsiElement?): Boolean {
         return resolveAndWalk(processor, reference, maxScope, false)
     }

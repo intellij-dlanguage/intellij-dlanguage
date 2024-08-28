@@ -417,7 +417,7 @@ static this() {
     has_processDeclaration["AttributeDeclaration"] = false;
     has_processDeclaration["AutoDeclaration"] = false;
     has_processDeclaration["AutoAssignment"] = false;
-    has_processDeclaration["BlockStatement"] = false;
+    has_processDeclaration["BlockStatement"] = true;
     has_processDeclaration["BreakStatement"] = false;
     has_processDeclaration["BaseClass"] = false;
     has_processDeclaration["BaseClassList"] = false;
@@ -439,6 +439,7 @@ static this() {
     has_processDeclaration["DebugCondition"] = false;
     has_processDeclaration["DebugSpecification"] = false;
     has_processDeclaration["Declaration"] = true;
+    has_processDeclaration["DeclarationStatement"] = true;
     has_processDeclaration["DefaultStatement"] = false;
     has_processDeclaration["DeleteExpression"] = false;
     has_processDeclaration["DeleteStatement"] = false;

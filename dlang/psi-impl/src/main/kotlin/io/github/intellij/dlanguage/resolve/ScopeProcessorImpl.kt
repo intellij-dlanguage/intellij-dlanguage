@@ -6,6 +6,7 @@ import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
+import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processTemplateParameters
@@ -44,7 +45,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: AliasInitializer,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         if (element.templateParameters != null) {
             if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
@@ -58,7 +59,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: AutoAssignment,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         if (element.templateParameters != null) {
             if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
@@ -72,7 +73,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: IdentifierInitializer,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         if (element.templateParameters != null) {
             if (!processTemplateParameters(element.templateParameters!!, processor, state, lastParent, place)) {
@@ -86,7 +87,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: DLanguageFunctionLiteralExpression,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
         if (element.identifier != null) {
@@ -106,7 +107,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: DLanguageLambdaExpression,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         if (element.parameters != null) {
             if (!processParameters(element.parameters!!, processor, state, lastParent, place)) {
@@ -120,7 +121,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: ClassDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
         if (element.templateParameters != null) {
@@ -142,7 +143,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: InterfaceDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
         if (element.templateParameters != null) {
@@ -164,7 +165,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: StructDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
         if (element.templateParameters != null) {
@@ -186,7 +187,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: MixinTemplateDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
 //        if (element.templateDeclaration?.templateParameters != null) {
 //            if (!processTemplateParameters(element.templateDeclaration!!.templateParameters!!, processor, state, lastParent, place)) {
@@ -200,7 +201,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: TemplateMixinDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
         if (element.templateParameters != null) {
@@ -220,7 +221,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: TemplateDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
         if (element.templateParameters != null) {
@@ -240,7 +241,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: UnionDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
         if (element.templateParameters != null) {
@@ -258,11 +259,27 @@ object ScopeProcessorImpl {
         return toContinue
     }
 
-    @Suppress("UNUSED_PARAMETER")
+    fun processDeclarations(element: BlockStatement,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement?,
+                            place: PsiElement): Boolean {
+        return PsiScopesUtil.walkChildrenScopes(element, processor, state, lastParent, place)
+    }
+
+    fun processDeclarations(element: DeclarationStatement,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement?,
+                            place: PsiElement): Boolean {
+        element.declaration?:return true
+        return ScopeProcessorImplUtil.processDeclaration(element.declaration!!, processor, state, lastParent, place)
+    }
+
     fun processDeclarations(element: FunctionDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         //todo handle place
         if (element.parameters != null) {
@@ -275,18 +292,6 @@ object ScopeProcessorImpl {
                 return false
             }
         }
-        if (element.functionBody is SpecifiedFunctionBody) {
-            var toContinue = true
-            val declarations = (element.functionBody!! as SpecifiedFunctionBody).blockStatement!!
-                .statements.filterIsInstance<DeclarationStatement>()
-                .mapNotNull { it.declaration }
-            for (declaration in declarations) {
-                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
-                    toContinue = false
-                }
-            }
-            return toContinue
-        }
         return true
     }
 
@@ -294,7 +299,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: StaticForeachDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         //todo handle place
         var shouldContinue = true
@@ -317,7 +322,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: ForeachStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         //todo handle place
         var shouldContinue = true
@@ -340,7 +345,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: WhileStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
         if (element.ifCondition?.identifier != null) {
@@ -355,7 +360,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: LabeledStatement, //todo this should probably not be scope processor based
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         /*if (element.declarationOrStatement?.declaration != null) {
             if (!ScopeProcessorImplUtil.processDeclaration(element.declarationOrStatement!!.declaration!!, processor, state, lastParent, place))
@@ -369,7 +374,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: ForStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         //todo handle place
         /*if (element.declarationOrStatements.size == 0) {
@@ -402,7 +407,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: DoStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         return true//todo check that while statement's can/can't contain truthy/falsy variable declarations or casts
     }
@@ -411,7 +416,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: IfStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         //todo check for an else if
         var toContinue = true
@@ -430,7 +435,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: SwitchStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
 //        element.statement?.statementNoCaseNoDefault?.blockStatement?.declarationsAndStatements?.declarationOrStatements
         //todo truthy types in switch statement???//should declarations in the switch scope statement be processed or do they go out of scope
@@ -441,7 +446,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: FinalSwitchStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         return true//see regular switch statement
     }
@@ -450,7 +455,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: WithStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         return true//todo I don't actually know how with statements work in D
     }
@@ -459,7 +464,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: SynchronizedStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         return true //how does scope work in synchronized D statements
     }
@@ -468,7 +473,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: EnumDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
         if (element.enumBody?.enumMembers != null) {
@@ -488,7 +493,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: Catch,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         if (element.identifier != null) {
             return processor.execute(element.identifier!!, state)
@@ -500,7 +505,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: ImportDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         for (import in element.singleImports) {
             processor.execute(import, state)
@@ -513,7 +518,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: Constructor,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         element.parameters?.let {
             if (!processParameters(it, processor, state, lastParent, place)) {
@@ -533,7 +538,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: ConditionalStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
         /*for (declarationOrStatement in element.declarationOrStatements) {
@@ -550,7 +555,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: ConditionalDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
         for (decl in element.declarations) {
@@ -565,7 +570,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: IsExpression,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
 
         if (element.identifier != null) {
@@ -578,7 +583,7 @@ object ScopeProcessorImpl {
     fun processDeclarations(element: OutStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
-                            lastParent: PsiElement,
+                            lastParent: PsiElement?,
                             place: PsiElement): Boolean {
 
         if (element.identifier != null) {
