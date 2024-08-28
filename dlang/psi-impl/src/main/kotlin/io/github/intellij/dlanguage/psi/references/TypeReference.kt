@@ -6,9 +6,8 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiQualifiedReference
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.util.IncorrectOperationException
+import io.github.intellij.dlanguage.psi.TypeResolveUtil
 import io.github.intellij.dlanguage.psi.impl.DElementFactory
-import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
-import io.github.intellij.dlanguage.utils.Constructor
 import io.github.intellij.dlanguage.utils.QualifiedIdentifier
 
 class TypeReference(element: QualifiedIdentifier,
@@ -18,11 +17,7 @@ class TypeReference(element: QualifiedIdentifier,
 ) : PsiReferenceBase<QualifiedIdentifier>(element, textRange),
     PsiQualifiedReference {
 
-    override fun resolve(): PsiElement? {
-        var basicResolveResult = BasicResolve.getInstance(myElement.project, false).findDefinitionNode(myElement)
-        basicResolveResult = basicResolveResult.filter { it !is Constructor }.toSet()
-        return basicResolveResult.singleOrNull()
-    }
+    override fun resolve(): PsiElement? = TypeResolveUtil.resolveType(this)
 
     override fun getQualifier(): PsiElement? = qualifiedIdentifier
 
