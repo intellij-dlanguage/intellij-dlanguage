@@ -103,6 +103,9 @@ class DResolveTest : DResolveTestCase() {
     fun testEnumUsageWithoutEnumTypePrefixShouldNotResolve() = doTest(false)
 
     @Test
+    fun testNestedStructDefinitionReferenceWithoutParentReferenceShouldNotResolve() = doTest(false)
+
+    @Test
     fun testLocalTypeDefinitionWithUsageAfterDefinitionShouldResolve() = doTest()
     @Test
     fun testLocalTypeDefinitionWithUsageBeforeDefinitionShouldNotResolve() = doTest(false)
