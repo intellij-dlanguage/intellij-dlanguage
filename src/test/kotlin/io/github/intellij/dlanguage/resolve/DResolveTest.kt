@@ -97,4 +97,9 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testEnumUsageWithoutEnumTypePrefixShouldNotResolve() = doTest(false)
+
+    @Test
+    fun testLocalTypeDefinitionWithUsageAfterDefinitionShouldResolve() = doTest()
+    @Test
+    fun testLocalTypeDefinitionWithUsageBeforeDefinitionShouldNotResolve() = doTest(false)
 }
