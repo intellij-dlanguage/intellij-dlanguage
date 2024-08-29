@@ -38,10 +38,12 @@ object ScopeProcessorImplUtil {
         if (def is AliasThisDeclaration) {
             return true
         }
-        if ((def as? ClassDeclaration)?.structBody?.declarations != null) {
-            for (declaration in def.structBody!!.declarations) {
-                if (!processDeclaration(declaration, processor, state, lastParent, place)) {
-                    toContinue = false
+        if (def is ClassDeclaration) {
+            if (def.structBody?.declarations != null) {
+                for (declaration in def.structBody!!.declarations) {
+                    if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                        toContinue = false
+                    }
                 }
             }
             if (!processor.execute(def, state)) {
