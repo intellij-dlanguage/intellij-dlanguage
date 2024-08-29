@@ -21,6 +21,7 @@ jobs:
       with:
         distribution: temurin
         java-version: ${{ matrix.jdk }}
+        cache: gradle
     - name: Install D compiler
       uses: dlang-community/setup-dlang@v1
 
@@ -36,5 +37,5 @@ jobs:
 
     - name: Verify Plugin
       env:
-          ORG_GRADLE_PROJECT_ideaVersion: ${{ matrix.idea }}
+        ORG_GRADLE_PROJECT_ideaVersion: ${{ matrix.idea }}
       run: ./gradlew verifyPlugin

@@ -22,15 +22,16 @@ jobs:
             - name: Set up Java
               uses: actions/setup-java@v4
               with:
-                  distribution: temurin
-                  java-version: 21
+                distribution: temurin
+                java-version: 21
+                cache: gradle
             - name: Install D compiler
               uses: dlang-community/setup-dlang@v1
 
             - name: Kover
               run: ./gradlew koverXmlReport
               env:
-                  COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+                COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
             - name: push to coveralls.io
               # Disable configuration cache for this task for now https://github.com/kt3k/coveralls-gradle-plugin/issues/117
               # This is still required for the 'com.github.nbaztec.coveralls-jacoco' plugin
