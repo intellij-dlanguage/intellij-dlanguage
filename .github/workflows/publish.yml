@@ -20,6 +20,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+          cache: gradle
 
       - name: Install D compiler
         uses: dlang-community/setup-dlang@v1
