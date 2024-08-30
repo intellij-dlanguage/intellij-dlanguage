@@ -1,14 +1,9 @@
 package io.github.intellij.dlanguage.psi.references
 
 import com.intellij.ide.util.PropertiesComponent
-import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.util.TextRange
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiNamedElement
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
 import io.github.intellij.dlanguage.DlangFileType
-import io.github.intellij.dlanguage.psi.impl.DElementFactory
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.utils.Constructor
 import org.junit.Test
 

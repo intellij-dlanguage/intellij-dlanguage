@@ -23,9 +23,6 @@ import io.github.intellij.dlanguage.psi.impl.*
 import io.github.intellij.dlanguage.psi.impl.named.DlangTemplateDeclarationImpl
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration
-import io.github.intellij.dlanguage.utils.BlockStatement
-import io.github.intellij.dlanguage.utils.DeclarationBlock
-import io.github.intellij.dlanguage.utils.FunctionDeclaration
 import io.github.intellij.dlanguage.utils.ImportDeclaration
 import java.util.ArrayList
 
@@ -103,23 +100,23 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             descriptors += FoldingDescriptor(element.node, element.textRange)
         }
 
-        override fun visitBlockStatement(o: DLanguageBlockStatementImpl) {
+        override fun visitBlockStatement(o: DLanguageBlockStatement) {
             if (tryFoldBlockWhitespaces(o)) return
             fold(o)
         }
 
-        override fun visitDeclarationBlock(o: DLanguageDeclarationBlockImpl) {
+        override fun visitDeclarationBlock(o: DLanguageDeclarationBlock) {
             fold(o)
         }
 
-        override fun visitStructBody(o: DLanguageStructBodyImpl) = fold(o)
+        override fun visitStructBody(o: DLanguageStructBody) = fold(o)
 
-        override fun visitTemplateDeclaration(o: DlangTemplateDeclarationImpl) =
+        override fun visitTemplateDeclaration(o: DlangTemplateDeclaration) =
             foldBetween(o, o.leftBraces, o.rightBraces)
 
-        override fun visitArrayInitializer(o: DLanguageArrayInitializerImpl) = fold(o)
+        override fun visitArrayInitializer(o: DLanguageArrayInitializer) = fold(o)
 
-        override fun visitStructInitializer(o: DLanguageStructInitializerImpl) = fold(o)
+        override fun visitStructInitializer(o: DLanguageStructInitializer) = fold(o)
 
         private fun foldBetween(element: PsiElement, left: PsiElement?, right: PsiElement?) {
             if (left != null && right != null) {
@@ -128,21 +125,21 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             }
         }
 
-        override fun visitLinkageAttribute(o: DLanguageLinkageAttributeImpl) {
+        override fun visitLinkageAttribute(o: DLanguageLinkageAttribute) {
             if (o.isExternal) {
                 val decl = o.parent as? Declaration ?: return
                 foldBetween(o, decl.leftBraces, decl.rightBraces)
             }
         }
 
-        override fun visitAnonymousEnumDeclaration(o: DLanguageAnonymousEnumDeclarationImpl) =
+        override fun visitAnonymousEnumDeclaration(o: DLanguageAnonymousEnumDeclaration) =
             foldBetween(o, o.leftBraces, o.rightBraces)
 
-        override fun visitEnumBody(o: DLanguageEnumBodyImpl) =
+        override fun visitEnumBody(o: DLanguageEnumBody) =
             fold(o)
 
         // version statement
-        override fun visitConditionalDeclaration(o: DLanguageConditionalDeclarationImpl) =
+        override fun visitConditionalDeclaration(o: DLanguageConditionalDeclaration) =
             foldBetween(o, o.leftBraces, o.rightBraces)
 
         override fun visitComment(comment: PsiComment) {
@@ -160,7 +157,7 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             descriptors += FoldingDescriptor(comment.node, range)
         }
 
-        override fun visitImportDeclaration(importDecl: DLanguageImportDeclarationImpl) {
+        override fun visitImportDeclaration(importDecl: DLanguageImportDeclaration) {
             // Skip if previous line is import declaration
             if (importDecl.getPrevNonCommentSibling() is ImportDeclaration) return
 

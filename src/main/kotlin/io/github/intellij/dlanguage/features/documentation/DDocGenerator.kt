@@ -10,10 +10,10 @@ import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.DLanguage
+import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_LEADING_ASTERISKS
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_ANONYMOUS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COLON
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COMMENT_DATA
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COMMENT_LEADING_ASTERISKS
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_DOUBLE_EMPHASIS
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_EMBEDDED_CODE
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_EMBEDDED_CODE_DELIMITER
@@ -32,13 +32,12 @@ import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_QUOTE_CHAR
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_SIMPLE_EMPHASIS
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_WHITESPACE
-import io.github.intellij.dlanguage.features.documentation.psi.DlangDocComment
+import io.github.intellij.dlanguage.documentation.psi.DlangDocComment
 import io.github.intellij.dlanguage.features.documentation.psi.DlangDocPsiElement
 import io.github.intellij.dlanguage.features.documentation.psi.impl.*
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration
 import io.github.intellij.dlanguage.utils.*
-import org.intellij.markdown.html.isWhitespace
 
 class DDocGenerator {
 

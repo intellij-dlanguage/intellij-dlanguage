@@ -14,7 +14,6 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.resolve.DResolveUtil
 import io.github.intellij.dlanguage.utils.*
 

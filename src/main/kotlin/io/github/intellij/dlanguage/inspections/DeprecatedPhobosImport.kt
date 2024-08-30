@@ -4,8 +4,8 @@ import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import io.github.intellij.dlanguage.DlangBundle
+import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.impl.DLanguageImportDeclarationImpl
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport
 
 class DeprecatedPhobosImport : LocalInspectionTool() {
@@ -16,7 +16,7 @@ class DeprecatedPhobosImport : LocalInspectionTool() {
 }
 
 class DeprecatedPhobosImportVisitor(val holder: ProblemsHolder) : DlangVisitor() {
-    override fun visitImportDeclaration(declaration: DLanguageImportDeclarationImpl) {
+    override fun visitImportDeclaration(declaration: DLanguageImportDeclaration) {
         declaration.singleImports.forEach {
             when (it.text) {
                 "std.experimental.checkedint" -> register(it, "std.experimental.checkedint became std.checkedint in D 2.099")

@@ -1,13 +1,11 @@
 package io.github.intellij.dlanguage.features.documentation
 
-import io.github.intellij.dlanguage.features.documentation.psi.DlangDocElementType
+import io.github.intellij.dlanguage.documentation.psi.DlangDocElementType
 
 object DDocElementTypes {
     // Tokens from Lexer
     @JvmField val DDOC_WHITESPACE = DlangDocElementType("DDOC_WHITESPACE")
-    @JvmField val DDOC_COMMENT_LEADING_ASTERISKS = DlangDocElementType("DDOC_COMMENT_LEADING_ASTERISKS")
     @JvmField val DDOC_COMMENT_DATA = DlangDocElementType("DDOC_COMMENT_DATA")
-    @JvmField val DDOC_COMMENT_START = DlangDocElementType("DDOC_COMMENT_START")
     @JvmField val DDOC_COLON = DlangDocElementType("DDOC_COLON")
     @JvmField val DDOC_QUOTE_CHAR = DlangDocElementType("DDOC_QUOTE_CHAR")
     @JvmField val DDOC_EXCLAMATION_MARK = DlangDocElementType("DDOC_EXCLAMATION_MARK")
@@ -15,7 +13,6 @@ object DDocElementTypes {
     @JvmField val DDOC_RIGHT_BRACKET = DlangDocElementType("DDOC_RIGHT_BRACKET")
     @JvmField val DDOC_LEFT_PARENTHESES = DlangDocElementType("DDOC_LEFT_PARENTHESES")
     @JvmField val DDOC_RIGHT_PARENTHESES = DlangDocElementType("DDOC_RIGHT_PARENTHESES")
-    @JvmField val DDOC_COMMENT_END = DlangDocElementType("DDOC_COMMENT_END")
     @JvmField val DDOC_BAD_CHARACTER = DlangDocElementType("DDOC_BAD_CHARACTER")
     @JvmField val DDOC_EMBEDDED_CODE_DELIMITER = DlangDocElementType("DDOC_EMBEDDED_CODE_DELIMITER")
     @JvmField val DDOC_EMBEDDED_CODE_CONTENT = DlangDocElementType("DDOC_EMBEDDED_CODE_CONTENT")

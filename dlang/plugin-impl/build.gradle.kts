@@ -76,6 +76,7 @@ dependencies {
         pluginModule(implementation (project(":debugger")))
         pluginModule(implementation (project(":sdlang")))
         pluginModule(implementation (project(":dub")))
+        pluginModule(implementation (project(":dlang:psi-impl")))
 
         intellijIdeaCommunity(properties("ideaVersion"))
 
@@ -102,4 +103,5 @@ dependencies {
     kover(project(":debugger"))
     kover(project(":sdlang"))
     kover(project(":dub"))
+    kover(project(":dlang:psi-impl"))
 }

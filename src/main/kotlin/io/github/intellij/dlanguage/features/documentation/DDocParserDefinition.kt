@@ -10,6 +10,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
+import io.github.intellij.dlanguage.documentation.DDocLanguage
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_ANONYMOUS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_AUTHORS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_BUGS_SECTION

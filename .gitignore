@@ -36,4 +36,6 @@ jflex-install/
 
 # exclude generated files
 /gen/
+/dlang/psi-api/gen/
+/dlang/psi-impl/gen/
 /sdlang/gen/

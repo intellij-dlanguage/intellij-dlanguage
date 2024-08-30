@@ -1,8 +1,6 @@
 package io.github.intellij.dlanguage.codeinsight
 
-import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.lang.parameterInfo.*
-import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.util.PsiTreeUtil.findChildrenOfType
 import com.intellij.psi.util.PsiTreeUtil.getParentOfType
 import io.github.intellij.dlanguage.psi.DLanguageFunctionCallExpression
@@ -126,7 +124,8 @@ class TemplateParameterInfo : ParameterInfoHandler<TemplateInstance, TemplatePar
         if (reference == null || reference !is DReference) {
             return
         }
-        val definitionNodes = DResolveUtil.getInstance(templateExpression.project).findDefinitionNode(reference.element, false).filterIsInstance(TemplateDeclaration::class.java)
+        val definitionNodes = DResolveUtil.getInstance(templateExpression.project).findDefinitionNode(reference.element, false).filterIsInstance(
+            TemplateDeclaration::class.java)
         context.itemsToShow = definitionNodes.map { it.templateParameters }.filterNotNull().toTypedArray()
 
         context.showHint(templateExpression, 0, this)

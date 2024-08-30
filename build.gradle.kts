@@ -75,14 +75,6 @@ tasks.register<Test>("testCompilation") {
     }
 }
 
-val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer") {
-    // source flex file
-    sourceFile.set(file("src/main/jflex/io/github/intellij/dlanguage/lexer/DLanguageLexer.flex"))
-
-    // target directory for lexer
-    targetOutputDir.set(file("gen/io/github/intellij/dlanguage/"))
-}
-
 val generateDocSyntaxLexer = tasks.register<GenerateLexerTask>("generateDocSyntaxLexer") {
     // source flex file
     sourceFile.set(file("src/main/kotlin/io/github/intellij/dlanguage/features/documentation/DDocLexer.flex"))
@@ -91,30 +83,15 @@ val generateDocSyntaxLexer = tasks.register<GenerateLexerTask>("generateDocSynta
     targetOutputDir.set(file("gen/io/github/intellij/dlanguage/features/documentation/"))
 }
 
-val copyGenScript = tasks.register<Copy>("copyGenScript") {
-    from("src/main/resources/types_regen_script.d")
-    into("gen/io/github/intellij/dlanguage/psi/")
-}
-
-val generatePsi = tasks.register<Exec>("generatePsi") {
-    dependsOn(copyGenScript)
-    workingDir("gen/io/github/intellij/dlanguage/psi/")
-    commandLine("rdmd", "types_regen_script.d")
-}
-
 tasks.withType<JavaCompile>().configureEach {
     dependsOn(
-        generateSyntaxLexer,
         generateDocSyntaxLexer,
-        generatePsi
     )
 }
 
 tasks.withType<KotlinCompile>().configureEach {
     dependsOn(
-        generateSyntaxLexer,
         generateDocSyntaxLexer,
-        generatePsi
     )
 }
 
@@ -123,6 +100,7 @@ dependencies {
     implementation (project(":errorreporting"))
     implementation (project(":debugger"))
     implementation (project(":sdlang"))
+    implementation (project(":dlang:psi-impl"))
     testImplementation (project(":dlang:plugin-impl"))
 
     implementation (libs.gson) // used by dub parser

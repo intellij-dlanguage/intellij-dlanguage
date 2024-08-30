@@ -18,6 +18,7 @@ dependencies {
     api(project(":"))
     implementation(project(":utils"))
     implementation(project(":errorreporting"))
+    implementation(project(":dlang:psi-api"))
     testImplementation(project(":"))
     testImplementation(project(":dlang:plugin-impl"))
 

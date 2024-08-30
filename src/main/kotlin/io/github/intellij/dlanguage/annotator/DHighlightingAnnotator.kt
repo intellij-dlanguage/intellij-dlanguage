@@ -5,12 +5,10 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.colors.DColor
 import io.github.intellij.dlanguage.psi.DLanguageBasicType
-import io.github.intellij.dlanguage.psi.DlangTokenType
 import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve

@@ -3,8 +3,8 @@ package io.github.intellij.dlanguage.inspections
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import io.github.intellij.dlanguage.DlangBundle
+import io.github.intellij.dlanguage.psi.DLanguageIfStatement
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.impl.DLanguageIfStatementImpl
 
 class RedundantParentheses : LocalInspectionTool() {
     override fun getDescriptionFileName(): String = "RedundantParentheses.html"
@@ -17,7 +17,7 @@ class RedundantParentheses : LocalInspectionTool() {
  * todo this is not done.
  */
 class RedundantParenthesesVisitor(val holder: ProblemsHolder) : DlangVisitor() {
-    override fun visitIfStatement(o: DLanguageIfStatementImpl) {
+    override fun visitIfStatement(o: DLanguageIfStatement) {
         val expressions = o.ifCondition?.assignExpressions
         if (expressions?.size != 1)
             return
@@ -26,7 +26,7 @@ class RedundantParenthesesVisitor(val holder: ProblemsHolder) : DlangVisitor() {
         holder.registerProblem(o.ifCondition!!, "Redundant parantheses")
     }
 
-    /*override fun visitPrimaryExpression(o: DLanguagePrimaryExpressionImpl) {
+    /*override fun visitPrimaryExpression(o: DLanguagePrimaryExpression) {
         /*if (o.assignExpressions.isEmpty() || o.assignExpressions[0] == null)
             return
         val unary = o.assignExpressions[0]
