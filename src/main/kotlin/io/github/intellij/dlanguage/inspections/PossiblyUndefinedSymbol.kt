@@ -116,7 +116,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 
 // todo: move this Quickfix to its own class file
 class SetupSdkQuickFix(file: PsiFile) : LocalQuickFixOnPsiElement(file), HighPriorityAction {
-    override fun getText(): String = "Setup SDK" // todo: needs internationalization
+    override fun getText(): String = DlangBundle.message("dlang.dependant.sdk.unsatisfied.dependency.message")
 
     override fun invoke(project: Project, file: PsiFile, startElement: PsiElement, endElement: PsiElement) {
 //        val projectJdk = ProjectSettingsService.getInstance(project).chooseAndSetSdk() ?: return
@@ -128,7 +128,7 @@ class SetupSdkQuickFix(file: PsiFile) : LocalQuickFixOnPsiElement(file), HighPri
         }
     }
 
-    override fun getFamilyName(): String = "DLang" // todo: needs internationalization
+    override fun getFamilyName(): String = "DLang" // todo: needs internationalization or a constant somewhere
 
     override fun startInWriteAction(): Boolean = false
 

@@ -18,6 +18,9 @@ object DLanguage : Language("D") {
             @JvmField val FILE = IconLoader.getIcon("/icons/d.png", DLanguage::class.java)
             @JvmField val MODULE = FILE
             @JvmField val SDK = FILE
+            @JvmField val DMD = IconLoader.getIcon("/icons/d.png", DLanguage::class.java)
+            @JvmField val GDC = IconLoader.getIcon("/icons/dlang-gdc.png", DLanguage::class.java)
+            @JvmField val LDC = IconLoader.getIcon("/icons/dlang-ldc.png", DLanguage::class.java)
             @JvmField val SDK_ADD = FILE
             @JvmField val RUN = FILE
             @JvmField val LIBRARY = FILE

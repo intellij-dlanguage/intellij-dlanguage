@@ -3,6 +3,7 @@ package io.github.intellij.dlanguage
 import com.intellij.codeInsight.daemon.ProjectSdkSetupValidator
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.module.ModuleUtil
 import com.intellij.openapi.module.ModuleUtilCore
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.IndexNotReadyException
@@ -11,6 +12,7 @@ import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.roots.OrderRootType
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.roots.ui.configuration.ProjectSettingsService
+import com.intellij.openapi.roots.ui.configuration.SdkPopupFactory
 import com.intellij.openapi.util.Computable
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
@@ -23,6 +25,10 @@ import javax.swing.event.HyperlinkEvent
 
 /**
  * This class is used to inform users that DMD is not setup for the project
+ *
+ * ProjectSdkSetupValidator is available in Intellij IDEA but likely not in other IntelliJ Platform-based IDEs such as CLion.
+ * For other IDEs we should register an implementation of EditorNotifications.Provider at
+ * the com.intellij.editorNotificationProvider extension point and override the createNotificationPanel() method with the conditionality and panel setup required.
  */
 class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
 
@@ -58,6 +64,7 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
         //"std.int128", // signed 128 bit integer type was added in 2.100.0 (we should check for it in later plugin releases)
         //"std.internal", // directory
         "std.json",
+        //"std.logger", // directory
         //"std.math", // directory
         "std.mathspecial",
         "std.meta",
@@ -68,6 +75,8 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
         "std.path",
         "std.process",
         "std.random", // The random number generators and API provided in this module are not designed to be cryptographically secure
+        //"std.range", // directory
+        //"std.regex", // directory
         "std.signals",
         "std.socket",
         "std.stdint",
@@ -85,17 +94,38 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
         "std.uuid",
         "std.variant", // the Algebraic template in this package is outdated and not recommended for use in new code. Instead, use std.sumtype.SumType.
         //"std.windows", // directory
-        //"std.xml", // This module is considered out-dated and not up to Phobos' current standards. It will be removed from Phobos in 2.101.0
+        //"std.xml", // Gone! This module was considered out-dated and not up to Phobos' standards. It was removed from Phobos in 2.101.0
         "std.zip",
         "std.zlib"
     )
 
+    // checks what condition(s) should be met to run the validation
     override fun isApplicableFor(project: Project, file: VirtualFile): Boolean {
         if (DlangFileType != file.fileType) return false
-        val projectSdk = ProjectRootManager.getInstance(project).projectSdk ?: return true
-        val sdkType = projectSdk.sdkType as? DlangSdkType ?: return true
 
-        if (!sdkType.isValidSdkHome(projectSdk.homePath.toString())) {
+        // If the project SDK is not set then it's applicable as SDK should be set (todo: perhaps split into 2 separate validators)
+        val projectSdk = ProjectRootManager.getInstance(project).projectSdk ?: return true
+
+        val sdkType = projectSdk.sdkType as? DlangSdkType ?: return false // if Project SDK isn't a D compiler we don't care
+        log.debug("The project SDK is a D compiler")
+
+        val moduleSdkType: DlangSdkType? = ModuleUtil.findModuleForFile(file, project)?.let {
+            // SDK will be ProjectJdkImpl but the type should be one of the supported D compilers
+            ModuleRootManager.getInstance(it).sdk?.sdkType as? DlangSdkType
+        }
+        if (moduleSdkType != null) {
+            log.debug("The SDK for the module is a D compiler: ${moduleSdkType.name}")
+        } else {
+            log.warn("The SDK for the module is not DlangSdkType")
+        }
+
+        if (sdkType.name != moduleSdkType?.name) {
+            log.warn("The module SDK '${moduleSdkType?.name}' is not same as for the project '${sdkType.name}' (it should inherit)")
+        }
+
+        val existsAndExecutable = sdkType.isValidSdkHome(projectSdk.homePath.toString())
+        if (!existsAndExecutable) {
+            log.warn("A D compiler path is configured but not executable")
             return true
         }
 
@@ -103,9 +133,11 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
         if(!DumbService.isDumb(project)) {
             try {
                 if (cannotFindObjectDotD(project)) {
+                    log.warn("A D compiler is configured but object.d was not found")
                     return true
                 }
                 if (missingAnyPhobosFiles(project)) {
+                    log.warn("A D compiler is configured but phobos files are missing")
                     return true
                 }
             } catch (e: IndexNotReadyException) {
@@ -119,28 +151,38 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
     private fun missingAnyPhobosFiles(project: Project): Boolean =
         missingPhobosModules(project).isNotEmpty()
 
-    private fun missingPhobosModules(project: Project): List<String> {
-        val resolveFilesComputable = Computable {
+    private fun missingPhobosModules(project: Project): List<String> = DumbService.getInstance(project)
+        .runReadActionInSmartMode(Computable {
             val scope = allScope(project)
-            expectedModules.filter {
-                DModuleIndex.getFilesByModuleName(project, it, scope).isEmpty()
+            expectedModules.filter { phobosModule ->
+                val dModuleFiles = DModuleIndex.getFilesByModuleName(project, phobosModule, scope)
+                if (dModuleFiles.isEmpty()) {
+                    log.info("no D files found for phobos module $phobosModule")
+                }
+                dModuleFiles.isEmpty()
             }
-        }
-        return DumbService.getInstance(project).runReadActionInSmartMode(resolveFilesComputable)
-    }
+        })
 
-    private fun cannotFindObjectDotD(project: Project): Boolean {
-        val resolveObjectDotD: Computable<Boolean> = Computable {
+    private fun cannotFindObjectDotD(project: Project): Boolean = DumbService.getInstance(project)
+        .runReadActionInSmartMode(Computable {
             BasicResolve.getInstance(project, profile = false).`object` == null
-        }
-        return DumbService.getInstance(project).runReadActionInSmartMode(resolveObjectDotD)
-    }
+        })
 
     /*
     * This function replaces the previously used doFix()
     * It was changed when working on https://github.com/intellij-dlanguage/intellij-dlanguage/issues/679
     */
     override fun getFixHandler(project: Project, file: VirtualFile): EditorNotificationPanel.ActionHandler {
+
+        // todo: consider changing bespoke code for this block as per documentation
+//        return SdkPopupFactory.newBuilder()
+//            .withProject(project)
+//            .withSdkTypeFilter { it is DlangSdkType }
+//            .updateSdkForFile(file)
+//            //.onSdkSelected()
+//            .updateProjectSdkFromSelection()
+//            .buildEditorNotificationPanelHandler()
+
         return object : EditorNotificationPanel.ActionHandler {
 
             // This entrypoint is when the user chooses to fix the issue by clicking on the panel over the editor pane
@@ -166,6 +208,7 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
         }
     }
 
+    // runs the validation and return an appropriate error message if the validation fails or NULL if valid
     override fun getErrorMessage(project: Project, file: VirtualFile): String? {
         val module = ModuleUtilCore.findModuleForFile(file, project)
 
