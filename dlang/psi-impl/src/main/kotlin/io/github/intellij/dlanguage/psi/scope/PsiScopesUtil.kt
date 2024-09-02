@@ -54,6 +54,13 @@ object PsiScopesUtil {
     }
 
     fun resolveAndWalk(processor: PsiScopeProcessor, reference: PsiQualifiedReference, maxScope: PsiElement?, incompleteCode: Boolean): Boolean {
-        return treeWalkUp(processor, reference.element, maxScope)
+        if (reference.qualifier != null) {
+            // composite expression
+            val target = reference.qualifier?.reference?.resolve()
+            return target?.processDeclarations(processor, ResolveState.initial(), target, reference.element)?: true
+        } else {
+            // simple expression -> resolve a top level declaration
+            return treeWalkUp(processor, reference.element, maxScope)
+        }
     }
 }
