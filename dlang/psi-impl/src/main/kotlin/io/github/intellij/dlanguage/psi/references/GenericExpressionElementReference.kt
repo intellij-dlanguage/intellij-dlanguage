@@ -6,8 +6,9 @@ import com.intellij.psi.PsiQualifiedReference
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.psi.impl.DElementFactory
-import io.github.intellij.dlanguage.resolve.DResolveUtil
-import io.github.intellij.dlanguage.utils.Constructor
+import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.resolve.processor.GenericProcessor
+import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil
 import io.github.intellij.dlanguage.utils.ReferenceExpression
 
 class GenericExpressionElementReference(element: ReferenceExpression,
@@ -17,9 +18,12 @@ class GenericExpressionElementReference(element: ReferenceExpression,
 ) : PsiReferenceBase<ReferenceExpression>(element, textRange), PsiQualifiedReference {
 
     override fun resolve(): PsiElement? {
-        var basicResolveResult = DResolveUtil.getInstance(myElement.project).findDefinitionNode(myElement)
-        basicResolveResult = basicResolveResult.filter { it !is Constructor }.toSet()
-        return basicResolveResult.singleOrNull()
+        val processor = GenericProcessor(referenceName, myElement)
+        PsiScopesUtil.resolveAndWalk(processor, this, null)
+        if (processor.getResult().size == 1) {
+            return processor.getResult()[0].element as DNamedElement
+        }
+        return null
     }
 
     override fun getQualifier(): PsiElement? = qualifier
