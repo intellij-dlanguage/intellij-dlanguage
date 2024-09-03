@@ -105,7 +105,7 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                     toContinue = false
                 }
             }
-            if (element is Declaration) {
+            else if (element is Declaration) {
                 if (!processDeclaration(element, processor, state, lastParent, place)) {
                     toContinue = false
                 }
