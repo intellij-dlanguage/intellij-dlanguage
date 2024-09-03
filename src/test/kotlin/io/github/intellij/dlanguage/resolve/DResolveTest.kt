@@ -106,6 +106,9 @@ class DResolveTest : DResolveTestCase() {
     fun testEnumValueQualifiedAsTypeShouldNotResolve() = doTest(false)
 
     @Test
+    fun testNestedStructDefinitionReferenceFullyQualifiedShouldResolve() = doTest()
+
+    @Test
     fun testNestedStructDefinitionReferenceWithoutParentReferenceShouldNotResolve() = doTest(false)
 
     @Test
