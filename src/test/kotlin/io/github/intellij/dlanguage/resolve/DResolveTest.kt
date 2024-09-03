@@ -112,6 +112,9 @@ class DResolveTest : DResolveTestCase() {
     fun testNestedStructDefinitionReferenceWithoutParentReferenceShouldNotResolve() = doTest(false)
 
     @Test
+    fun testNestedStructDefinitionReferenceFullyQualifiedShouldNotResolveATopLevelStruct() = doTest(false)
+
+    @Test
     fun testLocalTypeDefinitionWithUsageAfterDefinitionShouldResolve() = doTest()
     @Test
     fun testLocalTypeDefinitionWithUsageBeforeDefinitionShouldNotResolve() = doTest(false)
