@@ -141,7 +141,7 @@ static this() {
     types_children["CommaExpression"] = ["Expression*", "OP_COMMA"];
     types_extra_interfaces["CommaExpression"] = ["Expression"];
     types_children["CompileCondition"] = [ "VersionCondition",  "DebugCondition",  "StaticIfCondition"];
-    types_children["ConditionalDeclaration"] = ["CompileCondition", "Declaration*","OP_COLON","KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
+    types_children["ConditionalDeclaration"] = ["CompileCondition", "Declaration*","OP_COLON","KW_ELSE","DeclarationBlock*"];
     types_extra_interfaces["ConditionalDeclaration"] = ["Declaration"];
     types_children["ConditionalStatement"] = ["CompileCondition", "Statement*", "KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_extra_interfaces["ConditionalStatement"] = ["Statement"];

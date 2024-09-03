@@ -67,6 +67,13 @@ object ScopeProcessorImplUtil {
                         toContinue = false
                     }
                 }
+                for (declarationBlock in def.declarationBlocks) {
+                    for (declaration in declarationBlock.declarations) {
+                        if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                            toContinue = false
+                        }
+                    }
+                }
                 return toContinue
             }
             is DeclarationStatement ->
