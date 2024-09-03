@@ -22,6 +22,16 @@ class DImportsUsageResolveTest : DResolveTestCase() {
     private fun doCheckByText(@Language("D") main: String) = doCheckByText2(main, content)
 
     @Test
+    fun testLocalImport() {
+        doCheckByText("""
+            void main() {
+                import resolve.to.include;
+                /*<ref>*/writeln("local");
+            }
+        """.trimIndent())
+    }
+
+    @Test
     fun testSelectiveImportUseNotImportedMethod() {
         doCheckByText(
             """
