@@ -4,12 +4,14 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
+import com.jetbrains.rd.util.first
 import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
 import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processTemplateParameters
+import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import io.github.intellij.dlanguage.utils.*
 
 
@@ -508,7 +510,38 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         for (import in element.singleImports) {
-            processor.execute(import, state)
+            if (import.hasImportBinds()) {
+                val bindDecls = import.applicableImportBinds.flatMap { DTopLevelDeclarationIndex.getTopLevelSymbols(it, import.importedModuleName, place.project) }
+                for (matchingBindDeclaration in bindDecls) {
+                    if (!processor.execute(matchingBindDeclaration, state))
+                        return false
+                }
+
+                // named import binds
+                // TODO improve to use the processor
+                val matchingNamedBindDeclaration = import.applicableNamedImportBinds.filter { it.key == place.text }
+                // Check for size == 1 to because otherwise there is a semantic error (duplicate symbol) which is not allowed
+                if (matchingNamedBindDeclaration.size == 1) {
+                    val symbolName = matchingNamedBindDeclaration.first().value
+                    val namedBindDecls = DTopLevelDeclarationIndex.getTopLevelSymbols(symbolName, import.importedModuleName, place.project)
+                    for (nameBind in namedBindDecls)
+                        if(!processor.execute(nameBind, state))
+                            return false
+                    return true
+                }
+            }
+            else if (import.identifier != null) {
+                if (!processor.execute(import, state)) {
+                    return false
+                }
+            } else {
+                val symbols = DTopLevelDeclarationIndex.getTopLevelSymbols(place.text, import.importedModuleName, place.project)
+                for (symbol in symbols) {
+                    if (!processor.execute(symbol, state)) {
+                        return false
+                    }
+                }
+            }
         }
         return true
     }
