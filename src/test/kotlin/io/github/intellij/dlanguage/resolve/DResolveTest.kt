@@ -34,6 +34,9 @@ class DResolveTest : DResolveTestCase() {
     fun testDeclarationInsideDeclarationBlock() = doTest()
 
     @Test
+    fun testDeclarationInsideDeclarationBlockUsageOutside() = doTest()
+
+    @Test
     fun testPublicImports() = doTest()
 
     @Test

@@ -107,6 +107,8 @@ object ScopeProcessorImplUtil {
                 }
                 return toContinue
             }
+            is DeclarationBlock,
+            is AttributeSpecifier,
             is SpecifiedVariableDeclaration -> {
                 return def.processDeclarations(processor, state, lastParent, place)
             }
