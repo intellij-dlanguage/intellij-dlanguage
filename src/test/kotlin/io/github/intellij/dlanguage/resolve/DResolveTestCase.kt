@@ -12,6 +12,7 @@ import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
 import io.github.intellij.dlanguage.psi.named.DlangConstructor
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
 import org.intellij.lang.annotations.Language
+import org.junit.Assert.assertNotEquals
 import java.io.File
 
 abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("resolve", "resolve") {
@@ -96,7 +97,37 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         doCheck(succeed)
     }
 
-    protected fun doCheckByText2(mainFileContent: String, file2: String, succeed: Boolean = true) {
+    protected fun doCheckByText1(@Language("D") mainFileContent: String,
+                                 succeed: Boolean = true) {
+        var text = mainFileContent
+        val referenceIndicator = "/*<ref>*/"
+        val resolvedIndicator = "/*<resolved>*/"
+        val refIndexBefore = mainFileContent.indexOf(referenceIndicator)
+        val resolvedIndexBefore = mainFileContent.indexOf(resolvedIndicator)
+        val referencedOffset: Int
+        val resolvedOffset: Int
+        assertNotEquals("Reference not found, ensure /*ref*/ is in the file", -1, refIndexBefore)
+        assertNotEquals("Resolved not found, ensure /*resolved*/ is in the file", -1, resolvedIndexBefore)
+        if (refIndexBefore < resolvedIndexBefore) {
+            referencedOffset = text.indexOf(referenceIndicator)
+            text = text.replace(referenceIndicator, "")
+            resolvedOffset = text.indexOf(resolvedIndicator)
+            text = text.replace(resolvedIndicator, "")
+        } else {
+            resolvedOffset = text.indexOf(resolvedIndicator)
+            text = text.replace(resolvedIndicator, "")
+            referencedOffset = text.indexOf(referenceIndicator)
+            text = text.replace(referenceIndicator, "")
+        }
+        val psiFile = myFixture.configureByText("main.d", text)
+        referencedElement = psiFile.findReferenceAt(referencedOffset)
+        resolvedElement = psiFile.findElementAt(resolvedOffset)!!.parent
+        doCheck(succeed)
+    }
+
+    protected fun doCheckByText2(@Language("D") mainFileContent: String,
+                                 @Language("D") file2: String,
+                                 succeed: Boolean = true) {
         val referenceIndicator = "/*<ref>*/"
         val resolvedIndicator = "/*<resolved>*/"
         val referencedOffset = mainFileContent.indexOf(referenceIndicator)

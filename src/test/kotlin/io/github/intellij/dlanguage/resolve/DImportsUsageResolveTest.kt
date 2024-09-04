@@ -68,10 +68,22 @@ class DImportsUsageResolveTest : DResolveTestCase() {
     }
 
     @Test
-    fun testImportNamedBinding() {
-        doCheckByText(
+    fun testRenamedImportResolveRename() {
+        doCheckByText1(
             """
-                import resolve.to.include : foo = writeln;
+                import /*<resolved>*/io = resolve.to.include;
+
+                void main() {
+                    /*<ref>*/io.writeln("renamed");
+                }
+            """)
+    }
+
+    @Test
+    fun testImportNamedBinding() {
+        doCheckByText1(
+            """
+                import resolve.to.include : /*<resolved>*/foo = writeln;
 
                 void main() {
                     /*<ref>*/foo("named selective");
@@ -81,9 +93,9 @@ class DImportsUsageResolveTest : DResolveTestCase() {
 
     @Test
     fun testSelectiveAndRenamedImport() {
-        doCheckByText(
+        doCheckByText1(
             """
-                import io = resolve.to.include: foo = writeln;
+                import io = resolve.to.include: /*<resolved>*/foo = writeln;
 
                 void main() {
                     /*<ref>*/foo("renamed import named selective");
