@@ -31,6 +31,9 @@ class DResolveTest : DResolveTestCase() {
     fun testConstructorCallShouldResolveClassDeclarationInTheSameFile() = doTest()
 
     @Test
+    fun testDeclarationInsideDeclarationBlock() = doTest()
+
+    @Test
     fun testPublicImports() = doTest()
 
     @Test
