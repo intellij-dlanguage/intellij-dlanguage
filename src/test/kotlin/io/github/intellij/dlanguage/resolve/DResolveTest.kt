@@ -89,6 +89,12 @@ class DResolveTest : DResolveTestCase() {
     fun testScopeOperatorXResolveLocal() = doTest()
 
     @Test
+    fun testForeachVariableUsageResolve() = doTest()
+
+    @Test
+    fun testForeachVariableOutOfScopeUsageShouldNotResolve() = doTest(false)
+
+    @Test
     fun testConstructorCallResolveParameters() = doTest()
 
     @Test
