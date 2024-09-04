@@ -653,6 +653,21 @@ object ScopeProcessorImpl {
         return true
     }
 
+    @Suppress("UNUSED_PARAMETER")
+    fun processDeclarations(element: DeclarationBlock,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement?,
+                            place: PsiElement): Boolean {
+        var toContinue = true
+        for (decl in element.declarations) {
+            if (!processDeclaration(decl, processor, state, lastParent, place)) {
+                toContinue = false
+            }
+        }
+        return toContinue
+    }
+
 
 /*
     @Suppress("UNUSED_PARAMETER")

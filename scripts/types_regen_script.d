@@ -438,7 +438,7 @@ static this() {
     has_processDeclaration["ContinueStatement"] = false;
     has_processDeclaration["DebugCondition"] = false;
     has_processDeclaration["DebugSpecification"] = false;
-    has_processDeclaration["Declaration"] = true;
+    has_processDeclaration["DeclarationBlock"] = true;
     has_processDeclaration["DeclarationStatement"] = true;
     has_processDeclaration["DefaultStatement"] = false;
     has_processDeclaration["DeleteExpression"] = false;
