@@ -108,12 +108,7 @@ object ScopeProcessorImplUtil {
                 return toContinue
             }
             is SpecifiedVariableDeclaration -> {
-                for (declarator in def.identifierInitializers) {
-                    if (!processor.execute(declarator, state)) {
-                        return false
-                    }
-                }
-                return true
+                return def.processDeclarations(processor, state, lastParent, place)
             }
             else -> return true
         }

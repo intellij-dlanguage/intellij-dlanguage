@@ -522,6 +522,7 @@ static this() {
 //    has_processDeclaration["SingleImport"] = false;
     has_processDeclaration["SliceExpression"] = false;
     has_processDeclaration["UnaryExpression"] = false;
+    has_processDeclaration["SpecifiedVariableDeclaration"] = true;
     has_processDeclaration["StaticAssertDeclaration"] = false;
     has_processDeclaration["StaticAssertStatement"] = false;
     has_processDeclaration["StaticConstructor"] = false;
