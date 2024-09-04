@@ -180,7 +180,7 @@ static this() {
     types_extra_interfaces["FundamentalTypeConstructExpression"] = ["Expression"];
     types_children["FundamentalTypePropertyExpression"] = ["BasicType", "OP_DOT", "Identifier"];
     types_extra_interfaces["FundamentalTypePropertyExpression"] = ["Expression"];
-    types_children["ForStatement"] = ["Statement*", "AssignExpression*","OP_BRACES_RIGHT","OP_BRACES_LEFT","KW_FOR","OP_SCOLON"];
+    types_children["ForStatement"] = ["Statement*", "AssignExpression*","OP_BRACES_RIGHT","OP_BRACES_LEFT","KW_FOR","OP_SCOLON*","OP_PAR_LEFT", "OP_PAR_RIGHT"];
     types_extra_interfaces["ForStatement"] = ["Statement"];
     types_children["ForeachStatement"] = ["KW_FOREACH","KW_FOREACH_REVERSE","Statement", "Expression","OP_BRACES_RIGHT","OP_BRACES_LEFT","OP_DDOT","ForeachType","ForeachTypeList","OP_SCOLON"];
     types_extra_interfaces["ForeachStatement"] = ["Statement"];

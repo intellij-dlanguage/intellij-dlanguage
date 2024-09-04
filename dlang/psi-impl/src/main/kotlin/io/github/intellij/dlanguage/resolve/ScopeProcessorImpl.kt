@@ -7,6 +7,7 @@ import com.intellij.psi.scope.PsiScopeProcessor
 import com.jetbrains.rd.util.first
 import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
+import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
@@ -383,30 +384,32 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        //todo handle place
-        /*if (element.declarationOrStatements.size == 0) {
-            //this for statement is incomplete/malformed
-            logger.debug("bad for statement: " + element.text)
+        if (lastParent == null || lastParent.parent != element) {
+            // Parent element should not see our vars
             return true
         }
-        val init = element.declarationOrStatements[0]
-        var shouldContinue = true
-        if (init.declaration?.variableDeclaration?.autoDeclaration?.autoDeclarationParts != null) {
-            for (initializer in init.declaration!!.variableDeclaration!!.autoDeclaration!!.autoDeclarationParts) {
-                if (!processor.execute(initializer, state)) {
-                    shouldContinue = false
-                }
+
+        if (element.statements.isEmpty())
+            return true
+
+        // TODO Extract this logic to be re-usable
+        var found = false
+        val declarationStatement = element.statements.first()
+        if (declarationStatement !is DeclarationStatement)
+            return true
+        var start: PsiElement? = element.oP_PAR_LEFT
+        while (start != null && start.node.elementType != DlangTypes.OP_SCOLON && start.node.elementType != DlangTypes.OP_BRACES_RIGHT) {
+            if (declarationStatement == start) {
+                found = true
+                break
             }
+            start = start.nextSibling
         }
-        if (init.declaration?.variableDeclaration?.declarators != null) {
-            for (declarator in init.declaration!!.variableDeclaration!!.declarators) {
-                if (!processor.execute(declarator, state)) {
-                    shouldContinue = false
-                }
-            }
+
+        if (found && lastParent != declarationStatement) {
+            if (!declarationStatement.processDeclarations(processor, state, lastParent, place))
+                return false
         }
-        //init.statement.statementNoCaseNoDefault//check that no var declarations could be in statement
-        return shouldContinue*/
         return true
     }
 
