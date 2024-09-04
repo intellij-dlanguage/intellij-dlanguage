@@ -131,4 +131,13 @@ class DResolveTest : DResolveTestCase() {
     fun testLocalTypeDefinitionWithUsageAfterDefinitionShouldResolve() = doTest()
     @Test
     fun testLocalTypeDefinitionWithUsageBeforeDefinitionShouldNotResolve() = doTest(false)
+
+    @Test
+    fun testVariableInitializationAssignedValuePreviousInitializationSameVariableDeclarationShouldResolve() = doTest()
+
+    @Test
+    fun testVariableInitializationAssignedValueItselfShouldNotResolve() = doTest(false)
+
+    @Test
+    fun testVariableInitializationAssignedValueNextInitializationSameVariableDeclarationShouldNotResolve() = doTest(false)
 }
