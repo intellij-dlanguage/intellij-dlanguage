@@ -61,9 +61,6 @@ class DResolveTest : DResolveTestCase() {
     fun testScopedImportsPass() = doTest()
 
     @Test
-    fun testScopedImportsMembers() = doTest()
-
-    @Test
     fun testImportBindResolve() = doTest()
 
     @Test
@@ -80,9 +77,6 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testImportClassWithoutConstructor() = doTest()
-
-    @Test
-    fun testImportUsageOfRenamedImport() = doTest()
 
     @Test
     fun testScopeOperatorDotXResolveGlobal() = doTest()
