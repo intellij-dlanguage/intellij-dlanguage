@@ -136,4 +136,28 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             false)
     }
 
+    @Test
+    fun testSelectiveImportShouldResolveSelectiveImportSection() {
+        doCheckByText(
+            """
+                import resolve.to.include : /*<ref>*/writeln;
+            """)
+    }
+
+    @Test
+    fun testSelectiveRenamedImportShouldResolveSelectiveImportSection() {
+        doCheckByText(
+            """
+                import resolve.to.include : foo = /*<ref>*/writeln;
+            """)
+    }
+
+    @Test
+    fun testSelectiveRenamedImportShouldResolveSelectiveImportSectionSameName() {
+        doCheckByText(
+            """
+                import resolve.to.include : writeln = /*<ref>*/writeln;
+            """)
+    }
+
 }
