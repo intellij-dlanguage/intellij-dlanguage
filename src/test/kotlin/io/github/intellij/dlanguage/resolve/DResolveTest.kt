@@ -95,6 +95,15 @@ class DResolveTest : DResolveTestCase() {
     fun testForeachVariableOutOfScopeUsageShouldNotResolve() = doTest(false)
 
     @Test
+    fun testForLoopVariableUsageResolve() = doTest()
+
+    @Test
+    fun testForLoopVariableUsageInConditionResolve() = doTest()
+
+    @Test
+    fun testForLoopVariableOutOfScopeUsageShouldNotResolve() = doTest(false)
+
+    @Test
     fun testConstructorCallResolveParameters() = doTest()
 
     @Test
