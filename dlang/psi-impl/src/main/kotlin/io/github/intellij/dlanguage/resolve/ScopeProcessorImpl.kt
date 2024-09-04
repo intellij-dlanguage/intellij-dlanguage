@@ -326,6 +326,11 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
+        if (lastParent == null || lastParent.parent != element) {
+            // Parent element should not see our vars
+            return true
+        }
+
         //todo handle place
         var shouldContinue = true
         if (element.foreachType != null) {
