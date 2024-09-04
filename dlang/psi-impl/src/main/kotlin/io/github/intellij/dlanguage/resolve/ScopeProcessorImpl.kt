@@ -4,7 +4,8 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
-import com.jetbrains.rd.util.first
+import com.intellij.psi.search.GlobalSearchScope
+import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
 import io.github.intellij.dlanguage.psi.DlangTypes
@@ -12,7 +13,6 @@ import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processTemplateParameters
-import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import io.github.intellij.dlanguage.utils.*
 
 
@@ -531,44 +531,67 @@ object ScopeProcessorImpl {
         return true
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: ImportDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        for (import in element.singleImports) {
-            if (import.hasImportBinds()) {
-                val bindDecls = import.applicableImportBinds.flatMap { DTopLevelDeclarationIndex.getTopLevelSymbols(it, import.importedModuleName, place.project) }
-                for (matchingBindDeclaration in bindDecls) {
-                    if (!processor.execute(matchingBindDeclaration, state))
+        if (lastParent != null && lastParent.parent == element) {
+            if (place !is ImportBind)
+                return true
+            // it is a specific symbol in the import bind, look for the original symbol
+            val import = element.singleImports.last()
+            for (file in DModuleIndex.getFilesByModuleName(element.project, import.importedModuleName, GlobalSearchScope.allScope(element.project)).toSet()) {
+                if (file == element.containingFile) continue
+                if (!file.processDeclarations(processor, state, lastParent, place))
+                    return false
+            }
+            return true
+        }
+        // safeguard if call processDeclarations of others files
+        // TODO should be place.containingFile != element.containingFile && !element.isPublicImport
+        if (place.containingFile != element.containingFile) {
+            return true
+        }
+        var singleImports = element.singleImports.toMutableList()
+        // we have an import binding, search for it first
+        if (element.importBindings != null) {
+            // with import binding restricts the scope of the corresponding single import
+            singleImports.removeLastOrNull()
+            for (elt in element.importBindings!!.importBinds) {
+                if (elt.namedImportBind != null) {
+                    if (!processor.execute(elt.namedImportBind!!, state))
                         return false
-                }
-
-                // named import binds
-                // TODO improve to use the processor
-                val matchingNamedBindDeclaration = import.applicableNamedImportBinds.filter { it.key == place.text }
-                // Check for size == 1 to because otherwise there is a semantic error (duplicate symbol) which is not allowed
-                if (matchingNamedBindDeclaration.size == 1) {
-                    val symbolName = matchingNamedBindDeclaration.first().value
-                    val namedBindDecls = DTopLevelDeclarationIndex.getTopLevelSymbols(symbolName, import.importedModuleName, place.project)
-                    for (nameBind in namedBindDecls)
-                        if(!processor.execute(nameBind, state))
-                            return false
-                    return true
+                } else {
+                    if (elt.identifier?.text == place.text) {
+                        val base = element.singleImports.last()
+                        if (base.importedModuleName.isBlank())
+                            continue
+                        for (file in DModuleIndex.getFilesByModuleName(element.project, base.importedModuleName, GlobalSearchScope.allScope(element.project)).toSet()) {
+                            if (file == element.containingFile) continue
+                            if (!file.processDeclarations(processor, state, lastParent, place))
+                                return false
+                        }
+                    }
                 }
             }
-            else if (import.identifier != null) {
+        }
+        for (import in singleImports) {
+            // import a = foobar;
+            if (import.identifier != null) {
                 if (!processor.execute(import, state)) {
                     return false
                 }
-            } else {
-                val symbols = DTopLevelDeclarationIndex.getTopLevelSymbols(place.text, import.importedModuleName, place.project)
-                for (symbol in symbols) {
-                    if (!processor.execute(symbol, state)) {
-                        return false
-                    }
-                }
+                continue
+            }
+
+            // check the symbol itself
+            if (import.importedModuleName.isBlank())
+                continue
+            for (file in DModuleIndex.getFilesByModuleName(element.project, import.importedModuleName, GlobalSearchScope.allScope(element.project)).toSet()) {
+                if (file == element.containingFile) continue
+                if (!file.processDeclarations(processor, state, lastParent, place))
+                    return false
             }
         }
         return true

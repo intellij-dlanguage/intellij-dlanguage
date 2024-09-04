@@ -113,7 +113,7 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                 }
             }
         }
-        if (toContinue && getFullyQualifiedModuleName() != "object") {
+        if (toContinue && getFullyQualifiedModuleName() != "object" && this == place.containingFile) {
             var objects = DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet()
             // FIXME Hack hack hack for dmd repository (that otherwise resolve to an object module defined in tests)
             if (objects.size > 1)

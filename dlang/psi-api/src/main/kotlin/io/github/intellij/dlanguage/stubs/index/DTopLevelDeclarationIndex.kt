@@ -26,8 +26,8 @@ class DTopLevelDeclarationIndex : StringStubIndexExtension<DNamedElement>() {
         }
 
         fun getTopLevelSymbols(name: String, module: String, project: Project): MutableSet<DNamedElement> {
-            if (module == "")
-                throw IllegalStateException()
+            if (module.isBlank())
+                return mutableSetOf()
             val elements = mutableSetOf<DNamedElement>()
             for (file in DModuleIndex.getFilesByModuleName(project, module, GlobalSearchScope.allScope(project))) {
                 elements.addAll(StubIndex.getElements(KEY, name, project, GlobalSearchScope.fileScope(file), DNamedElement::class.java))
