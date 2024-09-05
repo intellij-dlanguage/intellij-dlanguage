@@ -18,8 +18,6 @@ import io.github.intellij.dlanguage.utils.*
 
 /**
  * implements processDeclarations for various statements
- * todo make cases named for when someone goto's case
- * todo make is expressions named
  */
 object ScopeProcessorImpl {
     val logger = Logger.getInstance("io.github.intellij.dlanguage.resolve.ScopeProcessorImpl")
@@ -531,6 +529,23 @@ object ScopeProcessorImpl {
         return true
     }
 
+    fun processDeclarations(element: SingleImport,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement?,
+                            place: PsiElement): Boolean {
+
+        if (element.importedModuleName.isBlank())
+            return true
+
+        for (file in DModuleIndex.getFilesByModuleName(element.project, element.importedModuleName, GlobalSearchScope.allScope(element.project)).toSet()) {
+            if (file == element.containingFile) continue
+            if (!file.processDeclarations(processor, state, lastParent, place))
+                return false
+        }
+        return true
+    }
+
     fun processDeclarations(element: ImportDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -541,12 +556,7 @@ object ScopeProcessorImpl {
                 return true
             // it is a specific symbol in the import bind, look for the original symbol
             val import = element.singleImports.last()
-            for (file in DModuleIndex.getFilesByModuleName(element.project, import.importedModuleName, GlobalSearchScope.allScope(element.project)).toSet()) {
-                if (file == element.containingFile) continue
-                if (!file.processDeclarations(processor, state, lastParent, place))
-                    return false
-            }
-            return true
+            return import.processDeclarations(processor, state, lastParent, place)
         }
         // safeguard if call processDeclarations of others files
         // TODO should be place.containingFile != element.containingFile && !element.isPublicImport
@@ -557,21 +567,14 @@ object ScopeProcessorImpl {
         // we have an import binding, search for it first
         if (element.importBindings != null) {
             // with import binding restricts the scope of the corresponding single import
-            singleImports.removeLastOrNull()
+            val base = singleImports.removeLastOrNull() // remove the last as due to binding, we can only access to his bindings
             for (elt in element.importBindings!!.importBinds) {
                 if (elt.namedImportBind != null) {
                     if (!processor.execute(elt.namedImportBind!!, state))
                         return false
                 } else {
                     if (elt.identifier?.text == place.text) {
-                        val base = element.singleImports.last()
-                        if (base.importedModuleName.isBlank())
-                            continue
-                        for (file in DModuleIndex.getFilesByModuleName(element.project, base.importedModuleName, GlobalSearchScope.allScope(element.project)).toSet()) {
-                            if (file == element.containingFile) continue
-                            if (!file.processDeclarations(processor, state, lastParent, place))
-                                return false
-                        }
+                        return base?.processDeclarations(processor, state, lastParent, place) != false
                     }
                 }
             }
@@ -586,13 +589,7 @@ object ScopeProcessorImpl {
             }
 
             // check the symbol itself
-            if (import.importedModuleName.isBlank())
-                continue
-            for (file in DModuleIndex.getFilesByModuleName(element.project, import.importedModuleName, GlobalSearchScope.allScope(element.project)).toSet()) {
-                if (file == element.containingFile) continue
-                if (!file.processDeclarations(processor, state, lastParent, place))
-                    return false
-            }
+            import.processDeclarations(processor, state, lastParent, place)
         }
         return true
     }
