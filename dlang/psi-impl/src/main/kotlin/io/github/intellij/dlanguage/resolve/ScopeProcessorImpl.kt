@@ -568,14 +568,22 @@ object ScopeProcessorImpl {
         if (element.importBindings != null) {
             // with import binding restricts the scope of the corresponding single import
             val base = singleImports.removeLastOrNull() // remove the last as due to binding, we can only access to his bindings
+            if (base == null)
+                return true
             for (elt in element.importBindings!!.importBinds) {
                 if (elt.namedImportBind != null) {
                     if (!processor.execute(elt.namedImportBind!!, state))
                         return false
                 } else {
                     if (elt.identifier?.text == place.text) {
-                        return base?.processDeclarations(processor, state, lastParent, place) != false
+                        return base.processDeclarations(processor, state, lastParent, place) != false
                     }
+                }
+            }
+            // import a = foobar;
+            if (base.identifier != null) {
+                if (!processor.execute(base, state)) {
+                    return false
                 }
             }
         }
