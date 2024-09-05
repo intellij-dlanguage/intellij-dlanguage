@@ -41,7 +41,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
             if (element.reference == null && element.references.isEmpty())
                 return
 
-            if (DResolveUtil.getInstance(element.project).shouldNotResolveToAnything(element)) {
+            if (DResolveUtil.shouldNotResolveToAnything(element)) {
                 return
             }
             if (element.reference != null) {
@@ -54,7 +54,6 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
             val end = System.currentTimeMillis()
             if (end - start > 50) {
                 log.info("resolve took a while" + (end - start))
-                DResolveUtil.getInstance(element.project).findDefinitionNode(element, true)
             }
         }
 

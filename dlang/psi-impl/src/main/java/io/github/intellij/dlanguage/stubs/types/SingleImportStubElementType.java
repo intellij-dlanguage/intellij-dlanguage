@@ -5,17 +5,17 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.util.io.StringRef;
-import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
 import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl;
-import io.github.intellij.dlanguage.psi.references.DReference;
+import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by francis on 3/15/2017.
@@ -93,6 +93,6 @@ public class SingleImportStubElementType extends DNamedStubElementType<DlangSing
 
     @Override
     public boolean shouldCreateStub(final ASTNode node) {
-        return !((DlangSingleImport) node.getPsi()).getImportedModuleName().equals(DReference.Companion.getNAME_NOT_FOUND_STRING());
+        return !((DlangSingleImport) node.getPsi()).getImportedModuleName().isBlank();
     }
 }

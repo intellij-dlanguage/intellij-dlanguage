@@ -27,13 +27,16 @@ class DCompletionProcessor : PsiScopeProcessor {
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         if (element is DNamedElement) {
+            if (element.name == null)
+                return true
+
             if (element is FunctionDeclaration) {
                 completions.add(element.name + "(" + ")")
             } else
-                completions.add(element.name)
+                completions.add(element.name!!)
         }
         if(element is SingleImport){
-            completions.addAll(DTopLevelDeclarationsByModule.getSymbolsFromImport(element).map { if (it is FunctionDeclaration) it.name + "()" else it.name })
+            completions.addAll(DTopLevelDeclarationsByModule.getSymbolsFromImport(element).map { if (it is FunctionDeclaration) it.name!! + "()" else it.name!! })
         }
         return true
     }
