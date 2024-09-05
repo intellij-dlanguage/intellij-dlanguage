@@ -160,4 +160,23 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             """)
     }
 
+    @Test
+    fun testResolveInAlias() {
+        doCheckByText2(
+            """
+                import resolve.to.include;
+
+                final class A {
+                    alias B = /*<ref>*/Foo.Bar;
+                }
+            """,
+            """
+                module resolve.to.include;
+                enum /*<resolved>*/Foo {
+                    Bar
+                }
+
+            """)
+    }
+
 }
