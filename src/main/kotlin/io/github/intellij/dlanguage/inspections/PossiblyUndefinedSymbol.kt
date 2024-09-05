@@ -10,6 +10,7 @@ import com.intellij.openapi.roots.ModuleRootModificationUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiPolyVariantReference
 import com.intellij.psi.PsiReference
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.DlangBundle
@@ -59,7 +60,11 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
 
         private fun handleReference(reference: PsiReference) {
             val element = reference.element
-            if (reference.resolve() == null && !symbolIsDefinedByDefault(element)) {
+            val resolved = if (reference is PsiPolyVariantReference)
+                reference.multiResolve(false)
+            else
+                reference.resolve()
+            if (resolved == null && !symbolIsDefinedByDefault(element)) {
                 if (element is IdentifierChain) {
                     val importElt = PsiTreeUtil.getParentOfType(element, SingleImport::class.java)
                     if (importElt != null && importElt.identifierChain == element) {
