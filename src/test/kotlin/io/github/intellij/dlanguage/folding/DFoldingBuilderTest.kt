@@ -31,4 +31,6 @@ class DFoldingBuilderTest : DLightPlatformCodeInsightFixtureTestCase("folding") 
     fun testVersion() = doTest()
     @Test
     fun testOneLinerImport() = doTest()
+    @Test
+    fun testStaticForeach() = doTest()
 }
