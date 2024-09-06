@@ -17,7 +17,7 @@ class TypeReference(element: QualifiedIdentifier,
 ) : PsiReferenceBase<QualifiedIdentifier>(element, textRange),
     PsiQualifiedReference {
 
-    override fun resolve(): PsiElement? = TypeResolveUtil.resolveType(this)
+    override fun resolve(): PsiElement? = TypeResolveUtil.resolveType(this, myElement.templateInstance != null)
 
     override fun getQualifier(): PsiElement? = qualifiedIdentifier
 
