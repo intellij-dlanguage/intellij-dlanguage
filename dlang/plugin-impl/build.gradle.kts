@@ -97,7 +97,13 @@ dependencies {
     }
 
     // theses kover lines are here to generate a merged report of all the projects
-    rootProject.allprojects
-        .filter { it.extensions.findByName("kover") != null }
-        .forEach { kover(it) }
+    kover (project(":"))
+    kover (project(":utils"))
+    // don’t include errorreporting as it contains no useful code to cover (not covered by tests)
+    // kover (project(":errorreporting"))
+    kover (project(":debugger"))
+    kover (project(":sdlang"))
+    kover (project(":dub"))
+    kover (project(":dlang:psi-api"))
+    kover (project(":dlang:psi-impl"))
 }
