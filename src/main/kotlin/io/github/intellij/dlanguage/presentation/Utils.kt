@@ -20,7 +20,7 @@ fun presentableName(psi: PsiElement?): String? = when (psi) {
         psi.identifierInitializers.firstOrNull()?.identifier?.text
     }
     is AliasDeclaration -> {
-        psi.aliasInitializers.joinToString(", ") { it.name }
+        psi.aliasInitializers.filter { it.name != null }.joinToString(", ") { it.name!! }
     }
     is Type -> {
         if (psi.basicType?.qualifiedIdentifier != null)
