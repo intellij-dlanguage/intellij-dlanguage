@@ -4,6 +4,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiQualifiedReference
 import com.intellij.psi.PsiReferenceBase
+import com.intellij.psi.ResolveState
 import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.psi.impl.DElementFactory
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
@@ -19,11 +20,19 @@ class GenericExpressionElementReference(element: ReferenceExpression,
 
     override fun resolve(): PsiElement? {
         val processor = GenericProcessor(referenceName, myElement)
-        PsiScopesUtil.resolveAndWalk(processor, this, null)
+        if (isModuleScopeOperator(element)) {
+            element.containingFile.processDeclarations(processor, ResolveState.initial(), null, element)
+        } else {
+            PsiScopesUtil.resolveAndWalk(processor, this, null)
+        }
         if (processor.getResult().size == 1) {
             return processor.getResult()[0].element as DNamedElement
         }
         return null
+    }
+
+    fun isModuleScopeOperator(e: PsiElement): Boolean {
+        return e is ReferenceExpression && e.oP_DOT != null && e.referenceExpression == null
     }
 
     override fun getQualifier(): PsiElement? = qualifier
