@@ -13,7 +13,6 @@ import io.github.intellij.dlanguage.DlangFileType
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
-import io.github.intellij.dlanguage.stubs.DlangFileStub
 import io.github.intellij.dlanguage.utils.getImportText
 import org.apache.commons.lang3.StringUtils
 import java.util.*
@@ -83,13 +82,6 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                 "."
             )
         )
-    }
-
-    /**
-     * Generates a stub for the current file, particularly so we can index names.
-     */
-    override fun getStub(): DlangFileStub? {
-        return super.getStub() as DlangFileStub?
     }
 
     override fun processDeclarations(
