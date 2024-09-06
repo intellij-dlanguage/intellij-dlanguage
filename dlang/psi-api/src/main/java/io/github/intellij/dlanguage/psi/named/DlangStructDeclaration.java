@@ -8,11 +8,12 @@ import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
+import io.github.intellij.dlanguage.psi.interfaces.UserDefinedType;
 import io.github.intellij.dlanguage.stubs.DlangStructDeclarationStub;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DlangStructDeclaration extends PsiElement, DNamedElement, Declaration,
+public interface DlangStructDeclaration extends PsiElement, DNamedElement, Declaration, UserDefinedType,
     StubBasedPsiElement<DlangStructDeclarationStub>, HasMembers<DlangStructDeclarationStub> {
     @Nullable
     PsiElement getKW_STRUCT();

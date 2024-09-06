@@ -6,5 +6,5 @@ enum {
 }
 
 void main() {
-    auto a = E.<ref>X;
+    auto a = <ref>X;
 }

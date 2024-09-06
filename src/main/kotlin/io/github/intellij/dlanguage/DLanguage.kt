@@ -17,7 +17,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.search.GlobalSearchScope.allScope
 import com.intellij.ui.EditorNotificationPanel
 import io.github.intellij.dlanguage.index.DModuleIndex
-import io.github.intellij.dlanguage.resolve.processors.basic.BasicResolve
+import io.github.intellij.dlanguage.psi.DlangPsiFile
 import javax.swing.event.HyperlinkEvent
 
 
@@ -131,7 +131,7 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
 
     private fun cannotFindObjectDotD(project: Project): Boolean {
         val resolveObjectDotD: Computable<Boolean> = Computable {
-            BasicResolve.getInstance(project, profile = false).`object` == null
+            DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet().firstOrNull()?.containingFile as DlangPsiFile? == null
         }
         return DumbService.getInstance(project).runReadActionInSmartMode(resolveObjectDotD)
     }

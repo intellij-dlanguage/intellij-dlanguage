@@ -1,21 +1,19 @@
 package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.ResolveState;
 import com.intellij.psi.StubBasedPsiElement;
-import com.intellij.psi.scope.PsiScopeProcessor;
 import io.github.intellij.dlanguage.psi.DLanguageConstraint;
 import io.github.intellij.dlanguage.psi.DLanguageStructBody;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
+import io.github.intellij.dlanguage.psi.interfaces.UserDefinedType;
 import io.github.intellij.dlanguage.stubs.DlangUnionDeclarationStub;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DlangUnionDeclaration extends PsiElement, DNamedElement, Declaration,
+public interface DlangUnionDeclaration extends PsiElement, DNamedElement, Declaration, UserDefinedType,
     StubBasedPsiElement<DlangUnionDeclarationStub>, HasMembers<DlangUnionDeclarationStub> {
     @Nullable
     PsiElement getIdentifier();

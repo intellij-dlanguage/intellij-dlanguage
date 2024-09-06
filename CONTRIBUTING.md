@@ -29,7 +29,23 @@ Any problems with the Intellij SDK should be reported to Jetbrains: https://yout
 
 # Tour of our code base
 ## References/Code Completion
-Most Dlang ides use DCD to provide “goto declaration”/”information about symbols”/”code completion”. The Intellij api combines all of this functionality in the Reference classes(implemented in `io.github.intellij.dlanguage.psi.references.DReference.kt`, the interface implemented is officially called `PsiPolyVariantReference`). Each “chunk of text/identifier”, that has a declaration, has its own instance of `DReference.kt`. The `resolve` and `multiResolve` methods in `DReference.kt/Reference.java` provide go-to declaration functionality. These methods can either be implemented with methods that look for declarations, buy looping through files etc. , or with ScopeProcessors(See below). The DReference class also contains a `getVariants` method. This method effectively returns an array of Strings/PsiElements(I’ll explain what those are later), that are visible in the current scope. These Objects are then used for code completion. Currently the previously mentioned methods have passable implementations in the develop branch. When DCD is available its code completion output is passed to intellij via a `CompletionContributer`(allows adding of code completion directly to the code completion dialog, instead of through `getVariants`). Go to declaration features are provided by external tools using `DRefernceContributor`(which manually inserts results normally provided by `resolve` and `muliResolve`). References are also used in renaming refactoring, Safe Delete and various warnings/error checkers. A lot of the utils for interacting with DCD can be found in `io.github.intellij.dlanguage.codeinsight.dcd`. Most of the reference features implementations can be found in `io.github.intellij.dlanguage.resolve`;
+Most Dlang IDEs use DCD to provide “goto declaration”/”information about symbols”/”code completion”.
+The Intellij api combines all of this functionality in the Reference classes
+(see implementations of classes `PsiReference` and `PsiPolyVariantReference`).
+Each “chunk of text/identifier” that has a declaration, has its own Reference.
+The `resolve` and `multiResolve` methods provide go-to declaration functionality.
+These methods can either be implemented with methods that look for declarations, by looping through files etc. ,
+or with ScopeProcessors(See below). PsiReference class also contains a `getVariants` method.
+This method effectively returns an array of Strings/PsiElements (I will explain what those are later),
+that are visible in the current scope. These Objects are then used for code completion.
+Currently, the previously mentioned methods have no implementations in the develop branch.
+When DCD is available its code completion output is passed to intellij via a `CompletionContributer`
+(allows adding of code completion directly to the code completion dialog, instead of through `getVariants`).
+Go to declaration features are provided by external tools using `DRefernceContributor`
+(which manually inserts results normally provided by `resolve` and `muliResolve`).
+References are also used in renaming refactoring, Safe delete and various warnings/error checkers.
+A lot of the utils for interacting with DCD can be found in `io.github.intellij.dlanguage.codeinsight.dcd`.
+Most of the reference features implementations can be found in `io.github.intellij.dlanguage.psi.resolve`;
 
 ## Parser/PsiElement/Ast/Lexer:
 Psi classes are generated using a script written in D. You will need to have `rdmd` installed on your machine to be able to build the project.

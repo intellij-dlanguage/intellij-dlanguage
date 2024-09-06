@@ -4,7 +4,7 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiReference
 import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain
-import io.github.intellij.dlanguage.psi.references.DReference
+import io.github.intellij.dlanguage.psi.references.PackageReference
 
 abstract class DLanguageIdentifierChainImplMixin(node: ASTNode) : ASTWrapperPsiElement(node),
     DLanguageIdentifierChain {
@@ -13,6 +13,6 @@ abstract class DLanguageIdentifierChainImplMixin(node: ASTNode) : ASTWrapperPsiE
         if (identifier == null) {
             return null
         }
-        return DReference(this, identifier!!.textRangeInParent, identifierChain, identifier!!.text)
+        return PackageReference(this, identifier!!.textRangeInParent)
     }
 }

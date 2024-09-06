@@ -4,8 +4,6 @@ import com.intellij.navigation.NavigationItem;
 import com.intellij.psi.PsiNameIdentifierOwner;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Interface that combines everything we need for convenient navigation.
@@ -18,7 +16,6 @@ public interface DNamedElement extends DCompositeElement, PsiNameIdentifierOwner
 //        return DPsiImplUtil.getFullName(this);
 //    }
 
-    @NotNull
     @Override
     String getName();
 

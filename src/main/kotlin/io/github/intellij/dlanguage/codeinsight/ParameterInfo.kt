@@ -4,8 +4,6 @@ import com.intellij.lang.parameterInfo.*
 import com.intellij.psi.util.PsiTreeUtil.findChildrenOfType
 import com.intellij.psi.util.PsiTreeUtil.getParentOfType
 import io.github.intellij.dlanguage.psi.DLanguageFunctionCallExpression
-import io.github.intellij.dlanguage.psi.references.DReference
-import io.github.intellij.dlanguage.resolve.DResolveUtil
 import io.github.intellij.dlanguage.utils.*
 
 private fun removeParentheses(parameterText: String): String {
@@ -80,12 +78,14 @@ class ConstructorParameterInfo : ParameterInfoHandler<NewExpression, Parameters>
 
     override fun showParameterInfo(newExpression: NewExpression, context: CreateParameterInfoContext) {
         val reference = newExpression.type?.basicType?.qualifiedIdentifier?.reference
-        if (reference == null || reference !is DReference) {
+        if (reference == null) {
             return
         }
-        val definitionNodes = DResolveUtil.getInstance(newExpression.project).findDefinitionNode(reference.element, false)
-        val classDecls: List<ClassDeclaration> = definitionNodes.filterIsInstance(ClassDeclaration::class.java)
-        val constructors = classDecls.flatMap { it.structBody?.declarations.orEmpty() }.filterIsInstance<Constructor>()
+        val resolved = reference.resolve()
+        if (resolved !is ClassDeclaration) {
+            return
+        }
+        val constructors = resolved.structBody?.declarations.orEmpty().filterIsInstance<Constructor>()
         context.itemsToShow = constructors.flatMap { findChildrenOfType(it, Parameters::class.java) }.filterNotNull().toTypedArray()
         context.showHint(newExpression, 0, this)
     }
@@ -121,12 +121,14 @@ class TemplateParameterInfo : ParameterInfoHandler<TemplateInstance, TemplatePar
 
     override fun showParameterInfo(templateExpression: TemplateInstance, context: CreateParameterInfoContext) {
         val reference = templateExpression.reference
-        if (reference == null || reference !is DReference) {
+        if (reference == null) {
             return
         }
-        val definitionNodes = DResolveUtil.getInstance(templateExpression.project).findDefinitionNode(reference.element, false).filterIsInstance(
-            TemplateDeclaration::class.java)
-        context.itemsToShow = definitionNodes.map { it.templateParameters }.filterNotNull().toTypedArray()
+        val resolved = reference.resolve()
+        if (resolved !is TemplateDeclaration) {
+            return
+        }
+        context.itemsToShow = arrayOf(resolved.templateParameters)
 
         context.showHint(templateExpression, 0, this)
     }

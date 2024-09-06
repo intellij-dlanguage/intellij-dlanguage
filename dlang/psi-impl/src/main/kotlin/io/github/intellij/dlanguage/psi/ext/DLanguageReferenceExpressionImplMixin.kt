@@ -6,7 +6,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import io.github.intellij.dlanguage.psi.DLanguageReferenceExpression
-import io.github.intellij.dlanguage.psi.references.DReference
+import io.github.intellij.dlanguage.psi.references.GenericExpressionElementReference
 
 abstract class DLanguageReferenceExpressionImplMixin(node: ASTNode) : ASTWrapperPsiElement(node),
     DLanguageReferenceExpression {
@@ -24,6 +24,6 @@ abstract class DLanguageReferenceExpressionImplMixin(node: ASTNode) : ASTWrapper
         else {
             return null
         }
-        return DReference(this, range, referenceExpression, referenceElement.text)
+        return GenericExpressionElementReference(this, range, referenceExpression, referenceElement.text)
     }
 }

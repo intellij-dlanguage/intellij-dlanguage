@@ -7,7 +7,6 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.IncorrectOperationException;
 import io.github.intellij.dlanguage.psi.DlangItemPresentation;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
-import io.github.intellij.dlanguage.psi.references.DReference;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder.Visibility;
@@ -31,7 +30,6 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
     @Nullable
     public abstract PsiElement getNameIdentifier();
 
-    @NotNull
     public String getName() {
         final T stub = getGreenStub();
         final String name = stub != null ? stub.getName() : null;
@@ -41,7 +39,7 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
 
         final PsiElement identifier = getNameIdentifier();
         return identifier != null ? identifier.getText()
-            : DReference.Companion.getNAME_NOT_FOUND_STRING();
+            : null;
     }
 
     @Override

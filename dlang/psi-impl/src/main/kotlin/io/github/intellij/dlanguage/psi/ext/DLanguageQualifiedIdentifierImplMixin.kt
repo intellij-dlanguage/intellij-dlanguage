@@ -6,7 +6,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import io.github.intellij.dlanguage.psi.DLanguageQualifiedIdentifier
-import io.github.intellij.dlanguage.psi.references.DReference
+import io.github.intellij.dlanguage.psi.references.TypeReference
 
 abstract class DLanguageQualifiedIdentifierImplMixin(node: ASTNode) : ASTWrapperPsiElement(node),
     DLanguageQualifiedIdentifier {
@@ -23,6 +23,6 @@ abstract class DLanguageQualifiedIdentifierImplMixin(node: ASTNode) : ASTWrapper
         else {
             return null
         }
-        return DReference(this, range, qualifiedIdentifier, referenceElement.text)
+        return TypeReference(this, range, qualifiedIdentifier, referenceElement.text)
     }
 }

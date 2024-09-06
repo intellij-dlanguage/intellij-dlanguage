@@ -7,11 +7,12 @@ import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
+import io.github.intellij.dlanguage.psi.interfaces.UserDefinedType;
 import io.github.intellij.dlanguage.stubs.DlangEnumDeclarationStub;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DlangEnumDeclaration extends PsiElement, DNamedElement, Declaration,
+public interface DlangEnumDeclaration extends PsiElement, DNamedElement, Declaration, UserDefinedType,
     StubBasedPsiElement<DlangEnumDeclarationStub>, HasMembers<DlangEnumDeclarationStub> {
     @Nullable
     PsiElement getIdentifier();

@@ -39,30 +39,37 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
     }
 
     override fun visitDeclarator(o: DLanguageIdentifierInitializer) {
-        checkName("Variable", StringUtil.decapitalize(o.name), o.nameIdentifier!!, varFunNameRegex)
+        o.name?:return
+        checkName("Variable", StringUtil.decapitalize(o.name!!), o.nameIdentifier!!, varFunNameRegex)
     }
 
     override fun visitFunctionDeclaration(o: DlangFunctionDeclaration) {
-        checkName("Function", StringUtil.decapitalize(o.name), o.nameIdentifier!!, varFunNameRegex)
+        o.name?:return
+        checkName("Function", StringUtil.decapitalize(o.name!!), o.nameIdentifier!!, varFunNameRegex)
     }
 
     override fun visitClassDeclaration(o: DlangClassDeclaration) {
-        checkName("Class", o.name, o, aggregateNameRegex)
+        o.name?:return
+        checkName("Class", o.name!!, o, aggregateNameRegex)
     }
 
     override fun visitInterfaceDeclaration(o: DlangInterfaceDeclaration) {
-        checkName("Interface", o.name, o, aggregateNameRegex)
+        o.name?:return
+        checkName("Interface", o.name!!, o, aggregateNameRegex)
     }
 
     override fun visitStructDeclaration(o: DlangStructDeclaration) {
-        checkName("Struct", o.name, o, aggregateNameRegex)
+        o.name?:return
+        checkName("Struct", o.name!!, o, aggregateNameRegex)
     }
 
     override fun visitUnionDeclaration(o: DlangUnionDeclaration) {
-        checkName("Union", o.name, o, aggregateNameRegex)
+        o.name?:return
+        checkName("Union", o.name!!, o, aggregateNameRegex)
     }
 
     override fun visitEnumDeclaration(o: DlangEnumDeclaration) {
-        checkName("Enum", o.name, o, aggregateNameRegex)
+        o.name?:return
+        checkName("Enum", o.name!!, o, aggregateNameRegex)
     }
 }

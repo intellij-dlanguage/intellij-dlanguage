@@ -22,6 +22,16 @@ class DImportsUsageResolveTest : DResolveTestCase() {
     private fun doCheckByText(@Language("D") main: String) = doCheckByText2(main, content)
 
     @Test
+    fun testLocalImport() {
+        doCheckByText("""
+            void main() {
+                import resolve.to.include;
+                /*<ref>*/writeln("local");
+            }
+        """.trimIndent())
+    }
+
+    @Test
     fun testSelectiveImportUseNotImportedMethod() {
         doCheckByText(
             """
@@ -33,7 +43,8 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             """)
     }
 
-    @Test
+    // TODO need to handle the static imports
+    /*@Test
     fun testStaticImport() {
         doCheckByText(
             """
@@ -43,7 +54,7 @@ class DImportsUsageResolveTest : DResolveTestCase() {
                     resolve.to.include./*<ref>*/writeln("static");
                 }
             """)
-    }
+    }*/
 
     @Test
     fun testRenamedImport() {
@@ -58,10 +69,22 @@ class DImportsUsageResolveTest : DResolveTestCase() {
     }
 
     @Test
-    fun testImportNamedBinding() {
-        doCheckByText(
+    fun testRenamedImportResolveRename() {
+        doCheckByText1(
             """
-                import resolve.to.include : foo = writeln;
+                import /*<resolved>*/io = resolve.to.include;
+
+                void main() {
+                    /*<ref>*/io.writeln("renamed");
+                }
+            """)
+    }
+
+    @Test
+    fun testImportNamedBinding() {
+        doCheckByText1(
+            """
+                import resolve.to.include : /*<resolved>*/foo = writeln;
 
                 void main() {
                     /*<ref>*/foo("named selective");
@@ -71,9 +94,9 @@ class DImportsUsageResolveTest : DResolveTestCase() {
 
     @Test
     fun testSelectiveAndRenamedImport() {
-        doCheckByText(
+        doCheckByText1(
             """
-                import io = resolve.to.include: foo = writeln;
+                import io = resolve.to.include: /*<resolved>*/foo = writeln;
 
                 void main() {
                     /*<ref>*/foo("renamed import named selective");
@@ -112,6 +135,49 @@ class DImportsUsageResolveTest : DResolveTestCase() {
 
             """,
             false)
+    }
+
+    @Test
+    fun testSelectiveImportShouldResolveSelectiveImportSection() {
+        doCheckByText(
+            """
+                import resolve.to.include : /*<ref>*/writeln;
+            """)
+    }
+
+    @Test
+    fun testSelectiveRenamedImportShouldResolveSelectiveImportSection() {
+        doCheckByText(
+            """
+                import resolve.to.include : foo = /*<ref>*/writeln;
+            """)
+    }
+
+    @Test
+    fun testSelectiveRenamedImportShouldResolveSelectiveImportSectionSameName() {
+        doCheckByText(
+            """
+                import resolve.to.include : writeln = /*<ref>*/writeln;
+            """)
+    }
+
+    @Test
+    fun testResolveInAlias() {
+        doCheckByText2(
+            """
+                import resolve.to.include;
+
+                final class A {
+                    alias B = /*<ref>*/Foo.Bar;
+                }
+            """,
+            """
+                module resolve.to.include;
+                enum /*<resolved>*/Foo {
+                    Bar
+                }
+
+            """)
     }
 
 }

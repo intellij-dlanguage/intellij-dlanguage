@@ -141,7 +141,7 @@ static this() {
     types_children["CommaExpression"] = ["Expression*", "OP_COMMA"];
     types_extra_interfaces["CommaExpression"] = ["Expression"];
     types_children["CompileCondition"] = [ "VersionCondition",  "DebugCondition",  "StaticIfCondition"];
-    types_children["ConditionalDeclaration"] = ["CompileCondition", "Declaration*","OP_COLON","KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
+    types_children["ConditionalDeclaration"] = ["CompileCondition", "Declaration*","OP_COLON","KW_ELSE","DeclarationBlock*"];
     types_extra_interfaces["ConditionalDeclaration"] = ["Declaration"];
     types_children["ConditionalStatement"] = ["CompileCondition", "Statement*", "KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_extra_interfaces["ConditionalStatement"] = ["Statement"];
@@ -151,6 +151,7 @@ static this() {
     types_children["DebugSpecification"] = ["KW_DEBUG","OP_EQ","Identifier", "INTEGER_LITERAL", "OP_SCOLON"];
     types_extra_interfaces["DebugSpecification"] = ["Declaration"];
     types_children["DeclarationBlock"] = ["OP_BRACES_LEFT", "Declaration*", "OP_BRACES_RIGHT"];
+    types_extra_interfaces["DeclarationBlock"] = ["Declaration"];
     types_children["DeclarationStatement"] = ["Declaration"];
     types_extra_interfaces["DeclarationStatement"] = ["Statement"];
     types_children["DefaultStatement"] = ["KW_DEFAULT","OP_COLON","Statement*"];
@@ -180,7 +181,7 @@ static this() {
     types_extra_interfaces["FundamentalTypeConstructExpression"] = ["Expression"];
     types_children["FundamentalTypePropertyExpression"] = ["BasicType", "OP_DOT", "Identifier"];
     types_extra_interfaces["FundamentalTypePropertyExpression"] = ["Expression"];
-    types_children["ForStatement"] = ["Statement*", "AssignExpression*","OP_BRACES_RIGHT","OP_BRACES_LEFT","KW_FOR","OP_SCOLON"];
+    types_children["ForStatement"] = ["Statement*", "AssignExpression*","OP_BRACES_RIGHT","OP_BRACES_LEFT","KW_FOR","OP_SCOLON*","OP_PAR_LEFT", "OP_PAR_RIGHT"];
     types_extra_interfaces["ForStatement"] = ["Statement"];
     types_children["ForeachStatement"] = ["KW_FOREACH","KW_FOREACH_REVERSE","Statement", "Expression","OP_BRACES_RIGHT","OP_BRACES_LEFT","OP_DDOT","ForeachType","ForeachTypeList","OP_SCOLON"];
     types_extra_interfaces["ForeachStatement"] = ["Statement"];
@@ -415,9 +416,10 @@ static this() {
     has_processDeclaration["AtAttribute"] = false;
     has_processDeclaration["Attribute"] = false;
     has_processDeclaration["AttributeDeclaration"] = false;
+    has_processDeclaration["AttributeSpecifier"] = true;
     has_processDeclaration["AutoDeclaration"] = false;
     has_processDeclaration["AutoAssignment"] = false;
-    has_processDeclaration["BlockStatement"] = false;
+    has_processDeclaration["BlockStatement"] = true;
     has_processDeclaration["BreakStatement"] = false;
     has_processDeclaration["BaseClass"] = false;
     has_processDeclaration["BaseClassList"] = false;
@@ -438,7 +440,8 @@ static this() {
     has_processDeclaration["ContinueStatement"] = false;
     has_processDeclaration["DebugCondition"] = false;
     has_processDeclaration["DebugSpecification"] = false;
-    has_processDeclaration["Declaration"] = true;
+    has_processDeclaration["DeclarationBlock"] = true;
+    has_processDeclaration["DeclarationStatement"] = true;
     has_processDeclaration["DefaultStatement"] = false;
     has_processDeclaration["DeleteExpression"] = false;
     has_processDeclaration["DeleteStatement"] = false;
@@ -521,6 +524,7 @@ static this() {
 //    has_processDeclaration["SingleImport"] = false;
     has_processDeclaration["SliceExpression"] = false;
     has_processDeclaration["UnaryExpression"] = false;
+    has_processDeclaration["SpecifiedVariableDeclaration"] = true;
     has_processDeclaration["StaticAssertDeclaration"] = false;
     has_processDeclaration["StaticAssertStatement"] = false;
     has_processDeclaration["StaticConstructor"] = false;

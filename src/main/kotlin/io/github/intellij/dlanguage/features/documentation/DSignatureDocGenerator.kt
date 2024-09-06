@@ -10,7 +10,6 @@ import com.intellij.psi.tree.IElementType
 import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.colors.DColor
 import io.github.intellij.dlanguage.psi.DlangTypes
-import io.github.intellij.dlanguage.psi.references.DReference
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
 import io.github.intellij.dlanguage.utils.*
 
@@ -61,24 +60,16 @@ class DSignatureDocGenerator {
     private fun getAttributesForDeclaration(element: PsiElement): DAttributesFinder? {
         var attributes: DAttributesFinder? = null
         try {
-            val attributeFinder = DAttributesFinder(element)
-            attributeFinder.recurseUp()
-            if (element.reference != null) {
-                val resolveResults = (element.reference as DReference?)!!.multiResolve(true)
-                val attributesFinders: MutableSet<DAttributesFinder> = HashSet(resolveResults.size)
-                if (resolveResults.size > 1) {
-                    for (resolveResult in resolveResults) {
-                        val dAttributesFinder = DAttributesFinder(resolveResult.element!!)
-                        dAttributesFinder.recurseUp()
-                        attributesFinders.add(dAttributesFinder)
-                    }
-                    if (attributesFinders.size == 1) {
-                        attributes = attributesFinders.toTypedArray()[0]
-                    }
-                }
+            val attributeFinder = if (element.reference != null) {
+                val resolveResult = element.reference!!.resolve()
+                if (resolveResult == null)
+                    return null
+                DAttributesFinder(resolveResult)
             } else {
-                attributes = attributeFinder
+                DAttributesFinder(element)
             }
+            attributeFinder.recurseUp()
+            attributes = attributeFinder
         } catch (e: ProcessCanceledException) {
             throw e
         } catch (_: Exception) { }

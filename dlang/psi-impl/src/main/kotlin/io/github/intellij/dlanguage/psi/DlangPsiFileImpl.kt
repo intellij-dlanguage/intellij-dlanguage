@@ -7,9 +7,11 @@ import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
+import com.intellij.psi.search.GlobalSearchScope.allScope
 import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangFileType
+import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
@@ -97,11 +99,22 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                     toContinue = false
                 }
             }
-            if (element is Declaration) {
+            else if (element is Declaration) {
                 if (!processDeclaration(element, processor, state, lastParent, place)) {
                     toContinue = false
                 }
             }
+        }
+        if (toContinue && getFullyQualifiedModuleName() != "object" && this == place.containingFile) {
+            var objects = DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet()
+            // FIXME Hack hack hack for dmd repository (that otherwise resolve to an object module defined in tests)
+            if (objects.size > 1)
+                objects = objects.filter { it.name == "object.d" }.toSet()
+            if (objects.size > 1)
+                objects = objects.filter {it.containingDirectory.name == "dmd" }.toSet()
+
+            val objectModule = objects.firstOrNull()?.containingFile as DlangPsiFile?
+            toContinue = objectModule?.processDeclarations(processor, state, objectModule, objectModule)?: true
         }
         return toContinue
     }
