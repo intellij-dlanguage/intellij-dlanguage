@@ -86,8 +86,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                     var elementToRegister = element
                     when (element) {
                         is QualifiedIdentifier -> {
-                            element.identifier?:return
-                            elementToRegister = element.identifier!!
+                            elementToRegister = element.identifier?:element.templateInstance!!.identifier!!
                         }
 
                         is ReferenceExpression -> {
