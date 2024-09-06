@@ -10,7 +10,7 @@ plugins {
 }
 
 coverallsJacoco {
-    reportPath = "build/reports/kover/report.xml"
+    reportPath = project.layout.buildDirectory.file("reports/kover/report.xml").get().asFile.absolutePath
     reportSourceSets += rootProject.allprojects
         .filter { it.extensions.findByName("sourceSets") != null }
         .map { it.sourceSets.main.get().allJava.srcDirs }.flatten() }
@@ -97,11 +97,7 @@ dependencies {
     }
 
     // theses kover lines are here to generate a merged report of all the projects
-    kover(project(":"))
-    kover(project(":utils"))
-    kover(project(":errorreporting"))
-    kover(project(":debugger"))
-    kover(project(":sdlang"))
-    kover(project(":dub"))
-    kover(project(":dlang:psi-impl"))
+    rootProject.allprojects
+        .filter { it.extensions.findByName("kover") != null }
+        .forEach { kover(it) }
 }
