@@ -6,7 +6,6 @@ import com.intellij.psi.stubs.StubOutputStream
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageEnumMemberImpl
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes
 import io.github.intellij.dlanguage.stubs.DlangEnumMemberStub
-import io.github.intellij.dlanguage.stubs.types.DNamedStubElementType
 import io.github.intellij.dlanguage.utils.EnumMember
 import java.io.IOException
 
@@ -31,7 +30,7 @@ class DlangEnumMemberStubElementType(debugName: String) : DNamedStubElementType<
 
     @Throws(IOException::class)
     override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>): DlangEnumMemberStub {
-        return DlangEnumMemberStub(parentStub, this, dataStream.readName()!!,
+        return DlangEnumMemberStub(parentStub, this, dataStream.readName(),
             DAttributes.read(dataStream))
     }
 }

@@ -5,13 +5,13 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.io.StringRef;
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class DlangSingleImportStub extends DNamedStubBase<DlangSingleImport> {
 
@@ -21,7 +21,6 @@ public class DlangSingleImportStub extends DNamedStubBase<DlangSingleImport> {
     private final int numNamedBinds;
     private final Map<String, String> namedBinds = new HashMap<>();
 
-    @NotNull
     private final String importedModule;
     private final boolean hasName;
     private final String importName;
@@ -33,7 +32,7 @@ public class DlangSingleImportStub extends DNamedStubBase<DlangSingleImport> {
                                  final Set<StringRef> binds,
                                  final int numNamedBinds,
                                  final Map<StringRef, StringRef> namedBinds,
-                                 final @NotNull String importedModule,
+                                 final @Nullable String importedModule,
                                  final boolean hasName,
                                  final String importName,
                                  final DAttributes attributes) {
@@ -45,7 +44,7 @@ public class DlangSingleImportStub extends DNamedStubBase<DlangSingleImport> {
         this.numNamedBinds = numNamedBinds;
         namedBinds.forEach((bindName, bind) -> this.namedBinds.put(bindName.getString(), bind.getString()));
         this.importedModule = importedModule;
-        assert !importedModule.isEmpty() : "imported Module should not be blank";
+        assert importedModule == null || !importedModule.isBlank() : "imported Module should not be blank";
         this.hasName = hasName;
         this.importName = importName;
     }
@@ -57,13 +56,14 @@ public class DlangSingleImportStub extends DNamedStubBase<DlangSingleImport> {
                                  final Set<StringRef> binds,
                                  final int numNamedBinds,
                                  final Map<StringRef, StringRef> namedBinds,
-                                 final @NotNull StringRef importName,
+                                 final @Nullable StringRef importName,
                                  final boolean hasName,
                                  final StringRef importedModule,
                                  final DAttributes attributes) {
         this(parent, elementType, name != null ? name.getString() : null,
             numBinds, binds, numNamedBinds, namedBinds, importedModule.getString(), hasName,
-            importName.getString(), attributes);
+            importName == null ? null : importName.getString(),
+            attributes);
     }
 
     public int numBinds() {

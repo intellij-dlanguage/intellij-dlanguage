@@ -5,9 +5,10 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameter
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateParameterImpl
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes
 import io.github.intellij.dlanguage.stubs.DlangTemplateParameterStub
-import io.github.intellij.dlanguage.stubs.types.DNamedStubElementType
+import io.github.intellij.dlanguage.utils.DUtil
 import java.io.IOException
 
 /**
@@ -15,15 +16,15 @@ import java.io.IOException
  */
 class DlangTemplateParameterStubElementType(debugName: String) : DNamedStubElementType<DlangTemplateParameterStub, DLanguageTemplateParameter>(debugName) {
 
-    override fun createPsi(stub: DlangTemplateParameterStub): io.github.intellij.dlanguage.psi.DLanguageTemplateParameter {
-        return io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateParameterImpl(stub, this)
+    override fun createPsi(stub: DlangTemplateParameterStub): DLanguageTemplateParameter {
+        return DLanguageTemplateParameterImpl(stub, this)
     }
 
-    override fun shouldCreateStub(node: ASTNode?): Boolean {
-        return io.github.intellij.dlanguage.utils.DUtil.definitionNode(node!!)
+    override fun shouldCreateStub(node: ASTNode): Boolean {
+        return DUtil.definitionNode(node) && super.shouldCreateStub(node)
     }
 
-    override fun createStub(psi: io.github.intellij.dlanguage.psi.DLanguageTemplateParameter, parentStub: StubElement<*>): DlangTemplateParameterStub {
+    override fun createStub(psi: DLanguageTemplateParameter, parentStub: StubElement<*>): DlangTemplateParameterStub {
         return DlangTemplateParameterStub(parentStub, this, psi.name, psi.attributes)
     }
 
@@ -35,7 +36,7 @@ class DlangTemplateParameterStubElementType(debugName: String) : DNamedStubEleme
 
     @Throws(IOException::class)
     override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>): DlangTemplateParameterStub {
-        return DlangTemplateParameterStub(parentStub, this, dataStream.readName()!!,
+        return DlangTemplateParameterStub(parentStub, this, dataStream.readName(),
             DAttributes.read(dataStream))
     }
 }
