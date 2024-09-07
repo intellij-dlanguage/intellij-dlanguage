@@ -42,6 +42,10 @@ sourceSets {
     }
 }
 
+tasks.clean {
+    val dir = project.file("gen")
+    delete(dir)
+}
 
 val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer") {
     // source flex file

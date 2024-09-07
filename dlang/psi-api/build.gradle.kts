@@ -1,5 +1,5 @@
+
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-import org.jetbrains.intellij.platform.gradle.utils.asPath
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.nio.file.Files
 
@@ -51,6 +51,11 @@ tasks.withType<KotlinCompile>().configureEach {
     dependsOn(
         generatePsi,
     )
+}
+
+tasks.clean {
+    val dir = project.file("gen")
+    delete(dir)
 }
 
 dependencies {

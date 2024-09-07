@@ -27,6 +27,11 @@ sourceSets {
     }
 }
 
+tasks.clean {
+    val dir = project.file("gen")
+    delete(dir)
+}
+
 val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer") {
     // source flex file
     sourceFile.set(file("src/main/jflex/io/github/intellij/dlanguage/lexer/DLanguageLexer.flex"))

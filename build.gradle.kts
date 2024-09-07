@@ -68,6 +68,11 @@ sourceSets {
     }
 }
 
+tasks.clean {
+    val dir = project.file("gen")
+    delete(dir)
+}
+
 tasks.register<Test>("testCompilation") {
     group = "Verification"
     dependsOn(tasks.classes, tasks.testClasses)
