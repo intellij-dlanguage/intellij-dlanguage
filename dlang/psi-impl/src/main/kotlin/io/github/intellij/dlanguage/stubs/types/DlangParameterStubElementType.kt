@@ -6,7 +6,6 @@ import com.intellij.psi.stubs.StubOutputStream
 import io.github.intellij.dlanguage.psi.named.DlangParameter
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes
 import io.github.intellij.dlanguage.stubs.DlangParameterStub
-import io.github.intellij.dlanguage.stubs.types.DNamedStubElementType
 import java.io.IOException
 
 /**
@@ -30,7 +29,7 @@ class DlangParameterStubElementType(debugName: String) : DNamedStubElementType<D
 
     @Throws(IOException::class)
     override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>): DlangParameterStub {
-        return DlangParameterStub(parentStub, this, dataStream.readName()!!,
+        return DlangParameterStub(parentStub, this, dataStream.readName(),
             DAttributes.read(dataStream))
     }
 }

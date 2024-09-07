@@ -5,7 +5,6 @@ import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes
 import io.github.intellij.dlanguage.stubs.DlangForeachTypeStub
-import io.github.intellij.dlanguage.stubs.types.DNamedStubElementType
 import io.github.intellij.dlanguage.utils.ForeachType
 import java.io.IOException
 
@@ -30,7 +29,7 @@ class DlangForeachTypeStubElementType(debugName: String) : DNamedStubElementType
 
     @Throws(IOException::class)
     override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>): DlangForeachTypeStub {
-        return DlangForeachTypeStub(parentStub, this, dataStream.readName()!!,
+        return DlangForeachTypeStub(parentStub, this, dataStream.readName(),
             DAttributes.read(dataStream))
     }
 }

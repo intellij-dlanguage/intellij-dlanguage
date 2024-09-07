@@ -22,7 +22,7 @@ public interface DNamedElement extends DCompositeElement, PsiNameIdentifierOwner
     DAttributes getAttributes();
 
     default boolean hasAName() {
-        return true;
+        return getName() != null && !getName().isBlank();
     }
 
     boolean isPublic();
