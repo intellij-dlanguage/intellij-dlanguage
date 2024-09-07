@@ -12,7 +12,16 @@ plugins {
 coverallsJacoco {
     reportPath = project.layout.buildDirectory.file("reports/kover/report.xml").get().asFile.absolutePath
     reportSourceSets += rootProject.allprojects
-        .filter { it.extensions.findByName("sourceSets") != null }
+        .filter {
+            // Use try catch and not extensions.findName("sourceSet"),
+            // because findName can return null even if project has a sourceSet
+            try {
+                it.sourceSets
+                true
+            } catch (_: Exception) {
+                false
+            }
+        }
         .map { it.sourceSets.main.get().allJava.srcDirs }.flatten() }
 
 repositories {
