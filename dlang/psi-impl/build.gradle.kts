@@ -5,6 +5,7 @@ import java.nio.file.Files
 
 plugins {
     id("java")
+    id("org.gradle.idea")
     alias(libs.plugins.kotlin)
     alias(libs.plugins.gradleIntelliJModule)
     alias(libs.plugins.grammarkit)
@@ -79,5 +80,12 @@ dependencies {
         intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
         instrumentationTools()
         testFramework(TestFrameworkType.Platform)
+    }
+}
+
+// Mark the generated sources as generated in intellij idea
+idea {
+    module {
+        generatedSourceDirs = setOf(file("gen"))
     }
 }

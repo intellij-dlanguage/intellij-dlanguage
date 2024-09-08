@@ -11,8 +11,8 @@ gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS
 fun properties(key: String) = providers.gradleProperty(key).get()
 
 plugins {
-    id("org.gradle.idea")
     id("java")
+    id("org.gradle.idea")
     alias(libs.plugins.kotlin)
     alias(libs.plugins.gradleIntelliJModule)
     alias(libs.plugins.gradleIntelliJPlatform).apply(false) // required to prevent resolution error
@@ -126,5 +126,12 @@ dependencies {
         )
         instrumentationTools()
         testFramework(TestFrameworkType.Plugin.Java)
+    }
+}
+
+// Mark the generated sources as generated in intellij idea
+idea {
+    module {
+        generatedSourceDirs = setOf(file("gen"))
     }
 }

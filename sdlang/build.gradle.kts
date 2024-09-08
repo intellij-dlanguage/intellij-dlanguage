@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("java")
+    id("org.gradle.idea")
     alias(libs.plugins.kotlin)
     alias(libs.plugins.grammarkit)
     alias(libs.plugins.gradleIntelliJModule)
@@ -65,3 +66,11 @@ val generateSyntaxParser = tasks.register<GenerateParserTask>("generateSyntaxPar
 tasks.withType<KotlinCompile>().configureEach {
     dependsOn(generateSyntaxLexer, generateSyntaxParser)
 }
+
+// Mark the generated sources as generated in intellij idea
+idea {
+    module {
+        generatedSourceDirs = setOf(file("gen"))
+    }
+}
+
