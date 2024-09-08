@@ -11,18 +11,15 @@ plugins {
 
 coverallsJacoco {
     reportPath = project.layout.buildDirectory.file("reports/kover/report.xml").get().asFile.absolutePath
-    reportSourceSets += rootProject.allprojects
-        .filter {
-            // Use try catch and not extensions.findName("sourceSet"),
-            // because findName can return null even if project has a sourceSet
-            try {
-                it.sourceSets
-                true
-            } catch (_: Exception) {
-                false
-            }
-        }
-        .map { it.sourceSets.main.get().allJava.srcDirs }.flatten() }
+    // It is a little bit hacky, but it works. It provides all the sources folders to coverallsJacoco plugin
+    reportSourceSets += rootProject.allprojects.map {
+        listOf(
+            it.layout.projectDirectory.file("src/main/java").asFile,
+            it.layout.projectDirectory.file("src/main/kotlin").asFile,
+            it.layout.projectDirectory.file("gen").asFile,
+        )
+    }.flatten()
+}
 
 repositories {
     mavenCentral()
