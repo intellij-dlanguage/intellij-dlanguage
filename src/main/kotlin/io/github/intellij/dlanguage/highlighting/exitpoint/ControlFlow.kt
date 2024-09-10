@@ -5,11 +5,7 @@ import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 import io.github.intellij.dlanguage.psi.DLanguageReturnStatement
 import io.github.intellij.dlanguage.psi.DLanguageThrowExpression
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.impl.DLanguageFunctionLiteralExpressionImpl
-import io.github.intellij.dlanguage.psi.impl.DLanguageReturnStatementImpl
-import io.github.intellij.dlanguage.psi.impl.DLanguageThrowExpressionImpl
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageFunctionDeclarationImpl
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration
 import io.github.intellij.dlanguage.utils.FunctionDeclaration
 import io.github.intellij.dlanguage.utils.FunctionLiteralExpression
 
@@ -32,7 +28,7 @@ private class ExitPointVisitor(
 
     override fun visitPsiElement(o: PsiElement) = o.acceptChildren(this)
 
-    override fun visitFunctionDeclaration(o: DlangFunctionDeclaration) = Unit
+    override fun visitFunctionDeclaration(o: DLanguageFunctionDeclaration) = Unit
 
     override fun visitFunctionLiteralExpression(o: DLanguageFunctionLiteralExpression) =
         Unit

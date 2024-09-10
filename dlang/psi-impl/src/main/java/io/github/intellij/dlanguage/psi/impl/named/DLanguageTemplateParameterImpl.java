@@ -7,13 +7,13 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.stubs.DlangTemplateParameterStub;
+import io.github.intellij.dlanguage.stubs.DLanguageTemplateParameterStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<DlangTemplateParameterStub> implements DLanguageTemplateParameter {
+public class DLanguageTemplateParameterImpl extends DNamedStubbedPsiElementBase<DLanguageTemplateParameterStub> implements DLanguageTemplateParameter {
 
-    public DLanguageTemplateParameterImpl(final DlangTemplateParameterStub stub, final IStubElementType type) {
+    public DLanguageTemplateParameterImpl(final DLanguageTemplateParameterStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

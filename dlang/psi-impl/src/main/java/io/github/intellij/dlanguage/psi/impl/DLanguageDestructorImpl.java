@@ -13,17 +13,17 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
 import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
-import io.github.intellij.dlanguage.psi.named.DlangDestructor;
+import io.github.intellij.dlanguage.psi.named.DLanguageDestructor;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
-import io.github.intellij.dlanguage.stubs.DlangDestructorStub;
+import io.github.intellij.dlanguage.stubs.DLanguageDestructorStub;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class DLanguageDestructorImpl extends DStubbedPsiElementBase<DlangDestructorStub> implements
-    DlangDestructor {
-    public DLanguageDestructorImpl(final DlangDestructorStub stub, final IStubElementType nodeType) {
+public class DLanguageDestructorImpl extends DStubbedPsiElementBase<DLanguageDestructorStub> implements
+        DLanguageDestructor {
+    public DLanguageDestructorImpl(final DLanguageDestructorStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 

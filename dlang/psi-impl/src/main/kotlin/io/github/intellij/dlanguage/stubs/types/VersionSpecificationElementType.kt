@@ -4,40 +4,40 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import io.github.intellij.dlanguage.psi.impl.named.DlangVersionSpecificationImpl
-import io.github.intellij.dlanguage.psi.named.DlangVersionSpecification
+import io.github.intellij.dlanguage.psi.named.DLanguageVersionSpecification
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes.Companion.read
-import io.github.intellij.dlanguage.stubs.VersionSpecificationStub
+import io.github.intellij.dlanguage.stubs.DLanguageVersionSpecificationStub
 import java.io.IOException
 
 /**
  * Created by francis on 1/5/2018.
  */
 class VersionSpecificationElementType(debugName: String) :
-    DNamedStubElementType<VersionSpecificationStub, DlangVersionSpecification>(debugName) {
-    override fun createPsi(stub: VersionSpecificationStub): DlangVersionSpecification {
+    DNamedStubElementType<DLanguageVersionSpecificationStub, DLanguageVersionSpecification>(debugName) {
+    override fun createPsi(stub: DLanguageVersionSpecificationStub): DLanguageVersionSpecification {
         return DlangVersionSpecificationImpl(stub, this)
     }
 
     override fun createStub(
-        psi: DlangVersionSpecification,
+        psi: DLanguageVersionSpecification,
         parentStub: StubElement<*>?
-    ): VersionSpecificationStub {
-        return VersionSpecificationStub(parentStub, this, psi.name, psi.attributes)
+    ): DLanguageVersionSpecificationStub {
+        return DLanguageVersionSpecificationStub(parentStub, this, psi.name, psi.attributes)
     }
 
     @Throws(IOException::class)
     override fun deserialize(
         dataStream: StubInputStream,
         parentStub: StubElement<*>?
-    ): VersionSpecificationStub {
+    ): DLanguageVersionSpecificationStub {
         val name = dataStream.readName()
         val attributes = read(dataStream)
-        return VersionSpecificationStub(parentStub, this, name?.getString(), attributes)
+        return DLanguageVersionSpecificationStub(parentStub, this, name?.getString(), attributes)
     }
 
     @Throws(IOException::class)
     override fun serialize(
-        stub: VersionSpecificationStub,
+        stub: DLanguageVersionSpecificationStub,
         dataStream: StubOutputStream
     ) {
         dataStream.writeName(stub.name)

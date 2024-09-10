@@ -12,17 +12,17 @@ import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.psi.named.DlangEnumDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageEnumDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangEnumDeclarationStub;
+import io.github.intellij.dlanguage.stubs.DLanguageEnumDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DlangEnumDeclarationImpl extends
-    DNamedStubbedPsiElementBase<DlangEnumDeclarationStub> implements
-    DlangEnumDeclaration {
+    DNamedStubbedPsiElementBase<DLanguageEnumDeclarationStub> implements
+    DLanguageEnumDeclaration {
 
-    public DlangEnumDeclarationImpl(final DlangEnumDeclarationStub stub, final IStubElementType type) {
+    public DlangEnumDeclarationImpl(final DLanguageEnumDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

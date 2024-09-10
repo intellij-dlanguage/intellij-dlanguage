@@ -44,7 +44,7 @@ object DUtil {
 
     @JvmStatic
     fun isDunitTestFile(psiFile: PsiFile?): Boolean {
-        val cds = PsiTreeUtil.findChildrenOfType(psiFile, DlangClassDeclaration::class.java)
+        val cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration::class.java)
         for (cd in cds) {
             // if a class contains the UnitTest mixin assume its a valid d-unit test class
             val tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression::class.java)
@@ -65,10 +65,10 @@ object DUtil {
     fun getParentClassOrStructOrTemplateOrInterfaceOrUnion(namedElement: PsiElement?): DNamedElement? {
         return PsiTreeUtil.getParentOfType(
             namedElement,
-            DlangClassDeclaration::class.java,
-            DlangStructDeclaration::class.java,
-            DlangTemplateDeclaration::class.java,
-            DlangUnionDeclaration::class.java
+            DLanguageClassDeclaration::class.java,
+            DLanguageStructDeclaration::class.java,
+            DLanguageTemplateDeclaration::class.java,
+            DLanguageUnionDeclaration::class.java
         )
     }
 

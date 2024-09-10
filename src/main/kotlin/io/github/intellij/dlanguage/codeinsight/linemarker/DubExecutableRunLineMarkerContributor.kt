@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.DlangTypes
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration
 
 class DubExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
     override fun getInfo(element: PsiElement): Info? {
@@ -22,10 +22,10 @@ class DubExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
     }
 
     private fun isDMainFunction(element: PsiElement) : Boolean {
-        if (!(element.elementType == DlangTypes.ID && element.parent is DlangFunctionDeclaration
+        if (!(element.elementType == DlangTypes.ID && element.parent is DLanguageFunctionDeclaration
             && element.parent.parent is DlangPsiFile && element.text == "main"))
             return false
-        val funcDecl = element.parent as DlangFunctionDeclaration
+        val funcDecl = element.parent as DLanguageFunctionDeclaration
         // check return type
         if (!(funcDecl.isAuto ||
             listOf("void", "int", "noreturn").contains(funcDecl.basicType?.text)))

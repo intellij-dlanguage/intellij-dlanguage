@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil.findChildrenOfType
 import io.github.intellij.dlanguage.psi.DLanguageParameters
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
-import io.github.intellij.dlanguage.psi.named.DlangSingleImport
+import io.github.intellij.dlanguage.psi.named.DLanguageSingleImport
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
 
 
@@ -44,7 +44,7 @@ object DPsiUtil {
         val declDefList = Lists.newArrayList<Declaration>()
         declDefList.addAll(findChildrenOfType(file, Declaration::class.java))
         for (declDef in declDefList) {
-            val importDecls = findChildrenOfType(declDef, DlangSingleImport::class.java)
+            val importDecls = findChildrenOfType(declDef, DLanguageSingleImport::class.java)
             for (importDecl in importDecls) {
                 imports.add(importDecl.identifierChain!!.text)
             }

@@ -64,11 +64,6 @@ Associative array which contains Name of psi element as key and if it has a proc
 */
 bool[string] has_processDeclaration;
 
-/*
-Associative array of how elements must be renamed, key is original element, value is how it must be renamed
-*/
-string[string] renameMap;
-
 static this() {
     types_children["AddExpression"] = ["Expression*", "OP_TILDA", "OP_PLUS" , "OP_MINUS"];
     types_extra_interfaces["AddExpression"] = ["Expression"];
@@ -577,15 +572,6 @@ static this() {
     has_processDeclaration["WhileStatement"] = true;
     has_processDeclaration["WithStatement"] = false;
     has_processDeclaration["XorExpression"] = false;
-
-    foreach (string key; named_children) {
-        // Stub elements are not renamed
-        if (key in stub_children)
-            continue;
-        renameMap["DLanguage" ~ key] = "Dlang" ~ key;
-    }
-    renameMap["DLanguageIdentifierInitializer"] = "DLanguageIdentifierInitializer";
-    renameMap["DLanguageAutoAssignment"] = "DLanguageAutoAssignment";
 }
 
 enum psiDlangImportTemplate = "import io.github.intellij.dlanguage.psi.DLanguage%s;";
@@ -782,7 +768,7 @@ string getImplImports(string[] elements, string key, string parentClassName = nu
 string getStubImplImports(string[][string] elements, string key) {
     string[] normalImports = defaultStubImplImports.dup;
     string[] staticImports;
-    auto stubImport = key == "Unittest" ? "import io.github.intellij.dlanguage.stubs.interfaces.Dlang%sStub;".format(key) : "import io.github.intellij.dlanguage.stubs.Dlang%sStub;".format(key);
+    auto stubImport = "import io.github.intellij.dlanguage.stubs.DLanguage%sStub;".format(key);
     normalImports ~= stubImport;
     getImplImportsElements(elements[key], key, staticImports, normalImports);
     return formatImplImports(staticImports, normalImports);
@@ -867,7 +853,7 @@ string getStubInterfaceImports(string[] elements, string key) {
     import std.array;
     auto imports = getInterfaceImportElements(elements, key);
     // unittest is a special case where it’s stored under another path
-    auto stubImport = key == "Unittest" ? "import io.github.intellij.dlanguage.stubs.interfaces.Dlang%sStub;".format(key) : "import io.github.intellij.dlanguage.stubs.Dlang%sStub;".format(key);
+    auto stubImport = "import io.github.intellij.dlanguage.stubs.DLanguage%sStub;".format(key);
     imports ~= [
         "import com.intellij.psi.StubBasedPsiElement;",
         "import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;",
@@ -955,8 +941,8 @@ int main(string[] args) {
             }
             interfaceFile ~= "\n}\n";
 
-            File f = File((interfaceClassName ~".java").renameMapApply(), "w");
-            f.write(interfaceFile.renameMapApply());
+            File f = File(interfaceClassName ~ ".java", "w");
+            f.write(interfaceFile);
             f.close();
         } else {
             // implementation
@@ -978,8 +964,8 @@ int main(string[] args) {
             }
             implFile ~= "\n}\n";
 
-            File f = File(chainPath("impl", (implClassName ~ ".java").renameMapApply()), "w");
-            f.write(implFile.renameMapApply());
+            File f = File(chainPath("impl", implClassName ~ ".java"), "w");
+            f.write(implFile);
             f.close();
         }
     }
@@ -992,7 +978,7 @@ int main(string[] args) {
         string interfaceClassName = "DLanguage" ~ key;
         if (genInterface) {
             // interface
-            string[] interfaces = ["DCompositeElement", "StubBasedPsiElement<Dlang%sStub>".format(key)];
+            string[] interfaces = ["DCompositeElement", "StubBasedPsiElement<DLanguage%sStub>".format(key)];
             if (named_children.canFind(key))
                 interfaces.insertInPlace(1, "DNamedElement");
             auto extraInterfaces = key in types_extra_interfaces ? types_extra_interfaces[key] : [];
@@ -1012,46 +998,22 @@ int main(string[] args) {
 `;
             }
             interfaceFile ~= "\n}\n";
-            File f = File((interfaceClassName ~".java"), "w");
-            f.write(interfaceFile.renameMapApply());
+            File f = File(interfaceClassName ~ ".java", "w");
+            f.write(interfaceFile);
             f.close();
         } else if (generate_stubImpl.canFind(key)) {
             // implementation
             string implClassName = "DLanguage" ~ key ~ "Impl";
-            string stubPsiElementClassName = "Dlang" ~ key ~ "Stub";
+            string stubPsiElementClassName = "DLanguage" ~ key ~ "Stub";
             string implFile = implStubFileTemplate.format(getStubImplImports(stub_children, key), implClassName, stubPsiElementClassName, interfaceClassName, implClassName, implClassName, stubPsiElementClassName, key);
             foreach (string toget; stub_children[key]) {
                 implFile ~= getterMethod(toget);
             }
             implFile ~= "\n}\n";
-            File f = File(chainPath("impl",(implClassName ~ ".java").renameMapApply()),"w");
-            f.write(implFile.renameMapApply());
+            File f = File(chainPath("impl",implClassName ~ ".java"),"w");
+            f.write(implFile);
             f.close();
         }
     }
     return 0;
-}
-
-
-string renameMapApply(string thing) {
-    import std.regex;
-    foreach(reg; renameMap.keys) {
-        auto re = regex(reg ~ "\\ ");
-        thing = thing.replaceAll(re, renameMap[reg] ~ " ");
-        re = regex(reg ~ "\\.");
-        thing = thing.replaceAll(re, renameMap[reg]~".");
-        re = regex(reg ~ ">");
-        thing = thing.replaceAll(re, renameMap[reg]~">");
-        re = regex(reg ~ "\\{");
-        thing = thing.replaceAll(re, renameMap[reg]~"{");
-        re = regex(reg ~ "Stub\\ ");
-        thing = thing.replaceAll(re, renameMap[reg] ~ "Stub ");
-        re = regex(reg ~ "Stub\\.");
-        thing = thing.replaceAll(re, renameMap[reg]~"Stub.");
-        re = regex(reg ~ "Stub>");
-        thing = thing.replaceAll(re, renameMap[reg]~"Stub>");
-        re = regex(reg ~ ";");
-        thing = thing.replaceAll(re,renameMap[reg]~";");
-    }
-    return thing;
 }

@@ -9,9 +9,9 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.psi.named.DlangStructDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageStructDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangStructDeclarationStub;
+import io.github.intellij.dlanguage.stubs.DLanguageStructDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,10 +19,10 @@ import static io.github.intellij.dlanguage.psi.DlangTypes.KW_STRUCT;
 import static io.github.intellij.dlanguage.psi.DlangTypes.OP_SCOLON;
 
 public class DlangStructDeclarationImpl extends
-    DNamedStubbedPsiElementBase<DlangStructDeclarationStub> implements
-    DlangStructDeclaration {
+    DNamedStubbedPsiElementBase<DLanguageStructDeclarationStub> implements
+    DLanguageStructDeclaration {
 
-    public DlangStructDeclarationImpl(final DlangStructDeclarationStub stub, final IStubElementType type) {
+    public DlangStructDeclarationImpl(final DLanguageStructDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

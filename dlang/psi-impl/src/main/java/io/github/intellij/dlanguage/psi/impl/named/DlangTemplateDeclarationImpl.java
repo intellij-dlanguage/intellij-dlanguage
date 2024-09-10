@@ -9,9 +9,9 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
-import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageTemplateDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangTemplateDeclarationStub;
+import io.github.intellij.dlanguage.stubs.DLanguageTemplateDeclarationStub;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,10 +19,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class DlangTemplateDeclarationImpl extends
-    DNamedStubbedPsiElementBase<DlangTemplateDeclarationStub> implements
-    DlangTemplateDeclaration {
+    DNamedStubbedPsiElementBase<DLanguageTemplateDeclarationStub> implements
+    DLanguageTemplateDeclaration {
 
-    public DlangTemplateDeclarationImpl(final DlangTemplateDeclarationStub stub, final IStubElementType type) {
+    public DlangTemplateDeclarationImpl(final DLanguageTemplateDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

@@ -7,7 +7,7 @@ import com.intellij.psi.stubs.IStubElementType;
 import io.github.intellij.dlanguage.psi.DLanguageNamedImportBind;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.stubs.DlangNamedImportBindStub;
+import io.github.intellij.dlanguage.stubs.DLanguageNamedImportBindStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,9 +15,9 @@ import static io.github.intellij.dlanguage.psi.DlangTypes.OP_EQ;
 import static io.github.intellij.dlanguage.psi.DlangTypes.ID;
 
 
-public class DLanguageNamedImportBindImpl extends DNamedStubbedPsiElementBase<DlangNamedImportBindStub> implements DLanguageNamedImportBind {
+public class DLanguageNamedImportBindImpl extends DNamedStubbedPsiElementBase<DLanguageNamedImportBindStub> implements DLanguageNamedImportBind {
 
-    public DLanguageNamedImportBindImpl(final DlangNamedImportBindStub stub, final IStubElementType type) {
+    public DLanguageNamedImportBindImpl(final DLanguageNamedImportBindStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

@@ -5,7 +5,7 @@ import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.testFramework.UsefulTestCase
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration
-import io.github.intellij.dlanguage.psi.named.DlangAliasInitializer
+import io.github.intellij.dlanguage.psi.named.DLanguageAliasInitializer
 import io.github.intellij.dlanguage.utils.StructBody
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -33,7 +33,7 @@ class ScopeProcessorTest : UsefulTestCase() {
     @Test
     fun testProcessDeclarationsShouldntContinue() {
         val alias = mock<DLanguageAliasDeclaration>()
-        val aliasInitializer: DlangAliasInitializer = mock<DlangAliasInitializer>()
+        val aliasInitializer: DLanguageAliasInitializer = mock<DLanguageAliasInitializer>()
         whenever(alias.aliasInitializers).thenReturn(listOf(aliasInitializer))
 
         val element = mock<StructBody>()

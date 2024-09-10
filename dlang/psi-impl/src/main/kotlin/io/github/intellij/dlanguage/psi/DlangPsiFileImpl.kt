@@ -13,7 +13,7 @@ import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangFileType
 import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
-import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.utils.getImportText
 import org.apache.commons.lang3.StringUtils
@@ -36,10 +36,10 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
     private fun findModuleDeclaration(): Optional<String> {
         return Optional.ofNullable(
             findChildByClass(
-                DlangModuleDeclaration::class.java
+                DLanguageModuleDeclaration::class.java
             )
         )
-            .map { obj: DlangModuleDeclaration -> obj.identifierChain }
+            .map { obj: DLanguageModuleDeclaration -> obj.identifierChain }
             .map { obj: DLanguageIdentifierChain? -> getImportText(obj!!) }
     }
 
@@ -94,7 +94,7 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
     ): Boolean {
         var toContinue = true
         for (element in children) {
-            if (element is DlangModuleDeclaration) {
+            if (element is DLanguageModuleDeclaration) {
                 if (!processor.execute(element, state)) {
                     toContinue = false
                 }
@@ -136,7 +136,7 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
     @Throws(IncorrectOperationException::class)
     override fun setName(name: String): PsiElement {
         val module = findChildByClass(
-            DlangModuleDeclaration::class.java
+            DLanguageModuleDeclaration::class.java
         )
         val extensionLessName = StringUtils.removeEnd(name, ".d")
         val packageName = getPackageName()

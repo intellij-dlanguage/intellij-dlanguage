@@ -16,19 +16,19 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
-import io.github.intellij.dlanguage.psi.named.DlangConstructor;
+import io.github.intellij.dlanguage.psi.named.DLanguageConstructor;
 import io.github.intellij.dlanguage.psi.impl.DLanguageParametersImpl;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangConstructorStub;
+import io.github.intellij.dlanguage.stubs.DLanguageConstructorStub;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DLanguageConstructorImpl extends
-    DNamedStubbedPsiElementBase<DlangConstructorStub> implements DlangConstructor {
+    DNamedStubbedPsiElementBase<DLanguageConstructorStub> implements DLanguageConstructor {
 
-    public DLanguageConstructorImpl(final DlangConstructorStub stub, final IStubElementType type) {
+    public DLanguageConstructorImpl(final DLanguageConstructorStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

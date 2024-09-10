@@ -6,9 +6,9 @@ import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import com.intellij.util.io.StringRef
 import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl
-import io.github.intellij.dlanguage.psi.named.DlangSingleImport
+import io.github.intellij.dlanguage.psi.named.DLanguageSingleImport
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes.Companion.read
-import io.github.intellij.dlanguage.stubs.DlangSingleImportStub
+import io.github.intellij.dlanguage.stubs.DLanguageSingleImportStub
 import java.io.IOException
 import java.util.HashMap
 import java.util.HashSet
@@ -17,12 +17,12 @@ import java.util.HashSet
  * Created by francis on 3/15/2017.
  */
 class SingleImportStubElementType(debugName: String) :
-    DNamedStubElementType<DlangSingleImportStub, DlangSingleImport>(debugName) {
-    override fun createPsi(stub: DlangSingleImportStub): DlangSingleImport {
+    DNamedStubElementType<DLanguageSingleImportStub, DLanguageSingleImport>(debugName) {
+    override fun createPsi(stub: DLanguageSingleImportStub): DLanguageSingleImport {
         return DlangSingleImportImpl(stub, this)
     }
 
-    override fun createStub(psi: DlangSingleImport, parentStub: StubElement<*>?): DlangSingleImportStub {
+    override fun createStub(psi: DLanguageSingleImport, parentStub: StubElement<*>?): DLanguageSingleImportStub {
         val binds: MutableSet<StringRef?> = HashSet<StringRef?>()
         for (bind in psi.getApplicableImportBinds()) {
             binds.add(StringRef.fromString(bind))
@@ -34,7 +34,7 @@ class SingleImportStubElementType(debugName: String) :
                 StringRef.fromString(bind)
             )
         }
-        return DlangSingleImportStub(
+        return DLanguageSingleImportStub(
             parentStub, this, psi.getName(),
             psi.getApplicableImportBinds().size, binds,
             psi.getApplicableNamedImportBinds().size, namedBinds,
@@ -46,7 +46,7 @@ class SingleImportStubElementType(debugName: String) :
     }
 
     @Throws(IOException::class)
-    override fun serialize(stub: DlangSingleImportStub, dataStream: StubOutputStream) {
+    override fun serialize(stub: DLanguageSingleImportStub, dataStream: StubOutputStream) {
         dataStream.writeName(stub.name)
         dataStream.writeInt(stub.numBinds())
         for (s in stub.binds) {
@@ -65,7 +65,7 @@ class SingleImportStubElementType(debugName: String) :
     }
 
     @Throws(IOException::class)
-    override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>?): DlangSingleImportStub {
+    override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>?): DLanguageSingleImportStub {
         val name = dataStream.readName()
         val numBinds = dataStream.readInt()
         val binds: MutableSet<StringRef?> = HashSet<StringRef?>()
@@ -81,13 +81,13 @@ class SingleImportStubElementType(debugName: String) :
         val hasName = dataStream.readBoolean()
         val importedModule = dataStream.readName()
         val attributes = read(dataStream)
-        return DlangSingleImportStub(
+        return DLanguageSingleImportStub(
             parentStub, this, name, numBinds, binds, numNamedBinds, namedBinds,
             importName, hasName, importedModule, attributes
         )
     }
 
     override fun shouldCreateStub(node: ASTNode): Boolean {
-        return !(node.psi as DlangSingleImport).getImportedModuleName().isBlank()
+        return !(node.psi as DLanguageSingleImport).getImportedModuleName().isBlank()
     }
 }

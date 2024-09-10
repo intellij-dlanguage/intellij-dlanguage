@@ -13,20 +13,20 @@ import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.DLanguageType;
-import io.github.intellij.dlanguage.psi.named.DlangAliasInitializer;
+import io.github.intellij.dlanguage.psi.named.DLanguageAliasInitializer;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangAliasInitializerStub;
+import io.github.intellij.dlanguage.stubs.DLanguageAliasInitializerStub;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DLanguageAliasInitializerImpl extends
-    DNamedStubbedPsiElementBase<DlangAliasInitializerStub> implements DlangAliasInitializer {
+    DNamedStubbedPsiElementBase<DLanguageAliasInitializerStub> implements DLanguageAliasInitializer {
 
     //todo doesn't cover all alias declarations possible
-    public DLanguageAliasInitializerImpl(final DlangAliasInitializerStub stub, final IStubElementType type) {
+    public DLanguageAliasInitializerImpl(final DLanguageAliasInitializerStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

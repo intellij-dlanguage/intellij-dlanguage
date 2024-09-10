@@ -7,15 +7,15 @@ import com.intellij.psi.stubs.IStubElementType;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.psi.named.DlangDeclaratorIdentifier;
-import io.github.intellij.dlanguage.stubs.DlangDeclaratorIdentifierStub;
+import io.github.intellij.dlanguage.psi.named.DLanguageDeclaratorIdentifier;
+import io.github.intellij.dlanguage.stubs.DLanguageDeclaratorIdentifierStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DlangDeclaratorIdentifierImpl extends
-    DNamedStubbedPsiElementBase<DlangDeclaratorIdentifierStub> implements
-    DlangDeclaratorIdentifier {
-    public DlangDeclaratorIdentifierImpl(@NotNull DlangDeclaratorIdentifierStub stub, IStubElementType nodeType) {
+    DNamedStubbedPsiElementBase<DLanguageDeclaratorIdentifierStub> implements
+    DLanguageDeclaratorIdentifier {
+    public DlangDeclaratorIdentifierImpl(@NotNull DLanguageDeclaratorIdentifierStub stub, IStubElementType nodeType) {
         super(stub, nodeType);
     }
 

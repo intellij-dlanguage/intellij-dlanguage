@@ -9,19 +9,19 @@ import io.github.intellij.dlanguage.psi.DLanguageAssignExpression;
 import io.github.intellij.dlanguage.psi.DLanguageParameterAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DLanguageTypeSuffix;
-import io.github.intellij.dlanguage.psi.named.DlangParameter;
+import io.github.intellij.dlanguage.psi.named.DLanguageParameter;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.stubs.DlangParameterStub;
+import io.github.intellij.dlanguage.stubs.DLanguageParameterStub;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DLanguageParameterImpl extends
-    DNamedStubbedPsiElementBase<DlangParameterStub> implements DlangParameter {
+    DNamedStubbedPsiElementBase<DLanguageParameterStub> implements DLanguageParameter {
 
-    public DLanguageParameterImpl(final DlangParameterStub stub, final IStubElementType type) {
+    public DLanguageParameterImpl(final DLanguageParameterStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

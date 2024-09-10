@@ -30,7 +30,7 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
             holder.registerProblem(elem, type + " name '" + name + "' does not match style guidelines.")
     }
 
-    override fun visitModuleDeclaration(o: DlangModuleDeclaration) {
+    override fun visitModuleDeclaration(o: DLanguageModuleDeclaration) {
         var identifierChain = o.identifierChain
         while (identifierChain != null) {
             checkName("Module", identifierChain.identifier!!.text, identifierChain.identifier!!, moduleNameRegex)
@@ -43,32 +43,32 @@ class PhobosStyleGuidelinesVisitor(val holder: ProblemsHolder) : DlangVisitor() 
         checkName("Variable", StringUtil.decapitalize(o.name!!), o.nameIdentifier!!, varFunNameRegex)
     }
 
-    override fun visitFunctionDeclaration(o: DlangFunctionDeclaration) {
+    override fun visitFunctionDeclaration(o: DLanguageFunctionDeclaration) {
         o.name?:return
         checkName("Function", StringUtil.decapitalize(o.name!!), o.nameIdentifier!!, varFunNameRegex)
     }
 
-    override fun visitClassDeclaration(o: DlangClassDeclaration) {
+    override fun visitClassDeclaration(o: DLanguageClassDeclaration) {
         o.name?:return
         checkName("Class", o.name!!, o, aggregateNameRegex)
     }
 
-    override fun visitInterfaceDeclaration(o: DlangInterfaceDeclaration) {
+    override fun visitInterfaceDeclaration(o: DLanguageInterfaceDeclaration) {
         o.name?:return
         checkName("Interface", o.name!!, o, aggregateNameRegex)
     }
 
-    override fun visitStructDeclaration(o: DlangStructDeclaration) {
+    override fun visitStructDeclaration(o: DLanguageStructDeclaration) {
         o.name?:return
         checkName("Struct", o.name!!, o, aggregateNameRegex)
     }
 
-    override fun visitUnionDeclaration(o: DlangUnionDeclaration) {
+    override fun visitUnionDeclaration(o: DLanguageUnionDeclaration) {
         o.name?:return
         checkName("Union", o.name!!, o, aggregateNameRegex)
     }
 
-    override fun visitEnumDeclaration(o: DlangEnumDeclaration) {
+    override fun visitEnumDeclaration(o: DLanguageEnumDeclaration) {
         o.name?:return
         checkName("Enum", o.name!!, o, aggregateNameRegex)
     }

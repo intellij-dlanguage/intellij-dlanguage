@@ -7,18 +7,18 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.psi.impl.DElementFactory;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.stubs.DlangModuleDeclarationStub;
+import io.github.intellij.dlanguage.stubs.DLanguageModuleDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DlangModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DlangModuleDeclarationStub> implements DlangModuleDeclaration {
+public class DlangModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DLanguageModuleDeclarationStub> implements DLanguageModuleDeclaration {
 
-    public DlangModuleDeclarationImpl(final DlangModuleDeclarationStub stub, final IStubElementType type) {
+    public DlangModuleDeclarationImpl(final DLanguageModuleDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 
@@ -38,7 +38,7 @@ public class DlangModuleDeclarationImpl extends DNamedStubbedPsiElementBase<Dlan
 
     @NotNull
     public String getName() {
-        final DlangModuleDeclarationStub greenStub = getGreenStub();
+        final DLanguageModuleDeclarationStub greenStub = getGreenStub();
         if (greenStub != null) {
             return greenStub.getName();
         }

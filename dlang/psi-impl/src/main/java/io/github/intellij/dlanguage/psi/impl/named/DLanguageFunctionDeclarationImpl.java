@@ -9,10 +9,10 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangFunctionDeclarationStub;
+import io.github.intellij.dlanguage.stubs.DLanguageFunctionDeclarationStub;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,9 +21,9 @@ import org.jetbrains.annotations.Nullable;
  * Created by francis on 7/14/2017.
  */
 public class DLanguageFunctionDeclarationImpl extends
-    DNamedStubbedPsiElementBase<DlangFunctionDeclarationStub> implements DlangFunctionDeclaration {
+    DNamedStubbedPsiElementBase<DLanguageFunctionDeclarationStub> implements DLanguageFunctionDeclaration {
 
-    public DLanguageFunctionDeclarationImpl(@NotNull final DlangFunctionDeclarationStub stub, final IStubElementType nodeType) {
+    public DLanguageFunctionDeclarationImpl(@NotNull final DLanguageFunctionDeclarationStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 

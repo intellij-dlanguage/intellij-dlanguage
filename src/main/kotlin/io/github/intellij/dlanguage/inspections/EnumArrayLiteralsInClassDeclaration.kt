@@ -6,9 +6,9 @@ import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
-import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration
-import io.github.intellij.dlanguage.psi.named.DlangStructDeclaration
-import io.github.intellij.dlanguage.psi.named.DlangUnionDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageClassDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageStructDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageUnionDeclaration
 import io.github.intellij.dlanguage.quickfix.MakeStaticImmutable
 import io.github.intellij.dlanguage.utils.AutoAssignment
 
@@ -23,15 +23,15 @@ class EnumArrayLiteralsInClassDeclaration : LocalInspectionTool() {
 }
 
 class EnumArrayLiteralsInClassDeclarationVisitor(val holder: ProblemsHolder) : DlangVisitor() {
-    override fun visitClassDeclaration(o: DlangClassDeclaration) {
+    override fun visitClassDeclaration(o: DLanguageClassDeclaration) {
         checkForEnumLiterals(o)
     }
 
-    override fun visitUnionDeclaration(o: DlangUnionDeclaration) {
+    override fun visitUnionDeclaration(o: DLanguageUnionDeclaration) {
         checkForEnumLiterals(o)
     }
 
-    override fun visitStructDeclaration(o: DlangStructDeclaration) {
+    override fun visitStructDeclaration(o: DLanguageStructDeclaration) {
         checkForEnumLiterals(o)
     }
 

@@ -9,7 +9,7 @@ import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageSpecifiedVariableDeclaration;
 import io.github.intellij.dlanguage.psi.DlangPsiFile;
-import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,14 +56,14 @@ public class DElementFactory {
     }
 
     @Nullable
-    public static DlangModuleDeclaration createDLanguageModuleFromText(@NotNull final Project project,
-                                                                       @NotNull final String name) {
+    public static DLanguageModuleDeclaration createDLanguageModuleFromText(@NotNull final Project project,
+                                                                           @NotNull final String name) {
         if(StringUtil.isEmptyOrSpaces(name)) {
             return null; // perhaps should throw exception
         }
         return findChildOfType(
             createFileFromText(project, "module " + name + ";"),
-            DlangModuleDeclaration.class
+            DLanguageModuleDeclaration.class
         );
     }
 

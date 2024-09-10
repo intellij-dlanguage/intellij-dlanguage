@@ -12,16 +12,16 @@ import io.github.intellij.dlanguage.psi.DLanguageLabeledStatement;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangLabeledStatementStub;
+import io.github.intellij.dlanguage.stubs.DLanguageLabeledStatementStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static io.github.intellij.dlanguage.psi.DlangTypes.ID;
 import static io.github.intellij.dlanguage.psi.DlangTypes.OP_COLON;
 
-public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<DlangLabeledStatementStub> implements DLanguageLabeledStatement {
+public class DLanguageLabeledStatementImpl extends DNamedStubbedPsiElementBase<DLanguageLabeledStatementStub> implements DLanguageLabeledStatement {
 
-    public DLanguageLabeledStatementImpl(final DlangLabeledStatementStub stub, final IStubElementType type) {
+    public DLanguageLabeledStatementImpl(final DLanguageLabeledStatementStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

@@ -4,30 +4,30 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import io.github.intellij.dlanguage.psi.impl.named.DlangClassDeclarationImpl
-import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageClassDeclaration
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes.Companion.read
-import io.github.intellij.dlanguage.stubs.DlangClassDeclarationStub
+import io.github.intellij.dlanguage.stubs.DLanguageClassDeclarationStub
 import java.io.IOException
 
 class ClassDeclarationStubElementType(debugName: String) :
-    DNamedStubElementType<DlangClassDeclarationStub, DlangClassDeclaration>(debugName) {
-    override fun createPsi(stub: DlangClassDeclarationStub): DlangClassDeclaration {
+    DNamedStubElementType<DLanguageClassDeclarationStub, DLanguageClassDeclaration>(debugName) {
+    override fun createPsi(stub: DLanguageClassDeclarationStub): DLanguageClassDeclaration {
         return DlangClassDeclarationImpl(stub, this)
     }
 
-    override fun createStub(psi: DlangClassDeclaration, parentStub: StubElement<*>?): DlangClassDeclarationStub {
-        return DlangClassDeclarationStub(parentStub, this, psi.name, psi.attributes)
+    override fun createStub(psi: DLanguageClassDeclaration, parentStub: StubElement<*>?): DLanguageClassDeclarationStub {
+        return DLanguageClassDeclarationStub(parentStub, this, psi.name, psi.attributes)
     }
 
     @Throws(IOException::class)
-    override fun serialize(stub: DlangClassDeclarationStub, dataStream: StubOutputStream) {
+    override fun serialize(stub: DLanguageClassDeclarationStub, dataStream: StubOutputStream) {
         dataStream.writeName(stub.name)
         stub.attributes.write(dataStream)
     }
 
     @Throws(IOException::class)
-    override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>?): DlangClassDeclarationStub {
-        return DlangClassDeclarationStub(
+    override fun deserialize(dataStream: StubInputStream, parentStub: StubElement<*>?): DLanguageClassDeclarationStub {
+        return DLanguageClassDeclarationStub(
             parentStub, this, dataStream.readName(),
             read(dataStream)
         )

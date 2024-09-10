@@ -4,7 +4,7 @@ import com.intellij.psi.stubs.NamedStubBase
 import com.intellij.psi.stubs.StubElement
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.stubs.*
-import io.github.intellij.dlanguage.stubs.interfaces.DlangUnittestStub
+import io.github.intellij.dlanguage.stubs.DLanguageUnittestStub
 
 /**
  * Created by francis on 8/8/2017.
@@ -14,12 +14,12 @@ fun <S : NamedStubBase<T>, T : DNamedElement> topLevelDeclaration(stub: S): Bool
     //stuff within func declarations does not count as top level b/c not globally accessible todo check if this is true for all declaration types
     //switch the topLevel declaration to a file gist maybe
 
-    if (stub is DlangParameterStub || stub is DlangForeachTypeStub || stub is DlangTemplateParameterStub) {
+    if (stub is DLanguageParameterStub || stub is DLanguageForeachTypeStub || stub is DLanguageTemplateParameterStub) {
         return false
     }
 
-    if (stub is DlangEnumMemberStub) {
-        return stub.parentStub !is DlangEnumDeclarationStub
+    if (stub is DLanguageEnumMemberStub) {
+        return stub.parentStub !is DLanguageEnumDeclarationStub
     }
 
 
@@ -29,16 +29,16 @@ fun <S : NamedStubBase<T>, T : DNamedElement> topLevelDeclaration(stub: S): Bool
         if (stubParent == null) {
             return true
         }
-        if (stubParent is DlangFunctionDeclarationStub) {
+        if (stubParent is DLanguageFunctionDeclarationStub) {
             return false
         }
-        if (stubParent is DlangConstructorStub || stubParent is DlangSharedStaticConstructorStub || stubParent is DlangStaticConstructorStub || stubParent is DlangDestructorStub || stubParent is DlangSharedStaticDestructorStub || stubParent is DlangStaticDestructorStub) {
+        if (stubParent is DLanguageConstructorStub || stubParent is DLanguageSharedStaticConstructorStub || stubParent is DLanguageStaticConstructorStub || stubParent is DLanguageDestructorStub || stubParent is DLanguageSharedStaticDestructorStub || stubParent is DLanguageStaticDestructorStub) {
             return false
         }
-        if (stubParent is DlangStructDeclarationStub || stubParent is DlangInterfaceDeclarationStub || stubParent is DlangClassDeclarationStub) {
+        if (stubParent is DLanguageStructDeclarationStub || stubParent is DLanguageInterfaceDeclarationStub || stubParent is DLanguageClassDeclarationStub) {
             return false
         }
-        if (stubParent is DlangUnittestStub) {
+        if (stubParent is DLanguageUnittestStub) {
             return false
         }
     }
