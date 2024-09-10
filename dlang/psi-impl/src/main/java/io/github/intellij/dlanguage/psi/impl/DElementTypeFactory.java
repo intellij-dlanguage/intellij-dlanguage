@@ -36,7 +36,10 @@ public class DElementTypeFactory {
             case "IF_CONDITION" -> new DlangIfConditionStubElementType(name);
             case "FOREACH_TYPE" -> new DlangForeachTypeStubElementType(name);
             case "PARAMETER" -> new DlangParameterStubElementType(name);
-            case "TEMPLATE_PARAMETER" -> new DlangTemplateParameterStubElementType(name);
+            case "TEMPLATE_ALIAS_PARAMETER" -> new DlangTemplateAliasParameterStubElementType(name);
+            case "TEMPLATE_TUPLE_PARAMETER" -> new DlangTemplateTupleParameterStubElementType(name);
+            case "TEMPLATE_TYPE_PARAMETER" -> new DlangTemplateTypeParameterStubElementType(name);
+            case "TEMPLATE_VALUE_PARAMETER" -> new DlangTemplateValueParameterStubElementType(name);
             case "ENUM_MEMBER" -> new DlangEnumMemberStubElementType(name);
             case "NAMED_IMPORT_BIND" -> new DLanguageNamedImportBindStubElementType(name);
             case "VERSION_SPECIFICATION" -> new VersionSpecificationElementType(name);

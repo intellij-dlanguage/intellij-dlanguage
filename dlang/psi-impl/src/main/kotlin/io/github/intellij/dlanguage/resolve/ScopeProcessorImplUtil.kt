@@ -132,18 +132,4 @@ object ScopeProcessorImplUtil {
         return true
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    fun processTemplateParameters(element: TemplateParameters,
-                                  processor: PsiScopeProcessor,
-                                  state: ResolveState,
-                                  lastParent: PsiElement?,
-                                  place: PsiElement): Boolean {
-        for (p in element.templateParameterList?.templateParameters ?: listOf()) {
-            if (!processor.execute(p, state)) {
-                return false
-            }
-        }
-        return true
-    }
-
 }

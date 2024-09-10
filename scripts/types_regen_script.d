@@ -46,7 +46,10 @@ string[] named_children = [
     "SingleImport",
     "StructDeclaration",
     "TemplateDeclaration",
-    "TemplateParameter",
+    "TemplateAliasParameter",
+    "TemplateTupleParameter",
+    "TemplateTypeParameter",
+    "TemplateValueParameter",
     "UnionDeclaration",
     "VersionSpecification",
 ];
@@ -69,16 +72,7 @@ static this() {
     types_extra_interfaces["AddExpression"] = ["Expression"];
     types_children["AliasAssign"] = ["Type","OP_EQ"];
     types_extra_interfaces["AliasAssign"] = ["Declaration"];
-    types_children["AliasDeclaration"] = ["DeclaratorIdentifier*","OP_COMMA","StorageClass*","KW_ALIAS", "Type", "OP_SCOLON", "AliasInitializer*"];
-    types_extra_interfaces["AliasDeclaration"] = ["Declaration"];
-    types_children["AliasThisDeclaration"] = ["KW_ALIAS", "Identifier", "KW_THIS", "OP_SCOLON"];
-    types_extra_interfaces["AliasThisDeclaration"] = ["Declaration"];
-    types_children["AlignAttribute"] = ["KW_ALIGN", "AssignExpression", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
-    types_children["AndAndExpression"] = ["Expression*", "OP_BOOL_AND"];
-    types_extra_interfaces["AndAndExpression"] = ["Expression"];
-    types_children["AndExpression"] = ["Expression*", "OP_AND"];
-    types_extra_interfaces["AndExpression"] = ["Expression"];
-    types_children["AnonymousEnumDeclaration"] = ["Expression","OP_COLON","KW_ENUM","OP_PAR_LEFT","OP_PAR_RIGHT","Type","EnumMember*"];
+    types_children["AliasDeclaration"] = ["DeclaratorIdentifier*","OP_COMMA","StorageClass*","KW_ALIAS", "Type", "OP_SCOLON", "AliasInitializer*"]; types_extra_interfaces["AliasDeclaration"] = ["Declaration"]; types_children["AliasThisDeclaration"] = ["KW_ALIAS", "Identifier", "KW_THIS", "OP_SCOLON"]; types_extra_interfaces["AliasThisDeclaration"] = ["Declaration"]; types_children["AlignAttribute"] = ["KW_ALIGN", "AssignExpression", "OP_PAR_RIGHT", "OP_PAR_LEFT"]; types_children["AndAndExpression"] = ["Expression*", "OP_BOOL_AND"]; types_extra_interfaces["AndAndExpression"] = ["Expression"]; types_children["AndExpression"] = ["Expression*", "OP_AND"]; types_extra_interfaces["AndExpression"] = ["Expression"]; types_children["AnonymousEnumDeclaration"] = ["Expression","OP_COLON","KW_ENUM","OP_PAR_LEFT","OP_PAR_RIGHT","Type","EnumMember*"];
     types_extra_interfaces["AnonymousEnumDeclaration"] = ["Declaration"];
     types_children["AnonymousEnumMember"] = [];
     types_children["ArgumentList"] = ["Expression*", "OP_COMMA*"];
@@ -312,7 +306,8 @@ static this() {
     types_extra_interfaces["SwitchStatement"] = ["Statement"];
     types_children["SynchronizedStatement"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","KW_SYNCHRONIZED"];
     types_extra_interfaces["SynchronizedStatement"] = ["Statement"];
-    types_children["TemplateAliasParameter"] = ["KW_ALIAS","Identifier","Type*","AssignExpression*","OP_COLON","OP_EQ"];
+    stub_children["TemplateAliasParameter"] = ["KW_ALIAS","Identifier","Type*","AssignExpression*","OP_COLON","OP_EQ"];
+    types_extra_interfaces["TemplateAliasParameter"] = ["TemplateParameter"];
     types_children["TemplateArgument"] = ["Type","AssignExpression"];
     types_children["TemplateArgumentList"] = ["OP_COMMA*","TemplateArgument*"];
     types_children["TemplateArguments"] = ["TemplateArgumentList","TemplateSingleArgument","OP_PAR_RIGHT","OP_PAR_LEFT","OP_NOT"];
@@ -323,16 +318,19 @@ static this() {
     types_extra_interfaces["TemplateMixinDeclaration"] = ["Declaration"];
     types_children["TemplateMixinExpression"] = ["KW_MIXIN","MixinTemplateName","TemplateArguments","Identifier"];
     types_extra_interfaces["TemplateMixinExpression"] = ["Expression"];
-    stub_children ["TemplateParameter"] = ["TemplateAliasParameter","TemplateTupleParameter","TemplateTypeParameter","TemplateThisParameter","TemplateValueParameter"];
     types_children["TemplateParameterList"] = ["TemplateParameter*","OP_COMMA*"];
     types_children["TemplateParameters"] = ["TemplateParameterList","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["TemplateSingleArgument"] = ["Identifier","BuiltinType","KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW_NULL",
                                                 "KW___DATE__","KW___EOF__","KW___FILE__","KW___FILE_FULL_PATH__","KW___FUNCTION__","KW___GSHARED","KW___LINE__","KW___MODULE__","KW___PARAMETERS","KW___PRETTY_FUNCTION__","KW___TIME__","KW___TIMESTAMP__","KW___TRAITS","KW___VECTOR","KW___VENDOR__","KW___VERSION__",
                                                 "INTEGER_LITERAL","FLOAT_LITERAL","DOUBLE_QUOTED_STRING","CHARACTER_LITERAL"];
     types_children["TemplateThisParameter"] = ["KW_THIS","TemplateTypeParameter"];
-    types_children["TemplateTupleParameter"] = ["Identifier","OP_TRIPLEDOT"];
-    types_children["TemplateTypeParameter"] = ["Identifier","Type*","OP_COLON","OP_EQ"];
-    types_children["TemplateValueParameter"] = ["Type","Identifier","OP_COLON","AssignExpression",  "TemplateValueParameterDefault"];
+    types_extra_interfaces["TemplateThisParameter"] = ["TemplateParameter"];
+    stub_children["TemplateTupleParameter"] = ["Identifier","OP_TRIPLEDOT"];
+    types_extra_interfaces["TemplateTupleParameter"] = ["TemplateParameter"];
+    stub_children["TemplateTypeParameter"] = ["Identifier","Type*","OP_COLON","OP_EQ"];
+    types_extra_interfaces["TemplateTypeParameter"] = ["TemplateParameter"];
+    stub_children["TemplateValueParameter"] = ["Type","Identifier","OP_COLON","AssignExpression",  "TemplateValueParameterDefault"];
+    types_extra_interfaces["TemplateValueParameter"] = ["TemplateParameter"];
     types_children["TemplateValueParameterDefault"] = ["OP_EQ","AssignExpression","KW___FILE__","KW___FUNCTION__","KW___LINE__","KW___MODULE__","KW___PRETTY_FUNCTION__"];
     types_children["TernaryExpression"] = ["OP_QUEST","OP_COLON","Expression*"];
     types_extra_interfaces["TernaryExpression"] = ["Expression"];
@@ -543,9 +541,8 @@ static this() {
 //    has_processDeclaration["TemplateDeclaration"] = true;
     has_processDeclaration["TemplateInstance"] = false;
     has_processDeclaration["TemplateMixinDeclaration"] = true;
-    has_processDeclaration["TemplateParameter"] = false;
     has_processDeclaration["TemplateParameterList"] = false;
-    has_processDeclaration["TemplateParameters"] = false;
+    has_processDeclaration["TemplateParameters"] = true;
     has_processDeclaration["TemplateSingleArgument"] = false;
     has_processDeclaration["TemplateThisParameter"] = false;
     has_processDeclaration["TemplateTupleParameter"] = false;

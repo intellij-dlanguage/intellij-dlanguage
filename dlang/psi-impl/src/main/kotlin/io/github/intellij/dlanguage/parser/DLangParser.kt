@@ -6743,19 +6743,14 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * ;)
      */
     fun parseTemplateParameter(): Boolean {
-        val m = builder.mark()
         val i = current()
         if (i === DlangTypes.KW_ALIAS) {
-            if (!parseTemplateAliasParameter()) {
-                cleanup(m, DlangTypes.TEMPLATE_PARAMETER)
-                return false
-            }
+            return parseTemplateAliasParameter();
+        } else if (i === DlangTypes.KW_THIS) {
+            return parseTemplateThisParameter();
         } else if (i === DlangTypes.ID) {
             if (peekIs(DlangTypes.OP_TRIPLEDOT)) {
-                if (!parseTemplateTupleParameter()) {
-                    cleanup(m, DlangTypes.TEMPLATE_PARAMETER)
-                    return false
-                }
+                return parseTemplateTupleParameter();
             } else if (peekIsOneOf(
                     DlangTypes.OP_COLON,
                     DlangTypes.OP_EQ,
@@ -6763,27 +6758,10 @@ internal class DLangParser(private val builder: PsiBuilder) {
                     DlangTypes.OP_PAR_RIGHT
                 )
             ) {
-                if (!parseTemplateTypeParameter()) {
-                    cleanup(m, DlangTypes.TEMPLATE_PARAMETER)
-                    return false
-                }
-            } else if (!parseTemplateValueParameter()) {
-                cleanup(m, DlangTypes.TEMPLATE_PARAMETER)
-                return false
-            }
-        } else if (i === DlangTypes.KW_THIS) {
-            if (!parseTemplateThisParameter()) {
-                cleanup(m, DlangTypes.TEMPLATE_PARAMETER)
-                return false
-            }
-        } else {
-            if (!parseTemplateValueParameter()) {
-                cleanup(m, DlangTypes.TEMPLATE_PARAMETER)
-                return false
+                return parseTemplateTypeParameter();
             }
         }
-        exit_section_modified(builder, m, DlangTypes.TEMPLATE_PARAMETER, true)
-        return true
+        return parseTemplateValueParameter();
     }
 
     /**
@@ -6990,9 +6968,11 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 return false
             }
         }
-        if (currentIs(DlangTypes.OP_EQ)) if (!parseTemplateValueParameterDefault()) {
-            cleanup(m, DlangTypes.TEMPLATE_VALUE_PARAMETER)
-            return false
+        if (currentIs(DlangTypes.OP_EQ)) {
+            if (!parseTemplateValueParameterDefault()) {
+                cleanup(m, DlangTypes.TEMPLATE_VALUE_PARAMETER)
+                return false
+            }
         }
         exit_section_modified(builder, m, DlangTypes.TEMPLATE_VALUE_PARAMETER, true)
         return true

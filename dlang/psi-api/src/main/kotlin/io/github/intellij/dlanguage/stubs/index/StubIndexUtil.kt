@@ -14,7 +14,7 @@ fun <S : NamedStubBase<T>, T : DNamedElement> topLevelDeclaration(stub: S): Bool
     //stuff within func declarations does not count as top level b/c not globally accessible todo check if this is true for all declaration types
     //switch the topLevel declaration to a file gist maybe
 
-    if (stub is DLanguageParameterStub || stub is DLanguageForeachTypeStub || stub is DLanguageTemplateParameterStub) {
+    if (stub is DLanguageParameterStub || stub is DLanguageForeachTypeStub || stub is DLanguageTemplateAliasParameterStub) {
         return false
     }
 

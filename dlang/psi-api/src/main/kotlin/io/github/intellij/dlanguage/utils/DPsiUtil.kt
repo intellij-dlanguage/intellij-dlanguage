@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil.findChildrenOfType
 import io.github.intellij.dlanguage.psi.DLanguageParameters
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
+import io.github.intellij.dlanguage.psi.interfaces.TemplateParameter
 import io.github.intellij.dlanguage.psi.named.DLanguageSingleImport
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
 
@@ -86,12 +87,10 @@ object DPsiUtil {
             val param = parameter.type?.basicType?.qualifiedIdentifier?.identifier
             if (param != null) {
                 val resolve = param.reference?.resolve()
-                if (resolve is TemplateParameter) {//todo make this identifier resolving proof
-                    if (resolve.templateTupleParameter != null) {
-                        //then the paramater in question is actually a var arg
-                        max = Integer.MAX_VALUE
-                        break
-                    }
+                if (resolve is TemplateTupleParameter) {
+                    //then the paramater in question is actually a var arg
+                    max = Integer.MAX_VALUE
+                    break
                 }
             }
             min++

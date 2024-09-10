@@ -10,6 +10,7 @@ import com.intellij.psi.tree.IElementType
 import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.colors.DColor
 import io.github.intellij.dlanguage.psi.DlangTypes
+import io.github.intellij.dlanguage.psi.interfaces.TemplateParameter
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
 import io.github.intellij.dlanguage.utils.*
 
@@ -273,22 +274,22 @@ class DSignatureDocGenerator {
     }
 
     private fun appendTemplateParameter(builder: StringBuilder, element: TemplateParameter) {
-        if (element.templateAliasParameter != null) {
-            HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, element.templateAliasParameter!!.kW_ALIAS!!.text, highlightingSaturation)
-            builder.append(" ").append(element.templateAliasParameter!!.identifier!!.text)
-        } else if (element.templateTupleParameter != null) {
-            builder.append(element.templateTupleParameter!!.identifier!!.text).append("...")
-        } else if (element.templateTypeParameter != null) {
-            appendTemplateTypeParameter(builder, element.templateTypeParameter!!)
-        } else if (element.templateThisParameter != null) {
-            HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, element.templateAliasParameter!!.kW_ALIAS!!.text, highlightingSaturation)
+        if (element is TemplateAliasParameter) {
+            HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, element.kW_ALIAS!!.text, highlightingSaturation)
+            builder.append(" ").append(element.identifier!!.text)
+        } else if (element is TemplateTupleParameter) {
+            builder.append(element.identifier!!.text).append("...")
+        } else if (element is TemplateTypeParameter) {
+            appendTemplateTypeParameter(builder, element)
+        } else if (element is TemplateThisParameter) {
+            HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, element.kW_THIS!!.text, highlightingSaturation)
             builder.append(" ")
-            appendTemplateTypeParameter(builder, element.templateThisParameter!!.templateTypeParameter!!)
-        } else if (element.templateValueParameter != null) {
-            appendType(builder, element.templateValueParameter!!.type)
-            builder.append(" ").append(element.templateValueParameter!!.identifier!!.text)
-            if (element.templateValueParameter!!.templateValueParameterDefault != null) {
-                builder.append(" = ").append(element.templateValueParameter!!.templateValueParameterDefault!!.assignExpression!!.text)
+            appendTemplateTypeParameter(builder, element.templateTypeParameter!!)
+        } else if (element is TemplateValueParameter) {
+            appendType(builder, element.type)
+            builder.append(" ").append(element.identifier!!.text)
+            if (element.templateValueParameterDefault != null) {
+                builder.append(" = ").append(element.templateValueParameterDefault!!.assignExpression!!.text)
             }
         }
     }

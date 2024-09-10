@@ -24,7 +24,6 @@ typealias StaticDestructor = io.github.intellij.dlanguage.psi.DLanguageStaticDes
 typealias StructDeclaration = DLanguageStructDeclaration
 typealias TemplateDeclaration = DLanguageTemplateDeclaration
 typealias TemplateMixinDeclaration = io.github.intellij.dlanguage.psi.DLanguageTemplateMixinDeclaration
-typealias TemplateParameter = io.github.intellij.dlanguage.psi.DLanguageTemplateParameter
 typealias UnionDeclaration = DLanguageUnionDeclaration
 typealias Unittest = io.github.intellij.dlanguage.psi.DLanguageUnittest
 typealias AliasDeclaration = io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration

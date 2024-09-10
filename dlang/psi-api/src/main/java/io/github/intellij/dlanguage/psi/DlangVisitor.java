@@ -727,10 +727,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitTemplateParameter(@NotNull final DLanguageTemplateParameter o) {
-        visitPsiElement(o);
-    }
-
     public void visitTemplateParameterList(@NotNull final DLanguageTemplateParameterList o) {
         visitPsiElement(o);
     }

@@ -5,6 +5,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import io.github.intellij.dlanguage.documentation.DlangDocCommentType;
 import io.github.intellij.dlanguage.psi.impl.*;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateAliasParameterImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateTupleParameterImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateTypeParameterImpl;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateValueParameterImpl;
 import io.github.intellij.dlanguage.psi.impl.named.*;
 
 public interface DlangTypes {
@@ -32,7 +36,10 @@ public interface DlangTypes {
     IElementType IF_CONDITION = DElementTypeFactory.factory("IF_CONDITION");
     IElementType FOREACH_TYPE = DElementTypeFactory.factory("FOREACH_TYPE");
     IElementType PARAMETER = DElementTypeFactory.factory("PARAMETER");
-    IElementType TEMPLATE_PARAMETER = DElementTypeFactory.factory("TEMPLATE_PARAMETER");
+    IElementType TEMPLATE_ALIAS_PARAMETER = DElementTypeFactory.factory("TEMPLATE_ALIAS_PARAMETER");
+    IElementType TEMPLATE_TUPLE_PARAMETER = DElementTypeFactory.factory("TEMPLATE_TUPLE_PARAMETER");
+    IElementType TEMPLATE_TYPE_PARAMETER = DElementTypeFactory.factory("TEMPLATE_TYPE_PARAMETER");
+    IElementType TEMPLATE_VALUE_PARAMETER = DElementTypeFactory.factory("TEMPLATE_VALUE_PARAMETER");
     IElementType ENUM_MEMBER = DElementTypeFactory.factory("ENUM_MEMBER");
     IElementType NAMED_IMPORT_BIND = DElementTypeFactory.factory("NAMED_IMPORT_BIND");
     IElementType VERSION_SPECIFICATION = DElementTypeFactory.factory("VERSION_SPECIFICATION");
@@ -182,7 +189,6 @@ public interface DlangTypes {
     DlangElementType STRUCT_MEMBER_INITIALIZERS = new DlangElementType("STRUCT_MEMBER_INITIALIZERS");
     DlangElementType SWITCH_STATEMENT = new DlangElementType("SWITCH_STATEMENT");
     DlangElementType SYNCHRONIZED_STATEMENT = new DlangElementType("SYNCHRONIZED_STATEMENT");
-    DlangElementType TEMPLATE_ALIAS_PARAMETER = new DlangElementType("TEMPLATE_ALIAS_PARAMETER");
     DlangElementType TEMPLATE_ARGUMENT = new DlangElementType("TEMPLATE_ARGUMENT");
     DlangElementType TEMPLATE_ARGUMENT_LIST = new DlangElementType("TEMPLATE_ARGUMENT_LIST");
     DlangElementType TEMPLATE_ARGUMENTS = new DlangElementType("TEMPLATE_ARGUMENTS");
@@ -193,9 +199,6 @@ public interface DlangTypes {
     DlangElementType TEMPLATE_PARAMETERS = new DlangElementType("TEMPLATE_PARAMETERS");
     DlangElementType TEMPLATE_SINGLE_ARGUMENT = new DlangElementType("TEMPLATE_SINGLE_ARGUMENT");
     DlangElementType TEMPLATE_THIS_PARAMETER = new DlangElementType("TEMPLATE_THIS_PARAMETER");
-    DlangElementType TEMPLATE_TUPLE_PARAMETER = new DlangElementType("TEMPLATE_TUPLE_PARAMETER");
-    DlangElementType TEMPLATE_TYPE_PARAMETER = new DlangElementType("TEMPLATE_TYPE_PARAMETER");
-    DlangElementType TEMPLATE_VALUE_PARAMETER = new DlangElementType("TEMPLATE_VALUE_PARAMETER");
     DlangElementType TEMPLATE_VALUE_PARAMETER_DEFAULT = new DlangElementType("TEMPLATE_VALUE_PARAMETER_DEFAULT");
     DlangElementType TERNARY_EXPRESSION = new DlangElementType("TERNARY_EXPRESSION");
     DlangElementType THROW_EXPRESSION = new DlangElementType("THROW_EXPRESSION");
@@ -447,8 +450,6 @@ public interface DlangTypes {
                 return new DlangStructDeclarationImpl(node);
             } else if (type == TEMPLATE_DECLARATION) {
                 return new DlangTemplateDeclarationImpl(node);
-            } else if (type == TEMPLATE_PARAMETER) {
-                return new DLanguageTemplateParameterImpl(node);
             } else if (type == UNION_DECLARATION) {
                 return new DlangUnionDeclarationImpl(node);
             } else if (type == ALIAS_DECLARATION) {
