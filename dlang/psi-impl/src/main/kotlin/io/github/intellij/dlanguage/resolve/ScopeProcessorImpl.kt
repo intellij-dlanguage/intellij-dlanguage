@@ -382,7 +382,7 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: LabeledStatement, //todo this should probably not be scope processor based
+    fun processDeclarations(element: LabeledStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement?,

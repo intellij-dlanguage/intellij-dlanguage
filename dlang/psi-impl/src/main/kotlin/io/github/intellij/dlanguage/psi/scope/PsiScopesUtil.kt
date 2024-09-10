@@ -29,7 +29,7 @@ object PsiScopesUtil {
         processor: PsiScopeProcessor,
         state: ResolveState,
         lastParent: PsiElement?,
-        place: PsiElement?
+        place: PsiElement
     ): Boolean {
         var child: PsiElement? = null
 
@@ -42,7 +42,7 @@ object PsiScopesUtil {
         }
 
         while (child != null) {
-            if (!child.processDeclarations(processor, state, null, place!!)) return false
+            if (!child.processDeclarations(processor, state, null, place)) return false
             child = child.prevSibling
         }
 

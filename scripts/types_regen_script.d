@@ -115,6 +115,8 @@ static this() {
     types_children["BlockStatement"] = ["Statement*","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_extra_interfaces["BlockStatement"] = ["Statement"];
     types_children["BreakStatement"] = ["KW_BREAK","Identifier","OP_SCOLON"];
+    types_extra_interfaces["BreakStatement"] = ["Statement", "LabelQualifier"];
+    types_mixins["BreakStatement"] = "DLanguageBreakStatementImplMixin";
     types_children["BaseClass"] = ["TypeofExpression","OP_DOT","BasicType"];
     types_children["BaseClassList"] = ["BaseClass*","OP_COMMA*"];
     types_children["BasicType"] = ["Type","TypeofExpression","TypeConstructor","MixinType","Expression*","Vector","BuiltinType","QualifiedIdentifier","OP_DOT","OP_PAR_RIGHT","OP_PAR_LEFT","KW_SUPER","KW_THIS","KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED"];
@@ -136,6 +138,8 @@ static this() {
     types_extra_interfaces["ConditionalStatement"] = ["Statement"];
     types_children["Constraint"] = ["KW_IF","Expression*","OP_COMMA*", "OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["ContinueStatement"] = ["KW_CONTINUE", "Identifier", "OP_SCOLON"];
+    types_extra_interfaces["ContinueStatement"] = ["Statement", "LabelQualifier"];
+    types_mixins["ContinueStatement"] = "DLanguageContinueStatementImplMixin";
     types_children["DebugCondition"] = ["KW_DEBUG","INTEGER_LITERAL", "Identifier", "OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["DebugSpecification"] = ["KW_DEBUG","OP_EQ","Identifier", "INTEGER_LITERAL", "OP_SCOLON"];
     types_extra_interfaces["DebugSpecification"] = ["Declaration"];
@@ -182,7 +186,8 @@ static this() {
     types_children["FunctionLiteralExpression"] = ["Type","KW_FUNCTION","KW_DELEGATE","KW_REF","Parameters","FunctionAttribute*","SpecifiedFunctionBody","Identifier"];
     types_extra_interfaces["FunctionLiteralExpression"] = ["Expression"];
     types_children["GotoStatement"] = ["Identifier","AssignExpression*","OP_COMMA*","KW_DEFAULT","KW_CASE","KW_GOTO","OP_SCOLON"];
-    types_extra_interfaces["GotoStatement"] = ["Statement"];
+    types_extra_interfaces["GotoStatement"] = ["Statement", "LabelQualifier"];
+    types_mixins["GotoStatement"] = "DLanguageGotoStatementImplMixin";
     types_children["IdentifierChain"] = ["Identifier", "OP_DOT", "IdentifierChain"];
     types_mixins["IdentifierChain"] = "DLanguageIdentifierChainImplMixin";
     types_children["IdentityExpression"] = ["Expression*","KW_IS","OP_NOT"];

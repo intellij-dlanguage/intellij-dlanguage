@@ -90,6 +90,12 @@ class DResolveTest : DResolveTestCase() {
     fun testScopeOperatorXResolveLocal() = doTest()
 
     @Test
+    fun testGotoToLabeledStatementShouldResolve() = doTest()
+
+    @Test
+    fun testContinueToLabeledStatementShouldResolve() = doTest()
+
+    @Test
     fun testForeachVariableUsageResolve() = doTest()
 
     @Test
