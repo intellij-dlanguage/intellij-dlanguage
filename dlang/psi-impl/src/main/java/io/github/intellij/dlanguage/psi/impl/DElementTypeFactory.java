@@ -10,67 +10,38 @@ public class DElementTypeFactory {
 
     @NotNull
     public static IElementType factory(@NotNull final String name) {
-        switch (name) {
-            case "FUNCTION_DECLARATION":
-                return new FunctionDeclarationStubElementType(name);
-            case "CLASS_DECLARATION":
-                return new ClassDeclarationStubElementType(name);
-            case "INTERFACE_DECLARATION":
-                return new InterfaceDeclarationStubElementType(name);
-            case "TEMPLATE_DECLARATION":
-                return new DlangTemplateDeclarationStubElementType(name);
-            case "CONSTRUCTOR":
-                return new ConstructorStubElementType(name);
-            case "DESTRUCTOR":
-                return new DestructorStubElementType(name);
-            case "STRUCT_DECLARATION":
-                return new StructDeclarationStubElementType(name);
-            case "ALIAS_INITIALIZER":
-                return new AliasInitializerStubElementType(name);
-            case "MODULE_DECLARATION":
-                return new ModuleDeclarationStubElementType(name);
-            case "IDENTIFIER_INITIALIZER":
-                return new IdentifierInitializerStubElementType(name);
-            case "DECLARATOR_IDENTIFIER":
-                return new DeclaratorIdentifierStubElementType(name);
-            case "LABELED_STATEMENT":
-                return new LabeledStatementStubElementType(name);
-            case "SHARED_STATIC_CONSTRUCTOR":
-                return new SharedStaticConstructorStubElementType(name);
-            case "SHARED_STATIC_DESTRUCTOR":
-                return new SharedStaticDestructorStubElementType(name);
-            case "STATIC_CONSTRUCTOR":
-                return new StaticConstructorStubElementType(name);
-            case "STATIC_DESTRUCTOR":
-                return new StaticDestructorStubElementType(name);
-            case "AUTO_ASSIGNMENT":
-                return new AutoAssignmentStubElementType(name);
-            case "ENUM_DECLARATION":
-                return new EnumDeclarationStubElementType(name);
-            case "UNION_DECLARATION":
-                return new DlangUnionDeclarationStubElementType(name);
-            case "SINGLE_IMPORT":
-                return new SingleImportStubElementType(name);
-            case "UNITTEST":
-                return new UnittestStubElementType(name);
-            case "CATCH":
-                return new CatchStubElementType(name);
-            case "IF_CONDITION":
-                return new DlangIfConditionStubElementType(name);
-            case "FOREACH_TYPE":
-                return new DlangForeachTypeStubElementType(name);
-            case "PARAMETER":
-                return new DlangParameterStubElementType(name);
-            case "TEMPLATE_PARAMETER":
-                return new DlangTemplateParameterStubElementType(name);
-            case "ENUM_MEMBER":
-                return new DlangEnumMemberStubElementType(name);
-            case "NAMED_IMPORT_BIND":
-                return new DLanguageNamedImportBindStubElementType(name);
-            case "VERSION_SPECIFICATION":
-                return new VersionSpecificationElementType(name);
-        }
+        return switch (name) {
+            case "FUNCTION_DECLARATION" -> new FunctionDeclarationStubElementType(name);
+            case "CLASS_DECLARATION" -> new ClassDeclarationStubElementType(name);
+            case "INTERFACE_DECLARATION" -> new InterfaceDeclarationStubElementType(name);
+            case "TEMPLATE_DECLARATION" -> new DlangTemplateDeclarationStubElementType(name);
+            case "CONSTRUCTOR" -> new ConstructorStubElementType(name);
+            case "DESTRUCTOR" -> new DestructorStubElementType(name);
+            case "STRUCT_DECLARATION" -> new StructDeclarationStubElementType(name);
+            case "ALIAS_INITIALIZER" -> new AliasInitializerStubElementType(name);
+            case "MODULE_DECLARATION" -> new ModuleDeclarationStubElementType(name);
+            case "IDENTIFIER_INITIALIZER" -> new IdentifierInitializerStubElementType(name);
+            case "DECLARATOR_IDENTIFIER" -> new DeclaratorIdentifierStubElementType(name);
+            case "LABELED_STATEMENT" -> new LabeledStatementStubElementType(name);
+            case "SHARED_STATIC_CONSTRUCTOR" -> new SharedStaticConstructorStubElementType(name);
+            case "SHARED_STATIC_DESTRUCTOR" -> new SharedStaticDestructorStubElementType(name);
+            case "STATIC_CONSTRUCTOR" -> new StaticConstructorStubElementType(name);
+            case "STATIC_DESTRUCTOR" -> new StaticDestructorStubElementType(name);
+            case "AUTO_ASSIGNMENT" -> new AutoAssignmentStubElementType(name);
+            case "ENUM_DECLARATION" -> new EnumDeclarationStubElementType(name);
+            case "UNION_DECLARATION" -> new DlangUnionDeclarationStubElementType(name);
+            case "SINGLE_IMPORT" -> new SingleImportStubElementType(name);
+            case "UNITTEST" -> new UnittestStubElementType(name);
+            case "CATCH" -> new CatchStubElementType(name);
+            case "IF_CONDITION" -> new DlangIfConditionStubElementType(name);
+            case "FOREACH_TYPE" -> new DlangForeachTypeStubElementType(name);
+            case "PARAMETER" -> new DlangParameterStubElementType(name);
+            case "TEMPLATE_PARAMETER" -> new DlangTemplateParameterStubElementType(name);
+            case "ENUM_MEMBER" -> new DlangEnumMemberStubElementType(name);
+            case "NAMED_IMPORT_BIND" -> new DLanguageNamedImportBindStubElementType(name);
+            case "VERSION_SPECIFICATION" -> new VersionSpecificationElementType(name);
+            default -> throw new RuntimeException("Unknown element type: " + name);
+        };
 
-        throw new RuntimeException("Unknown element type: " + name);
     }
 }
