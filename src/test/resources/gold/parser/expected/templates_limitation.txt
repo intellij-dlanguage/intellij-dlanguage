@@ -19,10 +19,9 @@ D Language File
         DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
           PsiElement(DlangTokenType.()('(')
           DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-            TEMPLATE_PARAMETER
-              DLanguageTemplateAliasParameterImpl(TEMPLATE_ALIAS_PARAMETER)
-                PsiElement(DlangTokenType.alias)('alias')
-                PsiElement(DlangTokenType.ID)('sym')
+            TEMPLATE_ALIAS_PARAMETER
+              PsiElement(DlangTokenType.alias)('alias')
+              PsiElement(DlangTokenType.ID)('sym')
           PsiElement(DlangTokenType.))(')')
         DLanguageParametersImpl(PARAMETERS)
           PsiElement(DlangTokenType.()('(')
@@ -110,15 +109,13 @@ D Language File
     DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-        TEMPLATE_PARAMETER
-          DLanguageTemplateAliasParameterImpl(TEMPLATE_ALIAS_PARAMETER)
-            PsiElement(DlangTokenType.alias)('alias')
-            PsiElement(DlangTokenType.ID)('x')
+        TEMPLATE_ALIAS_PARAMETER
+          PsiElement(DlangTokenType.alias)('alias')
+          PsiElement(DlangTokenType.ID)('x')
         PsiElement(DlangTokenType.,)(',')
-        TEMPLATE_PARAMETER
-          DLanguageTemplateAliasParameterImpl(TEMPLATE_ALIAS_PARAMETER)
-            PsiElement(DlangTokenType.alias)('alias')
-            PsiElement(DlangTokenType.ID)('y')
+        TEMPLATE_ALIAS_PARAMETER
+          PsiElement(DlangTokenType.alias)('alias')
+          PsiElement(DlangTokenType.ID)('y')
       PsiElement(DlangTokenType.))(')')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
@@ -236,9 +233,8 @@ D Language File
         DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
           PsiElement(DlangTokenType.()('(')
           DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-            TEMPLATE_PARAMETER
-              DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
-                PsiElement(DlangTokenType.ID)('T')
+            TEMPLATE_TYPE_PARAMETER
+              PsiElement(DlangTokenType.ID)('T')
           PsiElement(DlangTokenType.))(')')
         PsiElement(DlangTokenType.{)('{')
         DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)

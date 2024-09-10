@@ -7,10 +7,9 @@ D Language File
     DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-        TEMPLATE_PARAMETER
-          DLanguageTemplateTupleParameterImpl(TEMPLATE_TUPLE_PARAMETER)
-            PsiElement(DlangTokenType.ID)('Args')
-            PsiElement(DlangTokenType....)('...')
+        TEMPLATE_TUPLE_PARAMETER
+          PsiElement(DlangTokenType.ID)('Args')
+          PsiElement(DlangTokenType....)('...')
       PsiElement(DlangTokenType.))(')')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')
@@ -257,13 +256,11 @@ D Language File
     DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-        TEMPLATE_PARAMETER
-          DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
-            PsiElement(DlangTokenType.ID)('T')
+        TEMPLATE_TYPE_PARAMETER
+          PsiElement(DlangTokenType.ID)('T')
         PsiElement(DlangTokenType.,)(',')
-        TEMPLATE_PARAMETER
-          DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
-            PsiElement(DlangTokenType.ID)('U')
+        TEMPLATE_TYPE_PARAMETER
+          PsiElement(DlangTokenType.ID)('U')
       PsiElement(DlangTokenType.))(')')
     DLanguageParametersImpl(PARAMETERS)
       PsiElement(DlangTokenType.()('(')

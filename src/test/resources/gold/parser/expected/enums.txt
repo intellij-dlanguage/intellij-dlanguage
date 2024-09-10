@@ -28,9 +28,8 @@ D Language File
             DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
               PsiElement(DlangTokenType.()('(')
               DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-                TEMPLATE_PARAMETER
-                  DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
-                    PsiElement(DlangTokenType.ID)('X')
+                TEMPLATE_TYPE_PARAMETER
+                  PsiElement(DlangTokenType.ID)('X')
               PsiElement(DlangTokenType.))(')')
             PsiElement(DlangTokenType.=)('=')
             DLanguageInitializerImpl(INITIALIZER)
