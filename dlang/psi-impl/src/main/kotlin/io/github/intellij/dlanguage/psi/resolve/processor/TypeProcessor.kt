@@ -9,6 +9,7 @@ import com.intellij.util.SmartList
 import com.intellij.util.containers.toArray
 import io.github.intellij.dlanguage.psi.DResolveResult
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.interfaces.TemplateParameter
 import io.github.intellij.dlanguage.psi.interfaces.UserDefinedType
 import io.github.intellij.dlanguage.utils.AliasInitializer
 import io.github.intellij.dlanguage.utils.DeclaratorIdentifier
@@ -23,7 +24,8 @@ class TypeProcessor(private val elementName: String,
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         if (element !is UserDefinedType && element !is DeclaratorIdentifier &&
-            element !is AliasInitializer && element !is TemplateDeclaration) {
+            element !is AliasInitializer && element !is TemplateDeclaration &&
+            element !is TemplateParameter) {
             return true
         }
         if ((element as DNamedElement).name != elementName) return true
