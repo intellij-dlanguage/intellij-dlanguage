@@ -9,8 +9,8 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.PsiManagerEx
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
 import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
-import io.github.intellij.dlanguage.psi.named.DlangConstructor
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageConstructor
+import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration
 import org.intellij.lang.annotations.Language
 import org.junit.Assert.assertNotEquals
 import java.io.File
@@ -73,12 +73,12 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
             /* else if (resolvedElement instanceof DLanguageConstructor) {
                 assertTrue(referencedElement.resolve() instanceof DLanguageConstructor);
             }*/
-            /*else*/if (resolvedElement is DlangConstructor) {
+            /*else*/if (resolvedElement is DLanguageConstructor) {
                 assertEquals("Could not resolve expected reference.", resolvedElement, element)
             } else if (super.getTestName(true) == "scopedImportsMembers") {
                 assertNotNull("Could not resolve expected reference.", element)
                 assertEquals("Could not resolve expected reference.", "struct_member",
-                        (element as DlangFunctionDeclaration).name)
+                        (element as DLanguageFunctionDeclaration).name)
             } else {
                 assertNotNull("Could not resolve expected reference.", element)
                 assertEquals("Could not resolve expected reference.", resolvedElement, element!!)

@@ -4,7 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.stubs.interfaces.DlangUnittestStub;
+import io.github.intellij.dlanguage.stubs.DLanguageUnittestStub;
 import io.github.intellij.dlanguage.psi.DLanguageBlockStatement;
 import io.github.intellij.dlanguage.psi.DLanguageUnittest;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
@@ -12,13 +12,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class DlangUnittestImpl extends DStubbedPsiElementBase<DlangUnittestStub> implements DLanguageUnittest {
+public class DlangUnittestImpl extends DStubbedPsiElementBase<DLanguageUnittestStub> implements DLanguageUnittest {
 
     public DlangUnittestImpl(final ASTNode node) {
         super(node);
     }
 
-    public DlangUnittestImpl(final DlangUnittestStub stub, final IStubElementType nodeType) {
+    public DlangUnittestImpl(final DLanguageUnittestStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 

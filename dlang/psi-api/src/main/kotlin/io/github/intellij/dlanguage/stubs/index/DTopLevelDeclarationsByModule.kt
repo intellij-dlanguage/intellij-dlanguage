@@ -3,9 +3,9 @@ package io.github.intellij.dlanguage.stubs.index
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.*
 import io.github.intellij.dlanguage.psi.DlangPsiFile
-import io.github.intellij.dlanguage.psi.named.DlangSingleImport
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers
+import io.github.intellij.dlanguage.psi.named.DLanguageSingleImport
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex.Companion.getTopLevelSymbols
 
 /**
@@ -31,7 +31,7 @@ class DTopLevelDeclarationsByModule : StringStubIndexExtension<DNamedElement>() 
         }
 
         //todo better name/stop repeating type signature?
-        fun getSymbolsFromImport(import: DlangSingleImport): MutableSet<DNamedElement> {
+        fun getSymbolsFromImport(import: DLanguageSingleImport): MutableSet<DNamedElement> {
             if (import.applicableImportBinds.size == 0) {
                 return StubIndex.getElements(KEY, import.importedModuleName, import.project, GlobalSearchScope.allScope(import.project), DNamedElement::class.java).toMutableSet()
             }

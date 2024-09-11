@@ -4,18 +4,18 @@ import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.stubs.StubInputStream
 import com.intellij.psi.stubs.StubOutputStream
 import io.github.intellij.dlanguage.psi.impl.named.DlangUnionDeclarationImpl
-import io.github.intellij.dlanguage.psi.named.DlangUnionDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageUnionDeclaration
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes
 import io.github.intellij.dlanguage.stubs.DlangUnionDeclarationStub
 import java.io.IOException
 
-class DlangUnionDeclarationStubElementType(debugName: String) : DNamedStubElementType<DlangUnionDeclarationStub, DlangUnionDeclaration>(debugName) {
+class DlangUnionDeclarationStubElementType(debugName: String) : DNamedStubElementType<DlangUnionDeclarationStub, DLanguageUnionDeclaration>(debugName) {
 
-    override fun createPsi(stub: DlangUnionDeclarationStub): DlangUnionDeclaration {
+    override fun createPsi(stub: DlangUnionDeclarationStub): DLanguageUnionDeclaration {
         return DlangUnionDeclarationImpl(stub, this)
     }
 
-    override fun createStub(psi: DlangUnionDeclaration, parentStub: StubElement<*>): DlangUnionDeclarationStub {
+    override fun createStub(psi: DLanguageUnionDeclaration, parentStub: StubElement<*>): DlangUnionDeclarationStub {
         return DlangUnionDeclarationStub(parentStub, this, psi.name, psi.attributes)
     }
 

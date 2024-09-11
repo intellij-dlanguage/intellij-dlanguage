@@ -141,4 +141,19 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testVariableInitializationAssignedValueNextInitializationSameVariableDeclarationShouldNotResolve() = doTest(false)
+
+    @Test
+    fun testTemplateTypeUsageInTemplatedClassShouldResolve() = doTest()
+
+    @Test
+    fun testTemplateTypeShouldNotLeakOutsideTemplate() = doTest(false)
+
+    @Test
+    fun testTemplateThisTypeUsageInTemplatedClassShouldResolve() = doTest()
+
+    @Test
+    fun testTemplateTupleUsageInTemplatedClassShouldResolve() = doTest()
+
+    @Test
+    fun testTemplateTupleUsage2InTemplatedClassShouldResolve() = doTest()
 }

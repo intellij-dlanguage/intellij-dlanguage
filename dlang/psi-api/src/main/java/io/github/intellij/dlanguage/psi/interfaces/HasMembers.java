@@ -9,7 +9,7 @@ import com.intellij.psi.stubs.StubElement;
 import io.github.intellij.dlanguage.stubs.*;
 import io.github.intellij.dlanguage.psi.DLanguageSharedStaticConstructor;
 import io.github.intellij.dlanguage.psi.DLanguageSharedStaticDestructor;
-import io.github.intellij.dlanguage.stubs.interfaces.DlangUnittestStub;
+import io.github.intellij.dlanguage.stubs.DLanguageUnittestStub;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -38,7 +38,7 @@ public interface HasMembers<T extends StubElement> extends StubBasedPsiElement<T
             if (childStub instanceof NamedStubBase) {
                 result.add((NamedStubBase) childStub);
             }
-            if (childStub instanceof DlangUnittestStub || (childStub instanceof DlangDestructorStub) || (childStub instanceof DlangStaticDestructorStub) || (childStub instanceof DLanguageSharedStaticDestructor) || (childStub instanceof DlangConstructorStub) || (childStub instanceof DlangStaticConstructorStub) || (childStub instanceof DLanguageSharedStaticConstructor) || (childStub instanceof DlangFunctionDeclarationStub)) {
+            if (childStub instanceof DLanguageUnittestStub || (childStub instanceof DLanguageDestructorStub) || (childStub instanceof DLanguageStaticDestructorStub) || (childStub instanceof DLanguageSharedStaticDestructor) || (childStub instanceof DLanguageConstructorStub) || (childStub instanceof DLanguageStaticConstructorStub) || (childStub instanceof DLanguageSharedStaticConstructor) || (childStub instanceof DLanguageFunctionDeclarationStub)) {
             } else {
                 getMembersImpl(childStub, result);
             }

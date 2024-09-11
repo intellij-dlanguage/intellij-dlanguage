@@ -46,7 +46,10 @@ string[] named_children = [
     "SingleImport",
     "StructDeclaration",
     "TemplateDeclaration",
-    "TemplateParameter",
+    "TemplateAliasParameter",
+    "TemplateTupleParameter",
+    "TemplateTypeParameter",
+    "TemplateValueParameter",
     "UnionDeclaration",
     "VersionSpecification",
 ];
@@ -64,26 +67,12 @@ Associative array which contains Name of psi element as key and if it has a proc
 */
 bool[string] has_processDeclaration;
 
-/*
-Associative array of how elements must be renamed, key is original element, value is how it must be renamed
-*/
-string[string] renameMap;
-
 static this() {
     types_children["AddExpression"] = ["Expression*", "OP_TILDA", "OP_PLUS" , "OP_MINUS"];
     types_extra_interfaces["AddExpression"] = ["Expression"];
     types_children["AliasAssign"] = ["Type","OP_EQ"];
     types_extra_interfaces["AliasAssign"] = ["Declaration"];
-    types_children["AliasDeclaration"] = ["DeclaratorIdentifier*","OP_COMMA","StorageClass*","KW_ALIAS", "Type", "OP_SCOLON", "AliasInitializer*"];
-    types_extra_interfaces["AliasDeclaration"] = ["Declaration"];
-    types_children["AliasThisDeclaration"] = ["KW_ALIAS", "Identifier", "KW_THIS", "OP_SCOLON"];
-    types_extra_interfaces["AliasThisDeclaration"] = ["Declaration"];
-    types_children["AlignAttribute"] = ["KW_ALIGN", "AssignExpression", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
-    types_children["AndAndExpression"] = ["Expression*", "OP_BOOL_AND"];
-    types_extra_interfaces["AndAndExpression"] = ["Expression"];
-    types_children["AndExpression"] = ["Expression*", "OP_AND"];
-    types_extra_interfaces["AndExpression"] = ["Expression"];
-    types_children["AnonymousEnumDeclaration"] = ["Expression","OP_COLON","KW_ENUM","OP_PAR_LEFT","OP_PAR_RIGHT","Type","EnumMember*"];
+    types_children["AliasDeclaration"] = ["DeclaratorIdentifier*","OP_COMMA","StorageClass*","KW_ALIAS", "Type", "OP_SCOLON", "AliasInitializer*"]; types_extra_interfaces["AliasDeclaration"] = ["Declaration"]; types_children["AliasThisDeclaration"] = ["KW_ALIAS", "Identifier", "KW_THIS", "OP_SCOLON"]; types_extra_interfaces["AliasThisDeclaration"] = ["Declaration"]; types_children["AlignAttribute"] = ["KW_ALIGN", "AssignExpression", "OP_PAR_RIGHT", "OP_PAR_LEFT"]; types_children["AndAndExpression"] = ["Expression*", "OP_BOOL_AND"]; types_extra_interfaces["AndAndExpression"] = ["Expression"]; types_children["AndExpression"] = ["Expression*", "OP_AND"]; types_extra_interfaces["AndExpression"] = ["Expression"]; types_children["AnonymousEnumDeclaration"] = ["Expression","OP_COLON","KW_ENUM","OP_PAR_LEFT","OP_PAR_RIGHT","Type","EnumMember*"];
     types_extra_interfaces["AnonymousEnumDeclaration"] = ["Declaration"];
     types_children["AnonymousEnumMember"] = [];
     types_children["ArgumentList"] = ["Expression*", "OP_COMMA*"];
@@ -317,7 +306,8 @@ static this() {
     types_extra_interfaces["SwitchStatement"] = ["Statement"];
     types_children["SynchronizedStatement"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","KW_SYNCHRONIZED"];
     types_extra_interfaces["SynchronizedStatement"] = ["Statement"];
-    types_children["TemplateAliasParameter"] = ["KW_ALIAS","Identifier","Type*","AssignExpression*","OP_COLON","OP_EQ"];
+    stub_children["TemplateAliasParameter"] = ["KW_ALIAS","Identifier","Type*","AssignExpression*","OP_COLON","OP_EQ"];
+    types_extra_interfaces["TemplateAliasParameter"] = ["TemplateParameter"];
     types_children["TemplateArgument"] = ["Type","AssignExpression"];
     types_children["TemplateArgumentList"] = ["OP_COMMA*","TemplateArgument*"];
     types_children["TemplateArguments"] = ["TemplateArgumentList","TemplateSingleArgument","OP_PAR_RIGHT","OP_PAR_LEFT","OP_NOT"];
@@ -328,16 +318,19 @@ static this() {
     types_extra_interfaces["TemplateMixinDeclaration"] = ["Declaration"];
     types_children["TemplateMixinExpression"] = ["KW_MIXIN","MixinTemplateName","TemplateArguments","Identifier"];
     types_extra_interfaces["TemplateMixinExpression"] = ["Expression"];
-    stub_children ["TemplateParameter"] = ["TemplateAliasParameter","TemplateTupleParameter","TemplateTypeParameter","TemplateThisParameter","TemplateValueParameter"];
     types_children["TemplateParameterList"] = ["TemplateParameter*","OP_COMMA*"];
     types_children["TemplateParameters"] = ["TemplateParameterList","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["TemplateSingleArgument"] = ["Identifier","BuiltinType","KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW_NULL",
                                                 "KW___DATE__","KW___EOF__","KW___FILE__","KW___FILE_FULL_PATH__","KW___FUNCTION__","KW___GSHARED","KW___LINE__","KW___MODULE__","KW___PARAMETERS","KW___PRETTY_FUNCTION__","KW___TIME__","KW___TIMESTAMP__","KW___TRAITS","KW___VECTOR","KW___VENDOR__","KW___VERSION__",
                                                 "INTEGER_LITERAL","FLOAT_LITERAL","DOUBLE_QUOTED_STRING","CHARACTER_LITERAL"];
     types_children["TemplateThisParameter"] = ["KW_THIS","TemplateTypeParameter"];
-    types_children["TemplateTupleParameter"] = ["Identifier","OP_TRIPLEDOT"];
-    types_children["TemplateTypeParameter"] = ["Identifier","Type*","OP_COLON","OP_EQ"];
-    types_children["TemplateValueParameter"] = ["Type","Identifier","OP_COLON","AssignExpression",  "TemplateValueParameterDefault"];
+    types_extra_interfaces["TemplateThisParameter"] = ["TemplateParameter"];
+    stub_children["TemplateTupleParameter"] = ["Identifier","OP_TRIPLEDOT"];
+    types_extra_interfaces["TemplateTupleParameter"] = ["TemplateParameter"];
+    stub_children["TemplateTypeParameter"] = ["Identifier","Type*","OP_COLON","OP_EQ"];
+    types_extra_interfaces["TemplateTypeParameter"] = ["TemplateParameter"];
+    stub_children["TemplateValueParameter"] = ["Type","Identifier","OP_COLON","AssignExpression",  "TemplateValueParameterDefault"];
+    types_extra_interfaces["TemplateValueParameter"] = ["TemplateParameter"];
     types_children["TemplateValueParameterDefault"] = ["OP_EQ","AssignExpression","KW___FILE__","KW___FUNCTION__","KW___LINE__","KW___MODULE__","KW___PRETTY_FUNCTION__"];
     types_children["TernaryExpression"] = ["OP_QUEST","OP_COLON","Expression*"];
     types_extra_interfaces["TernaryExpression"] = ["Expression"];
@@ -548,9 +541,8 @@ static this() {
 //    has_processDeclaration["TemplateDeclaration"] = true;
     has_processDeclaration["TemplateInstance"] = false;
     has_processDeclaration["TemplateMixinDeclaration"] = true;
-    has_processDeclaration["TemplateParameter"] = false;
     has_processDeclaration["TemplateParameterList"] = false;
-    has_processDeclaration["TemplateParameters"] = false;
+    has_processDeclaration["TemplateParameters"] = true;
     has_processDeclaration["TemplateSingleArgument"] = false;
     has_processDeclaration["TemplateThisParameter"] = false;
     has_processDeclaration["TemplateTupleParameter"] = false;
@@ -577,15 +569,6 @@ static this() {
     has_processDeclaration["WhileStatement"] = true;
     has_processDeclaration["WithStatement"] = false;
     has_processDeclaration["XorExpression"] = false;
-
-    foreach (string key; named_children) {
-        // Stub elements are not renamed
-        if (key in stub_children)
-            continue;
-        renameMap["DLanguage" ~ key] = "Dlang" ~ key;
-    }
-    renameMap["DLanguageIdentifierInitializer"] = "DLanguageIdentifierInitializer";
-    renameMap["DLanguageAutoAssignment"] = "DLanguageAutoAssignment";
 }
 
 enum psiDlangImportTemplate = "import io.github.intellij.dlanguage.psi.DLanguage%s;";
@@ -782,7 +765,7 @@ string getImplImports(string[] elements, string key, string parentClassName = nu
 string getStubImplImports(string[][string] elements, string key) {
     string[] normalImports = defaultStubImplImports.dup;
     string[] staticImports;
-    auto stubImport = key == "Unittest" ? "import io.github.intellij.dlanguage.stubs.interfaces.Dlang%sStub;".format(key) : "import io.github.intellij.dlanguage.stubs.Dlang%sStub;".format(key);
+    auto stubImport = "import io.github.intellij.dlanguage.stubs.DLanguage%sStub;".format(key);
     normalImports ~= stubImport;
     getImplImportsElements(elements[key], key, staticImports, normalImports);
     return formatImplImports(staticImports, normalImports);
@@ -867,7 +850,7 @@ string getStubInterfaceImports(string[] elements, string key) {
     import std.array;
     auto imports = getInterfaceImportElements(elements, key);
     // unittest is a special case where it’s stored under another path
-    auto stubImport = key == "Unittest" ? "import io.github.intellij.dlanguage.stubs.interfaces.Dlang%sStub;".format(key) : "import io.github.intellij.dlanguage.stubs.Dlang%sStub;".format(key);
+    auto stubImport = "import io.github.intellij.dlanguage.stubs.DLanguage%sStub;".format(key);
     imports ~= [
         "import com.intellij.psi.StubBasedPsiElement;",
         "import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;",
@@ -955,8 +938,8 @@ int main(string[] args) {
             }
             interfaceFile ~= "\n}\n";
 
-            File f = File((interfaceClassName ~".java").renameMapApply(), "w");
-            f.write(interfaceFile.renameMapApply());
+            File f = File(interfaceClassName ~ ".java", "w");
+            f.write(interfaceFile);
             f.close();
         } else {
             // implementation
@@ -978,8 +961,8 @@ int main(string[] args) {
             }
             implFile ~= "\n}\n";
 
-            File f = File(chainPath("impl", (implClassName ~ ".java").renameMapApply()), "w");
-            f.write(implFile.renameMapApply());
+            File f = File(chainPath("impl", implClassName ~ ".java"), "w");
+            f.write(implFile);
             f.close();
         }
     }
@@ -992,7 +975,7 @@ int main(string[] args) {
         string interfaceClassName = "DLanguage" ~ key;
         if (genInterface) {
             // interface
-            string[] interfaces = ["DCompositeElement", "StubBasedPsiElement<Dlang%sStub>".format(key)];
+            string[] interfaces = ["DCompositeElement", "StubBasedPsiElement<DLanguage%sStub>".format(key)];
             if (named_children.canFind(key))
                 interfaces.insertInPlace(1, "DNamedElement");
             auto extraInterfaces = key in types_extra_interfaces ? types_extra_interfaces[key] : [];
@@ -1012,46 +995,22 @@ int main(string[] args) {
 `;
             }
             interfaceFile ~= "\n}\n";
-            File f = File((interfaceClassName ~".java"), "w");
-            f.write(interfaceFile.renameMapApply());
+            File f = File(interfaceClassName ~ ".java", "w");
+            f.write(interfaceFile);
             f.close();
         } else if (generate_stubImpl.canFind(key)) {
             // implementation
             string implClassName = "DLanguage" ~ key ~ "Impl";
-            string stubPsiElementClassName = "Dlang" ~ key ~ "Stub";
+            string stubPsiElementClassName = "DLanguage" ~ key ~ "Stub";
             string implFile = implStubFileTemplate.format(getStubImplImports(stub_children, key), implClassName, stubPsiElementClassName, interfaceClassName, implClassName, implClassName, stubPsiElementClassName, key);
             foreach (string toget; stub_children[key]) {
                 implFile ~= getterMethod(toget);
             }
             implFile ~= "\n}\n";
-            File f = File(chainPath("impl",(implClassName ~ ".java").renameMapApply()),"w");
-            f.write(implFile.renameMapApply());
+            File f = File(chainPath("impl",implClassName ~ ".java"),"w");
+            f.write(implFile);
             f.close();
         }
     }
     return 0;
-}
-
-
-string renameMapApply(string thing) {
-    import std.regex;
-    foreach(reg; renameMap.keys) {
-        auto re = regex(reg ~ "\\ ");
-        thing = thing.replaceAll(re, renameMap[reg] ~ " ");
-        re = regex(reg ~ "\\.");
-        thing = thing.replaceAll(re, renameMap[reg]~".");
-        re = regex(reg ~ ">");
-        thing = thing.replaceAll(re, renameMap[reg]~">");
-        re = regex(reg ~ "\\{");
-        thing = thing.replaceAll(re, renameMap[reg]~"{");
-        re = regex(reg ~ "Stub\\ ");
-        thing = thing.replaceAll(re, renameMap[reg] ~ "Stub ");
-        re = regex(reg ~ "Stub\\.");
-        thing = thing.replaceAll(re, renameMap[reg]~"Stub.");
-        re = regex(reg ~ "Stub>");
-        thing = thing.replaceAll(re, renameMap[reg]~"Stub>");
-        re = regex(reg ~ ";");
-        thing = thing.replaceAll(re,renameMap[reg]~";");
-    }
-    return thing;
 }

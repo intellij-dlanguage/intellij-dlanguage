@@ -12,6 +12,7 @@ import io.github.intellij.dlanguage.colors.DColor
 import io.github.intellij.dlanguage.psi.DLanguageBasicType
 import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
+import io.github.intellij.dlanguage.psi.interfaces.TemplateParameter
 import io.github.intellij.dlanguage.utils.*
 
 // TODO find a better place for this variable
@@ -112,15 +113,6 @@ class DHighlightingAnnotator : Annotator {
 
     private fun partToHighlight(element: PsiElement): TextRange? {
         val name = when (element) {
-            is TemplateParameter -> {
-                when {
-                    element.templateTypeParameter != null -> return partToHighlight(element.templateTypeParameter!!)
-                    element.templateValueParameter != null -> return partToHighlight(element.templateValueParameter!!)
-                    element.templateAliasParameter != null -> return partToHighlight(element.templateAliasParameter!!)
-                    element.templateThisParameter != null -> return partToHighlight(element.templateThisParameter!!)
-                    else -> element
-                }
-            }
             is TemplateTypeParameter -> element.identifier
             is TemplateValueParameter -> element.identifier
             is TemplateAliasParameter -> element.identifier

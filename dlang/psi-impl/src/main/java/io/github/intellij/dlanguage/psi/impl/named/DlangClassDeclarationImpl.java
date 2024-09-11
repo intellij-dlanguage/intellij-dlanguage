@@ -8,10 +8,10 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageClassDeclaration;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangClassDeclarationStub;
+import io.github.intellij.dlanguage.stubs.DLanguageClassDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,10 +19,10 @@ import static io.github.intellij.dlanguage.psi.DlangTypes.KW_CLASS;
 import static io.github.intellij.dlanguage.psi.DlangTypes.OP_COLON;
 
 public class DlangClassDeclarationImpl extends
-    DNamedStubbedPsiElementBase<DlangClassDeclarationStub> implements
-    DlangClassDeclaration {
+    DNamedStubbedPsiElementBase<DLanguageClassDeclarationStub> implements
+    DLanguageClassDeclaration {
 
-    public DlangClassDeclarationImpl(final DlangClassDeclarationStub stub, final IStubElementType type) {
+    public DlangClassDeclarationImpl(final DLanguageClassDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

@@ -6,7 +6,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.named.DlangSingleImport
+import io.github.intellij.dlanguage.psi.named.DLanguageSingleImport
 
 class DeprecatedPhobosImport : LocalInspectionTool() {
     override fun getDescriptionFileName(): String = "DeprecatedPhobosImport.html"
@@ -26,7 +26,7 @@ class DeprecatedPhobosImportVisitor(val holder: ProblemsHolder) : DlangVisitor()
         }
     }
 
-    fun register(dlangSingleImport: DlangSingleImport, descriptionTemplate: String) {
+    fun register(dlangSingleImport: DLanguageSingleImport, descriptionTemplate: String) {
         holder.registerProblem(dlangSingleImport, descriptionTemplate, ProblemHighlightType.LIKE_DEPRECATED)
     }
 }

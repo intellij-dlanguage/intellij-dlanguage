@@ -33,8 +33,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.psi.DLanguageAtAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression;
-import io.github.intellij.dlanguage.psi.named.DlangClassDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageClassDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration;
 import io.github.intellij.dlanguage.settings.ToolKey;
 
 import java.io.File;
@@ -81,9 +81,9 @@ public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSP
 
             try {
                 final PsiFile psiFile = PsiManager.getInstance(project).findFile(configuration.getDFile());
-                final Collection<DlangClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DlangClassDeclaration.class);
+                final Collection<DLanguageClassDeclaration> cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration.class);
 
-                for (final DlangClassDeclaration cd : cds) {
+                for (final DLanguageClassDeclaration cd : cds) {
 
                     // if a class contains the UnitTest mixin assume its a valid d-unit test class
                     String testClassName = null;
@@ -99,9 +99,9 @@ public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSP
 
                     // find methods for the class
                     final Set<String> testMethodNames = new LinkedHashSet<>();
-                    final Collection<DlangFunctionDeclaration> fds = PsiTreeUtil
-                        .findChildrenOfType(cd, DlangFunctionDeclaration.class);
-                    for (final DlangFunctionDeclaration fd : fds) {
+                    final Collection<DLanguageFunctionDeclaration> fds = PsiTreeUtil
+                        .findChildrenOfType(cd, DLanguageFunctionDeclaration.class);
+                    for (final DLanguageFunctionDeclaration fd : fds) {
                         if (testClassName != null) {
                             // only add methods with @Test
                             if (isTestMethod(fd) || isIgnoreMethod(fd)) {
@@ -262,12 +262,12 @@ public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSP
 
     }
 
-    private boolean isTestMethod(final DlangFunctionDeclaration fd) {
+    private boolean isTestMethod(final DLanguageFunctionDeclaration fd) {
         final DLanguageAtAttribute ele = findElementUpstream(fd, DLanguageAtAttribute.class);
         return (ele != null && ele.getText().contains("@Test"));
     }
 
-    private boolean isIgnoreMethod(final DlangFunctionDeclaration fd) {
+    private boolean isIgnoreMethod(final DLanguageFunctionDeclaration fd) {
         final DLanguageAtAttribute psiElement = findElementUpstream(fd, DLanguageAtAttribute.class);
         return (psiElement != null && psiElement.getText().contains("@Ignore"));
     }

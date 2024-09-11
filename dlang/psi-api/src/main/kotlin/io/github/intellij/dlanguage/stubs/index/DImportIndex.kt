@@ -7,7 +7,7 @@ import com.intellij.psi.stubs.*
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
-import io.github.intellij.dlanguage.stubs.DlangSingleImportStub
+import io.github.intellij.dlanguage.stubs.DLanguageSingleImportStub
 import io.github.intellij.dlanguage.utils.SingleImport
 
 /**
@@ -29,8 +29,8 @@ class DPublicImportIndex : StringStubIndexExtension<SingleImport>() {
         private const val VERSION = 4
 
         fun <S : NamedStubBase<T>, T : DNamedElement> indexPublicImports(stub: S, sink: IndexSink) {
-            if (stub is DlangSingleImportStub && topLevelDeclaration(stub)) {
-                if ((stub as DlangSingleImportStub).attributes.visibility == DAttributesFinder.Visibility.PUBLIC) {
+            if (stub is DLanguageSingleImportStub && topLevelDeclaration(stub)) {
+                if ((stub as DLanguageSingleImportStub).attributes.visibility == DAttributesFinder.Visibility.PUBLIC) {
                     val fileName = (stub.psi.containingFile as DlangPsiFile).getFullyQualifiedModuleName()
                     sink.occurrence(KEY, fileName)
                 }

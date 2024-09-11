@@ -6,18 +6,18 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.named.DlangEnumMember;
+import io.github.intellij.dlanguage.psi.named.DLanguageEnumMember;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.stubs.DlangEnumMemberStub;
+import io.github.intellij.dlanguage.stubs.DLanguageEnumMemberStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class DLanguageEnumMemberImpl extends
-    DNamedStubbedPsiElementBase<DlangEnumMemberStub> implements DlangEnumMember {
+    DNamedStubbedPsiElementBase<DLanguageEnumMemberStub> implements DLanguageEnumMember {
 
-    public DLanguageEnumMemberImpl(final DlangEnumMemberStub stub, final IStubElementType type) {
+    public DLanguageEnumMemberImpl(final DLanguageEnumMemberStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

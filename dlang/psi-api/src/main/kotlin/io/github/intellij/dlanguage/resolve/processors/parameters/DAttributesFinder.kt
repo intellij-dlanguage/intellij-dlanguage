@@ -11,8 +11,8 @@ import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
-import io.github.intellij.dlanguage.psi.named.DlangSingleImport
-import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageSingleImport
+import io.github.intellij.dlanguage.psi.named.DLanguageTemplateDeclaration
 import io.github.intellij.dlanguage.utils.*
 import java.io.IOException
 
@@ -291,7 +291,7 @@ class DAttributesFinder {
     }
 
     fun execute(element: PsiElement): Boolean {
-        if (element is DlangSingleImport && isParent(element, startingPoint)) {
+        if (element is DLanguageSingleImport && isParent(element, startingPoint)) {
             bulkAttributeApplied.static = false
         }
         if (element is FunctionDeclaration || element is DLanguageUnittest || element is Parameters || element is TemplateParameters) {
@@ -699,12 +699,12 @@ class DAttributesFinder {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun handleTemplateDeclaration(templateDecl: DlangTemplateDeclaration): DirectApplication {
+    fun handleTemplateDeclaration(templateDecl: DLanguageTemplateDeclaration): DirectApplication {
         return DirectApplication()
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun defaultTemplateDeclaration(templateDecl: DlangTemplateDeclaration): DefaultAttributes {
+    fun defaultTemplateDeclaration(templateDecl: DLanguageTemplateDeclaration): DefaultAttributes {
         //todo get attribues
         return DefaultAttributes()
     }

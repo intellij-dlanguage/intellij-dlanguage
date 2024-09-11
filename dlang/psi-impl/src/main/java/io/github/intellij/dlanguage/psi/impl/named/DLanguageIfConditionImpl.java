@@ -6,7 +6,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.stubs.DlangIfConditionStub;
+import io.github.intellij.dlanguage.stubs.DLanguageIfConditionStub;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,8 +16,8 @@ import java.util.List;
 /**
  * Created by francis on 7/14/2017.
  */
-public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DlangIfConditionStub> implements DLanguageIfCondition {
-    public DLanguageIfConditionImpl(@NotNull final DlangIfConditionStub stub, final IStubElementType nodeType) {
+public class DLanguageIfConditionImpl extends DNamedStubbedPsiElementBase<DLanguageIfConditionStub> implements DLanguageIfCondition {
+    public DLanguageIfConditionImpl(@NotNull final DLanguageIfConditionStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 

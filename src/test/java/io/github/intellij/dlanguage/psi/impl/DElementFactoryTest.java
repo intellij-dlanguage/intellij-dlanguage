@@ -6,7 +6,7 @@ import com.intellij.psi.tree.TokenSet;
 import com.intellij.testFramework.LightPlatform4TestCase;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.psi.DLanguageAliasDeclaration;
-import io.github.intellij.dlanguage.psi.named.DlangModuleDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import org.junit.Test;
 
 
@@ -33,7 +33,7 @@ public class DElementFactoryTest extends LightPlatform4TestCase {
 
     @Test
     public void createDLanguageModuleFromText() {
-        final DlangModuleDeclaration result = DElementFactory.createDLanguageModuleFromText(getProject(), "mymodule");
+        final DLanguageModuleDeclaration result = DElementFactory.createDLanguageModuleFromText(getProject(), "mymodule");
 
         assertEquals(DLanguage.INSTANCE, result.getLanguage());
         assertEquals("module mymodule;", result.getText());

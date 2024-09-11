@@ -198,9 +198,8 @@ D Language File
     DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-        TEMPLATE_PARAMETER
-          DLanguageTemplateTypeParameterImpl(TEMPLATE_TYPE_PARAMETER)
-            PsiElement(DlangTokenType.ID)('T')
+        TEMPLATE_TYPE_PARAMETER
+          PsiElement(DlangTokenType.ID)('T')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     DLanguageSpecifiedVariableDeclarationImpl(VARIABLE_DECLARATION)
@@ -471,10 +470,9 @@ D Language File
     DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-        TEMPLATE_PARAMETER
-          DLanguageTemplateAliasParameterImpl(TEMPLATE_ALIAS_PARAMETER)
-            PsiElement(DlangTokenType.alias)('alias')
-            PsiElement(DlangTokenType.ID)('b')
+        TEMPLATE_ALIAS_PARAMETER
+          PsiElement(DlangTokenType.alias)('alias')
+          PsiElement(DlangTokenType.ID)('b')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     FUNCTION_DECLARATION
@@ -559,20 +557,17 @@ D Language File
     DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-        TEMPLATE_PARAMETER
-          DLanguageTemplateAliasParameterImpl(TEMPLATE_ALIAS_PARAMETER)
-            PsiElement(DlangTokenType.alias)('alias')
-            PsiElement(DlangTokenType.ID)('id1')
+        TEMPLATE_ALIAS_PARAMETER
+          PsiElement(DlangTokenType.alias)('alias')
+          PsiElement(DlangTokenType.ID)('id1')
         PsiElement(DlangTokenType.,)(',')
-        TEMPLATE_PARAMETER
-          DLanguageTemplateAliasParameterImpl(TEMPLATE_ALIAS_PARAMETER)
-            PsiElement(DlangTokenType.alias)('alias')
-            PsiElement(DlangTokenType.ID)('id2')
+        TEMPLATE_ALIAS_PARAMETER
+          PsiElement(DlangTokenType.alias)('alias')
+          PsiElement(DlangTokenType.ID)('id2')
         PsiElement(DlangTokenType.,)(',')
-        TEMPLATE_PARAMETER
-          DLanguageTemplateAliasParameterImpl(TEMPLATE_ALIAS_PARAMETER)
-            PsiElement(DlangTokenType.alias)('alias')
-            PsiElement(DlangTokenType.ID)('s')
+        TEMPLATE_ALIAS_PARAMETER
+          PsiElement(DlangTokenType.alias)('alias')
+          PsiElement(DlangTokenType.ID)('s')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     FUNCTION_DECLARATION

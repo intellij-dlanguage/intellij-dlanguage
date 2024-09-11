@@ -8,7 +8,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.named.DlangUnionDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageUnionDeclaration;
 import io.github.intellij.dlanguage.stubs.DlangUnionDeclarationStub;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class DlangUnionDeclarationImpl extends
     DNamedStubbedPsiElementBase<DlangUnionDeclarationStub> implements
-    DlangUnionDeclaration {
+    DLanguageUnionDeclaration {
 
     public DlangUnionDeclarationImpl(final DlangUnionDeclarationStub stub, final IStubElementType type) {
         super(stub, type);

@@ -43,10 +43,9 @@ D Language File
     DLanguageTemplateParametersImpl(TEMPLATE_PARAMETERS)
       PsiElement(DlangTokenType.()('(')
       DLanguageTemplateParameterListImpl(TEMPLATE_PARAMETER_LIST)
-        TEMPLATE_PARAMETER
-          DLanguageTemplateTupleParameterImpl(TEMPLATE_TUPLE_PARAMETER)
-            PsiElement(DlangTokenType.ID)('T')
-            PsiElement(DlangTokenType....)('...')
+        TEMPLATE_TUPLE_PARAMETER
+          PsiElement(DlangTokenType.ID)('T')
+          PsiElement(DlangTokenType....)('...')
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.{)('{')
     DLanguageAliasDeclarationImpl(ALIAS_DECLARATION)

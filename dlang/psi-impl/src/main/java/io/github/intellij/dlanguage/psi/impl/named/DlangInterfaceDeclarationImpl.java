@@ -9,19 +9,19 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.psi.named.DlangInterfaceDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageInterfaceDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangInterfaceDeclarationStub;
+import io.github.intellij.dlanguage.stubs.DLanguageInterfaceDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 public class DlangInterfaceDeclarationImpl extends
-    DNamedStubbedPsiElementBase<DlangInterfaceDeclarationStub> implements
-    DlangInterfaceDeclaration {
+    DNamedStubbedPsiElementBase<DLanguageInterfaceDeclarationStub> implements
+    DLanguageInterfaceDeclaration {
 
-    public DlangInterfaceDeclarationImpl(final DlangInterfaceDeclarationStub stub, final IStubElementType type) {
+    public DlangInterfaceDeclarationImpl(final DLanguageInterfaceDeclarationStub stub, final IStubElementType type) {
         super(stub, type);
     }
 

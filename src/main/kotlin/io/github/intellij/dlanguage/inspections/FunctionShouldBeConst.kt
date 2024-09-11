@@ -4,7 +4,7 @@ import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration
 import io.github.intellij.dlanguage.quickfix.MakeFunctionConst
 import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder
 
@@ -19,7 +19,7 @@ class FunctionShouldBeConst : LocalInspectionTool() {
 }
 
 class FunctionShouldBeConstVisitor(val holder: ProblemsHolder) : DlangVisitor() {
-    override fun visitFunctionDeclaration(o: DlangFunctionDeclaration) {
+    override fun visitFunctionDeclaration(o: DLanguageFunctionDeclaration) {
         val name = o.name
         if (name == "opCmp" || name == "opEquals" || name == "toHash") {
             val finder = DAttributesFinder(o)//todo make function declarations have an isConst method.

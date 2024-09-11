@@ -7,8 +7,7 @@ import com.intellij.psi.util.PsiTreeUtil.findChildrenOfType
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.psi.DLanguageReturnStatement
 import io.github.intellij.dlanguage.psi.DlangVisitor
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageFunctionDeclarationImpl
-import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration
 import io.github.intellij.dlanguage.quickfix.MakeFunctionVoid
 
 class AutoFunctionWithoutReturn : LocalInspectionTool() {
@@ -22,13 +21,13 @@ class AutoFunctionWithoutReturn : LocalInspectionTool() {
 }
 
 class AutoFunctionReturnVisitor(val holder: ProblemsHolder) : DlangVisitor() {
-    override fun visitFunctionDeclaration(o: DlangFunctionDeclaration) {
+    override fun visitFunctionDeclaration(o: DLanguageFunctionDeclaration) {
         if (shouldWarn(o)) {
             holder.registerProblem(o, "Don't create auto functions without return types", MakeFunctionVoid(o))
         }
     }
 
-    private fun shouldWarn(o: DlangFunctionDeclaration): Boolean {
+    private fun shouldWarn(o: DLanguageFunctionDeclaration): Boolean {
         if (!o.isAuto()) {
             return false
         }

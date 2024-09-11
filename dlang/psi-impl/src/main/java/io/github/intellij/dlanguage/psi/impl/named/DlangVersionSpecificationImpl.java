@@ -8,20 +8,20 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
-import io.github.intellij.dlanguage.psi.named.DlangVersionSpecification;
+import io.github.intellij.dlanguage.psi.named.DLanguageVersionSpecification;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.stubs.VersionSpecificationStub;
+import io.github.intellij.dlanguage.stubs.DLanguageVersionSpecificationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
 public class DlangVersionSpecificationImpl extends
-    DNamedStubbedPsiElementBase<VersionSpecificationStub> implements
-    DlangVersionSpecification {
+    DNamedStubbedPsiElementBase<DLanguageVersionSpecificationStub> implements
+    DLanguageVersionSpecification {
 
     public DlangVersionSpecificationImpl(
-        @NotNull final VersionSpecificationStub stub,
+        @NotNull final DLanguageVersionSpecificationStub stub,
         final IStubElementType nodeType) {
         super(stub, nodeType);
     }

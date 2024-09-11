@@ -19,10 +19,8 @@ import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.psi.DlangTypes.*
 import io.github.intellij.dlanguage.psi.ext.*
-import io.github.intellij.dlanguage.psi.impl.*
-import io.github.intellij.dlanguage.psi.impl.named.DlangTemplateDeclarationImpl
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
-import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageTemplateDeclaration
 import io.github.intellij.dlanguage.utils.ImportDeclaration
 import java.util.ArrayList
 
@@ -39,7 +37,7 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
             is DLanguageArrayInitializer -> "[...]"
             is DLanguageStructBody,
             is DLanguageBlockStatement,
-            is DlangTemplateDeclaration,
+            is DLanguageTemplateDeclaration,
             is DLanguageStructInitializer,
             is DLanguageAnonymousEnumDeclaration,
             is DLanguageEnumBody,
@@ -111,7 +109,7 @@ class DFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
         override fun visitStructBody(o: DLanguageStructBody) = fold(o)
 
-        override fun visitTemplateDeclaration(o: DlangTemplateDeclaration) =
+        override fun visitTemplateDeclaration(o: DLanguageTemplateDeclaration) =
             foldBetween(o, o.leftBraces, o.rightBraces)
 
         override fun visitArrayInitializer(o: DLanguageArrayInitializer) = fold(o)

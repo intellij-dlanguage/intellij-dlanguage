@@ -10,9 +10,9 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
-import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
+import io.github.intellij.dlanguage.psi.named.DLanguageSingleImport;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
-import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
+import io.github.intellij.dlanguage.stubs.DLanguageSingleImportStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,9 +24,9 @@ import static io.github.intellij.dlanguage.utils.DPsiUtilKt.getImportText;
  * Created by francis on 7/14/2017.
  * todo remove al references to a single imports name. This no longer means the same thing
  */
-public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSingleImportStub> implements DlangSingleImport {
+public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DLanguageSingleImportStub> implements DLanguageSingleImport {
 
-    public DlangSingleImportImpl(@NotNull final DlangSingleImportStub stub, final IStubElementType nodeType) {
+    public DlangSingleImportImpl(@NotNull final DLanguageSingleImportStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
     }
 
@@ -69,7 +69,7 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
     @NotNull
     @Override
     public Set<String> getApplicableImportBinds() {
-        DlangSingleImportStub greenStub = getGreenStub();
+        DLanguageSingleImportStub greenStub = getGreenStub();
         if (greenStub != null) {
             try {
                 return greenStub.getApplicableImportBinds();
@@ -95,7 +95,7 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DlangSing
     @NotNull
     @Override
     public Map<String, String> getApplicableNamedImportBinds() {
-        DlangSingleImportStub greenStub = getGreenStub();
+        DLanguageSingleImportStub greenStub = getGreenStub();
         if (greenStub != null) {
             try {
                 return greenStub.getApplicableNamedImportBinds();
