@@ -336,7 +336,7 @@ static this() {
     types_extra_interfaces["TemplateTypeParameter"] = ["TemplateParameter"];
     stub_children["TemplateValueParameter"] = ["Type","Identifier","OP_COLON","AssignExpression",  "TemplateValueParameterDefault"];
     types_extra_interfaces["TemplateValueParameter"] = ["TemplateParameter"];
-    types_children["TemplateValueParameterDefault"] = ["OP_EQ","AssignExpression","KW___FILE__","KW___FUNCTION__","KW___LINE__","KW___MODULE__","KW___PRETTY_FUNCTION__"];
+    types_children["TemplateValueParameterDefault"] = ["OP_EQ","Expression"];
     types_children["TernaryExpression"] = ["OP_QUEST","OP_COLON","Expression*"];
     types_extra_interfaces["TernaryExpression"] = ["Expression"];
     types_children["ThrowExpression"] = ["KW_THROW","Expression","OP_SCOLON"];
