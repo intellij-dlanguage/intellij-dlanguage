@@ -289,7 +289,8 @@ class DSignatureDocGenerator {
             appendType(builder, element.type)
             builder.append(" ").append(element.identifier!!.text)
             if (element.templateValueParameterDefault != null) {
-                builder.append(" = ").append(element.templateValueParameterDefault!!.assignExpression!!.text)
+                // TODO properly handle expression (add coloration of literals, ...)
+                builder.append(" = ").append(element.templateValueParameterDefault!!.expression!!.text)
             }
         }
     }
