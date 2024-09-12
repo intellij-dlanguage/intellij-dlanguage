@@ -8,8 +8,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 // The same as `--stacktrace` param
 gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS
 
-fun properties(key: String) = providers.gradleProperty(key).get()
-
 plugins {
     id("java")
     id("org.gradle.idea")
@@ -19,8 +17,6 @@ plugins {
     alias(libs.plugins.grammarkit)
     alias(libs.plugins.kover)
 }
-
-val ideaVersion = properties("ideaVersion")
 
 // When testing, set to "true" if you want to have expected data written (to easily update lexer/parser tests)
 val overrideTestData = "false"
@@ -58,21 +54,6 @@ repositories {
     }
 }
 
-sourceSets {
-    main {
-        java.srcDirs("src/main/java", "src/main/kotlin", "gen" , "src/main/jflex")
-        // resources.srcDirs("src/main/resources") // specifying the default causes a problem with processResources on Gradle 7
-    }
-    test {
-        java.srcDirs("src/test/java", "src/test/kotlin")
-    }
-}
-
-tasks.clean {
-    val dir = project.file("gen")
-    delete(dir)
-}
-
 tasks.register<Test>("testCompilation") {
     group = "Verification"
     dependsOn(tasks.classes, tasks.testClasses)
@@ -89,16 +70,24 @@ val generateDocSyntaxLexer = tasks.register<GenerateLexerTask>("generateDocSynta
     targetOutputDir.set(file("gen/io/github/intellij/dlanguage/features/documentation/"))
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    dependsOn(
-        generateDocSyntaxLexer,
-    )
+val generate by tasks.registering {
+    outputs.dir("gen")
+    dependsOn(generateDocSyntaxLexer)
 }
 
-tasks.withType<KotlinCompile>().configureEach {
-    dependsOn(
-        generateDocSyntaxLexer,
-    )
+
+sourceSets {
+    main {
+        java.srcDirs("src/main/java", "src/main/kotlin", generate, "src/main/jflex")
+        // resources.srcDirs("src/main/resources") // specifying the default causes a problem with processResources on Gradle 7
+    }
+    test {
+        java.srcDirs("src/test/java", "src/test/kotlin")
+    }
+}
+
+tasks.clean {
+    delete(generate)
 }
 
 dependencies {

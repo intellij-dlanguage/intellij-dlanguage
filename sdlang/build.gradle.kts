@@ -1,7 +1,7 @@
+
 import org.jetbrains.grammarkit.tasks.GenerateLexerTask
 import org.jetbrains.grammarkit.tasks.GenerateParserTask
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 plugins {
@@ -32,22 +32,6 @@ dependencies {
     }
 }
 
-
-sourceSets {
-    main {
-        java.srcDirs("src/main/kotlin", "gen")
-        // resources.srcDirs "src/main/resources" // specifying the default causes a problem with processResources on Gradle 7
-    }
-    test {
-        java.srcDirs("src/test/kotlin")
-    }
-}
-
-tasks.clean {
-    val dir = project.file("gen")
-    delete(dir)
-}
-
 val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer") {
     // source flex file
     sourceFile.set(file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/lexer/SDLangLexer.flex"))
@@ -63,8 +47,23 @@ val generateSyntaxParser = tasks.register<GenerateParserTask>("generateSyntaxPar
     pathToPsiRoot.set("io/github/intellij/dlanguage/sdlang/psi")
 }
 
-tasks.withType<KotlinCompile>().configureEach {
+val generate by tasks.registering {
+    outputs.dir("gen")
     dependsOn(generateSyntaxLexer, generateSyntaxParser)
+}
+
+sourceSets {
+    main {
+        java.srcDirs("src/main/kotlin", generate)
+        // resources.srcDirs "src/main/resources" // specifying the default causes a problem with processResources on Gradle 7
+    }
+    test {
+        java.srcDirs("src/test/kotlin")
+    }
+}
+
+tasks.clean {
+    delete(generate)
 }
 
 // Mark the generated sources as generated in intellij idea
