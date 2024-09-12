@@ -925,7 +925,7 @@ int main(string[] args) {
     bool genInterface = args[1] == "Interface";
 
     // preparatory work
-    if (!exists("impl"))
+    if (!genInterface && !exists("impl"))
         mkdir("impl");
 
     foreach(string key; types_children.keys) {

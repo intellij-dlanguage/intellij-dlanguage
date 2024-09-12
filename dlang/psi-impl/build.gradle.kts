@@ -1,10 +1,11 @@
+
 import org.jetbrains.grammarkit.tasks.GenerateLexerTask
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.nio.file.Files
 
 plugins {
     id("java")
+    id("org.gradle.idea")
     alias(libs.plugins.kotlin)
     alias(libs.plugins.gradleIntelliJModule)
     alias(libs.plugins.grammarkit)
@@ -18,15 +19,6 @@ repositories {
     }
 }
 
-sourceSets {
-    main {
-        java.srcDirs("src/main/java", "src/main/kotlin", "gen" , "src/main/jflex")
-    }
-    test {
-        java.srcDirs("src/test/java", "src/test/kotlin")
-    }
-}
-
 val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer") {
     // source flex file
     sourceFile.set(file("src/main/jflex/io/github/intellij/dlanguage/lexer/DLanguageLexer.flex"))
@@ -37,8 +29,9 @@ val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer
 
 
 val ensureDirectory = tasks.register("ensureDirectory") {
-    val file = file("gen/io/github/intellij/dlanguage/psi/")
-    doLast {
+    val file = file("gen/io/github/intellij/dlanguage/psi/impl")
+    outputs.dir("gen/io/github/intellij/dlanguage/psi/impl")
+    doFirst {
         Files.createDirectories(file.toPath())
     }
 }
@@ -50,18 +43,25 @@ val generatePsi = tasks.register<Exec>("generatePsi") {
     args("${rootProject.projectDir}/scripts/types_regen_script.d", "Implementation")
 }
 
-tasks.withType<JavaCompile>().configureEach {
+val generate by tasks.registering {
+    outputs.dirs("gen")
     dependsOn(
         generateSyntaxLexer,
         generatePsi,
     )
 }
 
-tasks.withType<KotlinCompile>().configureEach {
-    dependsOn(
-        generateSyntaxLexer,
-        generatePsi,
-    )
+sourceSets {
+    main {
+        java.srcDirs("src/main/java", "src/main/kotlin", generate , "src/main/jflex")
+    }
+    test {
+        java.srcDirs("src/test/java", "src/test/kotlin")
+    }
+}
+
+tasks.clean {
+    delete(generate)
 }
 
 dependencies {
@@ -74,5 +74,12 @@ dependencies {
         intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
         instrumentationTools()
         testFramework(TestFrameworkType.Platform)
+    }
+}
+
+// Mark the generated sources as generated in intellij idea
+idea {
+    module {
+        generatedSourceDirs = setOf(file("gen"))
     }
 }
