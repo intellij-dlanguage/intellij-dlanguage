@@ -144,7 +144,6 @@ static this() {
     types_children["DebugSpecification"] = ["KW_DEBUG","OP_EQ","Identifier", "INTEGER_LITERAL", "OP_SCOLON"];
     types_extra_interfaces["DebugSpecification"] = ["Declaration"];
     types_children["DeclarationBlock"] = ["OP_BRACES_LEFT", "Declaration*", "OP_BRACES_RIGHT"];
-    types_extra_interfaces["DeclarationBlock"] = ["Declaration"];
     types_children["DeclarationStatement"] = ["Declaration"];
     types_extra_interfaces["DeclarationStatement"] = ["Statement"];
     types_children["DefaultStatement"] = ["KW_DEFAULT","OP_COLON","Statement*"];
