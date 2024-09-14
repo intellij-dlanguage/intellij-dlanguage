@@ -10,7 +10,7 @@ import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFin
  */
 // The PsiNameIdentifierOwner is necessary for the in-place rename refactoring.
 // PsiNamedElement seems like it should be enough, but it's not.
-public interface DNamedElement extends DCompositeElement, PsiNameIdentifierOwner, NavigationItem {
+public interface DNamedElement extends PsiNameIdentifierOwner, NavigationItem {
 
 //    default String getFullName() {
 //        return DPsiImplUtil.getFullName(this);

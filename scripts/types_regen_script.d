@@ -857,7 +857,6 @@ string getStubInterfaceImports(string[] elements, string key) {
     auto stubImport = "import io.github.intellij.dlanguage.stubs.DLanguage%sStub;".format(key);
     imports ~= [
         "import com.intellij.psi.StubBasedPsiElement;",
-        "import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;",
         stubImport
     ];
     //if (named_children.canFind(key))
@@ -979,7 +978,7 @@ int main(string[] args) {
         string interfaceClassName = "DLanguage" ~ key;
         if (genInterface) {
             // interface
-            string[] interfaces = ["DCompositeElement", "StubBasedPsiElement<DLanguage%sStub>".format(key)];
+            string[] interfaces = ["StubBasedPsiElement<DLanguage%sStub>".format(key)];
             if (named_children.canFind(key))
                 interfaces.insertInPlace(1, "DNamedElement");
             auto extraInterfaces = key in types_extra_interfaces ? types_extra_interfaces[key] : [];
