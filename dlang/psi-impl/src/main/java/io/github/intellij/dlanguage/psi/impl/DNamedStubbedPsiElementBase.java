@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> extends
+public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<? extends PsiElement>> extends
     DStubbedPsiElementBase<T> implements DNamedElement {
 
     public DNamedStubbedPsiElementBase(@NotNull final T stub, final IStubElementType nodeType) {
