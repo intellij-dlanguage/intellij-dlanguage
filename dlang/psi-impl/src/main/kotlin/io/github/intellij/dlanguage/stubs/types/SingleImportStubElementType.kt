@@ -23,11 +23,11 @@ class SingleImportStubElementType(debugName: String) :
     }
 
     override fun createStub(psi: DLanguageSingleImport, parentStub: StubElement<*>?): DLanguageSingleImportStub {
-        val binds: MutableSet<StringRef?> = HashSet<StringRef?>()
+        val binds: MutableSet<StringRef> = HashSet<StringRef>()
         for (bind in psi.getApplicableImportBinds()) {
             binds.add(StringRef.fromString(bind))
         }
-        val namedBinds: MutableMap<StringRef?, StringRef?> = HashMap<StringRef?, StringRef?>()
+        val namedBinds: MutableMap<StringRef, StringRef> = HashMap<StringRef, StringRef>()
         psi.getApplicableNamedImportBinds().forEach { (bindName: String?, bind: String?) ->
             namedBinds.put(
                 StringRef.fromString(bindName),

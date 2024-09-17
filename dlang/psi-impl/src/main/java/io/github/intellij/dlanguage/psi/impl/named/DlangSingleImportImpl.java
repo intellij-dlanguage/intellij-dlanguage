@@ -22,7 +22,6 @@ import static io.github.intellij.dlanguage.utils.DPsiUtilKt.getImportText;
 
 /**
  * Created by francis on 7/14/2017.
- * todo remove al references to a single imports name. This no longer means the same thing
  */
 public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DLanguageSingleImportStub> implements DLanguageSingleImport {
 

@@ -7,7 +7,6 @@ import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.stubs.index.DAllNameIndex
 import io.github.intellij.dlanguage.stubs.index.DMembersIndex
 import io.github.intellij.dlanguage.stubs.index.DModuleDeclarationIndex
-import io.github.intellij.dlanguage.stubs.index.DPublicImportIndex
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex
 import io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationsByModule
 
@@ -23,7 +22,6 @@ abstract class DNamedStubElementType<S : NamedStubBase<T>, T : DNamedElement>(de
         DModuleDeclarationIndex.Companion.indexModuleDeclarations<S>(stub, sink, name)
         DTopLevelDeclarationIndex.Companion.indexTopLevelDeclarations<S, T>(stub, sink, name)
         DTopLevelDeclarationsByModule.Companion.indexTopLevelDeclarationsByModule<S, T>(stub, sink)
-        DPublicImportIndex.Companion.indexPublicImports<S, T>(stub, sink)
         DMembersIndex.Companion.indexMembers<S>(stub, sink)
     }
 

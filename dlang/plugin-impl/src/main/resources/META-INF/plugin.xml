@@ -133,7 +133,6 @@
         <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationIndex"/>
         <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DModuleDeclarationIndex"/>
         <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DTopLevelDeclarationsByModule"/>
-        <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DPublicImportIndex"/>
         <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DMembersIndex"/>
         <gotoSymbolContributor implementation="io.github.intellij.dlanguage.features.DChooseByNameContributor"/>
         <gotoClassContributor implementation="io.github.intellij.dlanguage.features.DClassContributor"/>
