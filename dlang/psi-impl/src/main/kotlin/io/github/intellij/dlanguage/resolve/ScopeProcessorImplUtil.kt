@@ -79,9 +79,7 @@ object ScopeProcessorImplUtil {
             is DeclarationStatement ->
                 return !(def.declaration != null && !processor.execute(def.declaration!!, state))
             is ImportDeclaration -> {
-                var toContinue = true
-                def.processDeclarations(processor, state, lastParent, place)
-                return true
+                return def.processDeclarations(processor, state, lastParent, place)
             }
             is MixinTemplateDeclaration -> {
                 var toContinue = true

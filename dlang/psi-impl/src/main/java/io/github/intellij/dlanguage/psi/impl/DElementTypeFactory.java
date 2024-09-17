@@ -30,6 +30,7 @@ public class DElementTypeFactory {
             case "AUTO_ASSIGNMENT" -> new AutoAssignmentStubElementType(name);
             case "ENUM_DECLARATION" -> new EnumDeclarationStubElementType(name);
             case "UNION_DECLARATION" -> new DlangUnionDeclarationStubElementType(name);
+            case "IMPORT_DECLARATION" -> new DLanguageImportDeclarationStubElementType(name);
             case "SINGLE_IMPORT" -> new SingleImportStubElementType(name);
             case "UNITTEST" -> new UnittestStubElementType(name);
             case "CATCH" -> new CatchStubElementType(name);

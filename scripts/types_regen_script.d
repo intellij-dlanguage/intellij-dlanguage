@@ -197,8 +197,8 @@ static this() {
     types_children["ImportBind"] = ["Identifier","NamedImportBind"];
     types_mixins["ImportBind"] = "DLanguageImportBindImplMixin";
     types_children["ImportBindings"] = ["OP_COMMA*","ImportBind*","SingleImport","OP_COLON"];
-    types_children["ImportDeclaration"] = ["KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
-    types_extra_interfaces["ImportDeclaration"] = ["Statement", "Declaration"];
+    stub_children["ImportDeclaration"] = ["KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
+    types_extra_interfaces["ImportDeclaration"] = ["Statement", "Declaration", "DVisibilityModifier"];
     types_children["ImportExpression"] = ["ImportExpression","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_extra_interfaces["ImportExpression"] = ["Expression"];
     types_children["IndexExpression"] = ["OP_BRACKET_LEFT","OP_BRACKET_RIGHT","ArgumentList","Expression"];
@@ -472,7 +472,7 @@ static this() {
     has_processDeclaration["IfCondition"] = false;
     has_processDeclaration["ImportBind"] = false;
     has_processDeclaration["ImportBindings"] = false;
-    has_processDeclaration["ImportDeclaration"] = true;
+    has_processDeclaration["ImportDeclaration"] = false;
     has_processDeclaration["ImportExpression"] = false;
     has_processDeclaration["Index"] = false;
     has_processDeclaration["IndexExpression"] = false;

@@ -14,6 +14,7 @@ import io.github.intellij.dlanguage.DlangFileType
 import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration
+import io.github.intellij.dlanguage.resolve.PROCESSED_FILES_KEY
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.utils.getImportText
 import org.apache.commons.lang3.StringUtils
@@ -93,6 +94,13 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
         place: PsiElement
     ): Boolean {
         var toContinue = true
+        var processFiles = state.get<MutableList<String>>(PROCESSED_FILES_KEY)
+        var newState = state
+        if (processFiles == null) {
+            processFiles = mutableListOf<String>()
+            newState = state.put(PROCESSED_FILES_KEY, processFiles)
+        }
+        processFiles.add(getFullyQualifiedModuleName())
         for (element in children) {
             if (element is DLanguageModuleDeclaration) {
                 if (!processor.execute(element, state)) {
@@ -100,7 +108,7 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                 }
             }
             else if (element is Declaration) {
-                if (!processDeclaration(element, processor, state, lastParent, place)) {
+                if (!processDeclaration(element, processor, newState, lastParent, place)) {
                     toContinue = false
                 }
             }
@@ -114,7 +122,7 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                 objects = objects.filter {it.containingDirectory.name == "dmd" }.toSet()
 
             val objectModule = objects.firstOrNull()?.containingFile as DlangPsiFile?
-            toContinue = objectModule?.processDeclarations(processor, state, objectModule, objectModule)?: true
+            toContinue = objectModule?.processDeclarations(processor, newState, objectModule, objectModule) != false
         }
         return toContinue
     }
