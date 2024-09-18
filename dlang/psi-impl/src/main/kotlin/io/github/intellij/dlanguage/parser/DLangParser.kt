@@ -2,6 +2,7 @@ package io.github.intellij.dlanguage.parser
 
 import com.google.common.collect.Sets
 import com.intellij.lang.PsiBuilder
+import com.intellij.lang.PsiBuilderUtil
 import com.intellij.psi.tree.IElementType
 import io.github.intellij.dlanguage.psi.DlangTypes
 import java.util.*
@@ -1446,6 +1447,15 @@ internal class DLangParser(private val builder: PsiBuilder) {
         }
         exit_section_modified(builder, m, DlangTypes.AUTO_ASSIGNMENT, true)
         return true
+    }
+
+    fun parseBlocStatementLazy(): Boolean {
+        val openBrace = expect(DlangTypes.OP_BRACES_LEFT)
+        if (openBrace == null) {
+            return false
+        }
+        val marker = PsiBuilderUtil.parseBlockLazy(builder, DlangTypes.OP_BRACES_LEFT, DlangTypes.OP_BRACES_RIGHT, DlangTypes.BLOCK_STATEMENT)
+        return marker != null
     }
 
     /**
