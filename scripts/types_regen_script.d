@@ -62,6 +62,11 @@ string[] generate_stubImpl = [
     "StaticDestructor",
 ];
 
+
+string[] ignoreImplementationGeneration = [
+    "BlockStatement"
+];
+
 /*
 Associative array which contains Name of psi element as key and if it has a processDeclaration as value
 */
@@ -947,6 +952,8 @@ int main(string[] args) {
             f.write(interfaceFile);
             f.close();
         } else {
+            if (ignoreImplementationGeneration.canFind(key))
+                continue;
             // implementation
             string implClassName = "DLanguage" ~ key ~ "Impl";
             string implFile = implFileTemplate.format(getImplImports(types_children[key], key, parentClassName), implClassName, parentClassName, interfaceClassName, implClassName, key);

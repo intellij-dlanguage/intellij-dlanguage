@@ -3,12 +3,9 @@ package io.github.intellij.dlanguage.psi;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.ILazyParseableElementType;
 import io.github.intellij.dlanguage.documentation.DlangDocCommentType;
 import io.github.intellij.dlanguage.psi.impl.*;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateAliasParameterImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateTupleParameterImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateTypeParameterImpl;
-import io.github.intellij.dlanguage.psi.impl.named.DLanguageTemplateValueParameterImpl;
 import io.github.intellij.dlanguage.psi.impl.named.*;
 
 public interface DlangTypes {
@@ -44,6 +41,8 @@ public interface DlangTypes {
     IElementType NAMED_IMPORT_BIND = DElementTypeFactory.factory("NAMED_IMPORT_BIND");
     IElementType VERSION_SPECIFICATION = DElementTypeFactory.factory("VERSION_SPECIFICATION");
     IElementType DECLARATOR_IDENTIFIER = DElementTypeFactory.factory("DECLARATOR_IDENTIFIER");
+
+    ILazyParseableElementType BLOCK_STATEMENT = new CodeBlockElementType("BLOCK_STATEMENT");
 
     DlangElementType ALIAS_ASSIGN = new DlangElementType("ALIAS_ASSIGN");
     DlangElementType ALIAS_DECLARATION = new DlangElementType("ALIAS_DECLARATION");
@@ -86,7 +85,6 @@ public interface DlangTypes {
     DlangElementType BASE_CLASS = new DlangElementType("BASE_CLASS");
     DlangElementType BASE_CLASS_LIST = new DlangElementType("BASE_CLASS_LIST");
     DlangElementType BASIC_TYPE = new DlangElementType("BASIC_TYPE");
-    DlangElementType BLOCK_STATEMENT = new DlangElementType("BLOCK_STATEMENT");
     DlangElementType BREAK_STATEMENT = new DlangElementType("BREAK_STATEMENT");
     DlangElementType CASE_RANGE_STATEMENT = new DlangElementType("CASE_RANGE_STATEMENT");
     DlangElementType CASE_STATEMENT = new DlangElementType("CASE_STATEMENT");
@@ -536,8 +534,8 @@ public interface DlangTypes {
                 return new DLanguageBaseClassListImpl(node);
             } else if (type == BASIC_TYPE) {
                 return new DLanguageBasicTypeImpl(node);
-            } else if (type == BLOCK_STATEMENT) {
-                return new DLanguageBlockStatementImpl(node);
+            //} else if (type == BLOCK_STATEMENT) {
+            //    return new DLanguageBlockStatementImpl(node);
             } else if (type == BREAK_STATEMENT) {
                 return new DLanguageBreakStatementImpl(node);
             } else if (type == CASE_RANGE_STATEMENT) {
