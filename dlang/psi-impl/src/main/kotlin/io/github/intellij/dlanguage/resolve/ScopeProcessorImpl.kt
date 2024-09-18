@@ -10,6 +10,7 @@ import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
 import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.psi.interfaces.DVisibility
+import io.github.intellij.dlanguage.psi.scope.ElementDeclarationHint
 import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
@@ -555,6 +556,11 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
+        val hint = processor.getHint(ElementDeclarationHint.KEY)
+        if (hint != null && !hint.shouldProcess(ElementDeclarationHint.DeclarationKind.IMPORT)) {
+            return true
+        }
+
         if (lastParent != null && lastParent.parent == element) {
             if (place !is ImportBind)
                 return true

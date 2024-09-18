@@ -1,12 +1,14 @@
 package io.github.intellij.dlanguage.psi.scope.processor
 
+import com.intellij.openapi.util.Key
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import io.github.intellij.dlanguage.psi.interfaces.DVisibility
+import io.github.intellij.dlanguage.psi.scope.ElementDeclarationHint
 import io.github.intellij.dlanguage.utils.AttributeSpecifier
 
-class DVisibilityProcessor : PsiScopeProcessor {
+class DVisibilityProcessor : PsiScopeProcessor, ElementDeclarationHint {
     private var result: DVisibility? = null
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
@@ -27,5 +29,16 @@ class DVisibilityProcessor : PsiScopeProcessor {
 
     fun getVisibility(): DVisibility? {
         return result
+    }
+
+    override fun shouldProcess(kind: ElementDeclarationHint.DeclarationKind): Boolean {
+        return kind != ElementDeclarationHint.DeclarationKind.IMPORT
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : Any?> getHint(hintKey: Key<T?>): T? {
+        if (hintKey == ElementDeclarationHint.KEY)
+            return this as T
+        return super.getHint(hintKey)
     }
 }
