@@ -74,7 +74,9 @@ D Language File
                       DLanguageTemplateArgumentListImpl(TEMPLATE_ARGUMENT_LIST)
                         DLanguageTemplateArgumentImpl(TEMPLATE_ARGUMENT)
                           DLanguageFunctionLiteralExpressionImpl(FUNCTION_LITERAL_EXPRESSION)
-                            PsiElement(DlangTokenType.ID)('a')
+                            DLanguageParametersImpl(PARAMETERS)
+                              PARAMETER
+                                PsiElement(DlangTokenType.ID)('a')
                             PsiElement(DlangTokenType.=>)('=>')
                             DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
                               DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
