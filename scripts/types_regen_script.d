@@ -183,7 +183,7 @@ static this() {
     types_children["FunctionCallExpression"] = ["Type", "Arguments", "Expression", "TemplateArguments"];
     types_extra_interfaces["FunctionCallExpression"] = ["Statement"];
     types_children["FunctionContract"] = ["OP_BRACES_LEFT", "InOutStatement", "OP_PAR_LEFT", "InOutContractExpression"];
-    types_children["FunctionLiteralExpression"] = ["Type","KW_FUNCTION","KW_DELEGATE","KW_REF","Parameters","FunctionAttribute*","SpecifiedFunctionBody","Identifier"];
+    types_children["FunctionLiteralExpression"] = ["Type","KW_FUNCTION","KW_DELEGATE","KW_REF","Parameters","FunctionAttribute*","SpecifiedFunctionBody"];
     types_extra_interfaces["FunctionLiteralExpression"] = ["Expression"];
     types_children["GotoStatement"] = ["Identifier","AssignExpression*","OP_COMMA*","KW_DEFAULT","KW_CASE","KW_GOTO","OP_SCOLON"];
     types_extra_interfaces["GotoStatement"] = ["Statement", "LabelQualifier"];

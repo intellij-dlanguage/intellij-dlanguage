@@ -109,12 +109,10 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        var toContinue = true
-        if (element.identifier != null) {
-            if (!processor.execute(element.identifier!!, state)) {
-                toContinue = false
-            }
+        if (lastParent == null || lastParent.parent != element) {
+            return true
         }
+        var toContinue = true
         if (element.parameters != null) {
             if (!processParameters(element.parameters!!, processor, state, lastParent, place)) {
                 toContinue = false
