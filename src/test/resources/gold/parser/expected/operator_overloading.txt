@@ -3000,7 +3000,7 @@ D Language File
             PsiComment(DlangTokenType.LINE_COMMENT)('// same as: r.opIndex(0, r.opDollar!1)')
         PsiComment(DlangTokenType.LINE_COMMENT)('// which is r.opIndex(0, r.height-1)')
         PsiElement(DlangTokenType.})('}')
-  DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+  IMPORT_DECLARATION
     PsiElement(DlangTokenType.import)('import')
     SINGLE_IMPORT
       DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
