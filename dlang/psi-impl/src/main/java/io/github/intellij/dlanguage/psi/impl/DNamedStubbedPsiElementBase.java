@@ -63,7 +63,6 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
 
     public ItemPresentation getPresentation() {
         return new DlangItemPresentation(getContainingFile()) {
-            @NotNull
             @Override
             public String getPresentableText() {
                 return getName();
