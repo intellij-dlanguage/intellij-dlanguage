@@ -170,4 +170,10 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testTemplateTupleUsage2InTemplatedClassShouldResolve() = doTest()
+
+    @Test
+    fun testLambdaParameterUsageShouldResolve() = doTest()
+
+    @Test
+    fun testLambdaMultiParametersUsageShouldResolve() = doTest()
 }

@@ -3418,19 +3418,16 @@ internal class DLangParser(private val builder: PsiBuilder) {
                     DlangTypes.KW_OUT, DlangTypes.OP_BRACES_LEFT, DlangTypes.OP_LAMBDA_ARROW
                 )
             ) if (!parseType()) {
-                cleanup(m, DlangTypes.FUNCTION_LITERAL_EXPRESSION)
+                m.done(DlangTypes.FUNCTION_LITERAL_EXPRESSION)
                 return null
             }
         }
         if (startsWith(DlangTypes.ID, DlangTypes.OP_LAMBDA_ARROW)) {
-            advance()
-            advance() // =>
-            if (parseAssignExpression() == null) {
-                cleanup(m, DlangTypes.FUNCTION_LITERAL_EXPRESSION)
-                return null
-            }
-            exit_section_modified(builder, m, DlangTypes.FUNCTION_LITERAL_EXPRESSION, true)
-            return m
+            parseSingleParameter()
+            builder.advanceLexer() // =>
+            val success = parseAssignExpression()
+            m.done(DlangTypes.FUNCTION_LITERAL_EXPRESSION)
+            return if (success != null) m else null
         } else if (currentIs(DlangTypes.OP_PAR_LEFT)
             || currentIs(DlangTypes.KW_REF) && peekIs(DlangTypes.OP_PAR_LEFT) || currentIs(DlangTypes.KW_AUTO) && peekAre(
                 DlangTypes.KW_REF, DlangTypes.OP_PAR_LEFT
@@ -3443,7 +3440,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 advance()
             }
             if (!parseParameters()) {
-                cleanup(m, DlangTypes.FUNCTION_LITERAL_EXPRESSION)
+                m.done(DlangTypes.FUNCTION_LITERAL_EXPRESSION)
                 return null
             }
             while (currentIsMemberFunctionAttribute()) {
@@ -3455,14 +3452,14 @@ internal class DLangParser(private val builder: PsiBuilder) {
         if (currentIs(DlangTypes.OP_LAMBDA_ARROW)) {
             advance()
             if (parseAssignExpression() == null) {
-                cleanup(m, DlangTypes.FUNCTION_LITERAL_EXPRESSION)
+                m.done(DlangTypes.FUNCTION_LITERAL_EXPRESSION)
                 return null
             }
         } else if (!parseSpecifiedFunctionBody()) {
-            cleanup(m, DlangTypes.FUNCTION_LITERAL_EXPRESSION)
+            m.done(DlangTypes.FUNCTION_LITERAL_EXPRESSION)
             return null
         }
-        exit_section_modified(builder, m, DlangTypes.FUNCTION_LITERAL_EXPRESSION, true)
+        m.done(DlangTypes.FUNCTION_LITERAL_EXPRESSION)
         return m
     }
 
@@ -5041,6 +5038,18 @@ internal class DLangParser(private val builder: PsiBuilder) {
             return false
         }
         return true
+    }
+
+    /**
+     * Parse a single parameter of a FunctionLiteral Expression
+     */
+    fun parseSingleParameter() {
+        val parametersListMarker = builder.mark()
+        val parameterMarker = builder.mark()
+        assert(builder.tokenType === DlangTypes.ID)
+        builder.advanceLexer()
+        parameterMarker.done(DlangTypes.PARAMETER)
+        parametersListMarker.done(DlangTypes.PARAMETERS)
     }
 
     /**
