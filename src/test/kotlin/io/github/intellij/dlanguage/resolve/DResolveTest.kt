@@ -155,6 +155,9 @@ class DResolveTest : DResolveTestCase() {
     fun testTemplateTypeShouldNotLeakOutsideTemplate() = doTest(false)
 
     @Test
+    fun testTemplateInstanceParameterUsageToOuterStructDefinitionShouldResolve() = doTest()
+
+    @Test
     fun testTemplateThisTypeUsageInTemplatedClassShouldResolve() = doTest()
 
     @Test
