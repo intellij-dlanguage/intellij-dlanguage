@@ -49,7 +49,7 @@ D Language File
       PsiElement(DlangTokenType.nothrow)('nothrow')
     DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
       PsiElement(DlangTokenType.;)(';')
-  DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+  IMPORT_DECLARATION
     PsiElement(DlangTokenType.import)('import')
     SINGLE_IMPORT
       DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)

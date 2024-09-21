@@ -34,7 +34,7 @@ D Language File
                 PsiElement(DlangTokenType.ID)('str')
           PsiElement(DlangTokenType.))(')')
         PsiElement(DlangTokenType.;)(';')
-      DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+      IMPORT_DECLARATION
         PsiElement(DlangTokenType.import)('import')
         SINGLE_IMPORT
           DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
@@ -113,7 +113,7 @@ D Language File
               PsiElement(DlangTokenType.ID)('ptr')
           PsiElement(DlangTokenType.))(')')
         PsiElement(DlangTokenType.;)(';')
-      DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+      IMPORT_DECLARATION
         PsiElement(DlangTokenType.import)('import')
         SINGLE_IMPORT
           DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)

@@ -4,7 +4,6 @@ package io.github.intellij.dlanguage.psi.named;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.DLanguageMemberFunctionAttribute;
-import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
 import io.github.intellij.dlanguage.stubs.DLanguageDestructorStub;
@@ -13,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageDestructor extends PsiElement, DCompositeElement, Declaration,
+public interface DLanguageDestructor extends PsiElement, Declaration,
     StubBasedPsiElement<DLanguageDestructorStub> {
 
     @Nullable

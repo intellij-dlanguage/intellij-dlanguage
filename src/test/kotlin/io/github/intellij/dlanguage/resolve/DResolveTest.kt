@@ -36,9 +36,17 @@ class DResolveTest : DResolveTestCase() {
     @Test
     fun testDeclarationInsideDeclarationBlockUsageOutside() = doTest()
 
-    // TODO need to handle public imports
-    //@Test
-    //fun testPublicImports() = doTest()
+    @Test
+    fun testPublicImports() = doTest()
+
+    @Test
+    fun testPublicImportLoopImportShouldNotLoopIndefinitely() = doTest(false)
+
+    @Test
+    fun testPublicImportsWithAttributeSpecifier() = doTest()
+
+    @Test
+    fun testPublicImportsInClassWithAttributeSpecifierShouldNotResolveOutsideClass() = doTest(false)
 
     @Test
     fun testTemplateUsageToTemplateDeclaration() = doTest()

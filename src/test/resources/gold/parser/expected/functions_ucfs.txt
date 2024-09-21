@@ -224,7 +224,7 @@ D Language File
               PsiElement(DlangTokenType.))(')')
             DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
               PsiElement(DlangTokenType.;)(';')
-        DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+        IMPORT_DECLARATION
           PsiElement(DlangTokenType.import)('import')
           SINGLE_IMPORT
             DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
@@ -267,7 +267,7 @@ D Language File
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// OK, calls b.baz, because it is declared at the')
         PsiComment(DlangTokenType.LINE_COMMENT)('// top level scope of module b')
-        DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+        IMPORT_DECLARATION
           PsiElement(DlangTokenType.import)('import')
           SINGLE_IMPORT
             DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
@@ -331,7 +331,7 @@ D Language File
           PsiElement(DlangTokenType.))(')')
         DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
           PsiElement(DlangTokenType.;)(';')
-      DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+      IMPORT_DECLARATION
         PsiElement(DlangTokenType.import)('import')
         SINGLE_IMPORT
           DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)

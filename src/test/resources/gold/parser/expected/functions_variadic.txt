@@ -95,7 +95,7 @@ D Language File
     DLanguageMissingFunctionBodyImpl(MISSING_FUNCTION_BODY)
       PsiElement(DlangTokenType.;)(';')
     PsiComment(DlangTokenType.LINE_COMMENT)('// error, must have at least one parameter')
-  DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+  IMPORT_DECLARATION
     PsiElement(DlangTokenType.import)('import')
     SINGLE_IMPORT
       DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)

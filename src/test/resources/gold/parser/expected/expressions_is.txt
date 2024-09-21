@@ -570,7 +570,7 @@ D Language File
               PsiElement(DlangTokenType.;)(';')
               PsiComment(DlangTokenType.LINE_COMMENT)('// v is declared to be a byte')
         PsiElement(DlangTokenType.})('}')
-  DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+  IMPORT_DECLARATION
     PsiElement(DlangTokenType.import)('import')
     SINGLE_IMPORT
       DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)

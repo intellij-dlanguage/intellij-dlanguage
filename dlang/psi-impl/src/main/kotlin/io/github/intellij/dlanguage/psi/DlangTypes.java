@@ -44,6 +44,7 @@ public interface DlangTypes {
     IElementType NAMED_IMPORT_BIND = DElementTypeFactory.factory("NAMED_IMPORT_BIND");
     IElementType VERSION_SPECIFICATION = DElementTypeFactory.factory("VERSION_SPECIFICATION");
     IElementType DECLARATOR_IDENTIFIER = DElementTypeFactory.factory("DECLARATOR_IDENTIFIER");
+    IElementType IMPORT_DECLARATION = DElementTypeFactory.factory("IMPORT_DECLARATION");
 
     DlangElementType ALIAS_ASSIGN = new DlangElementType("ALIAS_ASSIGN");
     DlangElementType ALIAS_DECLARATION = new DlangElementType("ALIAS_DECLARATION");
@@ -131,7 +132,6 @@ public interface DlangTypes {
     DlangElementType IF_STATEMENT = new DlangElementType("IF_STATEMENT");
     DlangElementType IMPORT_BIND = new DlangElementType("IMPORT_BIND");
     DlangElementType IMPORT_BINDINGS = new DlangElementType("IMPORT_BINDINGS");
-    DlangElementType IMPORT_DECLARATION = new DlangElementType("IMPORT_DECLARATION");
     DlangElementType IMPORT_EXPRESSION = new DlangElementType("IMPORT_EXPRESSION");
     DlangElementType IN_CONTRACT_EXPRESSION = new DlangElementType("IN_CONTRACT_EXPRESSION");
     DlangElementType IN_EXPRESSION = new DlangElementType("IN_EXPRESSION");

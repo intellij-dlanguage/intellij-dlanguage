@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.resolve
 
+import com.intellij.openapi.util.Key
 import com.intellij.psi.PsiElement
 import io.github.intellij.dlanguage.utils.*
 
@@ -50,3 +51,5 @@ object DResolveUtil {
         return false
     }
 }
+
+val PROCESSED_FILES_KEY = Key.create<MutableList<String>>("PROCESSED_FILES")

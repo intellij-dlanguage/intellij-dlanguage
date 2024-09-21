@@ -1,5 +1,5 @@
 D Language File
-  DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+  IMPORT_DECLARATION
     PsiElement(DlangTokenType.import)('import')
     SINGLE_IMPORT
       DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
@@ -8,7 +8,7 @@ D Language File
         PsiElement(DlangTokenType..)('.')
         PsiElement(DlangTokenType.ID)('stdio')
     PsiElement(DlangTokenType.;)(';')
-  DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+  IMPORT_DECLARATION
     PsiElement(DlangTokenType.import)('import')
     SINGLE_IMPORT
       DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
@@ -18,7 +18,7 @@ D Language File
       DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
         PsiElement(DlangTokenType.ID)('bar')
     PsiElement(DlangTokenType.;)(';')
-  DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+  IMPORT_DECLARATION
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.public)('public')
     PsiElement(DlangTokenType.import)('import')
@@ -26,7 +26,7 @@ D Language File
       DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
         PsiElement(DlangTokenType.ID)('B')
     PsiElement(DlangTokenType.;)(';')
-  DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+  IMPORT_DECLARATION
     PsiElement(DlangTokenType.static)('static')
     PsiElement(DlangTokenType.import)('import')
     SINGLE_IMPORT
@@ -36,7 +36,7 @@ D Language File
         PsiElement(DlangTokenType..)('.')
         PsiElement(DlangTokenType.ID)('stdio')
     PsiElement(DlangTokenType.;)(';')
-  DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+  IMPORT_DECLARATION
     PsiElement(DlangTokenType.import)('import')
     SINGLE_IMPORT
       PsiElement(DlangTokenType.ID)('io')
@@ -47,7 +47,7 @@ D Language File
         PsiElement(DlangTokenType..)('.')
         PsiElement(DlangTokenType.ID)('stdio')
     PsiElement(DlangTokenType.;)(';')
-  DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+  IMPORT_DECLARATION
     PsiElement(DlangTokenType.import)('import')
     SINGLE_IMPORT
       DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)
@@ -66,7 +66,7 @@ D Language File
         PsiElement(DlangTokenType.=)('=')
         PsiElement(DlangTokenType.ID)('write')
     PsiElement(DlangTokenType.;)(';')
-  DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+  IMPORT_DECLARATION
     PsiElement(DlangTokenType.import)('import')
     SINGLE_IMPORT
       PsiElement(DlangTokenType.ID)('io')
@@ -95,7 +95,7 @@ D Language File
     DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
       DLanguageBlockStatementImpl(BLOCK_STATEMENT)
         PsiElement(DlangTokenType.{)('{')
-        DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+        IMPORT_DECLARATION
           PsiElement(DlangTokenType.import)('import')
           SINGLE_IMPORT
             DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)

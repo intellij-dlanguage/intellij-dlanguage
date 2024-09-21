@@ -4,7 +4,7 @@ D Language File
     PsiElement(DlangTokenType.ID)('S')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
-      DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+      IMPORT_DECLARATION
         PsiElement(DlangTokenType.import)('import')
         SINGLE_IMPORT
           DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)

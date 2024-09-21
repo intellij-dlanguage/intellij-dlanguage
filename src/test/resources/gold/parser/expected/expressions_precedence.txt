@@ -3,7 +3,7 @@ D Language File
     PsiElement(DlangTokenType.unittest)('unittest')
     DLanguageBlockStatementImpl(BLOCK_STATEMENT)
       PsiElement(DlangTokenType.{)('{')
-      DLanguageImportDeclarationImpl(IMPORT_DECLARATION)
+      IMPORT_DECLARATION
         PsiElement(DlangTokenType.import)('import')
         SINGLE_IMPORT
           DLanguageIdentifierChainImpl(IDENTIFIER_CHAIN)

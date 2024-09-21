@@ -9,6 +9,8 @@ import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
 import io.github.intellij.dlanguage.psi.DlangTypes
+import io.github.intellij.dlanguage.psi.interfaces.DVisibility
+import io.github.intellij.dlanguage.psi.scope.ElementDeclarationHint
 import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processParameters
@@ -537,6 +539,10 @@ object ScopeProcessorImpl {
         if (element.importedModuleName.isBlank())
             return true
 
+        // prevent infinite recursing check
+        if (state.get<MutableList<String>>(PROCESSED_FILES_KEY)?.contains(element.importedModuleName) == true)
+            return true
+
         for (file in DModuleIndex.getFilesByModuleName(element.project, element.importedModuleName, GlobalSearchScope.allScope(element.project)).toSet()) {
             if (file == element.containingFile) continue
             if (!file.processDeclarations(processor, state, lastParent, place))
@@ -550,6 +556,11 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
+        val hint = processor.getHint(ElementDeclarationHint.KEY)
+        if (hint != null && !hint.shouldProcess(ElementDeclarationHint.DeclarationKind.IMPORT)) {
+            return true
+        }
+
         if (lastParent != null && lastParent.parent == element) {
             if (place !is ImportBind)
                 return true
@@ -558,8 +569,7 @@ object ScopeProcessorImpl {
             return import.processDeclarations(processor, state, lastParent, place)
         }
         // safeguard if call processDeclarations of others files
-        // TODO should be place.containingFile != element.containingFile && !element.isPublicImport
-        if (place.containingFile != element.containingFile) {
+        if (place.containingFile != element.containingFile && element.visibility() != DVisibility.Public) {
             return true
         }
         var singleImports = element.singleImports.toMutableList()
@@ -596,7 +606,8 @@ object ScopeProcessorImpl {
             }
 
             // check the symbol itself
-            import.processDeclarations(processor, state, lastParent, place)
+            if (!import.processDeclarations(processor, state, lastParent, place))
+                return false
         }
         return true
     }
@@ -695,12 +706,14 @@ object ScopeProcessorImpl {
         return toContinue
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: AttributeSpecifier,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
+        if (!processor.execute(element, state)) {
+            return false
+        }
         if (element.declarationBlock == null)
             return true
         return element.declarationBlock!!.processDeclarations(processor, state, lastParent, place)

@@ -144,7 +144,6 @@ static this() {
     types_children["DebugSpecification"] = ["KW_DEBUG","OP_EQ","Identifier", "INTEGER_LITERAL", "OP_SCOLON"];
     types_extra_interfaces["DebugSpecification"] = ["Declaration"];
     types_children["DeclarationBlock"] = ["OP_BRACES_LEFT", "Declaration*", "OP_BRACES_RIGHT"];
-    types_extra_interfaces["DeclarationBlock"] = ["Declaration"];
     types_children["DeclarationStatement"] = ["Declaration"];
     types_extra_interfaces["DeclarationStatement"] = ["Statement"];
     types_children["DefaultStatement"] = ["KW_DEFAULT","OP_COLON","Statement*"];
@@ -198,8 +197,8 @@ static this() {
     types_children["ImportBind"] = ["Identifier","NamedImportBind"];
     types_mixins["ImportBind"] = "DLanguageImportBindImplMixin";
     types_children["ImportBindings"] = ["OP_COMMA*","ImportBind*","SingleImport","OP_COLON"];
-    types_children["ImportDeclaration"] = ["KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
-    types_extra_interfaces["ImportDeclaration"] = ["Statement", "Declaration"];
+    stub_children["ImportDeclaration"] = ["KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
+    types_extra_interfaces["ImportDeclaration"] = ["Statement", "Declaration", "DVisibilityModifier"];
     types_children["ImportExpression"] = ["ImportExpression","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_extra_interfaces["ImportExpression"] = ["Expression"];
     types_children["IndexExpression"] = ["OP_BRACKET_LEFT","OP_BRACKET_RIGHT","ArgumentList","Expression"];
@@ -473,7 +472,7 @@ static this() {
     has_processDeclaration["IfCondition"] = false;
     has_processDeclaration["ImportBind"] = false;
     has_processDeclaration["ImportBindings"] = false;
-    has_processDeclaration["ImportDeclaration"] = true;
+    has_processDeclaration["ImportDeclaration"] = false;
     has_processDeclaration["ImportExpression"] = false;
     has_processDeclaration["Index"] = false;
     has_processDeclaration["IndexExpression"] = false;
@@ -858,7 +857,6 @@ string getStubInterfaceImports(string[] elements, string key) {
     auto stubImport = "import io.github.intellij.dlanguage.stubs.DLanguage%sStub;".format(key);
     imports ~= [
         "import com.intellij.psi.StubBasedPsiElement;",
-        "import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;",
         stubImport
     ];
     //if (named_children.canFind(key))
@@ -980,7 +978,7 @@ int main(string[] args) {
         string interfaceClassName = "DLanguage" ~ key;
         if (genInterface) {
             // interface
-            string[] interfaces = ["DCompositeElement", "StubBasedPsiElement<DLanguage%sStub>".format(key)];
+            string[] interfaces = ["StubBasedPsiElement<DLanguage%sStub>".format(key)];
             if (named_children.canFind(key))
                 interfaces.insertInPlace(1, "DNamedElement");
             auto extraInterfaces = key in types_extra_interfaces ? types_extra_interfaces[key] : [];

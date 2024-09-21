@@ -3,7 +3,6 @@ package io.github.intellij.dlanguage.psi;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Mixin;
 import io.github.intellij.dlanguage.psi.named.*;
@@ -761,11 +760,6 @@ public class DlangVisitor extends PsiElementVisitor {
 
     public void visitTypeConstructExpression(@NotNull final DLanguageTypeConstructExpression o) {
         visitPsiElement(o);
-    }
-
-
-    public void visitDCompositeElement(@NotNull final DCompositeElement o) {
-        visitElement(o);
     }
 
     public void visitDNamedElement(@NotNull final DNamedElement o) {
