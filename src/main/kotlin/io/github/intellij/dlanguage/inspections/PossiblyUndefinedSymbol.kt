@@ -90,8 +90,7 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                         }
 
                         is ReferenceExpression -> {
-                            element.identifier ?: return
-                            elementToRegister = element.identifier!!
+                            elementToRegister = element.identifier?:element.templateInstance!!.identifier!!
                         }
 
                         is ImportBind -> {
