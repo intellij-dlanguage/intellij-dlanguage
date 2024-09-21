@@ -332,6 +332,7 @@ static this() {
     types_children["TemplateSingleArgument"] = ["Identifier","BuiltinType","KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW_NULL",
                                                 "KW___DATE__","KW___EOF__","KW___FILE__","KW___FILE_FULL_PATH__","KW___FUNCTION__","KW___GSHARED","KW___LINE__","KW___MODULE__","KW___PARAMETERS","KW___PRETTY_FUNCTION__","KW___TIME__","KW___TIMESTAMP__","KW___TRAITS","KW___VECTOR","KW___VENDOR__","KW___VERSION__",
                                                 "INTEGER_LITERAL","FLOAT_LITERAL","DOUBLE_QUOTED_STRING","CHARACTER_LITERAL"];
+    types_mixins["TemplateSingleArgument"] = "DLanguageTemplateSingleArgumentImplMixin";
     types_children["TemplateThisParameter"] = ["KW_THIS","TemplateTypeParameter"];
     types_extra_interfaces["TemplateThisParameter"] = ["TemplateParameter"];
     stub_children["TemplateTupleParameter"] = ["Identifier","OP_TRIPLEDOT"];
