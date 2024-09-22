@@ -1,8 +1,5 @@
 package io.github.intellij.dlanguage.psi.impl.named;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_EQ;
-import static io.github.intellij.dlanguage.psi.DlangTypes.ID;
-
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
@@ -13,14 +10,20 @@ import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.DLanguageType;
-import io.github.intellij.dlanguage.psi.named.DLanguageAliasInitializer;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.named.DLanguageAliasInitializer;
+import io.github.intellij.dlanguage.psi.types.DAliasType;
+import io.github.intellij.dlanguage.psi.types.DType;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DLanguageAliasInitializerStub;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+import static io.github.intellij.dlanguage.psi.DlangTypes.ID;
+import static io.github.intellij.dlanguage.psi.DlangTypes.OP_EQ;
 
 public class DLanguageAliasInitializerImpl extends
     DNamedStubbedPsiElementBase<DLanguageAliasInitializerStub> implements DLanguageAliasInitializer {
@@ -80,6 +83,13 @@ public class DLanguageAliasInitializerImpl extends
 
     public boolean processDeclarations(final PsiScopeProcessor processor, final ResolveState state, final PsiElement lastParent, final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+    }
+
+    @NotNull
+    public DType getDType() {
+        if (getType() != null)
+            return new DAliasType(getIdentifier().getText(), getType().getDType());
+        throw new IllegalStateException("Unreachable statement");
     }
 
 }

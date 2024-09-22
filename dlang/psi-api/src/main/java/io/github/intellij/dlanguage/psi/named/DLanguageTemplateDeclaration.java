@@ -5,6 +5,7 @@ import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.DLanguageConstraint;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.interfaces.DTypedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
 import io.github.intellij.dlanguage.stubs.DLanguageTemplateDeclarationStub;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
-public interface DLanguageTemplateDeclaration extends PsiElement, DNamedElement, Declaration,
+public interface DLanguageTemplateDeclaration extends PsiElement, DNamedElement, Declaration, DTypedElement,
     StubBasedPsiElement<DLanguageTemplateDeclarationStub>, HasMembers<DLanguageTemplateDeclarationStub> {
     @Nullable
     PsiElement getKW_TEMPLATE();

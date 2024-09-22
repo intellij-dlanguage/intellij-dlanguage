@@ -10,6 +10,8 @@ import io.github.intellij.dlanguage.psi.DLanguageTemplateAliasParameter;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.types.DType;
+import io.github.intellij.dlanguage.psi.types.DUnknownType;
 import io.github.intellij.dlanguage.stubs.DLanguageTemplateAliasParameterStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -76,6 +78,13 @@ public class DLanguageTemplateAliasParameterImpl extends
     @Nullable
     public PsiElement getOP_EQ() {
         return findChildByType(OP_EQ);
+    }
+
+    @Override
+    @NotNull
+    public DType getDType() {
+        // TODO
+        return new DUnknownType();
     }
 
 }

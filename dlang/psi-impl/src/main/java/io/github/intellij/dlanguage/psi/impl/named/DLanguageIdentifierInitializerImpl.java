@@ -7,16 +7,16 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.psi.DLanguageInitializer;
-import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
-import io.github.intellij.dlanguage.psi.named.DLanguageIdentifierInitializer;
-import io.github.intellij.dlanguage.psi.DlangTypes;
-import io.github.intellij.dlanguage.psi.DlangVisitor;
+import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.named.DLanguageIdentifierInitializer;
+import io.github.intellij.dlanguage.psi.types.DType;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DLanguageIdentifierInitializerStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.psi.types.DTypesUtilKt.getDtypeWithSuffixes;
 
 
 public class DLanguageIdentifierInitializerImpl extends
@@ -67,5 +67,14 @@ public class DLanguageIdentifierInitializerImpl extends
     @Override
     public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this,processor, state, lastParent, place);
+    }
+
+    @Override
+    public @NotNull DType getDType() {
+        var parent = getParent();
+        var basicType = ((DLanguageSpecifiedVariableDeclaration) parent).getBasicType();
+        assert basicType != null;
+        var type = basicType.getDType();
+        return getDtypeWithSuffixes(type, ((DLanguageSpecifiedVariableDeclaration) parent).getTypeSuffixs());
     }
 }

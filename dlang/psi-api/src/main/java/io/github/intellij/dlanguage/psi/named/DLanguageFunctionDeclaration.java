@@ -7,10 +7,13 @@ import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
+import io.github.intellij.dlanguage.psi.types.DType;
 import io.github.intellij.dlanguage.stubs.DLanguageFunctionDeclarationStub;
-import java.util.List;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 
 public interface DLanguageFunctionDeclaration extends PsiElement, DNamedElement, Declaration,
@@ -55,4 +58,8 @@ public interface DLanguageFunctionDeclaration extends PsiElement, DNamedElement,
         return getAutoElem() != null;
 
     }
+
+    @NotNull
+    @Contract(pure = true)
+    DType getReturnDType();
 }

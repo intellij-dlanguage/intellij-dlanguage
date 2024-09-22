@@ -1,9 +1,5 @@
 package io.github.intellij.dlanguage.psi.impl.named;
 
-import static io.github.intellij.dlanguage.psi.DlangTypes.KW_CATCH;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_LEFT;
-import static io.github.intellij.dlanguage.psi.DlangTypes.OP_PAR_RIGHT;
-
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
@@ -13,14 +9,18 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DlangTypes;
-import io.github.intellij.dlanguage.psi.interfaces.Statement;
-import io.github.intellij.dlanguage.psi.named.DLanguageCatch;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.interfaces.Statement;
+import io.github.intellij.dlanguage.psi.named.DLanguageCatch;
+import io.github.intellij.dlanguage.psi.types.DType;
+import io.github.intellij.dlanguage.psi.types.DUnknownType;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DLanguageCatchStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCatchStub> implements
         DLanguageCatch {
@@ -86,5 +86,14 @@ public class DLanguageCatchImpl extends DNamedStubbedPsiElementBase<DLanguageCat
     @Override
     public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this,processor, state, lastParent, place);
+    }
+
+    @Override
+    @NotNull
+    public DType getDType() {
+        if (getType() == null) {
+            return new DUnknownType();
+        }
+        return getType().getDType();
     }
 }

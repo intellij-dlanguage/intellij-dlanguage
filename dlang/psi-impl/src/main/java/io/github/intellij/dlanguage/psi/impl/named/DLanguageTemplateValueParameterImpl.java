@@ -7,6 +7,8 @@ import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.types.DType;
+import io.github.intellij.dlanguage.psi.types.DUnknownType;
 import io.github.intellij.dlanguage.stubs.DLanguageTemplateValueParameterStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -69,4 +71,10 @@ public class DLanguageTemplateValueParameterImpl extends
         return PsiTreeUtil.getChildOfType(this, DLanguageTemplateValueParameterDefault.class);
     }
 
+    @Override
+    @NotNull
+    public DType getDType() {
+        // TODO
+        return new DUnknownType();
+    }
 }
