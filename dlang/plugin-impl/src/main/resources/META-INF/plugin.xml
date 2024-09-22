@@ -19,10 +19,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>1.34.3</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/59?closed=1">changelist</a>)<br/>
+        <b>1.35</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/60?closed=1">changelist</a>)<br/>
         <ul>
-            <li>Supports IntelliJ IDEA 2023.3.* - 2024.2.*</li>
-            <li>Improve resolve algorithm to be more clear and more correct</li>
+            <li>Supports IntelliJ IDEA 2024.2 - 2024.2.*</li>
+            <li>Huge improvements to the way symbols are resolved. This is part of ongoing work to improve core functionality of the plugin</li>
         </ul>
     ]]>
     </change-notes>
