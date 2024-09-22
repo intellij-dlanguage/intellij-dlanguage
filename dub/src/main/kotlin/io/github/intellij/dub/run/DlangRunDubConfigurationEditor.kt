@@ -70,13 +70,13 @@ class DlangRunDubConfigurationEditor : SettingsEditor<DlangRunDubConfiguration>(
         fcd.title = message("dmd.run.config.selectworkingdir.title")
         fcd.description = message("dmd.run.config.selectworkingdir.description")
         fcd.isHideIgnored = false
-        pathWorkingDir!!.addActionListener(
+        pathWorkingDir.addActionListener(
             BrowseFolderActionListener(
                 fcd.title, fcd.description,
                 pathWorkingDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
             )
         )
-        return myMainPanel!!
+        return myMainPanel
     }
 
     override fun disposeEditor() {}
@@ -85,64 +85,64 @@ class DlangRunDubConfigurationEditor : SettingsEditor<DlangRunDubConfiguration>(
     }
 
     private fun applyGeneralTabForm(config: DlangRunDubConfiguration) {
-        config.setModule(comboModules!!.selectedModule)
-        config.generalDubOptions = comboGeneralDubOptions!!.selectedIndex
+        config.setModule(comboModules.selectedModule)
+        config.generalDubOptions = comboGeneralDubOptions.selectedIndex
         val inBuildState = comboGeneralDubOptions.selectedIndex == 0
         val inRunState = comboGeneralDubOptions.selectedIndex == 1
         val inTestState = comboGeneralDubOptions.selectedIndex == 2
-        cbTempBuild!!.isEnabled = inRunState
-        cbCoverage!!.isEnabled = inTestState
-        tfMainFile!!.isEnabled = inTestState
-        cbRdmd!!.isEnabled = inBuildState || inRunState
-        cbParallel!!.isEnabled = inBuildState || inRunState
+        cbTempBuild.isEnabled = inRunState
+        cbCoverage.isEnabled = inTestState
+        tfMainFile.isEnabled = inTestState
+        cbRdmd.isEnabled = inBuildState || inRunState
+        cbParallel.isEnabled = inBuildState || inRunState
         config.isCbRdmd = cbRdmd.isSelected
-        config.isCbNoDeps = cbNoDeps!!.isSelected
-        config.isCbForce = cbForce!!.isSelected
-        config.isCbForceRemove = cbForceRemove!!.isSelected
-        config.isCbCombined = cbCombined!!.isSelected
+        config.isCbNoDeps = cbNoDeps.isSelected
+        config.isCbForce = cbForce.isSelected
+        config.isCbForceRemove = cbForceRemove.isSelected
+        config.isCbCombined = cbCombined.isSelected
         config.isCbParallel = cbParallel.isSelected
-        config.tfBuild = tfBuild!!.text
-        config.tfConfig = tfConfig!!.text
-        config.tfArch = tfArch!!.text
-        config.tfDebug = tfDebug!!.text
-        config.tfCompiler = tfCompiler!!.text
-        config.buildMode = tfBuildMode!!.selectedIndex
-        config.isVerbose = cbVerbose!!.isSelected
-        config.isQuiet = cbQuiet!!.isSelected
+        config.tfBuild = tfBuild.text
+        config.tfConfig = tfConfig.text
+        config.tfArch = tfArch.text
+        config.tfDebug = tfDebug.text
+        config.tfCompiler = tfCompiler.text
+        config.buildMode = tfBuildMode.selectedIndex
+        config.isVerbose = cbVerbose.isSelected
+        config.isQuiet = cbQuiet.isSelected
         config.isCbTempBuild = cbTempBuild.isSelected
         config.isCbCoverage = cbCoverage.isSelected
         config.tfMainFile = tfMainFile.text
-        config.workingDir = pathWorkingDir!!.text
-        config.additionalParams = textParameters!!.text
-        config.envVars = envVariables!!.envs
+        config.workingDir = pathWorkingDir.text
+        config.additionalParams = textParameters.text
+        config.envVars = envVariables.envs
     }
 
     private fun resetGeneralTabForm(config: DlangRunDubConfiguration) {
-        comboModules!!.fillModules(config.project, DlangModuleType.getInstance())
-        comboModules.selectedModule = config.configurationModule!!.module
-        comboGeneralDubOptions!!.selectedIndex = config.generalDubOptions
-        cbRdmd!!.isSelected = config.isCbRdmd
-        cbNoDeps!!.isSelected = config.isCbNoDeps
-        cbForce!!.isSelected = config.isCbForce
-        cbForceRemove!!.isSelected = config.isCbForceRemove
-        cbCombined!!.isSelected = config.isCbCombined
-        cbParallel!!.isSelected = config.isCbParallel
-        cbVerbose!!.isSelected = config.isVerbose
-        cbQuiet!!.isSelected = config.isQuiet
-        tfBuild!!.text = config.tfBuild
-        tfConfig!!.text = config.tfConfig
-        tfArch!!.text = config.tfArch
-        tfDebug!!.text = config.tfDebug
-        tfCompiler!!.text = config.tfCompiler
-        tfBuildMode!!.selectedIndex = config.buildMode
-        cbTempBuild!!.isSelected = config.isCbTempBuild
-        tfMainFile!!.text = config.tfMainFile
-        cbCoverage!!.isSelected = config.isCbCoverage
-        pathWorkingDir!!.setText(config.workingDir)
-        textParameters!!.text = config.additionalParams
-        val envVars = config.envVars
-        if (envVars != null) {
-            envVariables!!.envs = config.envVars!!
+        comboModules.fillModules(config.project, DlangModuleType.getInstance())
+        comboModules.selectedModule = config.configurationModule?.module
+        comboGeneralDubOptions.selectedIndex = config.generalDubOptions
+        cbRdmd.isSelected = config.isCbRdmd
+        cbNoDeps.isSelected = config.isCbNoDeps
+        cbForce.isSelected = config.isCbForce
+        cbForceRemove.isSelected = config.isCbForceRemove
+        cbCombined.isSelected = config.isCbCombined
+        cbParallel.isSelected = config.isCbParallel
+        cbVerbose.isSelected = config.isVerbose
+        cbQuiet.isSelected = config.isQuiet
+        tfBuild.text = config.tfBuild
+        tfConfig.text = config.tfConfig
+        tfArch.text = config.tfArch
+        tfDebug.text = config.tfDebug
+        tfCompiler.text = config.tfCompiler
+        tfBuildMode.selectedIndex = config.buildMode
+        cbTempBuild.isSelected = config.isCbTempBuild
+        tfMainFile.text = config.tfMainFile
+        cbCoverage.isSelected = config.isCbCoverage
+        pathWorkingDir.setText(config.workingDir)
+        textParameters.text = config.additionalParams
+
+        config.envVars?.let { envVars ->
+            envVariables.envs = envVars
         }
     }
 }

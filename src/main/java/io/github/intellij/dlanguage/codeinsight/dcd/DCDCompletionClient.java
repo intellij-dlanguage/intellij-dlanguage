@@ -41,7 +41,8 @@ public final class DCDCompletionClient {
         try {
             callback.onResults(autoComplete(position, file));
         } catch (final DCDClientException e) {
-            e.printStackTrace();
+            LOG.warn(e.getMessage());
+            callback.onError(e);
         }
     }
 
@@ -74,7 +75,7 @@ public final class DCDCompletionClient {
 
         final GeneralCommandLine dcdClientCommand = buildDcdCommand(dcdPath, position, file);
         // Protect reading the file's text with the read lock
-        final String fileText = ApplicationManager.getApplication().runReadAction((Computable<String>) () -> file.getText());
+        final String fileText = ApplicationManager.getApplication().runReadAction((Computable<String>) file::getText);
 
         try {
             return runCommandLine(dcdClientCommand, fileText).get(2L, TimeUnit.SECONDS);
@@ -222,8 +223,9 @@ public final class DCDCompletionClient {
 //    }
 
 
-    public static interface DCDCompletionResult {
+    public interface DCDCompletionResult {
         void onResults(final List<Completion>completions);
+        void onError(final DCDClientException e);
     }
 
     public static class DCDClientException extends Exception {

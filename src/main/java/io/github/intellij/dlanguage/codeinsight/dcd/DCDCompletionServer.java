@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -172,7 +172,7 @@ public final class DCDCompletionServer implements ToolChangeListener, Disposable
                 Arrays.stream(library.getRootProvider().getUrls(OrderRootType.CLASSES)).forEach(
                     url -> {
                         try {
-                            parametersList.add("-I", new URL(url).getPath());
+                            parametersList.add("-I", URI.create(url).toURL().getPath());
                         } catch (MalformedURLException ignored) {
                         }
                     });

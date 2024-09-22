@@ -82,15 +82,12 @@ final class DCompletionProvider extends CompletionProvider<CompletionParameters>
     }
 
     private double prioritise(@NotNull final Completion completion) {
-        switch (completion.completionType()) {
-            case "Function":
-                return 100;
-            case "Variable":
-                return completion.completionText().startsWith("__") ? 60 : 80;
-            case "Keyword":
-                return completion.completionText().endsWith("of") ? 40 : 20;
-        }
-        return 0;
+        return switch (completion.completionType()) {
+            case "Function" -> 100;
+            case "Variable" -> completion.completionText().startsWith("__") ? 60 : 80;
+            case "Keyword" -> completion.completionText().endsWith("of") ? 40 : 20;
+            default -> 0;
+        };
     }
 
 }
