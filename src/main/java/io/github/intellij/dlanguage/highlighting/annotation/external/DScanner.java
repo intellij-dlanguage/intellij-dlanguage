@@ -14,7 +14,6 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
@@ -25,7 +24,6 @@ import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem;
@@ -47,6 +45,16 @@ public class DScanner implements DlangLinter {
 
     @NotNull
     public DProblem[] checkFileSyntax(@NotNull final PsiFile file) {
+        if (file.getProject().isDisposed()) {
+            LOG.debug("Won't check file syntax with DScanner as project is disposed");
+            return new DProblem[] {};
+        }
+
+        if (!file.getVirtualFile().isValid()) {
+            LOG.debug("Won't check file syntax with DScanner as VirtualFile is not valid");
+            return new DProblem[] {};
+        }
+
         final String dscannerPath = ToolKey.DSCANNER_KEY.getPath();
         if (StringUtil.isEmpty(dscannerPath)) return new DProblem[] {};
 

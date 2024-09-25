@@ -56,6 +56,16 @@ public final class DCDCompletionClient {
 
     @Deprecated
     public static synchronized List<Completion> autoComplete(final int position, final PsiFile file, final String fileContent) throws DCDError {
+        if (file.getProject().isDisposed()) {
+            LOG.debug("Won't attempt auto completion via DCD as project is disposed");
+            return Collections.emptyList();
+        }
+
+        if (!file.getVirtualFile().isValid()) {
+            LOG.debug("Won't attempt auto completion via DCD as VirtualFile is not valid");
+            return Collections.emptyList();
+        }
+
         if (StringUtil.isEmptyOrSpaces(fileContent)) {
             LOG.warn("Attempted auto completion via DCD but file content was blank");
             return Collections.emptyList();
