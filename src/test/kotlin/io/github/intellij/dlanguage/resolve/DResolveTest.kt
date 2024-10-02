@@ -179,4 +179,13 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testLambdaMultiParametersUsageShouldResolve() = doTest()
+
+    @Test
+    fun testStructMemberFunctionCall() = doTest()
+
+    @Test
+    fun testStructMemberFunctionCall2() = doTest()
+
+    @Test
+    fun testFieldReferenceFromAutoVariableStruct() = doTest()
 }
