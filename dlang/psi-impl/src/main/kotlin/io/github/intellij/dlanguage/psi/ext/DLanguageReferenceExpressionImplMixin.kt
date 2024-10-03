@@ -24,6 +24,6 @@ abstract class DLanguageReferenceExpressionImplMixin(node: ASTNode) : ASTWrapper
         else {
             return null
         }
-        return GenericExpressionElementReference(this, range, referenceExpression, referenceElement.text)
+        return GenericExpressionElementReference(this, range, expression, referenceElement.text)
     }
 }

@@ -8,13 +8,14 @@ import com.intellij.psi.ResolveState
 import com.intellij.util.IncorrectOperationException
 import io.github.intellij.dlanguage.psi.impl.DElementFactory
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.interfaces.Expression
 import io.github.intellij.dlanguage.psi.resolve.processor.GenericProcessor
 import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil
 import io.github.intellij.dlanguage.utils.ReferenceExpression
 
 class GenericExpressionElementReference(element: ReferenceExpression,
                                         textRange: TextRange,
-                                        private val qualifier: ReferenceExpression?,
+                                        private val qualifier: Expression?,
                                         private val referenceName: String
 ) : PsiReferenceBase<ReferenceExpression>(element, textRange), PsiQualifiedReference {
 
@@ -32,7 +33,7 @@ class GenericExpressionElementReference(element: ReferenceExpression,
     }
 
     fun isModuleScopeOperator(e: PsiElement): Boolean {
-        return e is ReferenceExpression && e.oP_DOT != null && e.referenceExpression == null
+        return e is ReferenceExpression && e.oP_DOT != null && e.expression == null
     }
 
     override fun getQualifier(): PsiElement? = qualifier

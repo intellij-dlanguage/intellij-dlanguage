@@ -184,8 +184,9 @@ static this() {
     types_extra_interfaces["ForeachStatement"] = ["Statement"];
     types_children["ForeachTypeList"] = ["ForeachType*","OP_COMMA*"];
     types_children["FunctionAttribute"] = ["AtAttribute","KW_PURE","KW_NOTHROW"];
-    types_children["FunctionCallExpression"] = ["Type", "Arguments", "Expression", "TemplateArguments"];
-    types_extra_interfaces["FunctionCallExpression"] = ["Statement"];
+    types_children["FunctionCallExpression"] = ["ArgumentList", "Expression", "OP_PAR_LEFT", "OP_PAR_RIGHT"];
+    types_mixins["FunctionCallExpression"] = "DLanguageFunctionCallExpressionImplMixin";
+    types_extra_interfaces["FunctionCallExpression"] = ["Statement", "Expression"];
     types_children["FunctionContract"] = ["OP_BRACES_LEFT", "InOutStatement", "OP_PAR_LEFT", "InOutContractExpression"];
     types_children["FunctionLiteralExpression"] = ["Type","KW_FUNCTION","KW_DELEGATE","KW_REF","Parameters","FunctionAttribute*","SpecifiedFunctionBody"];
     types_extra_interfaces["FunctionLiteralExpression"] = ["Expression"];
@@ -269,7 +270,7 @@ static this() {
     types_children["PragmaStatement"] = ["PragmaExpression", "OP_SCOLON", "DefaultStatement","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","CaseStatement","CaseRangeStatement"];
     types_children["QualifiedIdentifier"] = ["Identifier", "TemplateInstance", "OP_BRACKET_LEFT", "OP_BRACKET_RIGHT", "Expression", "OP_DOT", "QualifiedIdentifier"];
     types_mixins["QualifiedIdentifier"] = "DLanguageQualifiedIdentifierImplMixin";
-    types_children["ReferenceExpression"] = ["OP_DOT", "Identifier", "TemplateInstance", "ReferenceExpression"];
+    types_children["ReferenceExpression"] = ["OP_DOT", "Identifier", "TemplateInstance", "Expression"];
     types_extra_interfaces["ReferenceExpression"] = ["Expression"];
     types_mixins["ReferenceExpression"] = "DLanguageReferenceExpressionImplMixin";
     types_children["Register"] = ["Identifier","INTEGER_LITERAL", "OP_PAR_RIGHT", "OP_PAR_LEFT"];
