@@ -124,7 +124,7 @@ static this() {
     types_mixins["BreakStatement"] = "DLanguageBreakStatementImplMixin";
     types_children["BaseClass"] = ["TypeofExpression","OP_DOT","BasicType"];
     types_children["BaseClassList"] = ["BaseClass*","OP_COMMA*"];
-    types_children["BasicType"] = ["Type","TypeofExpression","TypeConstructor","MixinType","Expression*","Vector","BuiltinType","QualifiedIdentifier","OP_DOT","OP_PAR_RIGHT","OP_PAR_LEFT","KW_SUPER","KW_THIS","KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED"];
+    types_children["BasicType"] = ["Type","TypeofExpression","MixinType","Expression*","Vector","BuiltinType","QualifiedIdentifier","OP_DOT","OP_PAR_RIGHT","OP_PAR_LEFT","KW_SUPER","KW_THIS","KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED"];
     types_children["BuiltinType"] = [/*todo add the types*/];  // UNUSED currently
     types_children["CaseRangeStatement"] = ["KW_CASE*","OP_TRIPLEDOT","OP_COLON*","AssignExpression", "Statement*"];
     types_extra_interfaces["CaseRangeStatement"] = ["Statement"];
@@ -255,7 +255,7 @@ static this() {
     types_extra_interfaces["OrOrExpression"] = ["Expression"];
     types_children["OutContractExpression"] = ["KW_OUT", "OP_PAR_LEFT", "OP_SCOLON", "AssertArguments", "OP_PAR_RIGHT"];
     types_children["OutStatement"] = ["Identifier","BlockStatement","KW_OUT","OP_PAR_LEFT","OP_PAR_RIGHT"];
-    types_children["ParameterAttribute"] = ["KW_FINAL","KW_IN","KW_LAZY","KW_OUT","KW_REF","KW_SCOPE","KW_AUTO","TypeConstructor","AtAttribute"];
+    types_children["ParameterAttribute"] = ["KW_FINAL","KW_IN","KW_LAZY","KW_OUT","KW_REF","KW_SCOPE","KW_AUTO","KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED","AtAttribute"];
     types_children["ParenthesisedExpression"] = ["OP_PAR_LEFT", "Expression", "OP_PAR_RIGHT"];
     types_extra_interfaces["ParenthesisedExpression"] = ["Expression"];
     types_children["Parameters"] = ["OP_COMMA*","OP_TRIPLEDOT","Parameter*","OP_PAR_LEFT","OP_PAR_RIGHT"];
@@ -307,7 +307,7 @@ static this() {
     types_children["StaticForeachStatement"] = ["KW_STATIC", "ForeachStatement"];
     types_extra_interfaces["StaticForeachStatement"] = ["Statement"];
     types_children["StaticIfCondition"] = ["StaticIfCondition","Expression","OP_PAR_RIGHT","OP_PAR_LEFT"];
-    types_children["StorageClass"] = ["AtAttribute","Deprecated","AlignAttribute","LinkageAttribute",   "KW_SYNCHRONIZED","TypeConstructor","KW_ABSTRACT","KW_CONST","KW_IMMUTABLE","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC","KW_THROW"];
+    types_children["StorageClass"] = ["AtAttribute","Deprecated","AlignAttribute","LinkageAttribute","KW_SYNCHRONIZED","KW_ABSTRACT","KW_CONST","KW_IMMUTABLE","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC","KW_THROW"];
     types_children["StructBody"] = ["OP_BRACES_RIGHT","OP_BRACES_LEFT","Declaration*"];
     types_children["StructInitializer"] = ["StructMemberInitializers*","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_children["StructMemberInitializer"] = ["Identifier","OP_COLON","Expression", "ArrayLiteral", "StructInitializer"];
@@ -351,10 +351,9 @@ static this() {
     types_extra_interfaces["TraitsExpression"] = ["Expression"];
     types_children["TryStatement"] = ["KW_TRY","Statement","Catches","Finally"];
     types_extra_interfaces["TryStatement"] = ["Statement"];
-    types_children["Type"] = ["TypeConstructor*","BasicType","TypeSuffix*"];
+    types_children["Type"] = ["KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED","BasicType","TypeSuffix*"];
     types_children["TypeConstructExpression"] = ["KW_IMMUTABLE", "KW_CONST", "KW_INOUT", "KW_SHARED", "Type", "OP_PAR_LEFT", "ArgumentList", "OP_PAR_RIGHT"];
     types_extra_interfaces["TypeConstructExpression"] = ["Expression"];
-    types_children["TypeConstructor"] = ["KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED","KW_SCOPE"];
     types_children["TypePropertyExpression"] = ["KW_IMMUTABLE", "KW_CONST", "KW_INOUT", "KW_SHARED", "Type", "OP_DOT", "Identifier"];
     types_children["TypeidExpression"] = ["Expression","KW_TYPEID","Type","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_extra_interfaces["TypeidExpression"] = ["Expression"];
@@ -526,7 +525,6 @@ static this() {
     has_processDeclaration["SharedStaticDestructor"] = false;
     has_processDeclaration["ShiftExpression"] = false;
 //    has_processDeclaration["SingleImport"] = false;
-    has_processDeclaration["SliceExpression"] = false;
     has_processDeclaration["UnaryExpression"] = false;
     has_processDeclaration["SpecifiedVariableDeclaration"] = true;
     has_processDeclaration["StaticAssertDeclaration"] = false;
@@ -565,7 +563,6 @@ static this() {
     has_processDeclaration["TraitsExpression"] = false;
     has_processDeclaration["TryStatement"] = false;
     has_processDeclaration["Type"] = false;
-    has_processDeclaration["TypeConstructor"] = false;
     has_processDeclaration["TypeidExpression"] = false;
     has_processDeclaration["TypeofExpression"] = false;
     has_processDeclaration["TypeSpecialization"] = false;

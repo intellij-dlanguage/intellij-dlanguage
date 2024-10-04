@@ -443,11 +443,22 @@ class DSignatureDocGenerator {
         return builder
     }
 
-
     private fun appendType(builder: StringBuilder, element: Type?): StringBuilder {
         element?:return builder
-        if (element.typeConstructors.isNotEmpty()) {
-            builder.append(element.typeConstructors.joinToString { it.text })
+        if (element.kW_SHARED != null) {
+            builder.append(element.kW_SHARED!!.text)
+            builder.append(" ")
+        }
+        if (element.kW_CONST != null) {
+            builder.append(element.kW_CONST!!.text)
+            builder.append(" ")
+        }
+        if (element.kW_IMMUTABLE != null) {
+            builder.append(element.kW_IMMUTABLE!!.text)
+            builder.append(" ")
+        }
+        if (element.kW_INOUT != null) {
+            builder.append(element.kW_INOUT!!.text)
             builder.append(" ")
         }
         if (element.basicType != null) {

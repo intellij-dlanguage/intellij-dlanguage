@@ -870,16 +870,8 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitTypeConstructor(@NotNull final DLanguageTypeConstructor o) {
-        visitPsiElement(o);
-    }
-
     public void visitTemplateMixinDeclaration(
         @NotNull final DLanguageTemplateMixinDeclaration o) {
-        visitPsiElement(o);
-    }
-
-    public void visitSliceExpression(@NotNull final DLanguageSliceExpression o) {
         visitPsiElement(o);
     }
 
