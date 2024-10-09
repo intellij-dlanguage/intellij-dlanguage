@@ -1,6 +1,6 @@
 [versions]
 # libraries
-annotations = "25.0.0"
+annotations = "26.0.0"
 gson = "2.11.+"
 junit = "4.13+"
 junit-vintage = "5.11+"
