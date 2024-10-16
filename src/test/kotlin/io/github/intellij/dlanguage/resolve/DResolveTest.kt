@@ -188,4 +188,7 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testFieldReferenceFromAutoVariableStruct() = doTest()
+
+    @Test
+    fun testFieldOfStructUsageWithTypeOfVarAliased() = doTest()
 }
