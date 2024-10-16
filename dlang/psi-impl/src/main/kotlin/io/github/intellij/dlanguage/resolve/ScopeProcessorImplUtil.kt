@@ -60,24 +60,9 @@ object ScopeProcessorImplUtil {
             is UnionDeclaration,
             is VersionSpecification
                 -> return processor.execute(def, state)
-            is ConditionalDeclaration -> {
-                var toContinue = true
-                for (declaration in def.declarations) {
-                    if (!processDeclaration(declaration, processor, state, lastParent, place)) {
-                        toContinue = false
-                    }
-                }
-                for (declarationBlock in def.declarationBlocks) {
-                    for (declaration in declarationBlock.declarations) {
-                        if (!processDeclaration(declaration, processor, state, lastParent, place)) {
-                            toContinue = false
-                        }
-                    }
-                }
-                return toContinue
-            }
             is DeclarationStatement ->
                 return !(def.declaration != null && !processor.execute(def.declaration!!, state))
+            is ConditionalDeclaration,
             is ImportDeclaration -> {
                 return def.processDeclarations(processor, state, lastParent, place)
             }

@@ -638,13 +638,12 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
-        /*for (declarationOrStatement in element.declarationOrStatements) {
-            if (declarationOrStatement.declaration != null) {
-                if (!processDeclaration(declarationOrStatement.declaration!!, processor, state, lastParent, place)) {
-                    toContinue = false
-                }
+        for (statement in element.statements) {
+            // do not break as there can be multiple definition of the same element based on certain condition
+            if (!statement.processDeclarations(processor, state, lastParent, place)) {
+                toContinue = false
             }
-        }*/
+        }
         return toContinue
     }
 
@@ -658,6 +657,14 @@ object ScopeProcessorImpl {
         for (decl in element.declarations) {
             if (!processDeclaration(decl, processor, state, lastParent, place)) {
                 toContinue = false
+            }
+        }
+        for (block in element.declarationBlocks) {
+            for (decl in block.declarations) {
+                // do not break as there can be multiple definition of the same element based on certain condition
+                if (!processDeclaration(decl, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
             }
         }
         return toContinue

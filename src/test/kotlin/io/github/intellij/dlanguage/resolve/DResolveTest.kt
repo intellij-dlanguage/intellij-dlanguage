@@ -148,6 +148,9 @@ class DResolveTest : DResolveTestCase() {
     fun testLocalTypeDefinitionWithUsageBeforeDefinitionShouldNotResolve() = doTest(false)
 
     @Test
+    fun testLocalVariableUsageDefinedInLocalConditionalStatement() = doTest()
+
+    @Test
     fun testVariableInitializationAssignedValuePreviousInitializationSameVariableDeclarationShouldResolve() = doTest()
 
     @Test

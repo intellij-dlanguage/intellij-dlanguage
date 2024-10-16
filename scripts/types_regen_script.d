@@ -478,7 +478,7 @@ static this() {
     //has_processDeclaration["ClassDeclaration"] = true;
     has_processDeclaration["CompileCondition"] = false;
     has_processDeclaration["ConditionalDeclaration"] = true;
-    has_processDeclaration["ConditionalStatement"] = false;
+    has_processDeclaration["ConditionalStatement"] = true;
     has_processDeclaration["Constraint"] = false;
     has_processDeclaration["Constructor"] = true;
     has_processDeclaration["ContinueStatement"] = false;
