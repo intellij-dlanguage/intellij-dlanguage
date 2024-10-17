@@ -180,4 +180,22 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             """)
     }
 
+    @Test
+    fun testResolveAnonymousEnumMember() {
+        doCheckByText2(
+            """
+                import resolve.to.include;
+
+                void fun() {
+                     int i = /*<ref>*/Bar;
+                }
+            """,
+            """
+                module resolve.to.include;
+                enum {
+                    /*<resolved>*/Bar
+                }
+            """)
+    }
+
 }
