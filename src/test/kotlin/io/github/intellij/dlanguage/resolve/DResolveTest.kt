@@ -193,5 +193,14 @@ class DResolveTest : DResolveTestCase() {
     fun testFieldReferenceFromAutoVariableStruct() = doTest()
 
     @Test
+    fun testTypeOfFieldOfStructWithNestedAnonymousUnionWithNestedStruct() = doTest()
+
+    @Test
     fun testFieldOfStructUsageWithTypeOfVarAliased() = doTest()
+
+    @Test
+    fun testFieldUsageOfAnonymousStructInAnotherStruct() = doTest()
+
+    @Test
+    fun testFieldUsageOfAnonymousUnionInAnotherStruct() = doTest()
 }

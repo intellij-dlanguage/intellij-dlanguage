@@ -3,6 +3,7 @@ package io.github.intellij.dlanguage.resolve
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
+import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.utils.*
 
@@ -56,12 +57,18 @@ object ScopeProcessorImplUtil {
             is EnumDeclaration,
             is FunctionDeclaration,
             is InterfaceDeclaration,
-            is StructDeclaration,
-            is UnionDeclaration,
             is VersionSpecification
                 -> return processor.execute(def, state)
             is DeclarationStatement ->
                 return !(def.declaration != null && !processor.execute(def.declaration!!, state))
+            is StructDeclaration,
+            is UnionDeclaration -> {
+                return if ((def as DNamedElement).nameIdentifier == null)
+                    def.processDeclarations(processor, state, lastParent, place)
+                else {
+                    processor.execute(def, state)
+                }
+            }
             is ConditionalDeclaration,
             is ImportDeclaration -> {
                 return def.processDeclarations(processor, state, lastParent, place)
