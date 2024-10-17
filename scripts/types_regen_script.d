@@ -359,7 +359,7 @@ static this() {
     types_extra_interfaces["TypeofExpression"] = ["Expression"];
     types_children["TypeSpecialization"] = ["Type","KW___PARAMETERS","KW_STRUCT","KW_UNION","KW_CLASS","KW_INTERFACE","KW_ENUM","KW___VECTOR","KW_FUNCTION","KW_DELEGATE","KW_SUPER","KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED","KW_RETURN","KW_MODULE","KW_PACKAGE"];
     types_children["TypeSuffix"] = ["Expression*","OP_TRIPLEDOT","KW_FUNCTION","KW_DELEGATE","OP_ASTERISK","MemberFunctionAttribute*","Parameters","OP_BRACKET_LEFT","OP_BRACKET_RIGHT"];
-    types_children["UnaryExpression"] = ["Expression","Identifier", "TemplateInstance","OP_PAR_RIGHT","OP_PAR_LEFT","Type","OP_DOT","OP_AND","OP_ASTERISK","OP_MINUS","OP_MINUS_MINUS","OP_NOT","OP_PLUS","OP_PLUS_PLUS","OP_TILDA"];
+    types_children["UnaryExpression"] = ["Expression","OP_AND","OP_ASTERISK","OP_MINUS","OP_MINUS_MINUS","OP_NOT","OP_PLUS","OP_PLUS_PLUS","OP_TILDA"];
     types_extra_interfaces["UnaryExpression"] = ["Expression"];
     stub_children ["Unittest"] = ["Unittest",  "BlockStatement"];
     types_extra_interfaces["Unittest"] = ["Declaration"];
