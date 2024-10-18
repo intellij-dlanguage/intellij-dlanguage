@@ -45,14 +45,6 @@ object ScopeProcessorImplUtil {
                 }
                 return true
             }
-            is AutoDeclaration -> {
-                for (initializer in def.autoAssignments) {
-                    if (!processor.execute(initializer, state)) {
-                        return false
-                    }
-                }
-                return true
-            }
             is ClassDeclaration,
             is EnumDeclaration,
             is FunctionDeclaration,
@@ -99,6 +91,7 @@ object ScopeProcessorImplUtil {
             }
             is DeclarationBlock,
             is AttributeSpecifier,
+            is AutoDeclaration,
             is SpecifiedVariableDeclaration -> {
                 return def.processDeclarations(processor, state, lastParent, place)
             }

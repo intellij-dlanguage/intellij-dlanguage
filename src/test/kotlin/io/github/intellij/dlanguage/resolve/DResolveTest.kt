@@ -163,6 +163,12 @@ class DResolveTest : DResolveTestCase() {
     fun testVariableInitializationAssignedValueNextInitializationSameVariableDeclarationShouldNotResolve() = doTest(false)
 
     @Test
+    fun testReferenceInVariableDeclarationMustNotResolveToVariableDeclarationItself() = doTest()
+
+    @Test
+    fun testUsageOfShadowVariableShouldPointToShadowVariable() = doTest()
+
+    @Test
     fun testTemplateTypeUsageInTemplatedClassShouldResolve() = doTest()
 
     @Test

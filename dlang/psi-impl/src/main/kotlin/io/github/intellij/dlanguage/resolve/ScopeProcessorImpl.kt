@@ -68,6 +68,24 @@ object ScopeProcessorImpl {
                 return false
             }
         }
+        if (lastParent?.parent != element) return true
+        if (lastParent == element.initializer) return true
+        return processor.execute(element, state)
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun processDeclarations(element: AutoDeclaration,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement?,
+                            place: PsiElement): Boolean {
+        if (lastParent == element) return true
+        for (declarator in element.autoAssignments) {
+            if (declarator == lastParent) return true
+            if (!processor.execute(declarator, state)) {
+                return false
+            }
+        }
         return true
     }
 

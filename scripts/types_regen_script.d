@@ -461,7 +461,7 @@ static this() {
     has_processDeclaration["Attribute"] = false;
     has_processDeclaration["AttributeDeclaration"] = false;
     has_processDeclaration["AttributeSpecifier"] = true;
-    has_processDeclaration["AutoDeclaration"] = false;
+    has_processDeclaration["AutoDeclaration"] = true;
     has_processDeclaration["AutoAssignment"] = false;
     has_processDeclaration["BlockStatement"] = true;
     has_processDeclaration["BreakStatement"] = false;
