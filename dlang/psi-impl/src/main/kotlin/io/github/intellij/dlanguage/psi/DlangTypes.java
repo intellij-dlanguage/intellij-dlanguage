@@ -166,7 +166,7 @@ public interface DlangTypes {
     DlangElementType POSTBLIT = new DlangElementType("POSTBLIT");
     DlangElementType POSTFIX_EXPRESSION = new DlangElementType("POSTFIX_EXPRESSION");
     DlangElementType POW_EXPRESSION = new DlangElementType("POW_EXPRESSION");
-    DlangElementType PRAGMA_EXPRESSION = new DlangElementType("PRAGMA_EXPRESSION");
+    DlangElementType PRAGMA_EXPRESSION = new DlangElementType("PRAGMA_EXPRESSION"); // TODO rename it to just PRAGMA (it is not an expression)
     DlangElementType PRAGMA_STATEMENT = new DlangElementType("PRAGMA_STATEMENT");
     DlangElementType QUALIFIED_IDENTIFIER = new DlangElementType("QUALIFIED_IDENTIFIER");
     DlangElementType REFERENCE_EXPRESSION = new DlangElementType("REFERENCE_EXPRESSION");
