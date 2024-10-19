@@ -326,8 +326,6 @@ static this() {
     types_extra_interfaces["TemplateMixin"] = ["Declaration"];
     types_children["TemplateMixinDeclaration"] = ["KW_MIXIN","KW_TEMPLATE", "Identifier", "TemplateParameters", "KW_IF", "OP_BRACES_LEFT", "Declaration*", "OP_BRACES_RIGHT"];
     types_extra_interfaces["TemplateMixinDeclaration"] = ["Declaration"];
-    types_children["TemplateMixinExpression"] = ["KW_MIXIN","MixinTemplateName","TemplateArguments","Identifier"];
-    types_extra_interfaces["TemplateMixinExpression"] = ["Expression"];
     types_children["TemplateParameterList"] = ["TemplateParameter*","OP_COMMA*"];
     types_children["TemplateParameters"] = ["TemplateParameterList","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["TemplateSingleArgument"] = ["Identifier","BuiltinType","KW_SUPER","KW_THIS","OP_DOLLAR","KW_TRUE","KW_FALSE","KW_NULL",

@@ -6,7 +6,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiNamedElement
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.util.PsiTreeUtil
-import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression
+import io.github.intellij.dlanguage.psi.DLanguageTemplateMixin
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.*
@@ -47,7 +47,7 @@ object DUtil {
         val cds = PsiTreeUtil.findChildrenOfType(psiFile, DLanguageClassDeclaration::class.java)
         for (cd in cds) {
             // if a class contains the UnitTest mixin assume its a valid d-unit test class
-            val tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression::class.java)
+            val tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixin::class.java)
             for (tmi in tmis) {
                 if (tmi.text.contains("UnitTest")) {
                     return true

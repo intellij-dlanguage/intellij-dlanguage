@@ -3,11 +3,7 @@ package io.github.intellij.dlanguage.unittest;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.RuntimeConfigurationError;
-import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.execution.process.ProcessAdapter;
-import com.intellij.execution.process.ProcessEvent;
-import com.intellij.execution.process.ProcessHandler;
-import com.intellij.execution.process.ProcessOutputTypes;
+import com.intellij.execution.process.*;
 import com.intellij.execution.testframework.sm.ServiceMessageBuilder;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
@@ -21,21 +17,19 @@ import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.openapi.vfs.VirtualFileVisitor;
+import com.intellij.openapi.vfs.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.psi.DLanguageAtAttribute;
-import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression;
+import io.github.intellij.dlanguage.psi.DLanguageTemplateMixin;
 import io.github.intellij.dlanguage.psi.named.DLanguageClassDeclaration;
 import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration;
 import io.github.intellij.dlanguage.settings.ToolKey;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -43,8 +37,6 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSProcessHandler or BaseProcessHandler<Process>
 
@@ -87,8 +79,8 @@ public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSP
 
                     // if a class contains the UnitTest mixin assume its a valid d-unit test class
                     String testClassName = null;
-                    final Collection<DLanguageTemplateMixinExpression> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixinExpression.class);
-                    for (final DLanguageTemplateMixinExpression tmi : tmis) {
+                    final Collection<DLanguageTemplateMixin> tmis = PsiTreeUtil.findChildrenOfType(cd, DLanguageTemplateMixin.class);
+                    for (final DLanguageTemplateMixin tmi : tmis) {
                         if (tmi.getText().contains("UnitTest")) {
                             final PsiElement classIdentifier = cd.getIdentifier();
                             if (classIdentifier != null) {
