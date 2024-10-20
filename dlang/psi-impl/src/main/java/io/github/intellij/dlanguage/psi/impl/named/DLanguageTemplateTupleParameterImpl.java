@@ -7,6 +7,8 @@ import com.intellij.psi.stubs.IStubElementType;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateTupleParameter;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.types.DType;
+import io.github.intellij.dlanguage.psi.types.DUnknownType;
 import io.github.intellij.dlanguage.stubs.DLanguageTemplateTupleParameterStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,4 +56,10 @@ public class DLanguageTemplateTupleParameterImpl extends
         return findChildByType(OP_TRIPLEDOT);
     }
 
+    @Override
+    @NotNull
+    public DType getDType() {
+        // TODO
+        return new DUnknownType();
+    }
 }

@@ -5249,6 +5249,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * $(RULE 'pragma') $(LITERAL '$(LPAREN)') $(LITERAL Identifier) ($(LITERAL ',') $(RULE argumentList))? $(LITERAL '$(RPAREN)')
      * ;)
      */
+    // Todo rename parsePragma (it is not an expression)
     fun parsePragmaExpression(): Boolean {
         val m = builder.mark()
         expect(DlangTypes.KW_PRAGMA)

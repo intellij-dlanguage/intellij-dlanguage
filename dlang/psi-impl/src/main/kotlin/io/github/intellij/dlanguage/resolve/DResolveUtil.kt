@@ -21,14 +21,12 @@ object DResolveUtil {
     val externAttributeIdentifiers = setOf("C","D","Windows","System","Pascal","Objective-C")
 
 
-    fun shouldNotResolveToAnything(e: PsiElement): Boolean {
+    fun isCompilerDefinedSymbol(e: PsiElement): Boolean {
         val name = e.text
         val parent = e.parent
         if (name.length > 2)
             if (name.substring(0, 2) == "__")
                 return true
-        if (name == "sizeof" || name == "alignof" || name == "tupleof" || name == "offsetof" || name == "init")     //todo this might be  defined in runtime
-            return true
         if (parent is AtAttribute && atAttributeIdentifiers.contains(name)) return true
         if (parent is ScopeGuardStatement)
             if (name == "exit" || name == "success" || name == "failure")
@@ -36,17 +34,14 @@ object DResolveUtil {
         if (parent is VersionCondition && versionIdentifiers.contains(name)) return true
         if (parent is LinkageAttribute && externAttributeIdentifiers.contains(name)) return true
         if (parent is TraitsExpression && traitsIdentifiers.contains(name)) return true
-        if (parent is FunctionDeclaration || parent is ClassDeclaration || parent is InterfaceDeclaration || parent is StructDeclaration ||
-            parent is UnionDeclaration || parent is EnumDeclaration || parent is EnumMember ||
-            parent is AutoAssignment || parent is IdentifierInitializer ||
-            parent is TemplateDeclaration || parent is TemplateMixinDeclaration || parent is TemplateTypeParameter ||
-            parent is Catch || parent is NamedImportBind) return true
-        if (parent is Parameter)
-            if (parent.identifier == e)
-                return true
         if (parent is PragmaExpression && pragmaIdentifiers.contains(name)) return true
-        if (parent is DeclaratorIdentifier && parent.parent is AliasDeclaration) return true
-        if (parent is AliasInitializer) return true
+        return false
+    }
+
+    // TODO should remove and isDefinedByCompiler should be used instead (need to handle asm first)
+    fun shouldNotResolveToAnything(e: PsiElement): Boolean {
+        if (isCompilerDefinedSymbol(e)) return true
+        val parent = e.parent
         if (parent is AsmInstruction || parent.parent is AsmPrimaryExp) return true
         return false
     }

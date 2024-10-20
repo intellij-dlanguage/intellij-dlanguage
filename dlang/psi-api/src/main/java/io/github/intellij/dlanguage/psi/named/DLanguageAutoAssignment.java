@@ -6,11 +6,12 @@ import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.DLanguageInitializer;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.interfaces.DTypedElement;
 import io.github.intellij.dlanguage.stubs.DLanguageAutoAssignmentStub;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface DLanguageAutoAssignment extends PsiElement, DNamedElement,
+public interface DLanguageAutoAssignment extends PsiElement, DNamedElement, DTypedElement,
     StubBasedPsiElement<DLanguageAutoAssignmentStub> {
 
     @Nullable

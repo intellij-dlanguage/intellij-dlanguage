@@ -174,7 +174,6 @@ typealias TemplateArgument = io.github.intellij.dlanguage.psi.DLanguageTemplateA
 typealias TemplateArgumentList = io.github.intellij.dlanguage.psi.DLanguageTemplateArgumentList
 typealias TemplateArguments = io.github.intellij.dlanguage.psi.DLanguageTemplateArguments
 typealias TemplateInstance = io.github.intellij.dlanguage.psi.DLanguageTemplateInstance
-typealias TemplateMixinExpression = io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression
 typealias TemplateParameterList = io.github.intellij.dlanguage.psi.DLanguageTemplateParameterList
 typealias TemplateParameters = io.github.intellij.dlanguage.psi.DLanguageTemplateParameters
 typealias TemplateSingleArgument = io.github.intellij.dlanguage.psi.DLanguageTemplateSingleArgument

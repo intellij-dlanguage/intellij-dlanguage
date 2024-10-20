@@ -8,13 +8,15 @@ import io.github.intellij.dlanguage.psi.DLanguageParameterAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DLanguageTypeSuffix;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.interfaces.DTypedElement;
 import io.github.intellij.dlanguage.stubs.DLanguageParameterStub;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 
-public interface DLanguageParameter extends PsiElement, DNamedElement,
+
+public interface DLanguageParameter extends PsiElement, DNamedElement, DTypedElement,
     StubBasedPsiElement<DLanguageParameterStub> {
 
     @NotNull

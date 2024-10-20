@@ -26,8 +26,6 @@ import io.github.intellij.dlanguage.utils.*
 
 fun symbolIsDefinedByDefault(identifier: PsiElement): Boolean {
     val name = identifier.text
-    if(PsiTreeUtil.getParentOfType(identifier, ModuleDeclaration::class.java) != null)
-        return true
     return name == "sizeof" || name == "nan" || name == "init" || name == "mangleof" || name == "stringof" || name == "alignof" || name == "max" || name == "min" || name == "infinity" || name == "dig" || name == "epsilon" || name == "mant_dig" || name == "max_10_exp" || name == "max_exp" || name == "min_10_exp" || name == "min_exp" || name == "min_normal" || name == "re" || name == "im" || name == "classinfo"
 }
 
@@ -90,6 +88,9 @@ class PossiblyUndefinedSymbol : LocalInspectionTool() {
                         }
 
                         is ReferenceExpression -> {
+                            if (element.dType != null) {
+                                return
+                            }
                             elementToRegister = element.identifier?:element.templateInstance!!.identifier!!
                         }
 

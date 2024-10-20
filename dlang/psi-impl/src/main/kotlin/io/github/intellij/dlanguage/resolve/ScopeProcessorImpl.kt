@@ -68,6 +68,24 @@ object ScopeProcessorImpl {
                 return false
             }
         }
+        if (lastParent?.parent != element) return true
+        if (lastParent == element.initializer) return true
+        return processor.execute(element, state)
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun processDeclarations(element: AutoDeclaration,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement?,
+                            place: PsiElement): Boolean {
+        if (lastParent == element) return true
+        for (declarator in element.autoAssignments) {
+            if (declarator == lastParent) return true
+            if (!processor.execute(declarator, state)) {
+                return false
+            }
+        }
         return true
     }
 
@@ -638,13 +656,12 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
-        /*for (declarationOrStatement in element.declarationOrStatements) {
-            if (declarationOrStatement.declaration != null) {
-                if (!processDeclaration(declarationOrStatement.declaration!!, processor, state, lastParent, place)) {
-                    toContinue = false
-                }
+        for (statement in element.statements) {
+            // do not break as there can be multiple definition of the same element based on certain condition
+            if (!statement.processDeclarations(processor, state, lastParent, place)) {
+                toContinue = false
             }
-        }*/
+        }
         return toContinue
     }
 
@@ -658,6 +675,14 @@ object ScopeProcessorImpl {
         for (decl in element.declarations) {
             if (!processDeclaration(decl, processor, state, lastParent, place)) {
                 toContinue = false
+            }
+        }
+        for (block in element.declarationBlocks) {
+            for (decl in block.declarations) {
+                // do not break as there can be multiple definition of the same element based on certain condition
+                if (!processDeclaration(decl, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
             }
         }
         return toContinue

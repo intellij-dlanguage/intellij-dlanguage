@@ -8,14 +8,17 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
+import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
 import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration;
-import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.types.DType;
+import io.github.intellij.dlanguage.psi.types.DUnknownType;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DLanguageFunctionDeclarationStub;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Created by francis on 7/14/2017.
@@ -106,5 +109,16 @@ public class DLanguageFunctionDeclarationImpl extends
     @Override
     public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this,processor, state, lastParent, place);
+    }
+
+    @Override
+    public @NotNull DType getReturnDType() {
+        var basicType = getBasicType();
+        if (basicType != null)
+            return basicType.getDType();
+
+        // At this point we can assume it is an auto function
+        // can be "auto ref", "ref func()", …
+        return new DUnknownType(); // TODO look in the method to get his return type (think to voldermore types case)
     }
 }

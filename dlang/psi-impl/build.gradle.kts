@@ -45,6 +45,7 @@ val generatePsi = tasks.register<Exec>("generatePsi") {
 
 val generate by tasks.registering {
     outputs.dirs("gen")
+    inputs.file("${rootProject.projectDir}/scripts/types_regen_script.d")
     dependsOn(
         generateSyntaxLexer,
         generatePsi,

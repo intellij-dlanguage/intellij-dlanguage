@@ -7,14 +7,17 @@ import io.github.intellij.dlanguage.psi.DLanguageStorageClass;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.interfaces.DTypedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
+import io.github.intellij.dlanguage.psi.types.DType;
 import io.github.intellij.dlanguage.stubs.DLanguageAliasInitializerStub;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 
-public interface DLanguageAliasInitializer extends PsiElement, DNamedElement, Declaration,
+
+public interface DLanguageAliasInitializer extends PsiElement, DNamedElement, Declaration, DTypedElement,
     StubBasedPsiElement<DLanguageAliasInitializerStub> {
 
     @Nullable
@@ -31,4 +34,7 @@ public interface DLanguageAliasInitializer extends PsiElement, DNamedElement, De
 
     @Nullable
     DLanguageType getType();
+
+    @NotNull
+    DType getDType();
 }

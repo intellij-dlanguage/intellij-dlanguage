@@ -64,6 +64,9 @@ class DResolveTest : DResolveTestCase() {
     fun testAliasUsageToAliasDeclarationSecondAliasFormWithImport() = doTest()
 
     @Test
+    fun testAliasValueBeingFunction() = doTest()
+
+    @Test
     fun testScopedImportsFail() = doTest(false)
 
     @Test
@@ -148,6 +151,9 @@ class DResolveTest : DResolveTestCase() {
     fun testLocalTypeDefinitionWithUsageBeforeDefinitionShouldNotResolve() = doTest(false)
 
     @Test
+    fun testLocalVariableUsageDefinedInLocalConditionalStatement() = doTest()
+
+    @Test
     fun testVariableInitializationAssignedValuePreviousInitializationSameVariableDeclarationShouldResolve() = doTest()
 
     @Test
@@ -155,6 +161,12 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testVariableInitializationAssignedValueNextInitializationSameVariableDeclarationShouldNotResolve() = doTest(false)
+
+    @Test
+    fun testReferenceInVariableDeclarationMustNotResolveToVariableDeclarationItself() = doTest()
+
+    @Test
+    fun testUsageOfShadowVariableShouldPointToShadowVariable() = doTest()
 
     @Test
     fun testTemplateTypeUsageInTemplatedClassShouldResolve() = doTest()
@@ -179,4 +191,25 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testLambdaMultiParametersUsageShouldResolve() = doTest()
+
+    @Test
+    fun testStructMemberFunctionCall() = doTest()
+
+    @Test
+    fun testStructMemberFunctionCall2() = doTest()
+
+    @Test
+    fun testFieldReferenceFromAutoVariableStruct() = doTest()
+
+    @Test
+    fun testTypeOfFieldOfStructWithNestedAnonymousUnionWithNestedStruct() = doTest()
+
+    @Test
+    fun testFieldOfStructUsageWithTypeOfVarAliased() = doTest()
+
+    @Test
+    fun testFieldUsageOfAnonymousStructInAnotherStruct() = doTest()
+
+    @Test
+    fun testFieldUsageOfAnonymousUnionInAnotherStruct() = doTest()
 }
