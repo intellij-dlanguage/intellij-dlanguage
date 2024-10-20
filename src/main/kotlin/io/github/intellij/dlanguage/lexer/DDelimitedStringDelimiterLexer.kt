@@ -7,6 +7,9 @@ import io.github.intellij.dlanguage.psi.DlangTypes.DELIMITED_STRING
 import io.github.intellij.dlanguage.utils.getCorrespondingClosingDelimiter
 import io.github.intellij.dlanguage.utils.getOpeningDelimiter
 
+/**
+ * Lex the string to highlight the Delimiter in the delimitedString
+ */
 class DDelimitedStringDelimiterLexer : LexerBase() {
     private var tokenStart: Int = 0
     private var tokenEnd: Int = 0

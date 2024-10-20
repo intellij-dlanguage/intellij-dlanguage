@@ -22,7 +22,8 @@ public class DHighlightingTokenSets {
         DlangTypes.CHARACTER_LITERAL,
         DlangTypes.DELIMITED_STRING,
         DlangTypes.WYSIWYG_STRING,
-        DlangTypes.ALTERNATE_WYSIWYG_STRING);
+        DlangTypes.ALTERNATE_WYSIWYG_STRING,
+        DlangTypes.HEX_STRING);
     public static final TokenSet NUMBER = TokenSet.create(DlangTypes.INTEGER_LITERAL, DlangTypes.FLOAT_LITERAL);
     public static final TokenSet SEMICOLON = TokenSet.create(DlangTypes.OP_SCOLON);
     public static final TokenSet DOT = TokenSet.create(DlangTypes.OP_DOT);

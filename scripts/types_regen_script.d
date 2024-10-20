@@ -254,7 +254,7 @@ static this() {
     types_extra_interfaces["LambdaExpression"] = ["Expression"];
     types_children["LastCatch"] = ["KW_CATCH","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement"];
     types_children["LinkageAttribute"] = ["IdentifierChain","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT","OP_PLUS_PLUS","KW_EXTERN","OP_COMMA"];
-    types_children["LiteralExpression"] = ["KW_THIS", "KW_SUPER", "KW_NULL", "KW_TRUE", "KW_FALSE", "INTEGER_LITERAL", "FLOAT_LITERAL", "CHARACTER_LITERAL", "ALTERNATE_WYSIWYG_STRING*", "DOUBLE_QUOTED_STRING*", "WYSIWYG_STRING*", "DELIMITED_STRING*", "TOKEN_STRING*"];
+    types_children["LiteralExpression"] = ["KW_THIS", "KW_SUPER", "KW_NULL", "KW_TRUE", "KW_FALSE", "INTEGER_LITERAL", "FLOAT_LITERAL", "CHARACTER_LITERAL", "ALTERNATE_WYSIWYG_STRING*", "DOUBLE_QUOTED_STRING*", "WYSIWYG_STRING*", "DELIMITED_STRING*", "TOKEN_STRING*", "HEX_STRING*"];
     types_extra_interfaces["LiteralExpression"] = ["Expression"];
     types_mixins["LiteralExpression"] = "DLanguageLiteralExpressionImplMixin";
     types_children["MagicLiteralExpression"] = ["KW___FILE__", "KW___FILE_FULL_PATH__", "KW___MODULE__", "KW___LINE__", "KW___FUNCTION__", "KW___PRETTY_FUNCTION__"];

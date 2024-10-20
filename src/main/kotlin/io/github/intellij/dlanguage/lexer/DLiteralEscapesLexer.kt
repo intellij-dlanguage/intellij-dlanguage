@@ -9,6 +9,9 @@ import com.intellij.util.text.CharArrayUtil.indexOf
 import io.github.intellij.dlanguage.psi.DlangTypes.VALID_NAMED_CHARACTER_ENTITY
 import java.lang.Integer.min
 
+/**
+ * Lex a token to generate check if all his content is valid, this is used for highlighting to show errors in strings.
+ */
 class DLiteralEscapesLexer(private val defaultToken: IElementType) : LexerBase() {
     private var tokenStart: Int = 0
     private var tokenEnd: Int = 0

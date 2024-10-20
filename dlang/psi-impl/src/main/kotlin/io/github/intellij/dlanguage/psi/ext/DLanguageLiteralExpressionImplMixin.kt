@@ -52,7 +52,8 @@ abstract class DLanguageLiteralExpressionImplMixin(node: ASTNode) : ASTWrapperPs
             return DPrimitiveType.fromText("char")
         }
         if (alternatE_WYSIWYG_STRINGs.isNotEmpty() || doublE_QUOTED_STRINGs.isNotEmpty() ||
-            wysiwyG_STRINGs.isNotEmpty() || delimiteD_STRINGs.isNotEmpty() || tokeN_STRINGs.isNotEmpty()) {
+            wysiwyG_STRINGs.isNotEmpty() || delimiteD_STRINGs.isNotEmpty() || tokeN_STRINGs.isNotEmpty() ||
+            heX_STRINGs.isNotEmpty()) {
             return DArrayType(DPrimitiveType.fromText("char"), null) // TODO immutable (and handle wstring and dstring)
         }
         return null

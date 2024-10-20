@@ -11,3 +11,4 @@ string d = r"test
 foo";
 string d = `test
 foo`;
+string h = x"AA BB";
