@@ -232,6 +232,7 @@ public interface DlangTypes {
     DlangTokenType DELIMITED_STRING = new DlangTokenType("DELIMITED_STRING");
     DlangTokenType DOUBLE_QUOTED_STRING = new DlangTokenType("DOUBLE_QUOTED_STRING");
     DlangTokenType FLOAT_LITERAL = new DlangTokenType("FLOAT_LITERAL");
+    DlangTokenType HEX_STRING = new DlangTokenType("HEX_STRING");
     DlangTokenType ID = new DlangTokenType("ID");
     DlangTokenType INTEGER_LITERAL = new DlangTokenType("INTEGER_LITERAL");
     DlangTokenType KW_ABSTRACT = new DlangTokenType("abstract");

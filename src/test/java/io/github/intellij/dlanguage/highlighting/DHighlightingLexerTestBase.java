@@ -5,7 +5,7 @@ import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.CharsetToolkit;
-import com.intellij.rt.execution.junit.FileComparisonFailure;
+import com.intellij.platform.testFramework.core.FileComparisonFailedError;
 import com.intellij.testFramework.LexerTestCase;
 import com.intellij.testFramework.TestDataFile;
 import com.intellij.testFramework.VfsTestUtil;
@@ -92,7 +92,7 @@ public abstract class DHighlightingLexerTestBase extends LexerTestCase {
         try {
             final String expectedText = doLoadFile(fullPath, targetDataName);
             if (!Comparing.strEqual(expectedText, text)) {
-                throw new FileComparisonFailure(targetDataName, expectedText, text, expectedFileName);
+                throw new FileComparisonFailedError(targetDataName, expectedText, text);
             }
         } catch (URISyntaxException | IOException e) {
             VfsTestUtil.overwriteTestData(expectedFileName, text);

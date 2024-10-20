@@ -6,7 +6,7 @@ import com.intellij.openapi.util.Comparing
 import com.intellij.openapi.util.io.FileUtil.loadFile
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.CharsetToolkit
-import com.intellij.rt.execution.junit.FileComparisonFailure
+import com.intellij.platform.testFramework.core.FileComparisonFailedError
 import com.intellij.testFramework.LexerTestCase
 import com.intellij.testFramework.TestDataFile
 import com.intellij.testFramework.UsefulTestCase
@@ -72,12 +72,11 @@ abstract class DlangLexerTestBase(expectPath: String) : LexerTestCase() {
         try {
             val expectedText = doLoadFile(fullPath, targetDataName)
             if (!Comparing.strEqual(expectedText, theText)) {
-                throw FileComparisonFailure(targetDataName, expectedText, theText, expectedFileName)
+                throw FileComparisonFailedError(targetDataName, expectedText, theText)
             }
         } catch (e: Exception) {
             VfsTestUtil.overwriteTestData(expectedFileName, theText)
             TestCase.fail("No output text found. File $expectedFileName created.")
         }
-
     }
 }
