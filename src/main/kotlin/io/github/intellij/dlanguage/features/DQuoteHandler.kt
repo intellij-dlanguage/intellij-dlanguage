@@ -14,7 +14,8 @@ class DQuoteHandler : SimpleTokenSetQuoteHandler(
     DELIMITED_STRING,
     WYSIWYG_STRING,
     ALTERNATE_WYSIWYG_STRING,
-    TOKEN_STRING
+    TOKEN_STRING,
+    HEX_STRING
 ), MultiCharQuoteHandler {
 
     override fun isOpeningQuote(iterator: HighlighterIterator, offset: Int): Boolean {
@@ -59,9 +60,10 @@ class DQuoteHandler : SimpleTokenSetQuoteHandler(
     override fun getClosingQuote(iterator: HighlighterIterator, offset: Int): CharSequence? {
         return when (iterator.tokenType) {
             CHARACTER_LITERAL -> "'"
-            DOUBLE_QUOTED_STRING -> "\""
-            DELIMITED_STRING -> "\""
-            WYSIWYG_STRING -> "\""
+            DOUBLE_QUOTED_STRING,
+            DELIMITED_STRING,
+            WYSIWYG_STRING,
+            HEX_STRING -> "\""
             ALTERNATE_WYSIWYG_STRING -> "`"
             TOKEN_STRING -> "}"
             else -> null

@@ -68,6 +68,8 @@ DELIMITED_STRING_CONTENT = (\"\( ~(\)\")) | (\"\[ ~(\]\")) | (\"\{ ~(\}\")) | (\
 ALTERNATIVE_DELIMITED_STRING_START = q\".
 ALTERNATIVE2_DELIMITED_STRING_START = q\"[^\"\r\n]+[\r\n]
 
+HEX_STRING = "x"\" [^\"]* (\" {STRING_POSTFIX}?)?
+
 TOKEN_STRING_START = q\{
 TOKEN_CLOSE_CURLY = \}
 TOKEN_OPEN_CURLY = \{
@@ -179,6 +181,7 @@ NESTING_BLOCK_DOC_END = "+/"
  {ALTERNATE_WYSIWYG_STRING} { return ALTERNATE_WYSIWYG_STRING; }
  {DELIMITED_STRING}         { return DELIMITED_STRING; }
  {DOUBLE_QUOTED_STRING}     { return DOUBLE_QUOTED_STRING; }
+ {HEX_STRING}               { return HEX_STRING; }
 
  {ALTERNATIVE2_DELIMITED_STRING_START} {
     stringDelimiter2 = yytext().subSequence(2, yylength() -1).toString();
@@ -191,7 +194,6 @@ NESTING_BLOCK_DOC_END = "+/"
     stringDelimiterClosed = false;
     yybegin(ALTERNATE_DELIMITED_STRING);
   }
-//todo add typedef
 
  "module"                   { return KW_MODULE; }
  "import"                   { return KW_IMPORT; }

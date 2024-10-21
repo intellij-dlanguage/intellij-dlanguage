@@ -123,6 +123,7 @@ class DlangLexerTest : DlangLexerTestBase("lexer") {
     fun teststring_dq()      = doTest()
     fun teststring_tokens()  = doTest()
     fun teststring_wysiwyg() = doTest()
+    fun teststring_hex()     = doTest()
 
     fun teststring_delim_dash() = doTest("q\"-test-\"d", "DlangTokenType.DELIMITED_STRING ('q\"-test-\"d')")
     // Note q"/te/st/"d is technically invalid in D, but it’s better to have another lexer that ensure it’s a valid DELIMITED_STRING

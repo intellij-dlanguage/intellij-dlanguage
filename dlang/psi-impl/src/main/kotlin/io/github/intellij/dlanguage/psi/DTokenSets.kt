@@ -28,7 +28,8 @@ object DTokenSets {
         DlangTypes.CHARACTER_LITERAL,
         DlangTypes.DELIMITED_STRING,
         DlangTypes.WYSIWYG_STRING,
-        DlangTypes.ALTERNATE_WYSIWYG_STRING
+        DlangTypes.ALTERNATE_WYSIWYG_STRING,
+        DlangTypes.HEX_STRING
     )
 
     @JvmField

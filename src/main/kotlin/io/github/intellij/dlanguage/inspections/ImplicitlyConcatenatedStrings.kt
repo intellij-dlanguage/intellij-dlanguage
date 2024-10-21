@@ -24,7 +24,8 @@ class ImplicitlyConcatenatedStrings : LocalInspectionTool() {
 
 class ImplicitlyConcatenatedStringsVisitor(val holder: ProblemsHolder) : DlangVisitor() {
     override fun visitLiteralExpression(o: DLanguageLiteralExpression) {
-        if (o.doublE_QUOTED_STRINGs.size + o.delimiteD_STRINGs.size + o.alternatE_WYSIWYG_STRINGs.size + o.wysiwyG_STRINGs.size > 1)
+        if (o.doublE_QUOTED_STRINGs.size + o.delimiteD_STRINGs.size + o.alternatE_WYSIWYG_STRINGs.size
+            + o.wysiwyG_STRINGs.size + o.heX_STRINGs.size > 1)
             holder.registerProblem(o, "Implicitly concatenated strings", ExplicitlyConcatenateStrings(o))
     }
 }

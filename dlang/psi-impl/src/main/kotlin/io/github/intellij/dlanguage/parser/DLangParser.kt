@@ -8414,7 +8414,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
             DlangTypes.DOUBLE_QUOTED_STRING,
             DlangTypes.WYSIWYG_STRING,
             DlangTypes.DELIMITED_STRING,
-            DlangTypes.TOKEN_STRING
+            DlangTypes.TOKEN_STRING,
+            DlangTypes.HEX_STRING
         )
 
         private val literals: Set<IElementType?> = Sets.newHashSet<IElementType?>(
@@ -8430,7 +8431,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
             DlangTypes.DOUBLE_QUOTED_STRING,
             DlangTypes.WYSIWYG_STRING,
             DlangTypes.DELIMITED_STRING,
-            DlangTypes.TOKEN_STRING
+            DlangTypes.TOKEN_STRING,
+            DlangTypes.HEX_STRING
         )
 
         private val basicTypes: Set<IElementType?> = Sets.newHashSet<IElementType?>(
