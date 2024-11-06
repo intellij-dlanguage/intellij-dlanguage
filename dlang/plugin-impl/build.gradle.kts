@@ -115,6 +115,8 @@ dependencies {
         if (providers.environmentVariable("CI").orNull == null)
             plugin("psiViewer:${properties("psiViewerVersion")}")
 
+        plugin("com.intellij.nativeDebug:${properties("nativeDebugVersion")}")
+
         pluginVerifier()
         zipSigner()
     }

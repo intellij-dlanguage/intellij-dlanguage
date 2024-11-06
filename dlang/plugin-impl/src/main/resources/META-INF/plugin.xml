@@ -42,6 +42,7 @@
 
     <!-- Both AppCode and CLion use cidr.lang -->
     <depends optional="true" config-file="clion-only.xml">com.intellij.modules.cidr.lang</depends>
+    <depends optional="true" config-file="io.github.intellij.dlanguage.debugger.xml">com.intellij.modules.cidr.debugger</depends>
     <!--<depends optional="true" config-file="clion-only.xml">com.intellij.modules.clion</depends>-->
     <!--<depends optional="true" config-file="appcode-only.xml">com.intellij.modules.appcode</depends>-->
 
