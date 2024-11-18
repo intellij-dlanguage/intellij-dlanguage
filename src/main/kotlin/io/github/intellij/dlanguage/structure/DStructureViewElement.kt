@@ -73,7 +73,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
             when (element) {
                 is FunctionDeclaration -> {
                     when {
-                        psiElementIsGetter(element) -> append(" : ${element.basicType?.text}${element.typeSuffixes.joinToString(""){ it.text }}")
+                        psiElementIsGetter(element) -> append(" : ${element.basicType?.text} ${element.typeSuffixes.joinToString(" ") { it.text }}".trimEnd())
                         psiElementIsSetter(element) -> {
                             val parametersNode = element.parameters
                             appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
@@ -81,7 +81,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                         else -> {
                             val parametersNode = element.parameters
                             appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
-                            append(" : ${element.basicType?.text}${element.typeSuffixes.joinToString(""){ it.text }}")
+                            append(" : ${element.basicType?.text} ${element.typeSuffixes.joinToString(" "){ it.text }}".trimEnd())
                         }
                     }
                 }
@@ -90,7 +90,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
                     appendCommaList(parametersNode?.parameters?.mapNotNull { presentableName(it.type) })
                 }
                 is SpecifiedVariableDeclaration -> {
-                    append(" : ${element.basicType?.text}${element.typeSuffixs.joinToString("") { it.text }}")
+                    append(" : ${element.basicType?.text} ${element.typeSuffixs.joinToString(" ") { it.text }}".trimEnd())
 
                     val initializer = element.identifierInitializers.firstOrNull()?.initializer
 
