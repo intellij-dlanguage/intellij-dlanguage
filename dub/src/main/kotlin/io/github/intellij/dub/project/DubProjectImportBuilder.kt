@@ -54,12 +54,7 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
         getParameters().packages = list
     }
 
-    override fun isOpenProjectSettingsAfter(): Boolean {
-        return getParameters().openModuleSettings
-    }
-
     override fun setOpenProjectSettingsAfter(on: Boolean) {
-        getParameters().openModuleSettings = on
     }
 
     override fun isMarked(dubPackage: DubPackage): Boolean {
@@ -156,7 +151,6 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
 
     class Parameters {
         var packages: List<DubPackage>? = null
-        var openModuleSettings = false
         @JvmField
         var dubBinary: String? = null
     }
