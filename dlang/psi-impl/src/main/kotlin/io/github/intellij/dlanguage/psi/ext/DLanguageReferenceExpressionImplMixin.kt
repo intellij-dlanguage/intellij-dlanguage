@@ -22,13 +22,25 @@ import io.github.intellij.dlanguage.utils.FunctionDeclaration
 abstract class DLanguageReferenceExpressionImplMixin(node: ASTNode) : ASTWrapperPsiElement(node),
     DLanguageReferenceExpression {
 
+    private var resolving : Boolean = false;
+
     override fun getDType(): DType? {
-        val result = reference?.resolve()
-        if (result is DTypedElement) {
-            return result.dType
-        }
-        if (result is FunctionDeclaration) {
-            return result.returnDType
+        if (resolving) {
+        } else {
+            try {
+                resolving = true;
+                val result = reference?.resolve()
+
+                if (result is DTypedElement) {
+                    return result.dType
+                }
+
+                if (result is FunctionDeclaration) {
+                    return result.returnDType
+                }
+            } finally {
+                resolving = false;
+            }
         }
         val qualifierType = expression?.dType
         // Compiler defined property? : https://dlang.org/spec/property.html
