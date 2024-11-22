@@ -41,6 +41,7 @@ object DLanguage : Language("D") {
             @JvmField val NODE_PROPERTY_GETTER = IconLoader.getIcon("/icons/nodes/propertyGetter.png", DLanguage::class.java)
             @JvmField val NODE_PROPERTY_SETTER = IconLoader.getIcon("/icons/nodes/propertySetter.png", DLanguage::class.java)
             @JvmField val NODE_ALIAS = IconLoader.getIcon("/icons/nodes/alias.png", DLanguage::class.java)
+            @JvmField val NODE_MIXINDECL = IconLoader.getIcon("/icons/nodes/mixindecl.png", DLanguage::class.java)
             @JvmField val NODE_MIXIN = IconLoader.getIcon("/icons/nodes/mixin.png", DLanguage::class.java)
         }
     }

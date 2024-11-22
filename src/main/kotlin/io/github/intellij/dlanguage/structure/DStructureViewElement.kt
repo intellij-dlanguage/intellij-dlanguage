@@ -173,7 +173,7 @@ class DStructureViewElement(val element: PsiElement) : StructureViewTreeElement
             is Constructor -> emptyList()
             is VariableDeclaration -> emptyList()
             is AliasDeclaration -> emptyList()
-            is MixinTemplateDeclaration -> psi.templateDeclaration?.declarations?: emptyList()
+            is TemplateMixinDeclaration -> psi.declarations
             is ConditionalDeclaration -> psi.declarations
             is AttributeSpecifier -> psi.declarationBlock?.declarations?: emptyList()
             else -> emptyList()

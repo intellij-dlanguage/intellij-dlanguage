@@ -11,6 +11,7 @@ import javax.swing.Icon
 
 fun presentableName(psi: PsiElement?): String? = when (psi) {
     is Constructor -> "this"
+    is Destructor -> "~this"
     is PsiNamedElement -> psi.name
     is AnonymousEnumDeclaration -> "<unnamed>"
     is AutoDeclaration -> {
@@ -42,6 +43,14 @@ fun presentableName(psi: PsiElement?): String? = when (psi) {
         else
             psi.text
     }
+    is TemplateMixinDeclaration -> {
+        // mixin Template() { ... }
+        psi.identifier?.text
+    }
+    is TemplateMixinStatement -> {
+        // mixin Template!();
+        psi.mixinTemplateName?.text
+    }
     else -> psi.toString()
 }
 
@@ -58,6 +67,7 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
         }
     }
     is Constructor -> DLanguage.Icons.NODE_METHOD
+    is Destructor -> DLanguage.Icons.NODE_METHOD
     is EnumDeclaration -> DLanguage.Icons.NODE_ENUM
     is AnonymousEnumDeclaration -> DLanguage.Icons.NODE_ENUM
     is EnumMember -> DLanguage.Icons.NODE_ENUM_MEMBER
@@ -65,7 +75,8 @@ fun getPresentationIcon(psi: PsiElement?): Icon? = when (psi) {
     is UnionDeclaration -> DLanguage.Icons.NODE_UNION
     is VariableDeclaration -> DLanguage.Icons.NODE_FIELD
     is AliasDeclaration -> DLanguage.Icons.NODE_ALIAS
-    is MixinTemplateDeclaration -> DLanguage.Icons.NODE_MIXIN
+    is TemplateMixinDeclaration -> DLanguage.Icons.NODE_MIXINDECL // mixin Template() { ... }
+    is TemplateMixinStatement -> DLanguage.Icons.NODE_MIXIN // mixin Template!();
     is TemplateDeclaration -> DLanguage.Icons.NODE_FUNCTION
     is DlangPsiFile -> DLanguage.Icons.FILE
     else -> null
