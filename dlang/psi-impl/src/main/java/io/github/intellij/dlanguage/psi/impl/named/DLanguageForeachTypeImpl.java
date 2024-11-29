@@ -9,6 +9,8 @@ import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.named.DLanguageForeachType;
+import io.github.intellij.dlanguage.psi.types.DType;
+import io.github.intellij.dlanguage.psi.types.DUnknownType;
 import io.github.intellij.dlanguage.stubs.DLanguageForeachTypeStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -69,6 +71,15 @@ public class DLanguageForeachTypeImpl extends
     @Nullable
     public PsiElement getNameIdentifier() {
         return getIdentifier();
+    }
+
+    @Override
+    @NotNull
+    public DType getDType() {
+        if (getType() == null) {
+            return new DUnknownType();
+        }
+        return getType().getDType();
     }
 
 }

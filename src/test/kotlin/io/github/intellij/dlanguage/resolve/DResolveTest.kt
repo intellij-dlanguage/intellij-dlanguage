@@ -110,6 +110,9 @@ class DResolveTest : DResolveTestCase() {
     fun testForeachVariableUsageResolve() = doTest()
 
     @Test
+    fun testForeachVariableMemberUsageShouldResolve() = doTest()
+
+    @Test
     fun testForeachVariableOutOfScopeUsageShouldNotResolve() = doTest(false)
 
     @Test
