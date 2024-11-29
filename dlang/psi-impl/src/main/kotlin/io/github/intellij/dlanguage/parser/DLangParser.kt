@@ -5,7 +5,6 @@ import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiBuilderUtil
 import com.intellij.psi.tree.IElementType
 import io.github.intellij.dlanguage.psi.DlangTypes
-import java.util.*
 
 internal class DLangParser(private val builder: PsiBuilder) {
     private val cachedAAChecks: MutableMap<Int, Boolean> = HashMap()
@@ -3544,6 +3543,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 bookmark.drop()
                 if (currentIs(DlangTypes.OP_DOT)) {
                     advance()
+                    m.done(DlangTypes.QUALIFIED_IDENTIFIER)
+                    m = m.precede()
                     continue
                 }
                 m.done(DlangTypes.QUALIFIED_IDENTIFIER)

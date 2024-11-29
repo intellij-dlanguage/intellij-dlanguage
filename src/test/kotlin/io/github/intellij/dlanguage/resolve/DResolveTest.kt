@@ -67,6 +67,9 @@ class DResolveTest : DResolveTestCase() {
     fun testAliasValueBeingFunction() = doTest()
 
     @Test
+    fun testAliasDeclarationWithAliasValueContainingTemplateInstanceDotIdentifier() = doTest()
+
+    @Test
     fun testScopedImportsFail() = doTest(false)
 
     @Test

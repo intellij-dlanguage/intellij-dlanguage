@@ -6,11 +6,7 @@ import com.intellij.psi.PsiQualifiedReference
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import io.github.intellij.dlanguage.psi.interfaces.Expression
-import io.github.intellij.dlanguage.psi.types.DAliasType
-import io.github.intellij.dlanguage.psi.types.DArrayType
-import io.github.intellij.dlanguage.psi.types.DPointerType
-import io.github.intellij.dlanguage.psi.types.DType
-import io.github.intellij.dlanguage.psi.types.UserDefinedDType
+import io.github.intellij.dlanguage.psi.types.*
 
 object PsiScopesUtil {
     fun treeWalkUp(processor: PsiScopeProcessor,
@@ -65,7 +61,8 @@ object PsiScopesUtil {
             var type: DType? = null
             if (reference.qualifier is Expression) {
                 type = (reference.qualifier as Expression).dType
-                processTypeDeclaration(type, reference.element, processor)
+                if (processTypeDeclaration(type, reference.element, processor) == false)
+                    return false
             }
             if (type == null) {
                 var target: PsiElement? = reference.qualifier?.reference?.resolve()
@@ -78,7 +75,7 @@ object PsiScopesUtil {
         return true
     }
 
-    private fun processTypeDeclaration(type: DType?, place: PsiElement, processor: PsiScopeProcessor) {
+    private fun processTypeDeclaration(type: DType?, place: PsiElement, processor: PsiScopeProcessor): Boolean {
         if (type is DPointerType) {
             processTypeDeclaration(type.base, place, processor)
         }
@@ -90,7 +87,9 @@ object PsiScopesUtil {
         }
         if (type is UserDefinedDType) {
             val target = type.resolve()
-            target?.processDeclarations(processor, ResolveState.initial(), target, place)
+            if (target != null)
+                return target.processDeclarations(processor, ResolveState.initial(), target, place)
         }
+        return true
     }
 }

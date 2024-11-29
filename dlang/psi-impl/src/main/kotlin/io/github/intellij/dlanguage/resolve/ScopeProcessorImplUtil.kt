@@ -22,6 +22,10 @@ object ScopeProcessorImplUtil {
             is AliasInitializer ->
                 return processor.execute(def, state)
             is AliasDeclaration -> {
+                // the element is in the alias declaration, so it can’t match to this declaration
+                if (lastParent == def)
+                    return true
+
                 if (def.aliasInitializers.isNotEmpty()) {
                     for (varDeclaration in def.aliasInitializers) {
                         if (!processor.execute(varDeclaration, state))
