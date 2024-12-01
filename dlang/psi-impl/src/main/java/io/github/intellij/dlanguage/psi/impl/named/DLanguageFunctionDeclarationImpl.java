@@ -12,6 +12,7 @@ import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.interfaces.FunctionBody;
 import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.types.DType;
+import io.github.intellij.dlanguage.psi.types.DTypesUtilKt;
 import io.github.intellij.dlanguage.psi.types.DUnknownType;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DLanguageFunctionDeclarationStub;
@@ -114,8 +115,10 @@ public class DLanguageFunctionDeclarationImpl extends
     @Override
     public @NotNull DType getReturnDType() {
         var basicType = getBasicType();
-        if (basicType != null)
-            return basicType.getDType();
+        if (basicType != null) {
+            var type = basicType.getDType();
+            return DTypesUtilKt.getDtypeWithSuffixes(type, getTypeSuffixes());
+        }
 
         // At this point we can assume it is an auto function
         // can be "auto ref", "ref func()", …
