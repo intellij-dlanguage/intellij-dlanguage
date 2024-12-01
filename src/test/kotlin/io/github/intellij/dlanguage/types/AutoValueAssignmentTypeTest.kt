@@ -28,6 +28,17 @@ class AutoValueAssignmentTypeTest : LightPlatformCodeInsightFixture4TestCase() {
         doTest("char[]", """char* x; auto expr = x[0 .. 7];""")
     }
 
+    @Test
+    fun testFunctionCall() {
+        doTest("void[]", """void[] a() {} auto expr = a();""")
+    }
+
+    @Test
+    fun testAutoExpressionPropertiesCallAssignment() {
+        doTest("int", """int[] x; auto expr = x.length;""")
+        doTest("void[]*", """void[] x; auto expr = x.ptr;""")
+    }
+
     /**
      * Take a file text and the expected type string representation and ensure that the expression named (expr) has the corresponding type
      */
