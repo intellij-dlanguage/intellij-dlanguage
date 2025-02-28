@@ -7,6 +7,7 @@ import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import io.github.intellij.dlanguage.psi.interfaces.Expression
 import io.github.intellij.dlanguage.psi.types.*
+import io.github.intellij.dlanguage.utils.AttributeSpecifier
 
 object PsiScopesUtil {
     fun treeWalkUp(processor: PsiScopeProcessor,
@@ -45,6 +46,32 @@ object PsiScopesUtil {
 
         while (child != null) {
             if (!child.processDeclarations(processor, state, null, place)) return false
+            child = child.prevSibling
+        }
+
+        return true
+    }
+
+    /**
+     * Look for attribute specifier in previous siblings
+     */
+    fun searchAttributeSpecifierInPreviousSiblings(
+        thisElement: PsiElement,
+        processor: PsiScopeProcessor,
+        state: ResolveState,
+    ): Boolean {
+        var child: PsiElement? =  thisElement.prevSibling
+
+        if (child == null) {
+            return true
+        }
+
+        while (child != null) {
+            // ignore attribute with block (example `public {}`) as they don’t impact us
+            if (child is AttributeSpecifier && child.declarationBlock == null) {
+                if (!processor.execute(child, state))
+                    return false
+            }
             child = child.prevSibling
         }
 

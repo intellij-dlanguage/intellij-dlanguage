@@ -3,19 +3,17 @@ package io.github.intellij.dlanguage.psi.impl
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.PsiFile
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.stubs.IStubElementType
 import com.intellij.psi.util.PsiTreeUtil
-import io.github.intellij.dlanguage.psi.DLanguageAttribute
-import io.github.intellij.dlanguage.psi.DLanguageImportBindings
-import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration
-import io.github.intellij.dlanguage.psi.DlangTypes
-import io.github.intellij.dlanguage.psi.DlangVisitor
+import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.psi.interfaces.DVisibility
 import io.github.intellij.dlanguage.psi.interfaces.DVisibility.*
 import io.github.intellij.dlanguage.psi.interfaces.DVisibilityStubKind
-import io.github.intellij.dlanguage.psi.named.DLanguageSingleImport
+import io.github.intellij.dlanguage.psi.interfaces.UserDefinedType
+import io.github.intellij.dlanguage.psi.named.*
 import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil
 import io.github.intellij.dlanguage.psi.scope.processor.DVisibilityProcessor
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl.processDeclarations
@@ -78,7 +76,18 @@ class DLanguageImportDeclarationImpl : DStubBasedPsiElementBase<DLanguageImportD
                 return Public
         }
         val processor = DVisibilityProcessor()
-        PsiScopesUtil.walkChildrenScopes(this.context?:this.containingFile, processor, ResolveState.initial(), null, this)
+        if (PsiScopesUtil.searchAttributeSpecifierInPreviousSiblings(this, processor, ResolveState.initial()) && processor.getVisibility() != null)
+            return processor.getVisibility()!!
+
+        val scope = PsiTreeUtil.getParentOfType(this, DLanguageFunctionDeclaration::class.java, UserDefinedType::class.java,
+            DLanguageConstructor::class.java, DLanguageDestructor::class.java,
+            DLanguageStaticConstructor::class.java, DLanguageStaticDestructor::class.java,
+            DLanguageSharedStaticConstructor::class.java, DLanguageSharedStaticDestructor::class.java,
+            DLanguageTemplateDeclaration::class.java, DLanguageTemplateMixinDeclaration::class.java,
+            DLanguageBlockStatement::class.java)
+        if (this.context != null && this.context !is PsiFile) {
+            PsiScopesUtil.treeWalkUp(processor, this.context!!, scope)
+        }
         return processor.getVisibility() ?: Private
     }
 
