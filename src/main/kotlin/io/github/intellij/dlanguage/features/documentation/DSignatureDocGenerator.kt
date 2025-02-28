@@ -37,7 +37,7 @@ class DSignatureDocGenerator {
             is EnumDeclaration -> appendEnumSignature(builder, element)
             is StructDeclaration -> appendStructSignature(builder, element)
             is UnionDeclaration -> appendUnionSignature(builder, element)
-            is MixinTemplateDeclaration -> appendMixinTemplateDeclaration(builder, element)
+            is TemplateMixinDeclaration -> appendTemplateMixinDeclaration(builder, element)
             is TemplateDeclaration -> appendTemplateDeclaration(builder, element)
             is InterfaceDeclaration -> appendInterfaceSignature(builder, element)
             is ClassDeclaration -> appendClassSignature(builder, element)
@@ -152,10 +152,11 @@ class DSignatureDocGenerator {
         }
     }
 
-    private fun appendMixinTemplateDeclaration(builder: StringBuilder, element: MixinTemplateDeclaration) {
-        HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, "mixin", highlightingSaturation)
+    private fun appendTemplateMixinDeclaration(builder: StringBuilder, element: TemplateMixinDeclaration) {
+        HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, "mixin template", highlightingSaturation)
         builder.append(" ")
-        appendTemplateDeclaration(builder, element.templateDeclaration!!)
+        HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.FUNCTION_CALL.textAttributesKey, element.identifier!!.text, highlightingSaturation)
+        appendTemplateParameters(builder, element.templateParameters!!)
     }
     private fun appendTemplateDeclaration(builder: StringBuilder, element: TemplateDeclaration) {
         HtmlSyntaxInfoUtil.appendStyledSpan(builder, DColor.KEYWORD.textAttributesKey, "template", highlightingSaturation)

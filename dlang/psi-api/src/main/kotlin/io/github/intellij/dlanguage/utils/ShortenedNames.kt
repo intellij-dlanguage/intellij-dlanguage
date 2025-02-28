@@ -132,7 +132,6 @@ typealias MemberFunctionAttribute = io.github.intellij.dlanguage.psi.DLanguageMe
 typealias MissingFunctionBody = io.github.intellij.dlanguage.psi.DLanguageMissingFunctionBody
 typealias MixinDeclaration = io.github.intellij.dlanguage.psi.DLanguageMixinDeclaration
 typealias MixinQualifiedIdentifier = io.github.intellij.dlanguage.psi.DLanguageMixinQualifiedIdentifier
-typealias MixinTemplateDeclaration = io.github.intellij.dlanguage.psi.DLanguageMixinTemplateDeclaration
 typealias MixinTemplateName = io.github.intellij.dlanguage.psi.DLanguageMixinTemplateName
 typealias MulExpression = io.github.intellij.dlanguage.psi.DLanguageMulExpression
 typealias NamedImportBind = io.github.intellij.dlanguage.psi.DLanguageNamedImportBind
