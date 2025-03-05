@@ -222,20 +222,6 @@ object ScopeProcessorImpl {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: MixinTemplateDeclaration,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement?,
-                            place: PsiElement): Boolean {
-//        if (element.templateDeclaration?.templateParameters != null) {
-//            if (!element.templateParameters!!.processDeclarations(processor, state, lastParent, place)) {
-//                return false
-//            }
-//        }
-        return true
-    }
-
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: TemplateMixinDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,

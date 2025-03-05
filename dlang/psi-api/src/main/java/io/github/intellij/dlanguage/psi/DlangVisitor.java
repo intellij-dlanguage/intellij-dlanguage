@@ -503,10 +503,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitElement(o);
     }
 
-    public void visitMixinTemplateDeclaration(@NotNull final DLanguageMixinTemplateDeclaration o) {
-        visitPsiElement(o);
-    }
-
     public void visitMixinTemplateName(@NotNull final DLanguageMixinTemplateName o) {
         visitPsiElement(o);
     }

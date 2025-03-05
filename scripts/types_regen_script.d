@@ -266,7 +266,6 @@ static this() {
     types_children["MixinDeclaration"] = ["KW_MIXIN", "OP_PAR_LEFT", "ArgumentList", "OP_PAR_RIGHT", "OP_SCOLON"];
     types_extra_interfaces["MixinDeclaration"] = ["Declaration"];
     types_children["MixinQualifiedIdentifier"] = ["Identifier", "TemplateInstance", "OP_DOT", "MixinQualifiedIdentifier"];
-    types_children["MixinTemplateDeclaration"] = ["TemplateDeclaration","KW_MIXIN"];
     types_children["MixinTemplateName"] = ["TypeofExpression", "MixinQualifiedIdentifier", "OP_DOT"];
     types_children["MixinType"] = ["ArgumentList","OP_PAR_RIGHT","OP_PAR_LEFT","KW_MIXIN"];
     types_children["MulExpression"] = ["Expression*","OP_MOD","OP_DIV","OP_ASTERISK"];
@@ -540,7 +539,6 @@ static this() {
     has_processDeclaration["MemberFunctionAttribute"] = false;
     has_processDeclaration["MixinDeclaration"] = false;
     has_processDeclaration["MixinQualifiedIdentifier"] = false;
-    has_processDeclaration["MixinTemplateDeclaration"] = true;
     has_processDeclaration["MixinTemplateName"] = false;
     //has_processDeclaration["ModuleDeclaration"] = false;
     has_processDeclaration["MulExpression"] = false;

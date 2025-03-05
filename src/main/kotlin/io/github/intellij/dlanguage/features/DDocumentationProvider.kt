@@ -3,15 +3,15 @@ package io.github.intellij.dlanguage.features
 import com.intellij.lang.documentation.AbstractDocumentationProvider
 import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
+import io.github.intellij.dlanguage.documentation.psi.DlangDocComment
 import io.github.intellij.dlanguage.features.documentation.DDocGenerator
 import io.github.intellij.dlanguage.features.documentation.DSignatureDocGenerator
-import io.github.intellij.dlanguage.documentation.psi.DlangDocComment
 import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.named.DLanguageSingleImport
-import io.github.intellij.dlanguage.utils.MixinTemplateDeclaration
 import io.github.intellij.dlanguage.utils.TemplateDeclaration
+import io.github.intellij.dlanguage.utils.TemplateMixinDeclaration
 import java.util.function.Consumer
 
 /**
@@ -98,7 +98,7 @@ class DDocumentationProvider : AbstractDocumentationProvider() {
         if (element is DNamedElement) {
             val builder = StringBuilder()
             var declarationElement = element
-            if (declarationElement is TemplateDeclaration && declarationElement.parent is MixinTemplateDeclaration)
+            if (declarationElement is TemplateDeclaration && declarationElement.parent is TemplateMixinDeclaration)
                 declarationElement = declarationElement.parent
             DSignatureDocGenerator().appendDeclarationHeader(builder, declarationElement!!, element)
             val doc = DDocGenerator().generateDoc(element)
