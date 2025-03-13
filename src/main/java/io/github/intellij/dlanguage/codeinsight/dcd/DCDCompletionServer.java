@@ -7,9 +7,8 @@ import com.intellij.execution.process.KillableProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessOutputType;
-import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -25,11 +24,11 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.PathUtil;
 import com.intellij.util.io.BaseOutputReader;
+import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
 import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.settings.ToolSettings;
-import io.github.intellij.dlanguage.DlangSdkType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -122,9 +121,14 @@ public final class DCDCompletionServer implements ToolChangeListener, Disposable
 
             LOG.info("DCD process started");
         } catch (final ExecutionException e) {
-            Notifications.Bus.notify(new Notification("DCDNotification", "DCD Error",
-                "Unable to start a dcd server. Make sure that you have specified the path to the dcd-server and dcd-client executables correctly. You can specify executable paths under File > Settings > Languages & Frameworks > D Tools",
-                NotificationType.ERROR), null);
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup("DCDNotification")
+                .createNotification(
+                    "DCD Error",
+                    "Unable to start a dcd server. Make sure that you have specified the path to the dcd-server and dcd-client executables correctly. You can specify executable paths under File > Settings > Languages & Frameworks > D Tools",
+                    NotificationType.ERROR
+                )
+                .notify(null);
             LOG.error("Error spawning DCD process", e);
         }
     }

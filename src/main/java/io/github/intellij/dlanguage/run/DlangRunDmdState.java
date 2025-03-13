@@ -7,17 +7,16 @@ import com.intellij.execution.process.ColoredProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.process.ProcessTerminatedListener;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.text.StringUtil;
-import io.github.intellij.dlanguage.run.exception.NoSourcesException;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.run.exception.ModuleNotFoundException;
+import io.github.intellij.dlanguage.run.exception.NoSourcesException;
 import io.github.intellij.dlanguage.run.exception.NoValidDlangSdkFound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,11 +55,14 @@ public class DlangRunDmdState extends CommandLineState {
             final boolean isEmpty = message.equals("Executable is not specified");
             final boolean notCorrect = message.startsWith("Cannot run program");
             if (isEmpty || notCorrect) {
-                Notifications.Bus.notify(
-                    new Notification("DMD run configuration", "DMD settings",
+                NotificationGroupManager.getInstance()
+                    .getNotificationGroup("DMD run configuration")
+                    .createNotification("DMD settings",
                         "DMD executable path is " + (isEmpty ? "empty" : "not specified correctly") +
                             "<br/><a href='configure'>Configure</a>",
-                        NotificationType.ERROR), config.getProject());
+                        NotificationType.ERROR
+                    )
+                    .notify(config.getProject());
             }
             throw e;
         }

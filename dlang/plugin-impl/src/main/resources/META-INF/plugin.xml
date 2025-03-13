@@ -70,6 +70,14 @@
 
         <!-- All notification group id's should be defined here. See #654 -->
         <notificationGroup id="DLANG_POPUP" displayType="BALLOON" isLogByDefault="true" bundle="i18n" />
+        <notificationGroup id="Execute Tests" displayType="BALLOON" isLogByDefault="true" bundle="i18n" />
+        <notificationGroup id="Dunit Test Runner" displayType="BALLOON" isLogByDefault="true" bundle="i18n" />
+        <notificationGroup id="DMD run configuration" displayType="BALLOON" isLogByDefault="true" bundle="i18n" />
+        <notificationGroup id="D App run configuration" displayType="BALLOON" isLogByDefault="true" bundle="i18n" />
+        <notificationGroup id="Debugger" displayType="BALLOON" isLogByDefault="true" bundle="i18n" />
+        <notificationGroup id="DScanner Error" displayType="BALLOON" isLogByDefault="true" bundle="i18n" />
+        <notificationGroup id="DCDNotification" displayType="BALLOON" isLogByDefault="true" bundle="i18n" />
+        <notificationGroup id="Dfmt Action" displayType="BALLOON" isLogByDefault="true" bundle="i18n" />
 
         <lang.parserDefinition language="D" implementationClass="io.github.intellij.dlanguage.DLangParserDefinition"/>
         <lang.parserDefinition language="DDoc" implementationClass="io.github.intellij.dlanguage.features.documentation.DDocParserDefinition"/>

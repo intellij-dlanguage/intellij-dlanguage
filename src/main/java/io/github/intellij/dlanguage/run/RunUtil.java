@@ -7,9 +7,8 @@ import com.intellij.execution.configurations.RunProfileState;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.execution.ui.RunContentDescriptor;
-import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.project.Project;
 import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugProcessStarter;
@@ -41,12 +40,15 @@ public class RunUtil {
 
         // check if path to debugger is defined
         if (gdbPath == null) {
-            Notifications.Bus.notify(
-                new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE,
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup(NOTIFICATION_GROUPID)
+                .createNotification(
+                    NOTIFICATION_TITLE,
                     "GDB executable path is empty",
-                    NotificationType.ERROR)
-                    .addAction(new DToolsNotificationAction("Configure")),
-                project);
+                    NotificationType.ERROR
+                )
+                .addAction(new DToolsNotificationAction("Configure"))
+                .notify(project);
 
             return null;
         }

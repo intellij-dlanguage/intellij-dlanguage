@@ -3,9 +3,8 @@ package io.github.intellij.dub.project
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.CapturingProcessHandler
 import com.intellij.execution.process.OSProcessHandler
-import com.intellij.notification.Notification
+import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
-import com.intellij.notification.Notifications
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
@@ -26,7 +25,6 @@ import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 import java.util.function.Consumer
-import javax.swing.SwingUtilities
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreeNode
 
@@ -212,15 +210,14 @@ class DubConfigurationParser @JvmOverloads constructor(
                 if (errors.isEmpty()) {
                     LOG.info(String.format("%s exited without errors", dubCommand))
                     if (LOG.isDebugEnabled) {
-                        Notifications.Bus.notify(
-                            Notification(
-                                "DubNotification",
+                        NotificationGroupManager.getInstance()
+                            .getNotificationGroup("DubNotification")
+                            .createNotification(
                                 "DUB Import",
                                 "dub project imported without errors",
                                 NotificationType.INFORMATION
-                            ),
-                            project
-                        )
+                            )
+                            .notify(project)
                     }
                 } else {
                     if (!silentMode) {
@@ -235,15 +232,14 @@ class DubConfigurationParser @JvmOverloads constructor(
                     if (!silentMode) {
                         errors.forEach(
                             Consumer { errorMessage: String? ->
-                                Notifications.Bus.notify(
-                                    Notification(
-                                        "DubNotification",
+                                NotificationGroupManager.getInstance()
+                                    .getNotificationGroup("DubNotification")
+                                    .createNotification(
                                         "DUB Import Error",
                                         errorMessage!!,
                                         NotificationType.WARNING
-                                    ),
-                                    project
-                                )
+                                    )
+                                    .notify(project)
                             }
                         )
                     }

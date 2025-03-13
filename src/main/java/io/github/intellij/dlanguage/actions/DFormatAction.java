@@ -5,9 +5,8 @@ import com.intellij.execution.ExecutionHelper;
 import com.intellij.execution.ExecutionModes;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.*;
-import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -158,18 +157,36 @@ public class DFormatAction extends DumbAwareAction {
     }
 
     private void notifyOfInformation(@NotNull String errorMessage, @NotNull Project project) {
-        final Notification notification = new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE, errorMessage, NotificationType.INFORMATION);
-        Notifications.Bus.notify(notification, project);
+        NotificationGroupManager.getInstance()
+            .getNotificationGroup(NOTIFICATION_GROUPID)
+            .createNotification(
+                NOTIFICATION_TITLE,
+                errorMessage,
+                NotificationType.INFORMATION
+            )
+            .notify(project);
     }
 
     private void notifyOfWarning(@NotNull String errorMessage, @NotNull Project project) {
-        final Notification notification = new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE, errorMessage, NotificationType.WARNING);
-        notification.addAction(new DToolsNotificationAction("Configure"));
-        Notifications.Bus.notify(notification, project);
+        NotificationGroupManager.getInstance()
+            .getNotificationGroup(NOTIFICATION_GROUPID)
+            .createNotification(
+                NOTIFICATION_TITLE,
+                errorMessage,
+                NotificationType.WARNING
+            )
+            .addAction(new DToolsNotificationAction("Configure"))
+            .notify(project);
     }
 
     private void notifyOfError(@NotNull String title, @NotNull String errorMessage, @NotNull Project project) {
-        final Notification notification = new Notification(NOTIFICATION_GROUPID, title, errorMessage, NotificationType.ERROR);
-        Notifications.Bus.notify(notification, project);
+        NotificationGroupManager.getInstance()
+            .getNotificationGroup(NOTIFICATION_GROUPID)
+            .createNotification(
+                title,
+                errorMessage,
+                NotificationType.ERROR
+            )
+            .notify(project);
     }
 }
