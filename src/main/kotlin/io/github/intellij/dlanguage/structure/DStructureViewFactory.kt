@@ -15,5 +15,5 @@ class DStructureViewFactory : PsiStructureViewFactory {
 }
 
 class DlangTreeBasedStructureViewBuilder(val psiFile: DlangPsiFile) : TreeBasedStructureViewBuilder() {
-    override fun createStructureViewModel(editor: Editor?): StructureViewModel = DStructureViewModel(psiFile)
+    override fun createStructureViewModel(editor: Editor?): StructureViewModel = DStructureViewModel(editor, psiFile)
 }
