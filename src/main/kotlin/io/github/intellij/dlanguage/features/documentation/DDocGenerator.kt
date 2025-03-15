@@ -2,8 +2,7 @@ package io.github.intellij.dlanguage.features.documentation
 
 import com.intellij.lang.Language
 import com.intellij.lang.documentation.DocumentationMarkup
-import com.intellij.lang.documentation.DocumentationSettings
-import com.intellij.openapi.editor.richcopy.HtmlSyntaxInfoUtil
+import com.intellij.lang.documentation.QuickDocHighlightingHelper
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiWhiteSpace
@@ -11,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_LEADING_ASTERISKS
+import io.github.intellij.dlanguage.documentation.psi.DlangDocComment
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_ANONYMOUS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COLON
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COMMENT_DATA
@@ -32,10 +32,11 @@ import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_QUOTE_CHAR
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_SIMPLE_EMPHASIS
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_WHITESPACE
-import io.github.intellij.dlanguage.documentation.psi.DlangDocComment
 import io.github.intellij.dlanguage.features.documentation.psi.DlangDocPsiElement
-import io.github.intellij.dlanguage.features.documentation.psi.impl.*
-import io.github.intellij.dlanguage.psi.interfaces.Declaration
+import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocAnonymousSectionImpl
+import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocDescriptionSectionImpl
+import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocLinkDeclarationImpl
+import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocNamedSectionImpl
 import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration
 import io.github.intellij.dlanguage.utils.*
 
@@ -43,27 +44,24 @@ class DDocGenerator {
 
     private var renderedDoc = false
 
-    private val highlightingSaturation: Float = DocumentationSettings.getHighlightingSaturation(renderedDoc)
-
     fun generateDoc(element: PsiElement): String {
         renderedDoc = false
         val builder = StringBuilder()
 
-        if (element.parent is FunctionDeclaration ||
-            element.parent.parent is VariableDeclaration ||
-            element.parent.parent is ClassDeclaration ||
-            element.parent.parent is InterfaceDeclaration ||
-            element.parent.parent is AliasDeclaration ||
-            element.parent is EnumDeclaration ||
-            element.parent is StructDeclaration ||
-            element.parent is UnionDeclaration ||
-            element.parent is TemplateDeclaration)  {
-            val declarationElement = PsiTreeUtil.getParentOfType(element, Declaration::class.java)
-            val elements = declarationElement!!.children.takeWhile { it is DlangDocComment || it is PsiWhiteSpace }.filterIsInstance<DlangDocComment>()
+        if (element is FunctionDeclaration ||
+            element is VariableDeclaration ||
+            element is ClassDeclaration ||
+            element is InterfaceDeclaration ||
+            element is AliasDeclaration ||
+            element is EnumDeclaration ||
+            element is StructDeclaration ||
+            element is UnionDeclaration ||
+            element is TemplateDeclaration)  {
+            val elements = element.children.takeWhile { it is DlangDocComment || it is PsiWhiteSpace }.filterIsInstance<DlangDocComment>()
             if (elements.isNotEmpty())
                 appendDdoc(builder, elements)
         }
-        if (element.parent is EnumMember) {
+        if (element is EnumMember) {
             // TODO find enum member documentation
         }
         return builder.toString()
@@ -264,11 +262,6 @@ class DDocGenerator {
     }
 
     private fun buildEmbeddedCodeContent(element: DlangDocPsiElement): String {
-        val builder = StringBuilder()
-        builder.append("<pre>")
-        builder.append("<code style='font-size:")
-        builder.append(DocumentationSettings.getMonospaceFontSizeCorrection(renderedDoc))
-        builder.append("%;'>")
         val elements = element.getDescriptionElements()
         val rawTextBuilder = StringBuilder()
         for (psiElement in elements) {
@@ -284,12 +277,6 @@ class DDocGenerator {
         val codeSnippet = rawText.substring(rawText.indexOf("\n"))
         val rawLanguage = rawText.substring(0, rawText.indexOf("\n")).trim()
         val language =  if (rawLanguage.isNotEmpty()) Language.findLanguageByID(rawLanguage)?: DLanguage else DLanguage
-        HtmlSyntaxInfoUtil.appendHighlightedByLexerAndEncodedAsHtmlCodeSnippet(
-            builder, element.project, language, codeSnippet, highlightingSaturation
-        )
-        builder.append("</code>")
-        builder.append("</pre>")
-
-        return builder.toString()
+        return QuickDocHighlightingHelper.getStyledCodeBlock(element.project, language, codeSnippet )
     }
 }
