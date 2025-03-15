@@ -17,6 +17,5 @@ dependencies {
     implementation(libs.sentry)
     intellijPlatform {
         intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
-        instrumentationTools()
     }
 }

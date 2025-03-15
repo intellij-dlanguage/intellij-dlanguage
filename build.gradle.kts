@@ -113,7 +113,6 @@ dependencies {
             "org.intellij.intelliLang",
             "com.intellij.copyright"
         )
-        instrumentationTools()
         testFramework(TestFrameworkType.Plugin.Java)
     }
 }
