@@ -2,6 +2,7 @@ package io.github.intellij.dlanguage.psi
 
 import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.openapi.fileTypes.FileType
+import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
@@ -114,6 +115,8 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
             }
         }
         if (toContinue && getFullyQualifiedModuleName() != "object" && this == place.containingFile) {
+            if (DumbService.isDumb(project))
+                return true
             var objects = DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet()
             // FIXME Hack hack hack for dmd repository (that otherwise resolve to an object module defined in tests)
             if (objects.size > 1)
