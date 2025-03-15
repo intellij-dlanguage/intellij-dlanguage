@@ -60,7 +60,6 @@ dependencies {
 
     intellijPlatform {
         intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
-        instrumentationTools()
         testFramework(TestFrameworkType.Platform)
     }
 }

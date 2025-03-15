@@ -99,7 +99,6 @@ dependencies {
 
         pluginVerifier()
         zipSigner()
-        instrumentationTools()
     }
 
     // theses kover lines are here to generate a merged report of all the projects
