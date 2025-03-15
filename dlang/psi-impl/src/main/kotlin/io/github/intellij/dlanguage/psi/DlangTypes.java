@@ -57,6 +57,7 @@ public interface DlangTypes {
     DlangElementType ARRAY_ACCESS_EXPRESSION = new DlangElementType("ARRAY_ACCESS_EXPRESSION");
     DlangElementType ARRAY_INITIALIZER = new DlangElementType("ARRAY_INITIALIZER");
     DlangElementType ARRAY_LITERAL = new DlangElementType("ARRAY_LITERAL");
+    DlangElementType ARRAY_LITERAL_EXPRESSION = new DlangElementType("ARRAY_LITERAL_EXPRESSION");
     DlangElementType ARRAY_MEMBER_INITIALIZATION = new DlangElementType("ARRAY_MEMBER_INITIALIZATION");
     DlangElementType ASM_ADD_EXP = new DlangElementType("ASM_ADD_EXP");
     DlangElementType ASM_AND_EXP = new DlangElementType("ASM_AND_EXP");
@@ -149,6 +150,7 @@ public interface DlangTypes {
     DlangElementType MEMBER_FUNCTION_ATTRIBUTE = new DlangElementType("MEMBER_FUNCTION_ATTRIBUTE");
     DlangElementType MISSING_FUNCTION_BODY = new DlangElementType("MISSING_FUNCTION_BODY");
     DlangElementType MIXIN_DECLARATION = new DlangElementType("MIXIN_DECLARATION");
+    DlangElementType MIXIN_EXPRESSION = new DlangElementType("MIXIN_EXPRESSION");
     DlangElementType MIXIN_TYPE = new DlangElementType("MIXIN_TYPE");
     DlangElementType MIXIN_QUALIFIED_IDENTIFIER = new DlangElementType("MIXIN_QUALIFIED_IDENTIFIER");
     DlangElementType MIXIN_TEMPLATE_NAME = new DlangElementType("MIXIN_TEMPLATE_NAME");
@@ -475,6 +477,8 @@ public interface DlangTypes {
                 return new DLanguageArrayInitializerImpl(node);
             } else if (type == ARRAY_LITERAL) {
                 return new DLanguageArrayLiteralImpl(node);
+            } else if (type == ARRAY_LITERAL_EXPRESSION) {
+                return new DLanguageArrayLiteralExpressionImpl(node);
             } else if (type == ARRAY_MEMBER_INITIALIZATION) {
                 return new DLanguageArrayMemberInitializationImpl(node);
             } else if (type == ASM_ADD_EXP) {
@@ -673,6 +677,8 @@ public interface DlangTypes {
                 return new DLanguageMissingFunctionBodyImpl(node);
             } else if (type == MIXIN_DECLARATION) {
                 return new DLanguageMixinDeclarationImpl(node);
+            } else if (type == MIXIN_EXPRESSION) {
+                return new DLanguageMixinExpressionImpl(node);
             } else if (type == MIXIN_TYPE) {
                 return new DLanguageMixinTypeImpl(node);
             } else if (type == MIXIN_TEMPLATE_NAME) {

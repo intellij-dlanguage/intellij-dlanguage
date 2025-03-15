@@ -4511,7 +4511,24 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * $(LITERAL 'mixin') $(LITERAL '$(LPAREN)') $(RULE argumentList) $(LITERAL '$(RPAREN)')
      * ;)
      */
-    fun parseMixinType(): PsiBuilder.Marker? {
+    fun parseMixinType(): Boolean {
+        val m = builder.mark()
+        expect(DlangTypes.KW_MIXIN)
+        if (builder.tokenType !== DlangTypes.OP_PAR_LEFT) {
+            m.rollbackTo()
+            return false
+        }
+        builder.advanceLexer()
+        if (!parseArgumentList()) {
+            cleanup(m, DlangTypes.MIXIN_TYPE)
+            return false
+        }
+        expect(DlangTypes.OP_PAR_RIGHT)
+        m.done(DlangTypes.MIXIN_TYPE)
+        return true
+    }
+
+    fun parseMixinExpression(): PsiBuilder.Marker? {
         val m = builder.mark()
         expect(DlangTypes.KW_MIXIN)
         if (builder.tokenType !== DlangTypes.OP_PAR_LEFT) {
@@ -4520,11 +4537,11 @@ internal class DLangParser(private val builder: PsiBuilder) {
         }
         builder.advanceLexer()
         if (!parseArgumentList()) {
-            cleanup(m, DlangTypes.MIXIN_TYPE)
+            cleanup(m, DlangTypes.MIXIN_EXPRESSION)
             return null
         }
         expect(DlangTypes.OP_PAR_RIGHT)
-        exit_section_modified(builder, m, DlangTypes.MIXIN_TYPE, true)
+        m.done(DlangTypes.MIXIN_EXPRESSION)
         return m
     }
 
@@ -5392,16 +5409,19 @@ internal class DLangParser(private val builder: PsiBuilder) {
             } else {
                 advance()
             }
-            exit_section_modified(builder, m, DlangTypes.LITERAL_EXPRESSION, true)
+            m.done(DlangTypes.LITERAL_EXPRESSION)
             return m
         }
         if (i === DlangTypes.OP_BRACKET_LEFT) {
             // ArrayLiteral | AssocArrayLiteral
-            return if (isAssociativeArrayLiteral) {
+            val m = builder.mark()
+            if (isAssociativeArrayLiteral()) {
                 parseAssocArrayLiteral()
             } else {
                 parseArrayLiteral()
             }
+            m.done(DlangTypes.ARRAY_LITERAL_EXPRESSION)
+            return m
         }
         // Function Literal
         var bookmark = builder.mark()
@@ -5419,7 +5439,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
 
         // MixinExpression
         if (i === DlangTypes.KW_MIXIN) {
-            return parseMixinType()
+            return parseMixinExpression()
         }
 
         // ImportExpression
@@ -7285,7 +7305,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 }
             }
         } else if (i === DlangTypes.KW_MIXIN) {
-            if (parseMixinType() != null) {
+            if (parseMixinType()) {
                 cleanup(m, DlangTypes.BASIC_TYPE)
                 return false
             }
@@ -8025,20 +8045,19 @@ internal class DLangParser(private val builder: PsiBuilder) {
             }
         }
 
-    val isAssociativeArrayLiteral: Boolean
-        get() {
-            if (cachedAAChecks.containsKey(builder.currentOffset)) return cachedAAChecks[builder.currentOffset]!!
-            val currentIndex = builder.currentOffset
-            val bookmark = builder.mark()
-            advance()
-            val result =
-                !currentIs(DlangTypes.OP_BRACKET_RIGHT) && parseExpression() && currentIs(
-                    DlangTypes.OP_COLON
-                )
-            cachedAAChecks[currentIndex] = result
-            bookmark.rollbackTo()
-            return result
-        }
+    fun isAssociativeArrayLiteral(): Boolean {
+        if (cachedAAChecks.containsKey(builder.currentOffset)) return cachedAAChecks[builder.currentOffset]!!
+        val currentIndex = builder.currentOffset
+        val bookmark = builder.mark()
+        advance()
+        val result =
+            !currentIs(DlangTypes.OP_BRACKET_RIGHT) && parseExpression() && currentIs(
+                DlangTypes.OP_COLON
+            )
+        cachedAAChecks[currentIndex] = result
+        bookmark.rollbackTo()
+        return result
+    }
 
     val isType: Boolean
         /// Only use this in template parameter parsing
