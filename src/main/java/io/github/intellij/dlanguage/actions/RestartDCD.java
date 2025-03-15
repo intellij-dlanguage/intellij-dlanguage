@@ -1,8 +1,7 @@
 package io.github.intellij.dlanguage.actions;
 
-import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -80,8 +79,14 @@ public class RestartDCD extends AnAction implements DumbAware { // todo: conside
 
     private static void displayError(@NotNull final AnActionEvent e, @NotNull final String message) {
         final String groupId = e.getPresentation().getText();
-        Notifications.Bus.notify(new Notification(
-                groupId, "Restart dcd-server", message, NotificationType.ERROR), getEventProject(e));
+        NotificationGroupManager.getInstance()
+            .getNotificationGroup(groupId)
+            .createNotification(
+                "Restart dcd-server",
+                message,
+                NotificationType.ERROR
+            )
+            .notify(getEventProject(e));
         LOG.warn(message);
     }
 }

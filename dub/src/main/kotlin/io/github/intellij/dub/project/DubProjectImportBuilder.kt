@@ -1,8 +1,7 @@
 package io.github.intellij.dub.project
 
-import com.intellij.notification.Notification
+import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
-import com.intellij.notification.Notifications
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.ModifiableModuleModel
@@ -81,14 +80,14 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
         if (file != null) {
             return file
         }
-        Notifications.Bus.notify(
-            Notification(
-                "Dub Import", "Dub Import",
+        NotificationGroupManager.getInstance()
+            .getNotificationGroup("Dub Import")
+            .createNotification(
+                "Dub Import",
                 "Dub project does not seem to contain dub.json or dub.sdl.",
                 NotificationType.WARNING
-            ),
-            module.project
-        )
+            )
+            .notify(module.project)
         return null
     }
 
@@ -98,15 +97,15 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
     ): List<Module> {
         val moduleList: MutableList<Module> = ArrayList()
         if (ToolKey.DUB_KEY.path.isNullOrEmpty()) {
-            Notifications.Bus.notify(
-                Notification(
-                    "Dub Import", "Dub Import",
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup("Dub Import")
+                .createNotification(
+                    "Dub Import",
                     "DUB executable path is empty",
                     NotificationType.WARNING
                 )
-                    .addAction(DToolsNotificationAction("Configure")),
-                project
-            )
+                .addAction(DToolsNotificationAction("Configure"))
+                .notify(project)
             // prevent a crash, inform callers that we can't actually call dub
             // not ideal, should really be handled elsewhere
             throw ConfigurationException("Missing dub, cannot import")

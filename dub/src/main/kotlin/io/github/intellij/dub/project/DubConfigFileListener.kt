@@ -1,8 +1,7 @@
 package io.github.intellij.dub.project
 
-import com.intellij.notification.Notification
+import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
-import com.intellij.notification.Notifications
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
@@ -48,14 +47,14 @@ class DubConfigFileListener(
      */
     override fun beforeFileDeletion(event: VirtualFileEvent) {
         if (event.file == dubConfigFile) {
-            Notifications.Bus.notify(
-                Notification(
-                    "Dub", "Dub",
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup("Dub")
+                .createNotification(
+                    "Dub",
                     "dub.json or dub.sdl file deleted.",
                     NotificationType.WARNING
-                ),
-                project
-            )
+                )
+                .notify(project)
         }
     }
 

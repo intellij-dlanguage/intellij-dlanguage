@@ -9,9 +9,8 @@ import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.HighlightSeverity;
-import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
@@ -28,6 +27,10 @@ import com.intellij.psi.PsiFile;
 import io.github.intellij.dlanguage.DlangSdkType;
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem;
 import io.github.intellij.dlanguage.settings.ToolKey;
+import io.github.intellij.dlanguage.utils.DUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,9 +38,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import io.github.intellij.dlanguage.utils.DUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class DScanner implements DlangLinter {
 
@@ -113,9 +113,14 @@ public class DScanner implements DlangLinter {
                         } else if(ProcessOutputTypes.STDERR.equals(outputType)) {
                             LOG.warn(event.getText());
                             if (event.getText().contains("[error]")) {
-                                final Notification notification = new Notification("DScanner Error", "DScanner Error", event.getText(), NotificationType.ERROR);
-                                Notifications.Bus.notify(notification, file.getProject());
-                            }
+                                NotificationGroupManager.getInstance()
+                                    .getNotificationGroup("DScanner Error")
+                                    .createNotification(
+                                        "DScanner Error",
+                                        event.getText(),
+                                        NotificationType.ERROR
+                                    )
+                                    .notify(file.getProject());                            }
                         }
                     }
                 });

@@ -5,14 +5,12 @@ import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.OSProcessHandler
 import com.intellij.execution.process.ProcessAdapter
 import com.intellij.execution.process.ProcessEvent
-import com.intellij.notification.Notification
+import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
-import com.intellij.notification.Notifications
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
@@ -36,9 +34,9 @@ import com.intellij.openapi.vfs.VirtualFileManager
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.library.DlangLibraryType
 import io.github.intellij.dlanguage.module.DlangModuleType
-import io.github.intellij.dub.project.DubConfigurationParser
 import io.github.intellij.dlanguage.settings.ToolKey
 import io.github.intellij.dlanguage.utils.DToolsNotificationAction
+import io.github.intellij.dub.project.DubConfigurationParser
 import io.github.intellij.dub.project.DubPackage
 
 /**
@@ -129,14 +127,15 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             //final String groupId = e.getPresentation().getText();
             if (dubPath == null) {
                 if (!dubPathAlreadWarned) {
-                    val notification = Notification(
-                        NOTIFICATION_GROUPID, "Process D Libraries",
-                        "DUB executable path is empty",
-                        NotificationType.WARNING
-                    )
-                    notification.addAction(DToolsNotificationAction("Configure"))
-
-                    Notifications.Bus.notify(notification, project)
+                    NotificationGroupManager.getInstance()
+                        .getNotificationGroup(NOTIFICATION_GROUPID)
+                        .createNotification(
+                            "Process D Libraries",
+                            "DUB executable path is empty",
+                            NotificationType.WARNING
+                        )
+                        .addAction(DToolsNotificationAction("Configure"))
+                        .notify(project)
                     dubPathAlreadWarned = true
                 }
                 return
@@ -157,13 +156,14 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             }
 
             if (!mostlySilentMode) {
-                val notification = Notification(
-                    NOTIFICATION_GROUPID, "Process D Libraries",
-                    "Added your dub dependency libraries",
-                    NotificationType.INFORMATION
-                )
-
-                Notifications.Bus.notify(notification, project)
+                NotificationGroupManager.getInstance()
+                    .getNotificationGroup(NOTIFICATION_GROUPID)
+                    .createNotification(
+                        "Process D Libraries",
+                        "Added your dub dependency libraries",
+                        NotificationType.INFORMATION
+                    )
+                    .notify(project)
             }
         }
 
@@ -392,11 +392,14 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
         }
 
         private fun displayError(project: Project?, message: String) {
-            //final String groupId = e.getPresentation().getText();
-            Notifications.Bus.notify(
-                Notification(NOTIFICATION_GROUPID, "Process D libs", message, NotificationType.ERROR),
-                project
-            )
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup(NOTIFICATION_GROUPID)
+                .createNotification(
+                    "Process D libs",
+                    message,
+                    NotificationType.ERROR
+                )
+                .notify(project)
             LOG.warn(message)
         }
     }

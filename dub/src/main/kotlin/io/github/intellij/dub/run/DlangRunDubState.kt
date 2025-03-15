@@ -7,9 +7,8 @@ import com.intellij.execution.process.ColoredProcessHandler
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.execution.runners.ExecutionEnvironment
-import com.intellij.notification.Notification
+import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
-import com.intellij.notification.Notifications
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.util.text.StringUtil
@@ -38,15 +37,15 @@ class DlangRunDubState internal constructor(
             val isEmpty = message == "DUB executable is not specified"
             val notCorrect = message!!.startsWith("Cannot run program")
             if (isEmpty || notCorrect) {
-                Notifications.Bus.notify(
-                    Notification(
-                        "DUB run configuration", "DUB settings",
-                        "DUB executable is " + if (isEmpty) "not specified" else "not specified correctly",
+                NotificationGroupManager.getInstance()
+                    .getNotificationGroup("DUB run configuration")
+                    .createNotification(
+                        "DUB settings",
+                        "DUB executable is ${if (isEmpty) "not specified" else "not specified correctly"}",
                         NotificationType.ERROR
                     )
-                        .addAction(DToolsNotificationAction("Configure")),
-                    project
-                )
+                    .addAction(DToolsNotificationAction("Configure"))
+                    .notify(project)
             }
             throw e
         }

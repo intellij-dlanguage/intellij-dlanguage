@@ -5,9 +5,8 @@ import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.RuntimeConfigurationError;
 import com.intellij.execution.process.*;
 import com.intellij.execution.testframework.sm.ServiceMessageBuilder;
-import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -118,9 +117,14 @@ public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSP
 
         if (dunitPath == null) {
             final String message = DlangBundle.INSTANCE.message("d.ui.unittest.notification.content.d-unit-missing");
-            Notifications.Bus.notify(new Notification("Execute Tests",
-                DlangBundle.INSTANCE.message("d.ui.unittest.notification.title.d-unit-missing"),
-                message, NotificationType.ERROR), project);
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup("Execute Tests")
+                .createNotification(
+                    DlangBundle.INSTANCE.message("d.ui.unittest.notification.title.d-unit-missing"),
+                    message,
+                    NotificationType.ERROR
+                )
+                .notify(project);
             LOG.warn(message);
 
             testRunCancelled();
@@ -199,12 +203,14 @@ public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSP
 
         final String dubPath = ToolKey.DUB_KEY.getPath();
         if (dubPath == null || dubPath.isEmpty()) {
-            Notifications.Bus.notify(
-                new Notification("Dunit Test Runner",
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup("Dunit Test Runner")
+                .createNotification(
                     DlangBundle.INSTANCE.message("d.ui.unittest.notification.title.dub-path-missing"),
                     DlangBundle.INSTANCE.message("d.ui.unittest.notification.content.dub-path-missing"),
-                    NotificationType.WARNING),
-                project);
+                    NotificationType.WARNING
+                )
+                .notify(project);
             return;
         }
 

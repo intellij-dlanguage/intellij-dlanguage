@@ -8,9 +8,8 @@ import com.intellij.execution.process.ColoredProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.process.ProcessTerminatedListener;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.CompilerModuleExtension;
@@ -56,11 +55,15 @@ public class DlangRunAppState extends CommandLineState {
             final boolean notCorrect = message.startsWith("Cannot run program");
 
             if (isEmpty || notCorrect) {
-                Notifications.Bus.notify(
-                    new Notification("D App run configuration", "D App settings",
+                NotificationGroupManager.getInstance()
+                    .getNotificationGroup("D App run configuration")
+                    .createNotification(
+                        "D App settings",
                         "D application executable path is " + (isEmpty ? "empty" : "not specified correctly") +
                             "<br/><a href='configure'>Configure</a> output folder",
-                        NotificationType.ERROR), config.getProject());
+                        NotificationType.ERROR
+                    )
+                    .notify(config.getProject());
             }
             throw e;
         }
