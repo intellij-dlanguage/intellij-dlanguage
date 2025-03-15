@@ -56,14 +56,19 @@ class CodeBlockElementType(name: String) : IErrorCounterReparseableElementType(n
 
     private fun parseStatement(builder: PsiBuilder) {
         val parser = DLangParser(builder)
-        val m = builder.mark()
-        parser.parseStatement()
+        parser.parseBlockStatementDeep()
         // if the pared code is invalid, the parser may not have cover everything
         // ensure to go until the end
+        var error: PsiBuilder.Marker? = null
+        if (!builder.eof()) {
+            error = builder.mark()
+        }
         while (!builder.eof()) {
             builder.advanceLexer()
         }
-        m.done(this)
+        if (error != null) {
+            error.error("Unable to parse statement")
+        }
     }
 
     override fun getErrorsCount(seq: CharSequence, fileLanguage: Language, project: Project): Int {
