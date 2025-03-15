@@ -85,7 +85,9 @@ public class DLanguageForeachTypeImpl extends
         }
         var foreach = PsiTreeUtil.getParentOfType(this, DLanguageForeachStatement.class);
         assert foreach != null;
-        var expressionType = Objects.requireNonNull(foreach.getExpression()).getDType();
+        if (foreach.getExpression() == null)
+            return new DUnknownType();
+        var expressionType = foreach.getExpression().getDType();
         if (expressionType == null || expressionType instanceof DUnknownType) {
             return new DUnknownType();
         }
