@@ -18,10 +18,10 @@ import com.intellij.packaging.artifacts.ModifiableArtifactModel
 import com.intellij.projectImport.ProjectImportBuilder
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangSdkType
-import io.github.intellij.dlanguage.settings.ToolKey
 import io.github.intellij.dlanguage.utils.DToolsNotificationAction
 import io.github.intellij.dub.module.DlangDubModuleBuilder
 import io.github.intellij.dub.project.DubConfigFileListener.Companion.getDubFileFromModule
+import io.github.intellij.dub.service.DubBinaryPathProvider
 import org.jdom.JDOMException
 import java.io.IOException
 import java.util.function.Consumer
@@ -96,7 +96,7 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
         moduleModel: ModifiableModuleModel
     ): List<Module> {
         val moduleList: MutableList<Module> = ArrayList()
-        if (ToolKey.DUB_KEY.path.isNullOrEmpty()) {
+        if (DubBinaryPathProvider.isDubAvailable()) {
             NotificationGroupManager.getInstance()
                 .getNotificationGroup("Dub Import")
                 .createNotification(
@@ -112,9 +112,9 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
         }
         val dubConfigurationParser = DubConfigurationParser(
             project,
-            ToolKey.DUB_KEY.path!!,
+            DubBinaryPathProvider.getDubPath()!!,
             false,
-            this.getFileToImport()
+            this.fileToImport
         )
         val dubProject = dubConfigurationParser.dubProject
         dubProject.ifPresent { (_, pkg): DubProject ->

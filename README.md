@@ -83,6 +83,8 @@ If you put these tools on your path you can go to (_Settings_ -> _Languages &amp
 
 There is a nice blog post about setting up the tools at: [www.samael.me.uk](http://www.samael.me.uk/2015/12/d-plugin-for-intellij-idea.html)
 
+**Note**: If you have dub in a standard location, you don’t need to configure it. It will be detected and picked-up automatically.
+
 ### Configuring DCD
 
 To configure DCD in the dcd-server add a comma separated list of paths that point to your libraries that you want to include in autocompletion.

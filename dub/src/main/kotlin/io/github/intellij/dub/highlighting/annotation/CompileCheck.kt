@@ -13,7 +13,7 @@ import com.intellij.util.containers.ContainerUtil
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem
 import io.github.intellij.dlanguage.highlighting.annotation.external.DlangLinter
 import io.github.intellij.dlanguage.highlighting.annotation.external.LinterHelper
-import io.github.intellij.dlanguage.settings.ToolKey
+import io.github.intellij.dub.service.DubBinaryPathProvider
 import io.github.intellij.dub.tools.DubProcessListener
 import java.util.regex.Pattern
 
@@ -22,8 +22,8 @@ import java.util.regex.Pattern
  */
 class CompileCheck : DlangLinter {
     override fun checkFileSyntax(file: PsiFile): Array<DProblem> {
-        val dubPath: String? = ToolKey.DUB_KEY.path
-        if (StringUtil.isEmpty(dubPath)) return arrayOf()
+        val dubPath: String? = DubBinaryPathProvider.getDubPath()
+        if (!DubBinaryPathProvider.isDubAvailable()) return arrayOf()
         val result = processFile(file, dubPath!!)
         return if (StringUtil.isNotEmpty(result)) {
             findProblems(result, file).toTypedArray()

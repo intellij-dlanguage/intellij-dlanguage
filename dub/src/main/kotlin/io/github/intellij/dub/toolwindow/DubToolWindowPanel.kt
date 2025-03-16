@@ -27,18 +27,18 @@ import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.IconUtil
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangSdkType
-import io.github.intellij.dub.actions.ConfigureDToolsAction
-import io.github.intellij.dub.actions.DubBuildAction
-import io.github.intellij.dub.actions.ProcessDLibs
 import io.github.intellij.dlanguage.messagebus.DubChangeNotifier
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener
 import io.github.intellij.dlanguage.messagebus.Topics
 import io.github.intellij.dlanguage.module.DlangModuleType
+import io.github.intellij.dlanguage.settings.ToolSettings
+import io.github.intellij.dub.actions.ConfigureDToolsAction
+import io.github.intellij.dub.actions.DubBuildAction
+import io.github.intellij.dub.actions.ProcessDLibs
 import io.github.intellij.dub.project.DubConfigurationParser
-import io.github.intellij.dub.run.DlangRunDubConfiguration
-import io.github.intellij.dlanguage.settings.*
 import io.github.intellij.dub.project.DubPackage
-import java.awt.Color
+import io.github.intellij.dub.run.DlangRunDubConfiguration
+import io.github.intellij.dub.service.DubBinaryPathProvider
 import javax.swing.JPanel
 import javax.swing.JTree
 import javax.swing.tree.DefaultMutableTreeNode
@@ -170,7 +170,7 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
         // Finally list the project dependencies.
         // todo: Show transient dependencies under the dependency that brought them in.
         // todo: Show dub dependencies via standard Intellij mechanism (Order Entries) rather than reading dub output again
-        ToolKey.DUB_KEY.path?.let {
+        DubBinaryPathProvider.getDubPath()?.let {
             val dubConfig = DubConfigurationParser(project, it, false)
 
 //            val nd = SimpleNode()

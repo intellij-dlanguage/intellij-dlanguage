@@ -34,10 +34,10 @@ import com.intellij.openapi.vfs.VirtualFileManager
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.library.DlangLibraryType
 import io.github.intellij.dlanguage.module.DlangModuleType
-import io.github.intellij.dlanguage.settings.ToolKey
 import io.github.intellij.dlanguage.utils.DToolsNotificationAction
 import io.github.intellij.dub.project.DubConfigurationParser
 import io.github.intellij.dub.project.DubPackage
+import io.github.intellij.dub.service.DubBinaryPathProvider
 
 /**
  * ported from Java on 06/02/18
@@ -122,7 +122,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
             //todo needs build/fetch before adding libs, also needs to keep track of libs
 
             // ask dub for required libs
-            val dubPath = ToolKey.DUB_KEY.path
+            val dubPath = DubBinaryPathProvider.getDubPath()
 
             //final String groupId = e.getPresentation().getText();
             if (dubPath == null) {
@@ -173,7 +173,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
         */
         private fun canRunDub(e: AnActionEvent): Boolean {
             val project = AnAction.getEventProject(e) ?: return false
-            ToolKey.DUB_KEY.path?.isNotBlank() ?: return false
+            if (!DubBinaryPathProvider.isDubAvailable()) return false
             val virtualRoot = project.guessProjectDir() ?: return false
             return virtualRoot.findChild("dub.json")?.exists() ?: virtualRoot.findChild("dub.sdl")?.exists() ?: false
         }
@@ -262,7 +262,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
         private fun dubFetch(dubPackage: DubPackage, sourcesPathUrl: String): VirtualFile? {
             LOG.info("sources not found, fetching them")
             val commandLine = GeneralCommandLine()
-            val dubBinaryPath = ToolKey.DUB_KEY.path
+            val dubBinaryPath = DubBinaryPathProvider.getDubPath()
             if (dubBinaryPath == null) {
                 LOG.error("dub executable should be configured")
                 return null

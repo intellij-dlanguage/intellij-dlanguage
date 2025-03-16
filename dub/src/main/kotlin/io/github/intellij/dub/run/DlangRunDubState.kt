@@ -13,9 +13,9 @@ import com.intellij.openapi.module.Module
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
-import io.github.intellij.dlanguage.settings.ToolKey
 import io.github.intellij.dlanguage.utils.DToolsNotificationAction
 import io.github.intellij.dlanguage.utils.DUtil
+import io.github.intellij.dub.service.DubBinaryPathProvider
 import java.nio.file.Paths
 import java.util.*
 
@@ -57,7 +57,7 @@ class DlangRunDubState internal constructor(
     private fun getExecutableCommandLine(config: DlangRunDubConfiguration): GeneralCommandLine {
         val module = config.configurationModule!!.module
             ?: throw ExecutionException("Run configuration has no module selected.")
-        val dubPath = ToolKey.DUB_KEY.path
+        val dubPath = DubBinaryPathProvider.getDubPath()
         if (StringUtil.isEmptyOrSpaces(dubPath)) {
             throw ExecutionException("DUB executable is not specified")
         }

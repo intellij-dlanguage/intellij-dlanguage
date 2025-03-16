@@ -1,9 +1,9 @@
 package io.github.intellij.dlanguage.tools
 
 import com.intellij.util.text.SemVer
-import io.github.intellij.dlanguage.tools.DtoolUtils.Companion.versionPredates
-import io.github.intellij.dlanguage.tools.DtoolUtils.Companion.isSemVer
-import io.github.intellij.dlanguage.tools.DtoolUtils.Companion.toSemVer
+import io.github.intellij.dlanguage.tools.DtoolUtils.versionPredates
+import io.github.intellij.dlanguage.tools.DtoolUtils.isSemVer
+import io.github.intellij.dlanguage.tools.DtoolUtils.toSemVer
 import org.junit.Test
 
 import org.junit.Assert.*

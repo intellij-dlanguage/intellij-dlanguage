@@ -59,6 +59,7 @@ class DmdCompilerCellRenderer : ColoredListCellRenderer<Sdk>() {
  */
 class DubInitCheckBox : JBCheckBox("dub init") {
     init {
+        // FIXME this dependency to DUB cannot use the dub binary getter and so do not work for empty binary
         val dubPath = ToolKey.DUB_KEY.path
         isSelected = dubPath?.isNotEmpty() ?: false
         isEnabled = dubPath?.isNotEmpty() ?: false
