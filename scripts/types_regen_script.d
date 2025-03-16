@@ -98,6 +98,9 @@ static this() {
     types_mixins["ArrayAccessExpression"] = "DLanguageArrayAccessExpressionImplMixin";
     types_children["ArrayInitializer"] = ["OP_COMMA*", "ArrayMemberInitialization*"];
     types_children["ArrayLiteral"] = ["ArrayInitializer", "OP_BRACKET_RIGHT", "OP_BRACKET_LEFT"];
+    types_children["ArrayLiteralExpression"] = ["ArrayLiteral", "AssocArrayLiteral"];
+    types_mixins["ArrayLiteralExpression"] = "DLanguageArrayLiteralExpressionImplMixin";
+    types_extra_interfaces["ArrayLiteralExpression"] = ["Expression"];
     types_children["ArrayMemberInitialization"] = ["Expression", "OP_COLON", "ArrayLiteral", "StructInitializer", "OP_BRACES_LEFT"];
     types_children["AsmAddExp"] = ["AsmAddExp", "AsmMulExp",  "OP_MINUS", "OP_PLUS"];
     types_children["AsmAndExp"] = ["AsmAndExp", "AsmEqualExp", "OP_AND"];
@@ -267,6 +270,9 @@ static this() {
     types_extra_interfaces["MixinDeclaration"] = ["Declaration"];
     types_children["MixinQualifiedIdentifier"] = ["Identifier", "TemplateInstance", "OP_DOT", "MixinQualifiedIdentifier"];
     types_children["MixinTemplateName"] = ["TypeofExpression", "MixinQualifiedIdentifier", "OP_DOT"];
+    types_children["MixinExpression"] = ["ArgumentList","OP_PAR_RIGHT","OP_PAR_LEFT","KW_MIXIN"];
+    types_mixins["MixinExpression"] = "DLanguageMixinExpressionImplMixin";
+    types_extra_interfaces["MixinExpression"] = ["Expression"];
     types_children["MixinType"] = ["ArgumentList","OP_PAR_RIGHT","OP_PAR_LEFT","KW_MIXIN"];
     types_children["MulExpression"] = ["Expression*","OP_MOD","OP_DIV","OP_ASTERISK"];
     types_mixins["MulExpression"] = "DLanguageMulExpressionImplMixin";

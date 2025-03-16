@@ -55,6 +55,10 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitArrayLiteralExpression(@NotNull final DLanguageArrayLiteralExpression o) {
+        visitPsiElement(o);
+    }
+
     public void visitArrayMemberInitialization(@NotNull final DLanguageArrayMemberInitialization o) {
         visitPsiElement(o);
     }
@@ -493,6 +497,10 @@ public class DlangVisitor extends PsiElementVisitor {
 
     public void visitMissingFunctionBody(@NotNull final DLanguageMissingFunctionBody o) {
         visitElement(o);
+    }
+
+    public void visitMixinExpression(@NotNull final DLanguageMixinExpression o) {
+        visitPsiElement(o);
     }
 
     public void visitMixinType(@NotNull final DLanguageMixinType o) {
