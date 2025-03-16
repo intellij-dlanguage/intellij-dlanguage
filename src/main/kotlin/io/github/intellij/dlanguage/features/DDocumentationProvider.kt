@@ -1,7 +1,10 @@
 package io.github.intellij.dlanguage.features
 
 import com.intellij.lang.documentation.AbstractDocumentationProvider
-import com.intellij.psi.*
+import com.intellij.psi.PsiDocCommentBase
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
+import com.intellij.psi.SyntaxTraverser
 import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.documentation.psi.DlangDocComment
 import io.github.intellij.dlanguage.features.documentation.DDocGenerator
@@ -10,8 +13,6 @@ import io.github.intellij.dlanguage.psi.DlangPsiFile
 import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.named.DLanguageSingleImport
-import io.github.intellij.dlanguage.utils.TemplateDeclaration
-import io.github.intellij.dlanguage.utils.TemplateMixinDeclaration
 import java.util.function.Consumer
 
 /**
@@ -98,30 +99,11 @@ class DDocumentationProvider : AbstractDocumentationProvider() {
         if (element is DNamedElement) {
             val builder = StringBuilder()
             var declarationElement = element
-            if (declarationElement is TemplateDeclaration && declarationElement.parent is TemplateMixinDeclaration)
-                declarationElement = declarationElement.parent
-            DSignatureDocGenerator().appendDeclarationHeader(builder, declarationElement!!, element)
+            DSignatureDocGenerator().appendDeclarationHeader(builder, declarationElement, element)
             val doc = DDocGenerator().generateDoc(element)
             builder.append(doc)
             return builder.toString().ifBlank { null }
         }
         return super.generateDoc(element, originalElement)
     }
-
-    override fun getDocumentationElementForLookupItem(
-        psiManager: PsiManager,
-        `object`: Any,
-        element: PsiElement
-    ): PsiElement? {
-        return null
-    }
-
-    override fun getDocumentationElementForLink(
-        psiManager: PsiManager,
-        link: String,
-        context: PsiElement
-    ): PsiElement? {
-        return null
-    }
-
 }

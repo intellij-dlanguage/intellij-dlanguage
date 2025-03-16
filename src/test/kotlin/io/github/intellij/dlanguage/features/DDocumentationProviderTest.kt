@@ -1,7 +1,10 @@
 package io.github.intellij.dlanguage.features
 
 import com.intellij.codeInsight.documentation.DocumentationManager
+import com.intellij.psi.util.startOffset
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
+import io.github.intellij.dlanguage.psi.named.DLanguageClassDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration
 import org.junit.Test
 
 class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
@@ -101,8 +104,10 @@ class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
     fun testGenerateDocForFileBasedExample() {
         myFixture.configureByFile("example.d")
 
+        val doSomethingMethod = myFixture.findElementByText("doSomething", DLanguageFunctionDeclaration::class.java)
+
         // put the caret on the doSomething() function in the source file
-        myFixture.editor.caretModel.moveToOffset(40)
+        myFixture.editor.caretModel.moveToOffset(doSomethingMethod!!.identifier!!.startOffset)
         val docElement = DocumentationManager.getInstance(project)
             .findTargetElement(myFixture.editor, myFixture.file)
         val text = provider!!.generateDoc(docElement, null)
@@ -111,5 +116,22 @@ class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
         assertTrue(text!!.contains("void"))
         assertTrue(text.contains("doSomething"))
         assertTrue(text.contains("()"))
+        assertTrue(text.contains("This is the method documentation."))
+    }
+
+    @Test
+    fun testGenerateDocForClassBasedExample() {
+        myFixture.configureByFile("example.d")
+
+        val myCodeClass = myFixture.findElementByText("MyCode", DLanguageClassDeclaration::class.java)
+
+        // put the caret on the doSomething() function in the source file
+        myFixture.editor.caretModel.moveToOffset(myCodeClass!!.identifier!!.startOffset)
+        val docElement = DocumentationManager.getInstance(project)
+            .findTargetElement(myFixture.editor, myFixture.file)
+        val text = provider!!.generateDoc(docElement, null)
+        assertNotNull(text)
+
+        assertTrue(text!!.contains("This is the CLASS documentation"))
     }
 }
