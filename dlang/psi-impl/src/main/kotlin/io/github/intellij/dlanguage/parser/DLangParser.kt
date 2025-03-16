@@ -1448,9 +1448,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
         return true
     }
 
-    fun parseBlocStatementLazy(): Boolean {
-        val openBrace = expect(DlangTypes.OP_BRACES_LEFT)
-        if (openBrace == null) {
+    fun parseBlockStatement(): Boolean {
+        if (builder.tokenType !== DlangTypes.OP_BRACES_LEFT) {
             return false
         }
         val marker = PsiBuilderUtil.parseBlockLazy(builder, DlangTypes.OP_BRACES_LEFT, DlangTypes.OP_BRACES_RIGHT, DlangTypes.BLOCK_STATEMENT)
@@ -1465,7 +1464,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * $(LITERAL '{') $(RULE statement)* $(LITERAL '}')
      * ;)
      */
-    fun parseBlockStatement(): Boolean {
+    fun parseBlockStatementDeep(): Boolean {
         val m = builder.mark()
         val openBrace = expect(DlangTypes.OP_BRACES_LEFT)
         if (openBrace == null) {

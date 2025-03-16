@@ -1,12 +1,6 @@
 package io.github.intellij.dlanguage.psi
 
-import com.intellij.lang.ASTNode
-import com.intellij.lang.Language
-import com.intellij.lang.LanguageParserDefinitions
-import com.intellij.lang.LighterASTNode
-import com.intellij.lang.LighterLazyParseableNode
-import com.intellij.lang.PsiBuilderFactory
-import com.intellij.lang.PsiBuilderUtil
+import com.intellij.lang.*
 import com.intellij.openapi.project.Project
 import com.intellij.psi.tree.ICompositeElementType
 import com.intellij.psi.tree.IErrorCounterReparseableElementType
@@ -37,8 +31,7 @@ class CodeBlockElementType(name: String) : IErrorCounterReparseableElementType(n
                 chameleon.chars
             )
 
-        val parser = DLangParser(builder)
-        parser.parseStatement()
+        parseStatement(builder)
         return builder.treeBuilt.firstChildNode
     }
 
@@ -57,9 +50,25 @@ class CodeBlockElementType(name: String) : IErrorCounterReparseableElementType(n
                 chameleon.text
             )
 
-        val parser = DLangParser(builder)
-        parser.parseStatement()
+        parseStatement(builder)
         return builder.lightTree
+    }
+
+    private fun parseStatement(builder: PsiBuilder) {
+        val parser = DLangParser(builder)
+        parser.parseBlockStatementDeep()
+        // if the pared code is invalid, the parser may not have cover everything
+        // ensure to go until the end
+        var error: PsiBuilder.Marker? = null
+        if (!builder.eof()) {
+            error = builder.mark()
+        }
+        while (!builder.eof()) {
+            builder.advanceLexer()
+        }
+        if (error != null) {
+            error.error("Unable to parse statement")
+        }
     }
 
     override fun getErrorsCount(seq: CharSequence, fileLanguage: Language, project: Project): Int {

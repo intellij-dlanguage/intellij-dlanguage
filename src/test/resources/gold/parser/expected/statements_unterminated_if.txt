@@ -17,4 +17,4 @@ D Language File
           <empty list>
         PsiErrorElement:Expected } instead of EOF
           <empty list>
-    PsiComment(DlangTokenType.BLOCK_COMMENT)('/*Comment started\n}')
+        PsiComment(DlangTokenType.BLOCK_COMMENT)('/*Comment started\n}')
