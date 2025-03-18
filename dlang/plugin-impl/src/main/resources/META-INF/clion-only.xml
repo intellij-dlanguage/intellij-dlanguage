@@ -1,7 +1,6 @@
 <idea-plugin>
 
     <extensions defaultExtensionNs="com.intellij">
-        <directoryProjectGenerator implementation="io.github.intellij.dlanguage.project.DlangProjectGenerator"/>
     </extensions>
 
 </idea-plugin>

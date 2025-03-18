@@ -116,6 +116,7 @@
         <moduleType id="DLANGUAGE_MODULE" implementationClass="io.github.intellij.dlanguage.module.DlangModuleType"/>
 
 
+        <directoryProjectGenerator implementation="io.github.intellij.dlanguage.project.DlangProjectGenerator"/>
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDmdConfigurationType"/>
         <programRunner implementation="io.github.intellij.dlanguage.run.DmdBuildRunner"/>
