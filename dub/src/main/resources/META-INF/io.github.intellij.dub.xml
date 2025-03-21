@@ -1,4 +1,5 @@
 <idea-plugin>
+    <resource-bundle>i18n.text</resource-bundle>
 
     <depends>com.intellij.modules.json</depends>
     <depends optional="true" config-file="dub-idea-only.xml">com.intellij.modules.java</depends>
@@ -27,6 +28,11 @@
         <configurationType implementation="io.github.intellij.dub.run.DlangRunDubConfigurationType"/>
 
         <programRunner implementation="io.github.intellij.dub.run.DubBuildRunner"/>
+
+        <projectConfigurable provider="io.github.intellij.dub.project.settings.DubConfigurableProvider"
+                             parentId="build.tools"
+                             id="language.d.build.tool.dub"
+                             bundle="i18n.text" key="settings.dlang.dub.name"/>
 
         <postStartupActivity
             implementation="io.github.intellij.dub.project.DubListenerComponent"/>
