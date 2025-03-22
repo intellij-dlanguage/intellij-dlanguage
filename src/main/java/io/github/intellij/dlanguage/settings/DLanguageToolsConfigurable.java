@@ -3,13 +3,16 @@ package io.github.intellij.dlanguage.settings;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.*;
+import com.intellij.ide.DataManager;
 import com.intellij.ide.ui.search.SearchableOptionContributor;
 import com.intellij.ide.ui.search.SearchableOptionProcessor;
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.options.SearchableConfigurable;
+import com.intellij.openapi.options.ex.Settings;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
@@ -18,6 +21,7 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.TextAccessor;
+import com.intellij.ui.components.ActionLink;
 import com.intellij.util.messages.Topic;
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
 import io.github.intellij.dlanguage.messagebus.Topics;
@@ -57,10 +61,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private final List<Tool> properties;
     // Swing components.
     private JPanel mainPanel;
-    private TextFieldWithBrowseButton dubPath;
-    private RawCommandLineEditor dubFlags;
-    private JButton dubAutoFind;
-    private JTextField dubVersion;
+    private ActionLink dubMovedLink;
+    private JPanel dubPanel;
     private TextFieldWithBrowseButton dscannerPath;
     private RawCommandLineEditor dscannerFlags;
     private JButton dscannerAutoFind;
@@ -82,7 +84,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private RawCommandLineEditor GDBFlags;
     private JTextField GDBVersion;
     private JTabbedPane tabbedPane1;
-    private JCheckBox chkNativeCodeCompletion;
 
     public static class SearchableDlangTools extends SearchableOptionContributor {
         @Override
@@ -99,8 +100,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         this.propertiesComponent = PropertiesComponent.getInstance();
 
         properties = Arrays.asList(
-            new Tool(project, "dub", ToolKey.DUB_KEY, dubPath, dubFlags,
-                dubAutoFind, dubVersion, DUB_LATEST, Topics.DUB_TOOL_CHANGE),
             new Tool(project, "dscanner", ToolKey.DSCANNER_KEY, dscannerPath, dscannerFlags,
                 dscannerAutoFind, dscannerVersion, DSCANNER_LATEST, Topics.DSCANNER_TOOL_CHANGE),
             new Tool(project, "dcd-server", ToolKey.DCD_SERVER_KEY, dcdPath, dcdFlags,
@@ -112,6 +111,14 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             new Tool(project, "gdb", ToolKey.GDB_KEY, GDBPath, GDBFlags,
                 GDBAutoFind, GDBVersion, null, Topics.GDB_TOOL_CHANGE)
         );
+
+        dubMovedLink.addActionListener(actionEvent -> {
+            DataContext dataContext = DataManager.getInstance().getDataContext(dubPanel);
+            Settings settings = Settings.KEY.getData(dataContext);
+            if (settings != null) {
+                settings.select(settings.find("language.d.build.tool.dub"));
+            }
+        });
     }
 
     @NotNull
@@ -188,8 +195,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 t.setDirty(false);
             }
         }
-        return propertiesComponent.getBoolean("USE_NATIVE_CODE_COMPLETION") != chkNativeCodeCompletion
-            .isSelected();
+        return false;
     }
 
     /**
@@ -232,8 +238,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         for (final Property property : properties) {
             property.saveState();
         }
-        propertiesComponent
-            .setValue("USE_NATIVE_CODE_COMPLETION", chkNativeCodeCompletion.isSelected());
     }
 
     /**
@@ -244,11 +248,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         for (final Property property : properties) {
             property.restoreState();
         }
-        if (!propertiesComponent.isValueSet("USE_NATIVE_CODE_COMPLETION")) {
-            propertiesComponent.setValue("USE_NATIVE_CODE_COMPLETION", false);
-        }
-        chkNativeCodeCompletion
-            .setSelected(propertiesComponent.getBoolean("USE_NATIVE_CODE_COMPLETION"));
     }
 
     interface Property {
