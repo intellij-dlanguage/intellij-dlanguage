@@ -6,7 +6,7 @@ import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
-import com.intellij.refactoring.suggested.endOffset
+import com.intellij.psi.util.endOffset
 import io.github.intellij.dlanguage.DLanguage
 
 /**

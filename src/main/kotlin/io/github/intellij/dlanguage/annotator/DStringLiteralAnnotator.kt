@@ -5,7 +5,7 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
-import com.intellij.refactoring.suggested.startOffset
+import com.intellij.psi.util.startOffset
 import io.github.intellij.dlanguage.utils.LiteralExpression
 import io.github.intellij.dlanguage.utils.getCorrespondingClosingDelimiter
 import io.github.intellij.dlanguage.utils.getOpeningDelimiter
