@@ -19,6 +19,18 @@ class DPrimitiveType private constructor(val name: String) : DType {
         private val WCHAR = DPrimitiveType("wchar")
         private val DCHAR = DPrimitiveType("dchar")
         private val VOID = DPrimitiveType("void")
+
+        private val REAL = DPrimitiveType("ireal")
+        private val CENT = DPrimitiveType("cent")
+        private val UCENT = DPrimitiveType("ucent")
+        private val CFLOAT = DPrimitiveType("cfloat")
+        private val CDOUBLE = DPrimitiveType("cdouble")
+        private val CREAL = DPrimitiveType("creal")
+        private val IFLOAT = DPrimitiveType("ifloat")
+        private val IDOUBLE = DPrimitiveType("idouble")
+        private val IREAL = DPrimitiveType("ireal")
+
+        // not existing actually but represent a null pointer
         private val NULL = DPrimitiveType("null")
 
         @JvmStatic
@@ -40,6 +52,17 @@ class DPrimitiveType private constructor(val name: String) : DType {
                 "dchar" -> DCHAR
                 "void" -> VOID
                 "null" -> NULL
+
+                "real" -> REAL
+                "cent" -> CENT
+                "ucent" -> UCENT
+                "cfloat" -> CFLOAT
+                "cdouble" -> CDOUBLE
+                "ifloat" -> IFLOAT
+                "idouble" -> IDOUBLE
+                "creal" -> CREAL
+                "ireal" -> IREAL
+
                 else -> {
                     throw NotImplementedError("Missing implementation for type $text")
                 }
