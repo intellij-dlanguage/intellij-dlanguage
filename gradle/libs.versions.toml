@@ -8,7 +8,7 @@ mockito-kotlin = "5.4+"
 sentry = "7+"
 
 # plugins
-gradleIntelliJPlatformPlugin = "2.3.0"
+gradleIntelliJPlatformPlugin = "2.4.0"
 grammarkit = "2022.3.2.2"
 kotlin = "1.9.+"
 kover = "0.9.1"
