@@ -229,7 +229,8 @@
                          implementationClass="io.github.intellij.dlanguage.inspections.OldAliasSyntax"
                          language="D" level="WARNING"
                          key="d.inspections.symbol.oldaliassyntax.displayname"
-                         groupKey="d.inspections.groupname"
+                         groupPathKey="d.inspections.groupname"
+                         groupName="Deprecated syntax"
                          shortName="OldAliasSyntax"/>
         <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.EmptyStatement"
@@ -241,7 +242,8 @@
                          implementationClass="io.github.intellij.dlanguage.inspections.DeleteStatementsAreDeprecated"
                          language="D" level="WARNING"
                          key="d.inspections.symbol.deletestatementsaredeprecated.displayname"
-                         groupKey="d.inspections.groupname"
+                         groupPathKey="d.inspections.groupname"
+                         groupName="Deprecated syntax"
                          shortName="DeleteStatementsAreDeprecated"/>
         <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.Deprecated128BitIntegerType"
@@ -253,7 +255,8 @@
                          implementationClass="io.github.intellij.dlanguage.inspections.DeprecatedPhobosImport"
                          language="D" level="WARNING"
                          key="d.inspections.symbol.deprecatedphobosimport.displayname"
-                         groupKey="d.inspections.groupname"
+                         groupPathKey="d.inspections.groupname"
+                         groupName="Deprecated syntax"
                          shortName="DeprecatedPhobosImport"/>
         <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.FunctionShouldBeConst"

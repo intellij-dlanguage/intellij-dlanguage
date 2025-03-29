@@ -10,7 +10,7 @@
                     factoryClass="io.github.intellij.dub.toolwindow.DubToolWindow" />
         <localInspection language="JSON"
                          displayName="Invalid dependency version"
-                         groupPath="D"
+                         groupPath="D language"
                          groupName="Dub packages"
                          enabledByDefault="true"
                          level="WARNING"
