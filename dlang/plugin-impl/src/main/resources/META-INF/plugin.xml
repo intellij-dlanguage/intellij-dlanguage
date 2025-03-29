@@ -244,6 +244,12 @@
                          groupKey="d.inspections.groupname"
                          shortName="DeleteStatementsAreDeprecated"/>
         <localInspection bundle="i18n" enabledByDefault="true"
+                         implementationClass="io.github.intellij.dlanguage.inspections.Deprecated128BitIntegerType"
+                         language="D" level="WARNING"
+                         key="d.inspections.symbol.deprecated128bitintegertype.displayname"
+                         groupKey="d.inspections.groupname"
+                         shortName="Deprecated128BitIntegerType"/>
+        <localInspection bundle="i18n" enabledByDefault="true"
                          implementationClass="io.github.intellij.dlanguage.inspections.DeprecatedPhobosImport"
                          language="D" level="WARNING"
                          key="d.inspections.symbol.deprecatedphobosimport.displayname"
