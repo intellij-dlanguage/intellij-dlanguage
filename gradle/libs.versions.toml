@@ -1,7 +1,7 @@
 [versions]
 # libraries
 annotations = "26.0.2"
-gson = "2.11.+"
+gson = "2.12.+"
 junit = "4.13+"
 junit-vintage = "5.11+"
 mockito-kotlin = "5.4+"
