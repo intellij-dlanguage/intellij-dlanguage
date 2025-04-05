@@ -16,8 +16,7 @@ class DubExecutableRunLineMarkerContributor : RunLineMarkerContributor() {
         val actions = ExecutorAction.getActions()
         return Info(
             AllIcons.RunConfigurations.TestState.Run,
-            { psiElement -> actions.mapNotNull { getText(it, psiElement) }.joinToString("\n") },
-            *actions
+            actions,
         )
     }
 

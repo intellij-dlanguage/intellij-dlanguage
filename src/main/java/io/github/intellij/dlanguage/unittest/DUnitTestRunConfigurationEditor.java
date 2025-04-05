@@ -44,7 +44,7 @@ public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRun
 
     private static void initDFileTextWithBrowse(final @NotNull Project project,
                                                final @NotNull TextFieldWithBrowseButton textWithBrowse) {
-        textWithBrowse.getButton().addActionListener(event -> {
+        textWithBrowse.addActionListener(event -> {
             final String initialPath = FileUtil.toSystemIndependentName(textWithBrowse.getText().trim());
             final VirtualFile initialFile = initialPath.isEmpty() ? null : LocalFileSystem.getInstance().findFileByPath(initialPath);
             final PsiFile initialPsiFile = initialFile == null ? null : PsiManager.getInstance(project).findFile(initialFile);
