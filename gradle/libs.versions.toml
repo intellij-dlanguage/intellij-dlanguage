@@ -5,7 +5,7 @@ gson = "2.12.+"
 junit = "4.13+"
 junit-vintage = "5.12+"
 mockito-kotlin = "5.4+"
-sentry = "7+"
+sentry = "8+"
 
 # plugins
 gradleIntelliJPlatformPlugin = "2.3.0"
