@@ -62,7 +62,7 @@
 <!--        <errorHandler implementation="io.github.intellij.dlanguage.errorreporting.DErrorReporter"/>-->
         <errorHandler implementation="io.github.intellij.dlanguage.errorreporting.SentryErrorHandler"/>
 
-        <stubElementTypeHolder class="io.github.intellij.dlanguage.psi.DlangTypes"/>
+        <stubElementTypeHolder class="io.github.intellij.dlanguage.psi.impl.DStubElementTypes" externalIdPrefix="d."/>
 
         <fileType name="D file" language="D" extensions="d;di" fieldName="INSTANCE"
                   implementationClass="io.github.intellij.dlanguage.DlangFileType" />
