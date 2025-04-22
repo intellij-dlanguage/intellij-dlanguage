@@ -16,11 +16,13 @@ repositories {
 
 dependencies {
     api(project(":"))
+    api(project(":dlang:psi-api"))
     implementation(project(":utils"))
-    implementation(project(":errorreporting"))
-    implementation(project(":dlang:psi-api"))
+
     testImplementation(project(":"))
     testImplementation(project(":dlang:plugin-impl"))
+
+    implementation (libs.gson) // used by dub parser
 
     testImplementation (libs.junit.engine)
     testRuntimeOnly (libs.junit.engine)
