@@ -1,16 +1,16 @@
 [versions]
 # libraries
 annotations = "26.0.2"
-gson = "2.12.+"
+gson = "2.13.+"
 junit = "4.13+"
 junit-vintage = "5.12+"
 mockito-kotlin = "5.4+"
-sentry = "7+"
+sentry = "8+"
 
 # plugins
 gradleIntelliJPlatformPlugin = "2.5.0"
 grammarkit = "2022.3.2.2"
-kotlin = "1.9.+"
+kotlin = "2.1.+"
 kover = "0.9.1"
 coverallsJacoco = "1.2.20"
 
