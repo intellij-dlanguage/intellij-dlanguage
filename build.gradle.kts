@@ -110,6 +110,7 @@ dependencies {
             "org.intellij.intelliLang",
             "com.intellij.copyright"
         )
+        testFramework(TestFrameworkType.Platform)
         testFramework(TestFrameworkType.Plugin.Java)
     }
 }
