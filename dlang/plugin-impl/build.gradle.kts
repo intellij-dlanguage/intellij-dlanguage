@@ -89,6 +89,7 @@ dependencies {
         bundledPlugins(
             "com.intellij.java",
             "com.intellij.java.ide",
+            "com.intellij.modules.json",
             "org.intellij.intelliLang",
             "com.intellij.copyright"
         )
