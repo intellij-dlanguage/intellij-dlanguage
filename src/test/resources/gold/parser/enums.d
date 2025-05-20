@@ -62,4 +62,12 @@ unittest
         @A @B deprecated("meep") member,
         deprecated("meep") member
     }
+
+    enum X {
+
+    }
+
+    enum {
+
+    }
 }

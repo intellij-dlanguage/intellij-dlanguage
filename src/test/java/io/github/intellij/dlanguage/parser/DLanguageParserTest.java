@@ -793,6 +793,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testenums_errors() {
+        doDlangParserTest(true, false);
+    }
+
     // immutable const
     public void testconst_immutable() {
         doDlangParserTest(true, true);
