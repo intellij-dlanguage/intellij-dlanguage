@@ -6,11 +6,12 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.project.DumbAware
 import com.intellij.psi.PsiFile
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem
 
 
-class DubSyntaxAnnotator : ExternalAnnotator<PsiFile, DubSyntaxAnnotator.State>() {
+class DubSyntaxAnnotator : ExternalAnnotator<PsiFile, DubSyntaxAnnotator.State>(), DumbAware {
     data class State(val annotations: Array<DProblem>)
 
     private val LOG = Logger.getInstance(DubSyntaxAnnotator::class.java)
@@ -37,8 +38,11 @@ class DubSyntaxAnnotator : ExternalAnnotator<PsiFile, DubSyntaxAnnotator.State>(
         val application = ApplicationManager.getApplication()
 
         if (fileDocumentManager.unsavedDocuments.isNotEmpty()) {
-            application.invokeAndWait(
-                { fileDocumentManager.saveAllDocuments() },
+            application.invokeLater(
+                {
+                    for (document in fileDocumentManager.unsavedDocuments)
+                        fileDocumentManager.saveDocumentAsIs(document)
+                },
                 application.defaultModalityState
             )
         }

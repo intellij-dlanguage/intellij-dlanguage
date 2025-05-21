@@ -7,7 +7,6 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.psi.PsiFile;
 import io.github.intellij.dlanguage.highlighting.annotation.DProblem;
 import org.jetbrains.annotations.NotNull;
@@ -53,8 +52,12 @@ public class DExternalAnnotator extends ExternalAnnotator<PsiFile, DExternalAnno
         final Application application = ApplicationManager.getApplication();
 
         if (fileDocumentManager.getUnsavedDocuments().length > 0) {
-            application.invokeAndWait(
-                fileDocumentManager::saveAllDocuments,
+            application.invokeLater(
+                () -> {
+                    for (var document : fileDocumentManager.getUnsavedDocuments()) {
+                        fileDocumentManager.saveDocumentAsIs(document);
+                    }
+                },
                 application.getDefaultModalityState()
             );
         }
