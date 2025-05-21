@@ -1,8 +1,11 @@
 package io.github.intellij.dlanguage.annotator
 
-//class DHighlightingAnnotatorTest : LightPlatformCodeInsightFixture4TestCase() {
+import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
+import org.junit.Test
 
-//    override fun getTestDataPath(): String = this.javaClass.classLoader.getResource("gold/highlighting/annotator")!!.path
+class DHighlightingAnnotatorTest : LightPlatformCodeInsightFixture4TestCase() {
+
+    override fun getTestDataPath(): String = this.javaClass.classLoader.getResource("gold/highlighting/annotator")!!.path
 
     // TODO re enable this test
     //@Test
@@ -12,15 +15,27 @@ package io.github.intellij.dlanguage.annotator
     //}
 
 
-//    @Test
-//    fun testInvalidDelimiterString() {
-//        myFixture.configureByFile("invalid_string_delimiters.d")
-//        myFixture.testHighlighting(false, false, false);
-//    }
-//
-//    @Test
-//    fun testUnclosedComment() {
-//        myFixture.configureByFile("unclosed_comment.d")
-//        myFixture.testHighlighting(false, false, false);
-//    }
-//}
+    @Test
+    fun testInvalidDelimiterString() {
+        myFixture.configureByFile("invalid_string_delimiters.d")
+        myFixture.testHighlighting(false, false, false);
+    }
+
+    @Test
+    fun testUnclosedComment() {
+        myFixture.configureByFile("unclosed_comment.d")
+        myFixture.testHighlighting(false, false, false);
+    }
+
+    @Test
+    fun testInvalidLiteralValues() {
+        myFixture.configureByFile("invalid_literal_values.d")
+        myFixture.testHighlighting(false, false, false);
+    }
+
+    @Test
+    fun testInvalidLEnums() {
+        myFixture.configureByFile("invalid_enums.d")
+        myFixture.testHighlighting(false, false, false);
+    }
+}
