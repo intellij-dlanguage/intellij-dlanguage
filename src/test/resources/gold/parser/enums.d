@@ -70,4 +70,10 @@ unittest
     enum {
 
     }
+
+    struct X {
+        struct Tag {}
+        @Tag enum A;
+        @Tag enum B;
+    }
 }

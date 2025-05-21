@@ -7816,6 +7816,17 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * ;)
      */
     fun parseVariableDeclaration(m: PsiBuilder.Marker): Boolean {
+        val preCheckBookmark = builder.mark()
+        while (builder.tokenType === DlangTypes.OP_AT) {
+            parseAtAttribute()
+        }
+        // It is not a variable declaration but an enum declaration with an empty body
+        if (builder.tokenType === DlangTypes.KW_ENUM && peekAre(DlangTypes.ID, DlangTypes.OP_SCOLON)) {
+            preCheckBookmark.rollbackTo()
+            return false
+        }
+        preCheckBookmark.rollbackTo()
+
         val bookmark = builder.mark()
         var hasStorageClass = false
         while (!builder.eof()) {
