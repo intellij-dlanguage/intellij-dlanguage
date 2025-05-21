@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.highlighting.annotation.external;
 
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiDocumentManager;
@@ -48,6 +49,7 @@ public class LinterHelper {
      */
     @Nullable
     public static TextRange calculateTextRange(@NotNull final PsiFile file, final int line, final int column) {
+        ProgressManager.checkCanceled();
         final Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
         if (document == null)
             return null;
