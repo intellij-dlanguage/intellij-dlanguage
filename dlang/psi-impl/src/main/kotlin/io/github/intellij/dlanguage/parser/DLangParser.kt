@@ -1613,10 +1613,11 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * | $(LITERAL 'void')
      * ;)
      */
-    private fun parseBuiltinType(): IElementType? {
-        assert(isBasicType(current()))
+    private fun parseBuiltinType(): IElementType {
+        assert(isBuiltinType(builder.tokenType))
         val marker = builder.mark()
-        val type = advance()
+        val type = builder.tokenType!!
+        builder.advanceLexer()
         marker.done(DlangTypes.BUILTIN_TYPE)
         return type
     }
@@ -4250,26 +4251,25 @@ internal class DLangParser(private val builder: PsiBuilder) {
             cleanup(m, DlangTypes.IS_EXPRESSION)
             return null
         }
-        if (currentIs(DlangTypes.ID)) advance()
+        if (currentIs(DlangTypes.ID))
+            advance()
+
         if (currentIsOneOf(DlangTypes.OP_EQ_EQ, DlangTypes.OP_COLON)) {
             advance()
             if (!parseTypeSpecialization()) {
                 cleanup(m, DlangTypes.IS_EXPRESSION)
                 return null
             }
-            if (currentIs(DlangTypes.OP_COMMA)) {
-                advance()
-                if (!parseTemplateParameterList()) {
-                    cleanup(m, DlangTypes.IS_EXPRESSION)
-                    return null
-                }
+        }
+        if (currentIs(DlangTypes.OP_COMMA)) {
+            advance()
+            if (!parseTemplateParameterList()) {
+                cleanup(m, DlangTypes.IS_EXPRESSION)
+                return null
             }
         }
-        if (!tokenCheck(DlangTypes.OP_PAR_RIGHT)) {
-            cleanup(m, DlangTypes.IS_EXPRESSION)
-            return null
-        }
-        exit_section_modified(builder, m, DlangTypes.IS_EXPRESSION, true)
+        tokenCheck(DlangTypes.OP_PAR_RIGHT)
+        m.done(DlangTypes.IS_EXPRESSION)
         return m
     }
 
@@ -5476,7 +5476,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         }
 
         // FundamentalType . Identifier | FundamentalType ( NamedArgumentList )
-        if (isBasicType(i)) {
+        if (isBuiltinType(i)) {
             val m = builder.mark()
             advance()
             if (currentIs(DlangTypes.OP_DOT)) {
@@ -5598,8 +5598,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
         return literals.contains(i)
     }
 
-    private fun isBasicType(i: IElementType?): Boolean {
-        return basicTypes.contains(i)
+    private fun isBuiltinType(i: IElementType?): Boolean {
+        return builtinTypes.contains(i)
     }
 
     private fun primaryExpressionIdentifierCase(): PsiBuilder.Marker? {
@@ -6843,17 +6843,20 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 cleanup(marker, DlangTypes.TEMPLATE_PARAMETER_LIST)
                 return false
             }
-            if (currentIs(DlangTypes.OP_COMMA)) {
-                advance()
-                if (currentIsOneOf(
-                        DlangTypes.OP_PAR_RIGHT,
-                        DlangTypes.OP_BRACES_RIGHT,
-                        DlangTypes.OP_BRACKET_RIGHT
-                    )
-                ) break
-            } else break
+
+            if (builder.tokenType !== DlangTypes.OP_COMMA)
+                break
+
+            advance()
+
+            if (currentIsOneOf(
+                    DlangTypes.OP_PAR_RIGHT,
+                    DlangTypes.OP_BRACES_RIGHT,
+                    DlangTypes.OP_BRACKET_RIGHT
+                ))
+                break
         }
-        exit_section_modified(builder, marker, DlangTypes.TEMPLATE_PARAMETER_LIST, true)
+        marker.done(DlangTypes.TEMPLATE_PARAMETER_LIST)
         return true
     }
 
@@ -6921,7 +6924,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         val i = current()
         if (i === DlangTypes.KW_THIS || i === DlangTypes.ID || isLiteral(i)) {
             advance()
-        } else if (isBasicType(i)) {
+        } else if (isBuiltinType(i)) {
             parseBuiltinType()
         } else {
             error("Invalid template argument. (Try enclosing in parenthesis?)")
@@ -7038,7 +7041,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 return false
             }
         }
-        exit_section_modified(builder, m, DlangTypes.TEMPLATE_VALUE_PARAMETER, true)
+        m.done(DlangTypes.TEMPLATE_VALUE_PARAMETER)
         return true
     }
 
@@ -7329,7 +7332,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 cleanup(m, DlangTypes.BASIC_TYPE)
                 return false
             }
-        } else if (isBasicType(i)) {
+        } else if (isBuiltinType(i)) {
             parseBuiltinType()
         } else if (i === DlangTypes.KW_SUPER || i === DlangTypes.KW_THIS) {
             // note: super can be removed but `this` can be an alias to an instance.
@@ -7344,7 +7347,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 return false
             }
         } else if (i === DlangTypes.KW___TRAITS) {
-            if (parseTraitsExpression() != null) {
+            if (parseTraitsExpression() == null) {
                 cleanup(m, DlangTypes.BASIC_TYPE)
                 return false
             }
@@ -7461,21 +7464,19 @@ internal class DLangParser(private val builder: PsiBuilder) {
     fun parseTypeSpecialization(): Boolean {
         val m = builder.mark()
         val i = current()
-        if (i === DlangTypes.KW_STRUCT || i === DlangTypes.KW_UNION || i === DlangTypes.KW_CLASS || i === DlangTypes.KW_INTERFACE || i === DlangTypes.KW___VECTOR || i === DlangTypes.KW_ENUM || i === DlangTypes.KW_FUNCTION || i === DlangTypes.KW_DELEGATE || i === DlangTypes.KW_SUPER || i === DlangTypes.KW_CONST || i === DlangTypes.KW_IMMUTABLE || i === DlangTypes.KW_INOUT || i === DlangTypes.KW_SHARED || i === DlangTypes.KW_RETURN || i === DlangTypes.KW___PARAMETERS || i === DlangTypes.KW_MODULE || i === DlangTypes.KW_PACKAGE) {
-            if (peekIsOneOf(DlangTypes.OP_PAR_RIGHT, DlangTypes.OP_COMMA)) {
-                advance()
-                exit_section_modified(builder, m, DlangTypes.TYPE_SPECIALIZATION, true)
-                return true
-            }
+        if ((isTypeCtor(i) || i === DlangTypes.KW___VECTOR) && peekIsOneOf(DlangTypes.OP_PAR_RIGHT, DlangTypes.OP_COMMA))
+            advance()
+        else if (i === DlangTypes.KW_STRUCT || i === DlangTypes.KW_UNION || i === DlangTypes.KW_CLASS || i === DlangTypes.KW_INTERFACE || i === DlangTypes.KW_ENUM ||
+            i === DlangTypes.KW_FUNCTION || i === DlangTypes.KW_DELEGATE || i === DlangTypes.KW_SUPER || i === DlangTypes.KW_RETURN || i === DlangTypes.KW___PARAMETERS ||
+            i === DlangTypes.KW_MODULE || i === DlangTypes.KW_PACKAGE) {
+            advance()
+        } else {
             if (!parseType()) {
                 cleanup(m, DlangTypes.TYPE_SPECIALIZATION)
                 return false
             }
-        } else if (!parseType()) {
-            cleanup(m, DlangTypes.TYPE_SPECIALIZATION)
-            return false
         }
-        exit_section_modified(builder, m, DlangTypes.TYPE_SPECIALIZATION, true)
+        m.done(DlangTypes.TYPE_SPECIALIZATION)
         return true
     }
 
@@ -8511,7 +8512,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             DlangTypes.HEX_STRING
         )
 
-        private val basicTypes: Set<IElementType?> = Sets.newHashSet<IElementType?>(
+        private val builtinTypes: Set<IElementType?> = Sets.newHashSet<IElementType?>(
             DlangTypes.KW_INT,
             DlangTypes.KW_BOOL,
             DlangTypes.KW_BYTE,
