@@ -1,4 +1,4 @@
-package io.github.intellij.dlanguage;
+package io.github.intellij.dlanguage.lexer;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.IElementType;
 import static io.github.intellij.dlanguage.psi.DlangTypes.*;
@@ -15,13 +15,18 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
   private String stringDelimiter2;
   private boolean stringDelimiterClosed;
 
-  public DlangLexer() {
+  public _DlangLexer() {
     this((java.io.Reader)null);
   }
+
+  public void goTo(int offset) {
+      zzCurrentPos = zzMarkedPos = zzStartRead = offset;
+      zzAtEOF = false;
+    }
 %}
 
 %public
-%class DlangLexer
+%class _DlangLexer
 %implements FlexLexer
 %function advance
 %type IElementType
@@ -38,19 +43,12 @@ ID = (_|{LETTER}) (_|{DIGIT}|{LETTER})*
 
 
 LINE_COMMENT="//".*
-//BLOCK_COMMENT="/"\*(.|\n)*\*"/"
 
 BLOCK_COMMENT_START = "/*"
 BLOCK_COMMENT_END = "*/"
 
-/* JFlex doesn't support recursive rules. So NESTING_BLOCK_COMMENT doesn't support nesting now. */
 NESTING_BLOCK_COMMENT_START = \/\+
 NESTING_BLOCK_COMMENT_END = \+\/
-/*
-NESTING_BLOCK_COMMENT = "/+" {NESTING_BLOCK_COMMENT_CONTENT} "+/"
-NESTING_BLOCK_COMMENT_CONTENT = ( [^+] | "+"+ [^/] )*
-*/
-
 
 SHEBANG = "#!" ([^\r\n])* (\r|\n|\r\n)?
 
@@ -69,11 +67,6 @@ ALTERNATIVE_DELIMITED_STRING_START = q\".
 ALTERNATIVE2_DELIMITED_STRING_START = q\"[^\"\r\n]+[\r\n]
 
 HEX_STRING = "x"\" [^\"]* (\" {STRING_POSTFIX}?)?
-
-TOKEN_STRING_START = q\{
-TOKEN_CLOSE_CURLY = \}
-TOKEN_OPEN_CURLY = \{
-TOKEN_STRING_CONTENT = [^]
 
 STRING_POSTFIX = [cwd]
 ESCAPE_SEQUENCE = {ESCAPE_SEQUENCE_SPEC_CHAR} | {ESCAPE_SEQUENCE_HEX_OCTAL}
@@ -136,18 +129,13 @@ BLOCK_DOC_END = "*/"
 NESTING_BLOCK_DOC_START = "/++"
 NESTING_BLOCK_DOC_END = "+/"
 
-%state WAITING_VALUE, NESTING_COMMENT_CONTENT, TOKEN_STRING_CONTENT, BLOCK_COMMENT_CONTENT
+%state WAITING_VALUE, NESTING_COMMENT_CONTENT, BLOCK_COMMENT_CONTENT
 %state NESTING_DOC_CONTENT, BLOCK_DOC_CONTENT, ALTERNATE_DELIMITED_STRING, ALTERNATE2_DELIMITED_STRING
 
 %%
 
 <YYINITIAL> {
  {WHITE_SPACE}       { return com.intellij.psi.TokenType.WHITE_SPACE; }
-
- {TOKEN_STRING_START} {
-    yybegin(TOKEN_STRING_CONTENT);
-    tokenStringDepth = 1;
- }
 
  {NESTING_BLOCK_COMMENT_START}{NESTING_BLOCK_COMMENT_END} {
     // Match this one before to prevent /++/ being consited as doc
@@ -393,23 +381,6 @@ NESTING_BLOCK_DOC_END = "+/"
 ///////////////////////////////////////////
 // Strings
 ///////////////////////////////////////////
-
-<TOKEN_STRING_CONTENT> {
-    {TOKEN_OPEN_CURLY} {
-        tokenStringDepth++;
-    }
-    {TOKEN_CLOSE_CURLY} {
-        tokenStringDepth--;
-        if(tokenStringDepth == 0){
-            yybegin(YYINITIAL);
-            return DlangTypes.TOKEN_STRING;
-        }
-    }
-    {TOKEN_STRING_START} {
-        tokenStringDepth++;
-    }
-    {TOKEN_STRING_CONTENT} {}
-}
 
 // Delimited String with mono-character delimiter
 <ALTERNATE_DELIMITED_STRING> {

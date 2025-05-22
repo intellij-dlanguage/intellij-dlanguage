@@ -10,7 +10,7 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.usageView.UsageViewLongNameLocation;
 import com.intellij.usageView.UsageViewNodeTextLocation;
-import io.github.intellij.dlanguage.DLanguageLexerAdapter;
+import io.github.intellij.dlanguage.lexer.DlangLexer;
 import io.github.intellij.dlanguage.psi.DLanguageIfCondition;
 import io.github.intellij.dlanguage.psi.DTokenSets;
 import io.github.intellij.dlanguage.psi.DlangTypes;
@@ -29,7 +29,7 @@ public class DFindUsagesProvider implements FindUsagesProvider {
     @Nullable
     @Override
     public WordsScanner getWordsScanner() {
-        return new DefaultWordsScanner(new DLanguageLexerAdapter(),
+        return new DefaultWordsScanner(new DlangLexer(),
             TokenSet.create(DlangTypes.ID),
             DTokenSets.LINE_COMMENTS, DTokenSets.BLOCK_COMMENTS, DTokenSets.STRING_LITERALS);
     }

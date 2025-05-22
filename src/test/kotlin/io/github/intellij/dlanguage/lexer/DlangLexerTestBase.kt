@@ -1,6 +1,5 @@
 package io.github.intellij.dlanguage.lexer
 
-import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.util.Comparing
 import com.intellij.openapi.util.io.FileUtil.loadFile
@@ -42,7 +41,7 @@ abstract class DlangLexerTestBase(expectPath: String) : LexerTestCase() {
         super.setUp()
     }
 
-    override fun createLexer(): Lexer = FlexAdapter(io.github.intellij.dlanguage.DlangLexer(null))
+    override fun createLexer(): Lexer = DlangLexer()
 
     override fun getDirPath(): String = "gold"
 
