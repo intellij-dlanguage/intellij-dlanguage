@@ -2,29 +2,32 @@ package io.github.intellij.dlanguage;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.process.*;
+import com.intellij.execution.process.CapturingProcessHandler;
+import com.intellij.execution.process.ProcessOutput;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil;
 import com.intellij.openapi.roots.OrderRootType;
-import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import io.github.intellij.dlanguage.library.LibFileRootType;
-import java.io.IOException;
-import java.nio.file.Files;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -304,12 +307,13 @@ public class DlangSdkType extends SdkType {
             setupRuntimePaths(sdkModificator, status);
         }
 
-        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-            @Override
-            public void run() {
-                sdkModificator.commitChanges();
-            }
-        });
+        if (ApplicationManager.getApplication().isWriteAccessAllowed()) {
+            sdkModificator.commitChanges();
+        } else {
+            ApplicationManager.getApplication().invokeAndWait(() ->
+                ApplicationManager.getApplication().runWriteAction(sdkModificator::commitChanges)
+            );
+        }
     }
 
     private Optional<VirtualFile> firstVirtualFileFrom(File[] files) {
@@ -508,7 +512,7 @@ public class DlangSdkType extends SdkType {
                     //Parse output of a DMD compiler
                     final List<String> outputLines = output.getStdoutLines();
                     if (!outputLines.isEmpty()) {
-                        final String version = outputLines.get(0).trim();
+                        final String version = outputLines.getFirst().trim();
                         LOG.debug(String.format("Found version: %s", version));
                         return version;
                     }
