@@ -2,7 +2,6 @@ package io.github.intellij.dlanguage.resolve
 
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.util.text.StringUtil
-import com.intellij.openapi.vfs.CharsetToolkit
 import com.intellij.openapi.vfs.VirtualFileFilter
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
@@ -30,7 +29,7 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
 
     private fun prepareFilesFindReferences() {
         for (file in testDataFiles) {
-            var text = FileUtil.loadFile(file, CharsetToolkit.UTF8)
+            var text = FileUtil.loadFile(file, Charsets.UTF_8)
             text = StringUtil.convertLineSeparators(text)
             val refIndexBefore = text.indexOf("<ref>")
             val resolvedIndexBefore = text.indexOf("<resolved>")

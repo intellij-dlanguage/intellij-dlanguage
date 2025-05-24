@@ -81,9 +81,8 @@ class DResolveTest : DResolveTestCase() {
     @Test
     fun testImportWithSpacesAndComments() = doTest()
 
-    // TODO need to handle public imports
-    //@Test
-    //fun testImportFromPackage() = doTest()
+    @Test
+    fun testImportFromPackage() = doTest()
 
     @Test
     fun testImportNamedBindResolve() = doTest()
