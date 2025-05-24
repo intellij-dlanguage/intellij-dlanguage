@@ -305,7 +305,15 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        //todo handle place
+
+        if(!processor.execute(element, state))
+            return false
+
+        // next checks are only for inside elements, they are not visible outside
+        if (lastParent == null || lastParent.parent != element) {
+            return true
+        }
+
         if (element.parameters != null) {
             if (!processParameters(element.parameters!!, processor, state, lastParent, place)) {
                 return false
@@ -542,7 +550,7 @@ object ScopeProcessorImpl {
             return true
 
         // prevent infinite recursing check
-        if (state.get<MutableList<String>>(PROCESSED_FILES_KEY)?.contains(element.importedModuleName) == true)
+        if (state.get(PROCESSED_FILES_KEY)?.contains(element.importedModuleName) == true)
             return true
 
         for (file in DModuleIndex.getFilesByModuleName(element.project, element.importedModuleName, GlobalSearchScope.allScope(element.project)).toSet()) {
@@ -574,7 +582,7 @@ object ScopeProcessorImpl {
         if (place.containingFile != element.containingFile && element.visibility() != DVisibility.Public) {
             return true
         }
-        var singleImports = element.singleImports.toMutableList()
+        val singleImports = element.singleImports.toMutableList()
         // we have an import binding, search for it first
         if (element.importBindings != null) {
             // with import binding restricts the scope of the corresponding single import
@@ -587,7 +595,7 @@ object ScopeProcessorImpl {
                         return false
                 } else {
                     if (elt.identifier?.text == place.text) {
-                        return base.processDeclarations(processor, state, lastParent, place) != false
+                        return base.processDeclarations(processor, state, lastParent, place)
                     }
                 }
             }

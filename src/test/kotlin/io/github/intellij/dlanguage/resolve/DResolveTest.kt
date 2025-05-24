@@ -220,4 +220,16 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testFieldUsageOfAnonymousUnionInAnotherStruct() = doTest()
+
+    @Test
+    fun testFunctionCallUFCS() = doTest()
+
+    @Test
+    fun testFunctionCallUFCSWithLocalReferenceSameName() = doTest()
+
+    @Test
+    fun testFunctionCallUFCSWithLocalImport() = doTest()
+
+    @Test
+    fun testFunctionCallUFCSWithLocalImportResolveLocalFunction() = doTest()
 }
