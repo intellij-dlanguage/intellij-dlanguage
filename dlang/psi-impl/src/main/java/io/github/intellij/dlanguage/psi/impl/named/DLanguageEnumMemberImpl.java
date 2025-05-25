@@ -6,8 +6,12 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
-import io.github.intellij.dlanguage.psi.named.DLanguageEnumMember;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.interfaces.Expression;
+import io.github.intellij.dlanguage.psi.named.DLanguageEnumDeclaration;
+import io.github.intellij.dlanguage.psi.named.DLanguageEnumMember;
+import io.github.intellij.dlanguage.psi.types.DType;
+import io.github.intellij.dlanguage.psi.types.DUnknownType;
 import io.github.intellij.dlanguage.stubs.DLanguageEnumMemberStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,8 +47,8 @@ public class DLanguageEnumMemberImpl extends
 
     @Override
     @Nullable
-    public DLanguageAssignExpression getAssignExpression() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageAssignExpression.class);
+    public Expression getExpression() {
+        return PsiTreeUtil.getChildOfType(this, Expression.class);
     }
 
     @Override
@@ -72,5 +76,46 @@ public class DLanguageEnumMemberImpl extends
     @Nullable
     public PsiElement getNameIdentifier() {
         return getIdentifier();
+    }
+
+    @Override
+    public @NotNull DType getDType() {
+        // Only anonymous members has this type set
+        if (getType() != null) {
+            return getType().getDType();
+        }
+
+        if (getParent().getParent() instanceof DLanguageEnumDeclaration enumDeclaration) {
+            return enumDeclaration.getDType();
+        }
+
+        if (getParent() instanceof DLanguageAnonymousEnumDeclaration anonymousEnumDeclaration && anonymousEnumDeclaration.getType() != null) {
+            return anonymousEnumDeclaration.getType().getDType();
+        }
+
+        if (getExpression() != null) {
+            var retType = getExpression().getDType();
+            if (retType != null)
+                return retType;
+            return new DUnknownType();
+        }
+
+        // for anonymous enums, take the type of the previous member if this member has a type declared
+        PsiElement element = getPrevSibling();
+        while(element != null) {
+            if (element instanceof DLanguageEnumMember enumMember) {
+                if (enumMember.getType() != null)
+                    return enumMember.getType().getDType();
+                break;
+            }
+            element = element.getPrevSibling();
+        }
+
+        if (getParent() instanceof DLanguageAnonymousEnumDeclaration anonymousEnumDeclaration) {
+            return anonymousEnumDeclaration.getDType();
+        }
+
+        assert false : "Unexpected/Unimplemented case of enum member";
+        return new DUnknownType();
     }
 }

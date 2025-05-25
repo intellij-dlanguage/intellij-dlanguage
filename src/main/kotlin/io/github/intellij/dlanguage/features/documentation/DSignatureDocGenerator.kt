@@ -50,8 +50,8 @@ class DSignatureDocGenerator {
             is TemplateParameter -> appendTemplateParameter(builder, element)
             is EnumMember -> {
                 builder.append(element.identifier!!.text)
-                if (element.assignExpression != null) {
-                   builder.append(" = "). append(element.assignExpression!!.text)
+                if (element.expression != null) {
+                   builder.append(" = "). append(element.expression!!.text)
                 }
             }
         }

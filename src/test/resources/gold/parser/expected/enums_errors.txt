@@ -1,0 +1,31 @@
+D Language File
+  ENUM_DECLARATION
+    PsiElement(DlangTokenType.enum)('enum')
+    PsiElement(DlangTokenType.ID)('X')
+    DLanguageEnumBodyImpl(ENUM_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      ENUM_MEMBER
+        PsiErrorElement:Type is not allowed for named enum
+          DLanguageBasicTypeImpl(BASIC_TYPE)
+            DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+              PsiElement(DlangTokenType.int)('int')
+        PsiElement(DlangTokenType.ID)('a')
+      PsiElement(DlangTokenType.})('}')
+  DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
+    PsiElement(DlangTokenType.enum)('enum')
+    PsiElement(DlangTokenType.:)(':')
+    DLanguageTypeImpl(TYPE)
+      DLanguageBasicTypeImpl(BASIC_TYPE)
+        DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+          PsiElement(DlangTokenType.long)('long')
+    PsiElement(DlangTokenType.{)('{')
+    ENUM_MEMBER
+      PsiErrorElement:Cannot specify anonymous enum member type if anonymous enum has a base type.
+        DLanguageBasicTypeImpl(BASIC_TYPE)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DlangTokenType.short)('short')
+      PsiElement(DlangTokenType.ID)('a')
+      PsiElement(DlangTokenType.=)('=')
+      DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
+        PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
+    PsiElement(DlangTokenType.})('}')

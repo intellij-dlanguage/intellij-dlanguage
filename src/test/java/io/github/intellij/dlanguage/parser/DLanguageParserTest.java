@@ -136,6 +136,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(true, true);
     }
 
+    public void testdeclaration_vector() {
+        doDlangParserTest(true, true);
+    }
+
     //  types
     public void testtype_arithmetic_conversion() {
         doDlangParserTest(true, true);
@@ -791,6 +795,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
     // enums
     public void testenums() {
         doDlangParserTest(true, true);
+    }
+
+    public void testenums_errors() {
+        doDlangParserTest(true, false);
     }
 
     // immutable const

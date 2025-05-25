@@ -62,4 +62,18 @@ unittest
         @A @B deprecated("meep") member,
         deprecated("meep") member
     }
+
+    enum X {
+
+    }
+
+    enum {
+
+    }
+
+    struct X {
+        struct Tag {}
+        @Tag enum A;
+        @Tag enum B;
+    }
 }

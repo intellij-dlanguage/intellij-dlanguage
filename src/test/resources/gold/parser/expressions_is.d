@@ -110,5 +110,17 @@ void main()
     {
         assert(0);  // should not match, Y should be 10
     }
+
+    static if (is(__traits(parents, a) : __traits(parents, b)))
+        assert(0);
+
+    static if (is(__traits(parents, a), V, size_t N))
+        assert(0);
+
+    static if (is(__traits(parents, a) : __vector))
+        assert(0);
+
+    static if (is(__traits(parents, a) : __vector(T[N]), T, N))
+        assert(0);
 }
 

@@ -1613,10 +1613,11 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * | $(LITERAL 'void')
      * ;)
      */
-    private fun parseBuiltinType(): IElementType? {
-        assert(isBasicType(current()))
+    private fun parseBuiltinType(): IElementType {
+        assert(isBuiltinType(builder.tokenType))
         val marker = builder.mark()
-        val type = advance()
+        val type = builder.tokenType!!
+        builder.advanceLexer()
         marker.done(DlangTypes.BUILTIN_TYPE)
         return type
     }
@@ -2612,23 +2613,27 @@ internal class DLangParser(private val builder: PsiBuilder) {
         }
         val m = builder.mark()
         builder.advanceLexer()
-        while (moreTokens()) {
-            if (currentIsOneOf(DlangTypes.ID, DlangTypes.OP_AT, DlangTypes.KW_DEPRECATED)) {
-                parseEnumMember()
-                if (currentIs(DlangTypes.OP_COMMA)) {
+        while (builder.tokenType !== DlangTypes.OP_BRACES_RIGHT) {
+            if (parseEnumMember()) {
+                if (builder.tokenType === DlangTypes.OP_COMMA) {
                     advance()
-                    if (!currentIs(DlangTypes.OP_BRACES_RIGHT)) continue
+                    if (builder.tokenType !== DlangTypes.OP_BRACES_RIGHT)
+                        continue
                 }
-                if (currentIs(DlangTypes.OP_BRACES_RIGHT)) {
+
+                if (builder.tokenType === DlangTypes.OP_BRACES_RIGHT) {
                     break
                 } else {
                     error("`,` or `}` expected")
-                    if (currentIs(DlangTypes.OP_BRACES_RIGHT)) break
+                    if (builder.tokenType === DlangTypes.OP_BRACES_RIGHT)
+                        break
                 }
-            } else error("Enum member expected")
+            } else {
+                error("Enum member expected")
+            }
         }
         expect(DlangTypes.OP_BRACES_RIGHT)
-        exit_section_modified(builder, m, DlangTypes.ENUM_BODY, true)
+        m.done(DlangTypes.ENUM_BODY)
         return true
     }
 
@@ -2639,41 +2644,43 @@ internal class DLangParser(private val builder: PsiBuilder) {
      */
     fun parseEnumMember(typeAllowed: Boolean): Boolean {
         val m = builder.mark()
-        // TODO parseEnumMemberAttributes
-        if (currentIs(DlangTypes.ID) && peekIsOneOf(
+        while (moreTokens()) {
+            if (!parseEnumMemberAttribute()) {
+                break
+            }
+        }
+
+        if (!(currentIs(DlangTypes.ID) && peekIsOneOf(
                 DlangTypes.OP_COMMA,
                 DlangTypes.OP_EQ,
                 DlangTypes.OP_BRACES_RIGHT
-            )
+            ))
         ) {
-            if (!tokenCheck(DlangTypes.ID)) {
-                cleanup(m, DlangTypes.ENUM_MEMBER)
-                return false
+            if (typeAllowed) {
+                if (!parseType()) {
+                    cleanup(m, DlangTypes.ENUM_MEMBER)
+                    return false
+                }
+            } else {
+                val error = builder.mark()
+                if (!parseUnexpectedType()) {
+                    error.rollbackTo()
+                    return false
+                }
+                error.error("Cannot specify anonymous enum member type if anonymous enum has a base type.")
             }
-            if (currentIs(DlangTypes.OP_EQ)) {
-                advance() // =
-                if (!assignAnonEnumMember(m)) return false
-            }
-        } else if (typeAllowed) {
-            if (!parseType()) {
-                cleanup(m, DlangTypes.ENUM_MEMBER)
-                return false
-            }
-            if (!tokenCheck(DlangTypes.ID)) {
-                cleanup(m, DlangTypes.ENUM_MEMBER)
-                return false
-            }
-            if (!tokenCheck(DlangTypes.OP_EQ)) {
-                cleanup(m, DlangTypes.ENUM_MEMBER)
-                return false
-            }
-            if (!assignAnonEnumMember(m)) return false
-        } else {
-            error("Cannot specify anonymous enum member type if anonymous enum has a base type.")
-            exit_section_modified(builder, m, DlangTypes.ENUM_MEMBER, true)
+        }
+        if (!tokenCheck(DlangTypes.ID)) {
+            cleanup(m, DlangTypes.ENUM_MEMBER)
             return false
         }
-        exit_section_modified(builder, m, DlangTypes.ENUM_MEMBER, true)
+
+        if (builder.tokenType === DlangTypes.OP_EQ) {
+            advance()
+            if (!assignAnonEnumMember(m))
+                return false
+        }
+        m.done(DlangTypes.ENUM_MEMBER)
         return true
     }
 
@@ -2725,9 +2732,12 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * ;)
      */
     fun parseEnumDeclaration(m: PsiBuilder.Marker): Boolean {
-        if (builder.tokenType !== DlangTypes.KW_ENUM) return false
+        if (builder.tokenType !== DlangTypes.KW_ENUM)
+            return false
+
         val bookmark = builder.mark()
         builder.advanceLexer()
+
         if (builder.tokenType !== DlangTypes.ID) {
             if (!parseAnonymousEnumDeclaration()) {
                 bookmark.rollbackTo()
@@ -2738,7 +2748,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
             return true
         }
         advance()
-        if (currentIs(DlangTypes.OP_COLON)) {
+
+        if (builder.tokenType === DlangTypes.OP_COLON) {
             advance() // skip ':'
             if (!parseType()) {
                 bookmark.drop()
@@ -2746,16 +2757,19 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 return true
             }
         }
-        if (currentIs(DlangTypes.OP_SCOLON)) {
+
+        if (builder.tokenType === DlangTypes.OP_SCOLON) {
             advance()
             bookmark.drop()
             m.done(DlangTypes.ENUM_DECLARATION)
             return true
         }
+
         if (!parseEnumBody()) {
             bookmark.rollbackTo()
             return false
         }
+
         bookmark.drop()
         m.done(DlangTypes.ENUM_DECLARATION)
         return true
@@ -2772,12 +2786,12 @@ internal class DLangParser(private val builder: PsiBuilder) {
      */
     fun parseEnumMemberAttribute(): Boolean {
         val m = builder.mark()
-        if (currentIs(DlangTypes.OP_AT)) {
+        if (builder.tokenType === DlangTypes.OP_AT) {
             if (!parseAtAttribute()) {
                 cleanup(m, DlangTypes.ENUM_MEMBER_ATTRIBUTE)
                 return false
             }
-        } else if (currentIs(DlangTypes.KW_DEPRECATED)) {
+        } else if (builder.tokenType === DlangTypes.KW_DEPRECATED) {
             if (!parseDeprecated()) {
                 cleanup(m, DlangTypes.ENUM_MEMBER_ATTRIBUTE)
                 return false
@@ -2786,7 +2800,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             m.drop() // drop instead of cleanup otherwise an empty EnumMemberAttribute will be created
             return false
         }
-        exit_section_modified(builder, m, DlangTypes.ENUM_MEMBER_ATTRIBUTE, true)
+        m.done(DlangTypes.ENUM_MEMBER_ATTRIBUTE)
         return true
     }
 
@@ -2805,18 +2819,29 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 break
             }
         }
+
+        if (builder.tokenType !== DlangTypes.ID) {
+            val error = builder.mark()
+            val type = parseUnexpectedType()
+            if (!type) {
+                error.rollbackTo()
+                cleanup(m, DlangTypes.ENUM_MEMBER)
+                return false
+            }
+            error.error("Type is not allowed for named enum")
+        }
+
         if (!tokenCheck(DlangTypes.ID)) {
             cleanup(m, DlangTypes.ENUM_MEMBER)
             return false
         }
-        if (currentIs(DlangTypes.OP_EQ)) {
+
+        if (builder.tokenType === DlangTypes.OP_EQ) {
             advance()
-            if (parseAssignExpression() == null) {
-                cleanup(m, DlangTypes.ENUM_MEMBER)
-                return false
-            }
+            parseAssignExpression()
         }
-        exit_section_modified(builder, m, DlangTypes.ENUM_MEMBER, true)
+
+        m.done(DlangTypes.ENUM_MEMBER)
         return true
     }
 
@@ -2844,7 +2869,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             cleanup(m, DlangTypes.EQUAL_EXPRESSION)
             return null
         }
-        exit_section_modified(builder, m, DlangTypes.EQUAL_EXPRESSION, true)
+        m.done(DlangTypes.EQUAL_EXPRESSION)
         return m
     }
 
@@ -4226,26 +4251,25 @@ internal class DLangParser(private val builder: PsiBuilder) {
             cleanup(m, DlangTypes.IS_EXPRESSION)
             return null
         }
-        if (currentIs(DlangTypes.ID)) advance()
+        if (currentIs(DlangTypes.ID))
+            advance()
+
         if (currentIsOneOf(DlangTypes.OP_EQ_EQ, DlangTypes.OP_COLON)) {
             advance()
             if (!parseTypeSpecialization()) {
                 cleanup(m, DlangTypes.IS_EXPRESSION)
                 return null
             }
-            if (currentIs(DlangTypes.OP_COMMA)) {
-                advance()
-                if (!parseTemplateParameterList()) {
-                    cleanup(m, DlangTypes.IS_EXPRESSION)
-                    return null
-                }
+        }
+        if (currentIs(DlangTypes.OP_COMMA)) {
+            advance()
+            if (!parseTemplateParameterList()) {
+                cleanup(m, DlangTypes.IS_EXPRESSION)
+                return null
             }
         }
-        if (!tokenCheck(DlangTypes.OP_PAR_RIGHT)) {
-            cleanup(m, DlangTypes.IS_EXPRESSION)
-            return null
-        }
-        exit_section_modified(builder, m, DlangTypes.IS_EXPRESSION, true)
+        tokenCheck(DlangTypes.OP_PAR_RIGHT)
+        m.done(DlangTypes.IS_EXPRESSION)
         return m
     }
 
@@ -5452,7 +5476,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         }
 
         // FundamentalType . Identifier | FundamentalType ( NamedArgumentList )
-        if (isBasicType(i)) {
+        if (isBuiltinType(i)) {
             val m = builder.mark()
             advance()
             if (currentIs(DlangTypes.OP_DOT)) {
@@ -5574,8 +5598,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
         return literals.contains(i)
     }
 
-    private fun isBasicType(i: IElementType?): Boolean {
-        return basicTypes.contains(i)
+    private fun isBuiltinType(i: IElementType?): Boolean {
+        return builtinTypes.contains(i)
     }
 
     private fun primaryExpressionIdentifierCase(): PsiBuilder.Marker? {
@@ -6819,17 +6843,20 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 cleanup(marker, DlangTypes.TEMPLATE_PARAMETER_LIST)
                 return false
             }
-            if (currentIs(DlangTypes.OP_COMMA)) {
-                advance()
-                if (currentIsOneOf(
-                        DlangTypes.OP_PAR_RIGHT,
-                        DlangTypes.OP_BRACES_RIGHT,
-                        DlangTypes.OP_BRACKET_RIGHT
-                    )
-                ) break
-            } else break
+
+            if (builder.tokenType !== DlangTypes.OP_COMMA)
+                break
+
+            advance()
+
+            if (currentIsOneOf(
+                    DlangTypes.OP_PAR_RIGHT,
+                    DlangTypes.OP_BRACES_RIGHT,
+                    DlangTypes.OP_BRACKET_RIGHT
+                ))
+                break
         }
-        exit_section_modified(builder, marker, DlangTypes.TEMPLATE_PARAMETER_LIST, true)
+        marker.done(DlangTypes.TEMPLATE_PARAMETER_LIST)
         return true
     }
 
@@ -6897,7 +6924,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         val i = current()
         if (i === DlangTypes.KW_THIS || i === DlangTypes.ID || isLiteral(i)) {
             advance()
-        } else if (isBasicType(i)) {
+        } else if (isBuiltinType(i)) {
             parseBuiltinType()
         } else {
             error("Invalid template argument. (Try enclosing in parenthesis?)")
@@ -7014,7 +7041,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 return false
             }
         }
-        exit_section_modified(builder, m, DlangTypes.TEMPLATE_VALUE_PARAMETER, true)
+        m.done(DlangTypes.TEMPLATE_VALUE_PARAMETER)
         return true
     }
 
@@ -7234,6 +7261,39 @@ internal class DLangParser(private val builder: PsiBuilder) {
         return true
     }
 
+    fun parseUnexpectedType(): Boolean {
+        if (!moreTokens()) {
+            return false
+        }
+        val i = current()
+        if (isTypeCtor(i)) {
+            if (!peekIs(DlangTypes.OP_PAR_LEFT)) {
+                if (!parseTypeConstructors()) {
+                    return false
+                }
+            }
+        }
+        if (!parseBasicType()) {
+            return false
+        }
+        while (moreTokens()) {
+            val i1 = current()
+
+            if (i1 === DlangTypes.OP_BRACKET_LEFT) {
+                if (!parseTypeSuffix()) {
+                    return false
+                }
+            } else if (i1 === DlangTypes.OP_ASTERISK || i1 === DlangTypes.KW_DELEGATE || i1 === DlangTypes.KW_FUNCTION) {
+                if (!parseTypeSuffix()) {
+                    return false
+                }
+            } else {
+                break
+            }
+        }
+        return true
+    }
+
     fun parseTypeSuffixes() {
         while (!builder.eof()) {
             if (!parseTypeSuffix()) break
@@ -7272,7 +7332,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 cleanup(m, DlangTypes.BASIC_TYPE)
                 return false
             }
-        } else if (isBasicType(i)) {
+        } else if (isBuiltinType(i)) {
             parseBuiltinType()
         } else if (i === DlangTypes.KW_SUPER || i === DlangTypes.KW_THIS) {
             // note: super can be removed but `this` can be an alias to an instance.
@@ -7287,7 +7347,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 return false
             }
         } else if (i === DlangTypes.KW___TRAITS) {
-            if (parseTraitsExpression() != null) {
+            if (parseTraitsExpression() == null) {
                 cleanup(m, DlangTypes.BASIC_TYPE)
                 return false
             }
@@ -7404,21 +7464,19 @@ internal class DLangParser(private val builder: PsiBuilder) {
     fun parseTypeSpecialization(): Boolean {
         val m = builder.mark()
         val i = current()
-        if (i === DlangTypes.KW_STRUCT || i === DlangTypes.KW_UNION || i === DlangTypes.KW_CLASS || i === DlangTypes.KW_INTERFACE || i === DlangTypes.KW___VECTOR || i === DlangTypes.KW_ENUM || i === DlangTypes.KW_FUNCTION || i === DlangTypes.KW_DELEGATE || i === DlangTypes.KW_SUPER || i === DlangTypes.KW_CONST || i === DlangTypes.KW_IMMUTABLE || i === DlangTypes.KW_INOUT || i === DlangTypes.KW_SHARED || i === DlangTypes.KW_RETURN || i === DlangTypes.KW___PARAMETERS || i === DlangTypes.KW_MODULE || i === DlangTypes.KW_PACKAGE) {
-            if (peekIsOneOf(DlangTypes.OP_PAR_RIGHT, DlangTypes.OP_COMMA)) {
-                advance()
-                exit_section_modified(builder, m, DlangTypes.TYPE_SPECIALIZATION, true)
-                return true
-            }
+        if ((isTypeCtor(i) || i === DlangTypes.KW___VECTOR) && peekIsOneOf(DlangTypes.OP_PAR_RIGHT, DlangTypes.OP_COMMA))
+            advance()
+        else if (i === DlangTypes.KW_STRUCT || i === DlangTypes.KW_UNION || i === DlangTypes.KW_CLASS || i === DlangTypes.KW_INTERFACE || i === DlangTypes.KW_ENUM ||
+            i === DlangTypes.KW_FUNCTION || i === DlangTypes.KW_DELEGATE || i === DlangTypes.KW_SUPER || i === DlangTypes.KW_RETURN || i === DlangTypes.KW___PARAMETERS ||
+            i === DlangTypes.KW_MODULE || i === DlangTypes.KW_PACKAGE) {
+            advance()
+        } else {
             if (!parseType()) {
                 cleanup(m, DlangTypes.TYPE_SPECIALIZATION)
                 return false
             }
-        } else if (!parseType()) {
-            cleanup(m, DlangTypes.TYPE_SPECIALIZATION)
-            return false
         }
-        exit_section_modified(builder, m, DlangTypes.TYPE_SPECIALIZATION, true)
+        m.done(DlangTypes.TYPE_SPECIALIZATION)
         return true
     }
 
@@ -7758,6 +7816,17 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * ;)
      */
     fun parseVariableDeclaration(m: PsiBuilder.Marker): Boolean {
+        val preCheckBookmark = builder.mark()
+        while (builder.tokenType === DlangTypes.OP_AT) {
+            parseAtAttribute()
+        }
+        // It is not a variable declaration but an enum declaration with an empty body
+        if (builder.tokenType === DlangTypes.KW_ENUM && peekAre(DlangTypes.ID, DlangTypes.OP_SCOLON)) {
+            preCheckBookmark.rollbackTo()
+            return false
+        }
+        preCheckBookmark.rollbackTo()
+
         val bookmark = builder.mark()
         var hasStorageClass = false
         while (!builder.eof()) {
@@ -8454,7 +8523,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             DlangTypes.HEX_STRING
         )
 
-        private val basicTypes: Set<IElementType?> = Sets.newHashSet<IElementType?>(
+        private val builtinTypes: Set<IElementType?> = Sets.newHashSet<IElementType?>(
             DlangTypes.KW_INT,
             DlangTypes.KW_BOOL,
             DlangTypes.KW_BYTE,

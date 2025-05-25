@@ -89,8 +89,8 @@ static this() {
     types_children["AndExpression"] = ["Expression*", "OP_AND"];
     types_extra_interfaces["AndExpression"] = ["BitwiseExpression"];
     types_children["AnonymousEnumDeclaration"] = ["Expression","OP_COLON","KW_ENUM","OP_PAR_LEFT","OP_PAR_RIGHT","Type","EnumMember*"];
-    types_extra_interfaces["AnonymousEnumDeclaration"] = ["Declaration"];
-    types_children["AnonymousEnumMember"] = [];
+    types_extra_interfaces["AnonymousEnumDeclaration"] = ["Declaration", "DTypedElement"];
+    types_mixins["AnonymousEnumDeclaration"] = "DLanguageAnonymousEnumDeclarationImplMixin";
     types_children["ArgumentList"] = ["Expression*", "OP_COMMA*"];
     types_children["Arguments"] = ["ArgumentList","OP_PAR_RIGHT", "OP_PAR_LEFT"];
     types_children["ArrayAccessExpression"] = ["Expression", "IndexExpression"];
@@ -434,7 +434,6 @@ static this() {
     has_processDeclaration["AndAndExpression"] = false;
     has_processDeclaration["AndExpression"] = false;
     has_processDeclaration["AnonymousEnumDeclaration"] = false;
-    has_processDeclaration["AnonymousEnumMember"] = false;
     has_processDeclaration["ArgumentList"] = false;
     has_processDeclaration["Arguments"] = false;
     has_processDeclaration["ArrayAccessExpression"] = false;

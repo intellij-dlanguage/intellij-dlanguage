@@ -31,10 +31,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitAnonymousEnumMember(@NotNull final DLanguageAnonymousEnumMember o) {
-        visitPsiElement(o);
-    }
-
     public void visitArgumentList(@NotNull final DLanguageArgumentList o) {
         visitPsiElement(o);
     }
