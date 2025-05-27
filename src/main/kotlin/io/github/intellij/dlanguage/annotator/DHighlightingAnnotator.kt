@@ -119,6 +119,7 @@ class DHighlightingAnnotator : Annotator {
             is TemplateThisParameter -> element.templateTypeParameter?.identifier
             is ReferenceExpression -> element.identifier
             is TemplateSingleArgument -> element.identifier
+            is QualifiedIdentifier -> element.identifier
             else -> element
         }
 
