@@ -95,13 +95,14 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
         place: PsiElement
     ): Boolean {
         var toContinue = true
-        var processFiles = state.get<MutableList<String>>(PROCESSED_FILES_KEY)
+        var processFiles = state.get(PROCESSED_FILES_KEY)
         var newState = state
         if (processFiles == null) {
-            processFiles = mutableListOf<String>()
+            processFiles = mutableListOf()
             newState = state.put(PROCESSED_FILES_KEY, processFiles)
         }
         processFiles.add(getFullyQualifiedModuleName())
+        processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, this)
         for (element in children) {
             if (element is DLanguageModuleDeclaration) {
                 if (!processor.execute(element, state)) {
@@ -114,6 +115,7 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                 }
             }
         }
+        processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, null)
         if (toContinue && getFullyQualifiedModuleName() != "object" && this == place.containingFile) {
             if (DumbService.isDumb(project))
                 return true
@@ -125,8 +127,10 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                 objects = objects.filter {it.containingDirectory.name == "dmd" }.toSet()
 
             val objectModule = objects.firstOrNull()?.containingFile as DlangPsiFile?
+            processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, objectModule)
             toContinue = objectModule?.processDeclarations(processor, newState, objectModule, objectModule) != false
         }
+        processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, null)
         return toContinue
     }
 

@@ -51,7 +51,6 @@ object ScopeProcessorImplUtil {
             }
             is ClassDeclaration,
             is EnumDeclaration,
-            is FunctionDeclaration,
             is InterfaceDeclaration,
             is VersionSpecification
                 -> return processor.execute(def, state)
@@ -90,6 +89,7 @@ object ScopeProcessorImplUtil {
                 }
                 return toContinue
             }
+            is FunctionDeclaration,
             is DeclarationBlock,
             is AttributeSpecifier,
             is AutoDeclaration,

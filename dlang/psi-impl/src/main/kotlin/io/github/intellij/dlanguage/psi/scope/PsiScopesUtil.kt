@@ -6,6 +6,7 @@ import com.intellij.psi.PsiQualifiedReference
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import io.github.intellij.dlanguage.psi.interfaces.Expression
+import io.github.intellij.dlanguage.psi.scope.processor.UFCSProcessor
 import io.github.intellij.dlanguage.psi.types.*
 import io.github.intellij.dlanguage.utils.AttributeSpecifier
 
@@ -88,18 +89,26 @@ object PsiScopesUtil {
             var type: DType? = null
             if (reference.qualifier is Expression) {
                 type = (reference.qualifier as Expression).dType
-                if (processTypeDeclaration(type, reference.element, processor) == false)
+                if (!processTypeDeclaration(type, reference.element, processor))
                     return false
             }
             if (type == null) {
-                var target: PsiElement? = reference.qualifier?.reference?.resolve()
-                return target?.processDeclarations(processor, ResolveState.initial(), target, reference.element) ?: true
+                val target: PsiElement? = reference.qualifier?.reference?.resolve()
+                val `continue` = target?.processDeclarations(processor, ResolveState.initial(), target, reference.element) ?: true
+                if (!`continue`)
+                    return false
             }
+            // UFCS search
+            val processor = UFCSProcessor(processor);
+            if(!treeWalkUp(processor, reference.element, null)) {
+                return false
+            }
+            processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, reference.element.containingFile)
+            return reference.element.containingFile.processDeclarations(processor, ResolveState.initial(), reference.element, reference.element)
         } else {
             // simple expression -> resolve a top level declaration
             return treeWalkUp(processor, reference.element, maxScope)
         }
-        return true
     }
 
     private fun processTypeDeclaration(type: DType?, place: PsiElement, processor: PsiScopeProcessor): Boolean {
@@ -114,8 +123,7 @@ object PsiScopesUtil {
         }
         if (type is UserDefinedDType) {
             val target = type.resolve()
-            if (target != null)
-                return target.processDeclarations(processor, ResolveState.initial(), target, place)
+            return target.processDeclarations(processor, ResolveState.initial(), target, place)
         }
         return true
     }

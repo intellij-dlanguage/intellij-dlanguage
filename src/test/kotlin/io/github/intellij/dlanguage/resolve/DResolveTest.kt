@@ -81,9 +81,8 @@ class DResolveTest : DResolveTestCase() {
     @Test
     fun testImportWithSpacesAndComments() = doTest()
 
-    // TODO need to handle public imports
-    //@Test
-    //fun testImportFromPackage() = doTest()
+    @Test
+    fun testImportFromPackage() = doTest()
 
     @Test
     fun testImportNamedBindResolve() = doTest()
@@ -221,4 +220,16 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testFieldUsageOfAnonymousUnionInAnotherStruct() = doTest()
+
+    @Test
+    fun testFunctionCallUFCS() = doTest()
+
+    @Test
+    fun testFunctionCallUFCSWithLocalReferenceSameName() = doTest()
+
+    @Test
+    fun testFunctionCallUFCSWithLocalImport() = doTest()
+
+    @Test
+    fun testFunctionCallUFCSWithLocalImportResolveLocalFunction() = doTest()
 }
