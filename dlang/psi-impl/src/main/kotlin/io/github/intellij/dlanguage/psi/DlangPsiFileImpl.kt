@@ -113,6 +113,8 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                 if (!processDeclaration(element, processor, newState, lastParent, place)) {
                     toContinue = false
                 }
+                // processDeclaration may overwrite the declaration holder, so reset it before re-processing
+                processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, this)
             }
         }
         processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, null)
@@ -127,7 +129,6 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                 objects = objects.filter {it.containingDirectory.name == "dmd" }.toSet()
 
             val objectModule = objects.firstOrNull()?.containingFile as DlangPsiFile?
-            processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, objectModule)
             toContinue = objectModule?.processDeclarations(processor, newState, objectModule, objectModule) != false
         }
         processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, null)

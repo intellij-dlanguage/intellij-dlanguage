@@ -232,4 +232,7 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testFunctionCallUFCSWithLocalImportResolveLocalFunction() = doTest()
+
+    @Test
+    fun testFunctionCallUFCSWithLocalSelectiveImportResolve() = doTest()
 }

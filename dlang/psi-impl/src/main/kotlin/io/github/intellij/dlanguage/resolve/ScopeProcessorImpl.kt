@@ -594,8 +594,11 @@ object ScopeProcessorImpl {
                     if (!processor.execute(elt.namedImportBind!!, state))
                         return false
                 } else {
-                    if (elt.identifier?.text == place.text) {
-                        return base.processDeclarations(processor, state, lastParent, place)
+                    val found = elt.reference?.resolve()
+                    if (found != null) {
+                        processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, found.containingFile)
+                        if (!processor.execute(found, state))
+                            return false
                     }
                 }
             }
