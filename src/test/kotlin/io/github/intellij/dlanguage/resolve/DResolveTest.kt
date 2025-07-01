@@ -12,6 +12,12 @@ import org.junit.Test
 class DResolveTest : DResolveTestCase() {
 
     @Test
+    fun testArrayLengthVariableToEnumDeclaration() = doTest()
+
+    @Test
+    fun testArrayLengthVariableToParameter() = doTest()
+
+    @Test
     fun testClassUsageToClassDefinition() = doTest()
 
     @Test

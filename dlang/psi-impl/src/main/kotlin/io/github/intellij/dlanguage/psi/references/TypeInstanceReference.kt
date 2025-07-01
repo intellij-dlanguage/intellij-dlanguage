@@ -13,7 +13,7 @@ class TypeInstanceReference(element: TemplateSingleArgument,
                             textRange: TextRange
 ): PsiReferenceBase<TemplateSingleArgument>(element, textRange), PsiQualifiedReference {
 
-    override fun resolve(): PsiElement? = TypeResolveUtil.resolveType(this, false)
+    override fun resolve(): PsiElement? = TypeResolveUtil.resolveType(this, false, false)
 
     override fun getQualifier(): PsiElement? = null
 

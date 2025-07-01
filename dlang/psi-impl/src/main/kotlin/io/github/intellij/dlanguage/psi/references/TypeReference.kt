@@ -13,11 +13,14 @@ import io.github.intellij.dlanguage.utils.QualifiedIdentifier
 class TypeReference(element: QualifiedIdentifier,
                     textRange: TextRange,
                     private val qualifiedIdentifier: QualifiedIdentifier?,
-                    private var referenceName: String
+                    private var referenceName: String,
+                    private val inTypeSuffix: Boolean
 ) : PsiReferenceBase<QualifiedIdentifier>(element, textRange),
     PsiQualifiedReference {
 
-    override fun resolve(): PsiElement? = TypeResolveUtil.resolveType(this, myElement.templateInstance != null)
+    override fun resolve(): PsiElement? {
+        return TypeResolveUtil.resolveType(this, myElement.templateInstance != null, inTypeSuffix)
+    }
 
     override fun getQualifier(): PsiElement? = qualifiedIdentifier
 
