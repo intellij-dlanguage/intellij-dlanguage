@@ -11,14 +11,13 @@ import io.github.intellij.dlanguage.psi.DResolveResult
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.interfaces.TemplateParameter
 import io.github.intellij.dlanguage.psi.interfaces.UserDefinedType
-import io.github.intellij.dlanguage.utils.AliasInitializer
-import io.github.intellij.dlanguage.utils.DeclaratorIdentifier
-import io.github.intellij.dlanguage.utils.TemplateDeclaration
-import io.github.intellij.dlanguage.utils.TemplateParameters
+import io.github.intellij.dlanguage.utils.*
 
 class TypeProcessor(private val elementName: String,
                     private val startPLace: PsiElement,
-                    private val forceTemplateSearch: Boolean) : PsiScopeProcessor {
+                    private val forceTemplateSearch: Boolean,
+                    private val canSearchVariable: Boolean
+) : PsiScopeProcessor {
     private var candidates: MutableList<DResolveResult>? = null
     private var resolveResult = ResolveResult.EMPTY_ARRAY
 
@@ -26,7 +25,8 @@ class TypeProcessor(private val elementName: String,
         if (element !is UserDefinedType && element !is DeclaratorIdentifier &&
             element !is AliasInitializer && element !is TemplateDeclaration &&
             element !is TemplateParameter) {
-            return true
+            if (!(canSearchVariable && (element is Parameter || element is AutoAssignment || element is IdentifierInitializer)))
+                return true
         }
         if ((element as DNamedElement).name != elementName) return true
         if (forceTemplateSearch &&

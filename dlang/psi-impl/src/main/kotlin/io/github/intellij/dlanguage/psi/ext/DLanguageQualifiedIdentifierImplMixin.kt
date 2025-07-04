@@ -12,6 +12,7 @@ import io.github.intellij.dlanguage.psi.references.AliasValueReference
 import io.github.intellij.dlanguage.psi.references.TypeReference
 import io.github.intellij.dlanguage.utils.AliasInitializer
 import io.github.intellij.dlanguage.utils.Parameter
+import io.github.intellij.dlanguage.utils.TypeSuffix
 
 abstract class DLanguageQualifiedIdentifierImplMixin(node: ASTNode) : ASTWrapperPsiElement(node),
     DLanguageQualifiedIdentifier {
@@ -31,6 +32,7 @@ abstract class DLanguageQualifiedIdentifierImplMixin(node: ASTNode) : ASTWrapper
         if (PsiTreeUtil.getParentOfType<AliasInitializer>(this, AliasInitializer::class.java, true, Declaration::class.java, Parameter::class.java) != null) {
             return AliasValueReference(this, range, qualifiedIdentifier, referenceElement.text)
         }
-        return TypeReference(this, range, qualifiedIdentifier, referenceElement.text)
+        val inTypeSuffix = PsiTreeUtil.getParentOfType<TypeSuffix>(this, TypeSuffix::class.java, true, Declaration::class.java, Parameter::class.java) != null
+        return TypeReference(this, range, qualifiedIdentifier, referenceElement.text, inTypeSuffix)
     }
 }
