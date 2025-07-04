@@ -5,6 +5,7 @@ int i = <error descr="Value too large">99999999999999999999999999999999999999999
 
 // valid values
 int i = 0xFF;
+int i = 0xff;
 int i = 0;
 int i = 0b1;
 

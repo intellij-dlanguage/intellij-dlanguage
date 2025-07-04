@@ -10,7 +10,7 @@ fun checkLiteral(expressionElement: LiteralExpression, holder: AnnotationHolder)
     if (expressionElement.integeR_LITERAL != null) {
         val element = expressionElement.integeR_LITERAL!!
         val text = element.text
-        if (DPsiLiteralUtil.isHexadecimal(text) && !text.substring(2).contains("[0-9A-F]".toRegex()))
+        if (DPsiLiteralUtil.isHexadecimal(text) && !text.substring(2).contains("[0-9a-fA-F]".toRegex()))
             holder.newAnnotation(HighlightSeverity.ERROR, DlangBundle.message("literal.hexadecimal.no.digits")).range(element).create()
         else if (DPsiLiteralUtil.isBinary(text) && !text.substring(2).contains("[01]".toRegex()))
             holder.newAnnotation(HighlightSeverity.ERROR, DlangBundle.message("literal.binary.no.digits")).range(element).create()
