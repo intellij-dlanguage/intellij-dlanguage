@@ -8,14 +8,7 @@ import com.intellij.psi.PsiReference
 import io.github.intellij.dlanguage.psi.DLanguageReferenceExpression
 import io.github.intellij.dlanguage.psi.interfaces.DTypedElement
 import io.github.intellij.dlanguage.psi.references.GenericExpressionElementReference
-import io.github.intellij.dlanguage.psi.types.DAliasType
-import io.github.intellij.dlanguage.psi.types.DArrayType
-import io.github.intellij.dlanguage.psi.types.DAssociativeArrayType
-import io.github.intellij.dlanguage.psi.types.DPointerType
-import io.github.intellij.dlanguage.psi.types.DPrimitiveType
-import io.github.intellij.dlanguage.psi.types.DType
-import io.github.intellij.dlanguage.psi.types.DUnknownType
-import io.github.intellij.dlanguage.psi.types.UserDefinedDType
+import io.github.intellij.dlanguage.psi.types.*
 import io.github.intellij.dlanguage.utils.EnumDeclaration
 import io.github.intellij.dlanguage.utils.FunctionDeclaration
 
@@ -50,7 +43,7 @@ abstract class DLanguageReferenceExpressionImplMixin(node: ASTNode) : ASTWrapper
                 "dup" -> arrayType
                 "idup" -> arrayType // TODO idup return an immutable array
                 "length" -> DPrimitiveType.fromText("int") // TODO size_t
-                "ptr" -> DPointerType(arrayType)
+                "ptr" -> DPointerType(arrayType.base)
                 "tupleof" -> if (arrayType.isFixedSize()) DUnknownType() else null // TODO replace DUnknownType by tuple
                 "capacity" -> if (arrayType.isFixedSize()) null else DPrimitiveType.fromText("int") // TODO size_t
                 else -> null

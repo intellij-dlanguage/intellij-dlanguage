@@ -3,7 +3,9 @@ package io.github.intellij.dlanguage.psi.references
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
+import com.intellij.psi.util.findParentOfType
 import com.intellij.util.IncorrectOperationException
+import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration
 import io.github.intellij.dlanguage.psi.impl.DElementFactory
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.resolve.processor.GenericProcessor
@@ -16,7 +18,7 @@ class ImportBindReference(element: ImportBind,
 {
     override fun resolve(): PsiElement? {
         val processor = GenericProcessor(element.identifier!!.text, myElement)
-        PsiScopesUtil.treeWalkUp(processor, element, null)
+        PsiScopesUtil.treeWalkUp(processor, element, element.findParentOfType<DLanguageImportDeclaration>(strict = true))
         if (processor.getResult().size == 1) {
             return processor.getResult()[0].element as DNamedElement
         }

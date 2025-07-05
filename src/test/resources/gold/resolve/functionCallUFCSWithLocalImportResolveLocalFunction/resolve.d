@@ -1,4 +1,4 @@
-
+import other;
 void <resolved>writeln(int i) {}
 
 unittest {

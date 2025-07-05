@@ -81,7 +81,7 @@ class AutoValueAssignmentTypeTest : LightPlatformCodeInsightFixture4TestCase() {
     @Test
     fun testAutoExpressionPropertiesCallAssignment() {
         doTest("int", """int[] x; auto expr = x.length;""")
-        doTest("void[]*", """void[] x; auto expr = x.ptr;""")
+        doTest("void*", """void[] x; auto expr = x.ptr;""")
     }
 
     /**

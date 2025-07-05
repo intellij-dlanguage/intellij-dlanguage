@@ -100,11 +100,7 @@ object PsiScopesUtil {
             }
             // UFCS search
             val processor = UFCSProcessor(processor);
-            if(!treeWalkUp(processor, reference.element, null)) {
-                return false
-            }
-            processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, reference.element.containingFile)
-            return reference.element.containingFile.processDeclarations(processor, ResolveState.initial(), reference.element, reference.element)
+            return treeWalkUp(processor, reference.element, null);
         } else {
             // simple expression -> resolve a top level declaration
             return treeWalkUp(processor, reference.element, maxScope)
