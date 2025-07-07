@@ -13,6 +13,9 @@ bin/
 .idea/
 *.iml
 
+# Ignore kotlin session files
+.kotlin/
+
 # Ignore Sublime Text workspace (project file is ok):
 *.sublime-workspace
 
