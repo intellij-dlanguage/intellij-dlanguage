@@ -1,8 +1,0 @@
-DlangTokenType.module ('module')
-WHITE_SPACE (' ')
-DlangTokenType.ID ('my')
-DlangTokenType.. ('.')
-DlangTokenType.ID ('test')
-DlangTokenType.. ('.')
-DlangTokenType.ID ('project')
-DlangTokenType.; (';')

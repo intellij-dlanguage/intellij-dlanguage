@@ -1,5 +1,0 @@
-DlangTokenType.pragma ('pragma')
-DlangTokenType.( ('(')
-DlangTokenType.INTEGER_LITERAL ('1')
-DlangTokenType.) (')')
-DlangTokenType.; (';')

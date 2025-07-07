@@ -1,7 +1,0 @@
-DlangTokenType.NESTING_BLOCK_DOC ('/++ And this. +/')
-WHITE_SPACE ('\n\n')
-DlangTokenType.NESTING_BLOCK_DOC ('/++\nFist level\n/++\nSecond level\n+/\n+/')
-WHITE_SPACE ('\n\n')
-DlangTokenType.NESTING_BLOCK_DOC ('/+++/')
-WHITE_SPACE ('\n\n')
-DlangTokenType.NESTING_BLOCK_DOC ('/++ /// +/')

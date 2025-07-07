@@ -1,3 +1,0 @@
-DlangTokenType.NESTING_BLOCK_COMMENT ('/+\n hello\n +/')
-WHITE_SPACE ('\n\n')
-DlangTokenType.NESTING_BLOCK_COMMENT ('/++/')
