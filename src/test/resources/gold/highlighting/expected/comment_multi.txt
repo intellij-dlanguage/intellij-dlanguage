@@ -1,3 +1,0 @@
-DlangTokenType.BLOCK_COMMENT ('/*\n multiline comment\n is here\n */')
-WHITE_SPACE ('\n\n')
-DlangTokenType.BLOCK_COMMENT ('/**/')

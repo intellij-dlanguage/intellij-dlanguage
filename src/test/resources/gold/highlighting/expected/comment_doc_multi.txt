@@ -1,5 +1,0 @@
-DlangTokenType.BLOCK_DOC ('/** So is this. */')
-WHITE_SPACE ('\n\n')
-DlangTokenType.BLOCK_DOC ('/***/')
-WHITE_SPACE ('\n\n')
-DlangTokenType.BLOCK_DOC ('/** /* */')

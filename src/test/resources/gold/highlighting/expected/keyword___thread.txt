@@ -1,1 +1,0 @@
-DlangTokenType.ID ('__thread')
