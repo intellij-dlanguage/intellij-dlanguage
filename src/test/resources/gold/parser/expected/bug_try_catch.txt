@@ -2,7 +2,7 @@ D Language File
   FUNCTION_DECLARATION
     DLanguageAttributeImpl(ATTRIBUTE)
       PsiElement(DlangTokenType.public)('public')
-    DLanguageAttributeImpl(ATTRIBUTE)
+    DLanguageStorageClassImpl(STORAGE_CLASS)
       PsiElement(DlangTokenType.static)('static')
     DLanguageBasicTypeImpl(BASIC_TYPE)
       DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
