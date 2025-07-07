@@ -2246,13 +2246,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
 
     fun parseAttributeSpecifier(marker: PsiBuilder.Marker): Boolean {
         val bookmark = builder.mark()
-        var hasAttribute = false
-        while (!builder.eof()) {
-            if (!parseAttribute()) {
-                break
-            }
-            hasAttribute = true
-        }
+        var hasAttribute = parseAttribute()
         if (!hasAttribute) {
             bookmark.rollbackTo()
             return false
