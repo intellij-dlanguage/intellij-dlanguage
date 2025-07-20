@@ -3,7 +3,7 @@
 annotations = "26.0.2"
 gson = "2.13.+"
 junit = "4.13+"
-junit-vintage = "5.12+"
+junit-vintage = "5.13+"
 mockito-kotlin = "5.4+"
 sentry = "8+"
 
