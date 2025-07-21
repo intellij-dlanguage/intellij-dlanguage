@@ -42,6 +42,7 @@ class DLanguageParserTest : DLanguageParserTestBase("parser", "d", DLangParserDe
     fun testdeclaration_static_foreach() = doDlangParserTest()
     fun testdeclaration_strings() = doDlangParserTest()
     fun testdeclaration_vector() = doDlangParserTest()
+    fun testdeclaration_block_with_invalid_function_declaration() = doDlangParserTest(checkResult = true, shouldPass = false)
 
     //  types
     fun testtype_arithmetic_conversion() = doDlangParserTest()

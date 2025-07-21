@@ -1,0 +1,27 @@
+D Language File
+  CLASS_DECLARATION
+    PsiElement(DlangTokenType.class)('class')
+    PsiElement(DlangTokenType.ID)('A')
+    DLanguageStructBodyImpl(STRUCT_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      PsiErrorElement:Unable to parse this declaration
+        PsiElement(DlangTokenType.ID)('sharedthis')
+        PsiElement(DlangTokenType.()('(')
+        PsiElement(DlangTokenType.))(')')
+        PsiElement(DlangTokenType.{)('{')
+        PsiElement(DlangTokenType.})('}')
+      PsiComment(DlangTokenType.LINE_COMMENT)('// the missing space between shared and this make an invalid declaration')
+      PsiComment(DlangTokenType.LINE_COMMENT)('// this declaration is valid')
+      FUNCTION_DECLARATION
+        DLanguageBasicTypeImpl(BASIC_TYPE)
+          DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+            PsiElement(DlangTokenType.void)('void')
+        PsiElement(DlangTokenType.ID)('foo')
+        DLanguageParametersImpl(PARAMETERS)
+          PsiElement(DlangTokenType.()('(')
+          PsiElement(DlangTokenType.))(')')
+        DLanguageSpecifiedFunctionBodyImpl(SPECIFIED_FUNCTION_BODY)
+          DLanguageBlockStatementImpl(BLOCK_STATEMENT)
+            PsiElement(DlangTokenType.{)('{')
+            PsiElement(DlangTokenType.})('}')
+      PsiElement(DlangTokenType.})('}')
