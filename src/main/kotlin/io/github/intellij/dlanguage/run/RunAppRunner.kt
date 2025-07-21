@@ -1,4 +1,4 @@
-package io.github.intellij.dub.run
+package io.github.intellij.dlanguage.run
 
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.RunProfile
@@ -12,12 +12,8 @@ import com.intellij.execution.ui.RunContentDescriptor
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.util.InvalidDataException
 import com.intellij.openapi.util.WriteExternalException
-import io.github.intellij.dlanguage.run.DlangRunAppConfiguration
-import io.github.intellij.dlanguage.run.DlangRunAppState
-import io.github.intellij.dlanguage.run.RunUtil
 import io.github.intellij.dlanguage.run.exception.ModuleNotFoundException
 import io.github.intellij.dlanguage.run.exception.NoValidDlangSdkFound
-import io.github.intellij.dub.run.RunAppRunner.DubAppSettings
 import org.jdom.Element
 
 /**
@@ -25,7 +21,7 @@ import org.jdom.Element
  * It may be worth investigating the use of AsyncProgramRunner or perhaps simply the implementing
  * the ProgramRunner<Settings extends RunnerSettings> interface
 </Settings> */
-class RunAppRunner : GenericProgramRunner<DubAppSettings>() {
+class RunAppRunner : GenericProgramRunner<RunAppRunner.RunAppSettings>() {
     override fun getRunnerId(): String {
         return javaClass.simpleName
     }
@@ -54,7 +50,7 @@ class RunAppRunner : GenericProgramRunner<DubAppSettings>() {
         return super.doExecute(state, environment)
     }
 
-    class DubAppSettings : RunnerSettings {
+    class RunAppSettings : RunnerSettings {
         @Throws(InvalidDataException::class)
         override fun readExternal(element: Element) {
         }
