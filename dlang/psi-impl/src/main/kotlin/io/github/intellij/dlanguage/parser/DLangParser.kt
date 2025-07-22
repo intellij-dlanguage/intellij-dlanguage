@@ -1473,25 +1473,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         }
         while (!builder.eof() && builder.tokenType !== DlangTypes.OP_BRACES_RIGHT) {
             if (!parseStatement()) {
-                val recovery = builder.mark()
-                var parentLevel = 0
-                while (!builder.eof()) {
-                    if (builder.tokenType === DlangTypes.OP_BRACES_RIGHT) {
-                        parentLevel--
-                        if (parentLevel < 0) {
-                            break
-                        }
-                    } else if (builder.tokenType === DlangTypes.OP_BRACES_LEFT) {
-                        parentLevel++
-                    } else if (builder.tokenType === DlangTypes.OP_SCOLON) {
-                        if (parentLevel <= 0) {
-                            break
-                        }
-                    }
-                    builder.advanceLexer()
-                }
-                if (builder.tokenType === DlangTypes.OP_SCOLON) builder.advanceLexer()
-                recovery.error("Unable to parse this statement")
+                recover("Unable to parse this statement")
             }
         }
         expect(DlangTypes.OP_BRACES_RIGHT)
@@ -1923,22 +1905,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         val bookmark = builder.mark()
         if (!parseDeclDef()) {
             bookmark.rollbackTo()
-            val recovery = builder.mark()
-            var braces_level = 0
-            while (!builder.eof()) {
-                if (builder.tokenType === DlangTypes.OP_BRACES_RIGHT) {
-                    braces_level--
-                    if (braces_level < 0) break
-                } else if (builder.tokenType === DlangTypes.OP_BRACES_LEFT) {
-                    braces_level++
-                }
-                if (builder.tokenType === DlangTypes.OP_SCOLON) {
-                    if (braces_level <= 0) break
-                }
-                builder.advanceLexer()
-            }
-            if (builder.tokenType === DlangTypes.OP_SCOLON) builder.advanceLexer()
-            recovery.error("Unable to parse this declaration")
+            recover("Unable to parse this declaration")
         } else {
             bookmark.drop()
         }
@@ -6353,14 +6320,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
     fun parseStructBody(): Boolean {
         val m = builder.mark()
         expect(DlangTypes.OP_BRACES_LEFT)
-        while (!builder.eof() && builder.tokenType !== DlangTypes.OP_BRACES_RIGHT) {
-            if (!parseDeclDef()) {
-                val recovery = builder.mark()
-                while (!builder.eof() && builder.tokenType !== DlangTypes.OP_BRACES_RIGHT && builder.tokenType !== DlangTypes.OP_SCOLON) builder.advanceLexer()
-                if (builder.tokenType === DlangTypes.OP_SCOLON) builder.advanceLexer()
-                recovery.error("Unable to parse this declaration")
-            }
-        }
+        parseDeclDefsWithRecoveryUpToParentScope()
         expect(DlangTypes.OP_BRACES_RIGHT)
         m.done(DlangTypes.STRUCT_BODY)
         return true
@@ -6720,14 +6680,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             return true
         }
         expect(DlangTypes.OP_BRACES_LEFT) ?: return true
-        while (!builder.eof() && builder.tokenType !== DlangTypes.OP_BRACES_RIGHT) {
-            if (!parseDeclDef()) {
-                val recovery = builder.mark()
-                while (!builder.eof() && builder.tokenType !== DlangTypes.OP_BRACES_RIGHT && builder.tokenType !== DlangTypes.OP_SCOLON) builder.advanceLexer()
-                if (builder.tokenType === DlangTypes.OP_SCOLON) builder.advanceLexer()
-                recovery.error("Unable to parse this declaration")
-            }
-        }
+        parseDeclDefsWithRecoveryUpToParentScope()
         expect(DlangTypes.OP_BRACES_RIGHT)
         return true
     }
@@ -8061,6 +8014,34 @@ internal class DLangParser(private val builder: PsiBuilder) {
             marker.done(DlangTypes.XOR_EXPRESSION)
         }
         return marker
+    }
+
+    fun recover(errorMessage: String) {
+        val recovery = builder.mark()
+        var parentLevel = 0
+        while (!builder.eof()) {
+            if (builder.tokenType === DlangTypes.OP_BRACES_RIGHT) {
+                parentLevel--
+                if (parentLevel == 0) {
+                    // this one belongs to the current scope, so go further
+                    builder.advanceLexer()
+                    // If we opened block, then it’s the end of the current declaration
+                    break
+                }
+                if (parentLevel < 0) {
+                    break
+                }
+            } else if (builder.tokenType === DlangTypes.OP_BRACES_LEFT) {
+                parentLevel++
+            } else if (builder.tokenType === DlangTypes.OP_SCOLON) {
+                if (parentLevel <= 0) {
+                    break
+                }
+            }
+            builder.advanceLexer()
+        }
+        if (builder.tokenType === DlangTypes.OP_SCOLON) builder.advanceLexer()
+        recovery.error(errorMessage)
     }
 
     /**
