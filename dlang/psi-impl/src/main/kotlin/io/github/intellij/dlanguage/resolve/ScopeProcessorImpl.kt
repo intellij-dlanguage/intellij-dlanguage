@@ -586,9 +586,8 @@ object ScopeProcessorImpl {
         // we have an import binding, search for it first
         if (element.importBindings != null) {
             // with import binding restricts the scope of the corresponding single import
-            val base = singleImports.removeLastOrNull() // remove the last as due to binding, we can only access to his bindings
-            if (base == null)
-                return true
+            val base = singleImports.removeLastOrNull()
+                ?: return true // remove the last as due to binding, we can only access to his bindings
             for (elt in element.importBindings!!.importBinds) {
                 if (elt.namedImportBind != null) {
                     if (!processor.execute(elt.namedImportBind!!, state))

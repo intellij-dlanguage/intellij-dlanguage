@@ -61,11 +61,7 @@ object PsiScopesUtil {
         processor: PsiScopeProcessor,
         state: ResolveState,
     ): Boolean {
-        var child: PsiElement? =  thisElement.prevSibling
-
-        if (child == null) {
-            return true
-        }
+        var child: PsiElement? = thisElement.prevSibling ?: return true
 
         while (child != null) {
             // ignore attribute with block (example `public {}`) as they don’t impact us
