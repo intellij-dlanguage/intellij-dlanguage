@@ -123,6 +123,7 @@
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDmdConfigurationType"/>
         <programRunner implementation="io.github.intellij.dlanguage.run.DmdBuildRunner"/>
+        <programRunner implementation="io.github.intellij.dlanguage.run.RunAppRunner"/>
 
         <consoleFilterProvider implementation="io.github.intellij.dlanguage.run.DmdConsoleFilterProvider"/>
 
