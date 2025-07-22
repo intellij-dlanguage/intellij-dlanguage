@@ -555,6 +555,10 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitPackage(@NotNull final DLanguagePackage o) {
+        visitPsiElement(o);
+    }
+
     public void visitParameter(@NotNull final DLanguageParameter o) {
         visitPsiElement(o);
     }
