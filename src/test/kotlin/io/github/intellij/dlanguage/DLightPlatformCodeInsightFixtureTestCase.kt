@@ -1,8 +1,5 @@
 package io.github.intellij.dlanguage
 
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.projectRoots.ProjectJdkTable
-import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.CharsetToolkit
@@ -82,13 +79,5 @@ abstract class DLightPlatformCodeInsightFixtureTestCase(
         var text = FileUtil.loadFile(File(resource), CharsetToolkit.UTF8).trim { it <= ' ' }
         text = StringUtil.convertLineSeparators(text)
         return text
-    }
-
-    protected fun setUpProjectSdk() {
-        ApplicationManager.getApplication().runWriteAction {
-            val sdk = projectDescriptor.sdk
-            ProjectJdkTable.getInstance().addJdk(sdk!!)
-            ProjectRootManager.getInstance(myFixture.project).projectSdk = sdk
-        }
     }
 }
