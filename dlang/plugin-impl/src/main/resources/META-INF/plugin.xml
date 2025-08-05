@@ -19,11 +19,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>1.36</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/61?closed=1">changelist</a>)<br/>
+        <b>1.37.1</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/61?closed=1">changelist</a>)<br/>
         <ul>
-            <li>Supports IntelliJ IDEA 2024.3 - 2025.1.*</li>
-            <li>Fixes in parser, now less false positive errors are reported</li>
-            <li>Detect and report invalid integer literals and some errors in enum declarations</li>
+            <li>Supports IntelliJ IDEA 2024.3 - 2025.2.*</li>
             <li>bug fixes</li>
         </ul>
     ]]>
