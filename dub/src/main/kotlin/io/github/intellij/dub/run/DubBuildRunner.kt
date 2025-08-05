@@ -1,7 +1,6 @@
 package io.github.intellij.dub.run
 
 import com.intellij.execution.ExecutionException
-import com.intellij.execution.ExecutionManager
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.RunProfile
 import com.intellij.execution.configurations.RunProfileState
@@ -16,9 +15,9 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.InvalidDataException
 import com.intellij.openapi.util.WriteExternalException
 import io.github.intellij.dlanguage.run.RunUtil
-import io.github.intellij.dlanguage.settings.ToolKey
 import io.github.intellij.dub.project.DubConfigurationParser
 import io.github.intellij.dub.project.DubPackage
+import io.github.intellij.dub.service.DubBinaryPathProvider
 import org.jdom.Element
 import java.nio.file.Paths
 
@@ -40,7 +39,7 @@ class DubBuildRunner : GenericProgramRunner<DubBuildRunner.DubBuildSettings>() {
         if (DefaultDebugExecutor.EXECUTOR_ID == executor.actionName) {
             val project: Project = environment.project
             var executableFilePath = project.basePath + "/" + project.name
-            val dubParser = DubConfigurationParser(project, ToolKey.DUB_KEY.path!!, false)
+            val dubParser = DubConfigurationParser(project, DubBinaryPathProvider.getDubPath()!!, false)
             if (dubParser.canUseDub() && dubParser.dubProject.isPresent) {
                 val rootPackage: DubPackage = dubParser.dubProject.get().rootPackage
                 executableFilePath = Paths.get(

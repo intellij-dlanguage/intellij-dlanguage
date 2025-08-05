@@ -22,6 +22,7 @@
         <b>1.37.1</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/61?closed=1">changelist</a>)<br/>
         <ul>
             <li>Supports IntelliJ IDEA 2024.3 - 2025.2.*</li>
+            <li>New dub configuration, now dub will auto-configure without manual intervention
             <li>bug fixes</li>
         </ul>
     ]]>

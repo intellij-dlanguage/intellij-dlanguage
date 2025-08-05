@@ -2,18 +2,17 @@ package io.github.intellij.dlanguage.settings;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.process.CapturingProcessHandler;
-import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.execution.process.ProcessAdapter;
-import com.intellij.execution.process.ProcessEvent;
-import com.intellij.execution.process.ProcessOutputTypes;
+import com.intellij.execution.process.*;
+import com.intellij.ide.DataManager;
 import com.intellij.ide.ui.search.SearchableOptionContributor;
 import com.intellij.ide.ui.search.SearchableOptionProcessor;
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.options.SearchableConfigurable;
+import com.intellij.openapi.options.ex.Settings;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
@@ -22,11 +21,17 @@ import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.TextAccessor;
+import com.intellij.ui.components.ActionLink;
 import com.intellij.util.messages.Topic;
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener;
 import io.github.intellij.dlanguage.messagebus.Topics;
 import io.github.intellij.dlanguage.tools.DtoolUtils;
+import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.charset.StandardCharsets;
@@ -40,12 +45,6 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import javax.swing.*;
-
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import static io.github.intellij.dlanguage.tools.DtoolUtils.*;
 
@@ -62,10 +61,8 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private final List<Tool> properties;
     // Swing components.
     private JPanel mainPanel;
-    private TextFieldWithBrowseButton dubPath;
-    private RawCommandLineEditor dubFlags;
-    private JButton dubAutoFind;
-    private JTextField dubVersion;
+    private ActionLink dubMovedLink;
+    private JPanel dubPanel;
     private TextFieldWithBrowseButton dscannerPath;
     private RawCommandLineEditor dscannerFlags;
     private JButton dscannerAutoFind;
@@ -87,7 +84,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     private RawCommandLineEditor GDBFlags;
     private JTextField GDBVersion;
     private JTabbedPane tabbedPane1;
-    private JCheckBox chkNativeCodeCompletion;
 
     public static class SearchableDlangTools extends SearchableOptionContributor {
         @Override
@@ -104,8 +100,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         this.propertiesComponent = PropertiesComponent.getInstance();
 
         properties = Arrays.asList(
-            new Tool(project, "dub", ToolKey.DUB_KEY, dubPath, dubFlags,
-                dubAutoFind, dubVersion, DUB_LATEST, Topics.DUB_TOOL_CHANGE),
             new Tool(project, "dscanner", ToolKey.DSCANNER_KEY, dscannerPath, dscannerFlags,
                 dscannerAutoFind, dscannerVersion, DSCANNER_LATEST, Topics.DSCANNER_TOOL_CHANGE),
             new Tool(project, "dcd-server", ToolKey.DCD_SERVER_KEY, dcdPath, dcdFlags,
@@ -117,40 +111,14 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             new Tool(project, "gdb", ToolKey.GDB_KEY, GDBPath, GDBFlags,
                 GDBAutoFind, GDBVersion, null, Topics.GDB_TOOL_CHANGE)
         );
-    }
 
-    /**
-     * Heuristically finds the version number. Current implementation is the identity function since
-     * cabal plays nice.
-     */
-    @Deprecated
-    public static String getVersion(final String cmd) {
-        if (StringUtil.isEmptyOrSpaces(cmd) || !Files.isExecutable(Paths.get(cmd))) {
-            LOG.warn(String.format("unable to get version info for path: '%s'", cmd));
-            return "";
-        }
-        final GeneralCommandLine commandLine = new GeneralCommandLine(cmd, "--version");
-
-        final Future<String> future = ApplicationManager
-            .getApplication()
-            .executeOnPooledThread(() -> new CapturingProcessHandler(
-                commandLine.createProcess(),
-                commandLine.getCharset(),
-                commandLine.getCommandLineString()
-            ).runProcess().getStdout());
-
-        try {
-            final @Nullable String versionOutput = future.get(800, TimeUnit.MILLISECONDS);
-
-            if (StringUtil.isNotEmpty(versionOutput)) {
-                final String version = versionOutput.split("\n")[0].trim();
-                LOG.debug(String.format("%s [%s]", cmd, version));
-                return version;
+        dubMovedLink.addActionListener(actionEvent -> {
+            DataContext dataContext = DataManager.getInstance().getDataContext(dubPanel);
+            Settings settings = Settings.KEY.getData(dataContext);
+            if (settings != null) {
+                settings.select(settings.find("language.d.build.tool.dub"));
             }
-        } catch (final InterruptedException | java.util.concurrent.ExecutionException | TimeoutException e) {
-            LOG.error("Could not run: " + commandLine.getCommandLineString(), e);
-        }
-        return "";
+        });
     }
 
     @NotNull
@@ -227,8 +195,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 t.setDirty(false);
             }
         }
-        return propertiesComponent.getBoolean("USE_NATIVE_CODE_COMPLETION") != chkNativeCodeCompletion
-            .isSelected();
+        return false;
     }
 
     /**
@@ -271,8 +238,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         for (final Property property : properties) {
             property.saveState();
         }
-        propertiesComponent
-            .setValue("USE_NATIVE_CODE_COMPLETION", chkNativeCodeCompletion.isSelected());
     }
 
     /**
@@ -283,11 +248,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
         for (final Property property : properties) {
             property.restoreState();
         }
-        if (!propertiesComponent.isValueSet("USE_NATIVE_CODE_COMPLETION")) {
-            propertiesComponent.setValue("USE_NATIVE_CODE_COMPLETION", false);
-        }
-        chkNativeCodeCompletion
-            .setSelected(propertiesComponent.getBoolean("USE_NATIVE_CODE_COMPLETION"));
     }
 
     interface Property {
@@ -491,52 +451,12 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            @Nullable final String path = this.lookInStandardDirectories().orElseGet(this::locateViaCommandline);
+            @Nullable final String path = Optional.ofNullable(DtoolUtils.INSTANCE.lookInStandardDirectories(command)).orElseGet(this::locateViaCommandline);
 
             if (StringUtil.isNotEmpty(path)) {
                 pathField.setText(StringUtil.trim(path));
             } else {
                 Messages.showErrorDialog(String.format("Could not find '%s'.", command), "DLanguage");
-            }
-        }
-
-        /**
-         * Tries to get the absolute path for a command by trying standard installation directories (for dub).
-         * This is mostly useful for dub, especially on Mac/Linux where various installation methods can differ
-         */
-        private Optional<String> lookInStandardDirectories() {
-            for (final Path path : STANDARD_TOOL_PATHS) {
-                LOG.info(String.format("Looking for %s in %s", command, path.toString()));
-                //noinspection ObjectAllocationInLoop
-                final Path toolPath = path.resolve(command);
-                if (Files.exists(toolPath) && Files.isExecutable(toolPath)) {
-                    return Optional.of(toolPath.toAbsolutePath().toString());
-                }
-            }
-            return Optional.empty();
-        }
-
-        private static final Path[] STANDARD_TOOL_PATHS;
-
-        static {
-            if (SystemInfo.isWindows) {
-                STANDARD_TOOL_PATHS = new Path[] {
-                    Paths.get("\\D\\dmd2\\windows\\bin")
-                };
-            } else if (SystemInfo.isMac) {
-                STANDARD_TOOL_PATHS = new Path[] {
-                    Paths.get("/usr/local/opt") // homebrew
-                };
-            } else if (SystemInfo.isUnix) {
-                STANDARD_TOOL_PATHS = new Path[] {
-                    Paths.get("/usr/local/bin"),
-                    Paths.get("/usr/bin"),
-                    Paths.get("/snap/bin"), // #575 support snaps
-                    Paths.get(System.getProperty("user.home") + "/bin")
-                };
-            } else {
-                LOG.warn(String.format("D language plugin does not support %s", SystemInfo.getOsNameAndVersion()));
-                STANDARD_TOOL_PATHS = new Path[]{};
             }
         }
 

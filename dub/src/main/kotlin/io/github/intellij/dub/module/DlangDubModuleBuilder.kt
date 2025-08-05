@@ -28,14 +28,13 @@ import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.text.StringUtil
 import io.github.intellij.dlanguage.DlangBundle.message
 import io.github.intellij.dlanguage.module.DlangModuleBuilder
-import io.github.intellij.dub.run.DlangRunDubConfigurationType
 import io.github.intellij.dlanguage.settings.ToolKey
+import io.github.intellij.dub.run.DlangRunDubConfigurationType
 import org.jdom.JDOMException
 import org.jetbrains.annotations.NonNls
 import java.io.File
 import java.io.IOException
 import java.time.LocalTime
-import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 class DlangDubModuleBuilder :
@@ -48,7 +47,6 @@ class DlangDubModuleBuilder :
         modulesProvider: ModulesProvider
     ): Array<ModuleWizardStep> {
         return arrayOf(
-            DubBinaryForModuleStep(wizardContext),
             DubInitForModuleStep(wizardContext)
         )
     }
@@ -184,10 +182,6 @@ class DlangDubModuleBuilder :
         } catch (e: ExecutionException) {
             LOG.warn("There was a problem running 'dub init'", e)
         }
-    }
-
-    fun setDubBinary(dubBinary: String?) {
-        this.dubBinary = StringUtil.trim(dubBinary)
     }
 
     private class DubInitListener : ProcessAdapter() {

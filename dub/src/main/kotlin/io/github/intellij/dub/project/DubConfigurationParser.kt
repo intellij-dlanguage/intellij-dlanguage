@@ -13,13 +13,11 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
-import io.github.intellij.dub.project.DubConfigurationParser
+import io.github.intellij.dub.service.DubBinaryPathProvider
 import io.github.intellij.dub.tools.DescribeParser
 import io.github.intellij.dub.tools.DescribeParserException
 import io.github.intellij.dub.tools.DescribeParserImpl
 import io.github.intellij.dub.tools.DubProcessListener
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.*
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
@@ -119,7 +117,7 @@ class DubConfigurationParser @JvmOverloads constructor(
      */
     fun canUseDub(): Boolean {
         // For wsl, dub command can have any file name not only dub/dub.exe
-        val dubPathValid = StringUtil.isNotEmpty(dubBinaryPath)
+        val dubPathValid = DubBinaryPathProvider.verifyDubBinary(dubBinaryPath)
         val baseDir = if (moduleDir.isEmpty()) project.guessProjectDir() else LocalFileSystem.getInstance().findFileByPath(moduleDir)
         if (baseDir == null || !baseDir.exists())
             return false
@@ -179,18 +177,7 @@ class DubConfigurationParser @JvmOverloads constructor(
 
     private fun parseDubConfiguration(silentMode: Boolean): Optional<DubProject> {
         val projectDir = if (moduleDir.isEmpty()) project.guessProjectDir() else LocalFileSystem.getInstance().findFileByPath(moduleDir)
-        if (projectDir == null || !projectDir.exists() || StringUtil.isEmptyOrSpaces(dubBinaryPath)) {
-            return Optional.empty()
-        }
-        if (!Files.isExecutable(
-                Paths.get(
-                    StringUtil.trim(
-                        dubBinaryPath
-                    )
-                )
-            )
-        ) {
-            LOG.warn("Cannot run dub as path is not executable")
+        if (projectDir == null || !projectDir.exists() || !DubBinaryPathProvider.verifyDubBinary(dubBinaryPath)) {
             return Optional.empty()
         }
         try {

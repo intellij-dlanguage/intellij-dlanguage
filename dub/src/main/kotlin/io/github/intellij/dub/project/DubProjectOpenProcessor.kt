@@ -4,14 +4,12 @@ import com.intellij.ide.GeneralSettings
 import com.intellij.ide.impl.ProjectUtil
 import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ex.ProjectManagerEx
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.ui.Messages
-import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.projectImport.ProjectImportBuilder
 import com.intellij.projectImport.ProjectOpenProcessorBase
@@ -20,7 +18,7 @@ import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangBundle.message
 import io.github.intellij.dlanguage.DlangSdkType
 import io.github.intellij.dlanguage.module.DlangModuleBuilder
-import io.github.intellij.dlanguage.settings.ToolKey
+import io.github.intellij.dub.service.DubBinaryPathProvider
 import javax.swing.Icon
 
 /**
@@ -108,8 +106,8 @@ class DubProjectOpenProcessor : ProjectOpenProcessorBase<DubProjectImportBuilder
                 DubProjectImportBuilder::class.java
             )
         val rootDirectory = file.parent
-        return if (StringUtil.isNotEmpty(ToolKey.DUB_KEY.path)) {
-            builder.getParameters().dubBinary = ToolKey.DUB_KEY.path
+        return if (DubBinaryPathProvider.isDubAvailable()) {
+            builder.getParameters().dubBinary = DubBinaryPathProvider.getDubPath()
             //builder.setRootDirectory(context.getProjectFileDirectory());
             builder.setRootDirectory(rootDirectory.path)
             context.projectName = rootDirectory.name

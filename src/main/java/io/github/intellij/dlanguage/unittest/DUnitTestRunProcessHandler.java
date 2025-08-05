@@ -201,6 +201,7 @@ public class DUnitTestRunProcessHandler extends ProcessHandler { // consider OSP
         final String workingDirectory = project.getBasePath();
         //            final String testFile = configuration.getDFile().getCanonicalPath();
 
+        // FIXME this use the raw value so do not work if dub path is empty
         final String dubPath = ToolKey.DUB_KEY.getPath();
         if (dubPath == null || dubPath.isEmpty()) {
             NotificationGroupManager.getInstance()
