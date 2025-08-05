@@ -135,9 +135,6 @@
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunAppConfigurationType"/>
 
 
-        <moduleConfigurationEditorProvider
-            implementation="io.github.intellij.dlanguage.module.DlangModuleEditorsProvider"/>
-
         <!-- library -->
         <library.type implementation="io.github.intellij.dlanguage.library.DlangLibraryType"/>
         <orderRootType implementation="io.github.intellij.dlanguage.library.LibFileRootType" id="LIBRARY_FILE"
