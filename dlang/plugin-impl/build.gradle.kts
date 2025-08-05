@@ -76,13 +76,13 @@ tasks.register<Test>("testCompilation") {
 
 dependencies {
     intellijPlatform {
-        pluginModule(implementation (project(":")))
-        pluginModule(implementation (project(":utils")))
-        pluginModule(implementation (project(":errorreporting")))
-        pluginModule(implementation (project(":debugger")))
-        pluginModule(implementation (project(":sdlang")))
-        pluginModule(implementation (project(":dub")))
-        pluginModule(implementation (project(":dlang:psi-impl")))
+        pluginComposedModule(implementation (project(":")))
+        pluginComposedModule(implementation (project(":utils")))
+        pluginComposedModule(implementation (project(":errorreporting")))
+        pluginComposedModule(implementation (project(":debugger")))
+        pluginComposedModule(implementation (project(":sdlang")))
+        pluginComposedModule(implementation (project(":dub")))
+        pluginComposedModule(implementation (project(":dlang:psi-impl")))
 
         intellijIdeaCommunity(properties("ideaVersion"))
 
