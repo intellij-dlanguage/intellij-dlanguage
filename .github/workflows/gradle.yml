@@ -5,12 +5,12 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 18
     name: IDEA ${{ matrix.idea }} & JDK ${{ matrix.jdk }}
     strategy:
       fail-fast: false
       matrix:
-        idea: [ '2024.3', '2025.1' ]
+        idea: [ '2024.3', '2025.1', '2025.2' ]
         jdk: [ '21' ]
         #os: [ubuntu-latest, windows-latest, macOS-latest]
 
