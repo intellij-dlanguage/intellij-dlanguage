@@ -28,7 +28,7 @@ val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer
 }
 
 
-val ensureDirectory = tasks.register("ensureDirectory") {
+val ensureDirectory = tasks.register<DefaultTask>("ensureDirectory") {
     val file = file("gen/io/github/intellij/dlanguage/psi/impl")
     outputs.dir("gen/io/github/intellij/dlanguage/psi/impl")
     doFirst {
