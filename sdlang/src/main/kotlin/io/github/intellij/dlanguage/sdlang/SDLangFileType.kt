@@ -8,5 +8,5 @@ object SDLangFileType : LanguageFileType(SimpleDefinitionLanguage) {
     override fun getName(): String = "SDLang"
     override fun getDefaultExtension(): String = "sdl"
     override fun getDescription(): String = "Simple Definition Language"
-    override fun getIcon(): Icon = PlainTextFileType.INSTANCE.icon
+    override fun getIcon(): Icon = PlainTextFileType.INSTANCE.icon!!
 }
