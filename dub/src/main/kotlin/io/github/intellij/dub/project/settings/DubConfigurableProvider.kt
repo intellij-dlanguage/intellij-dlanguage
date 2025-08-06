@@ -91,7 +91,10 @@ class DubConfigurablePanel() : ImprovedDisposable {
             ToolKey.DUB_KEY.path = executablePath.text
         }
         onIsModified {
-            executablePath.text != ToolKey.DUB_KEY.path
+            if (ToolKey.DUB_KEY.path == null)
+                !executablePath.text.isNullOrEmpty()
+            else
+                executablePath.text != ToolKey.DUB_KEY.path
         }
         update()
     }
