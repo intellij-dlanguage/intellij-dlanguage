@@ -1,8 +1,9 @@
 Intellij D Language
 ===================
 
-Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA (planned Clion support is experimental. See [CLion issues](https://github.com/intellij-dlanguage/intellij-dlanguage/labels/Clion))
+Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA (planned CLion support is experimental. See [CLion issues](https://github.com/intellij-dlanguage/intellij-dlanguage/labels/Clion))
 
+[![JetBrains IntelliJ plugins](https://img.shields.io/jetbrains/plugin/v/8115.svg)](https://plugins.jetbrains.com/plugin/8115)
 [![JetBrains IntelliJ plugins](https://img.shields.io/jetbrains/plugin/d/8115.svg)](https://plugins.jetbrains.com/plugin/8115)
 
 | Branch | Status |
@@ -14,7 +15,7 @@ Support for the [D Programming Language](http://dlang.org/) within IntelliJ IDEA
 
 The primary focus for the project is to support Intellij IDEA (both IC and IU). Some work has been done to try and support CLion but it's not currently usable. It may work on other IDEs such as AppCode, Android Studio, PyCharm, etc but this is not tested by the dev team.
 
-We generally try to support the last years worth of IDE releases. The current build targets *Intellij 2024.2 - 2024.3.+*.
+We generally try to support the last years worth of IDE releases. The current build targets *Intellij 2024.3 - 2025.2.+*.
 
 For a list of older releases and their supported IDE versions see our [Compatibility Matrix](https://github.com/intellij-dlanguage/intellij-dlanguage/wiki/Compatibility-Matrix).
 
@@ -81,17 +82,17 @@ If you put these tools on your path you can go to (_Settings_ -> _Languages &amp
 
  ![Configure D Tools](.README/intellij-dlang-settings.gif)
 
-There is a nice blog post about setting up the tools at: [www.samael.me.uk](http://www.samael.me.uk/2015/12/d-plugin-for-intellij-idea.html)
-
 **Note**: If you have dub in a standard location, you don’t need to configure it. It will be detected and picked-up automatically.
 
 ### Configuring DCD
 
-To configure DCD in the dcd-server add a comma separated list of paths that point to your libraries that you want to include in autocompletion.
+As long as you have a valid path setup for the binary locations of both dcd-client and dcd-server both your project sources and paths to phobos and druntime should all be passed through to DCD for autocompletion to work correctly.
+
+If there's a need to debug any issues expect to see the various source paths being passed to dcd.
 
 For example:
 
-        /Library/D/dmd/src/phobos,/Library/D/dmd/src/druntime/import,/Users/hendriki/.dub/packages/rainbow-master/src
+        /Library/D/dmd/src/phobos,/Library/D/dmd/src/druntime/import,/Users/username/.dub/packages/somepackage/src
 
 This will add the phobos and druntime/import as well as my rainbow dub project. You can add other dub packages by adding the path to them. I should be able to autoconfigure this stuff in a future release.
 
