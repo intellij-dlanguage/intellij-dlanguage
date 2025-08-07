@@ -73,7 +73,7 @@ class DlangRunDubConfiguration(name: String?, project: Project?, factory: Config
     }
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration?> {
-        return DlangRunDubConfigurationEditor()
+        return DlangRunDubConfigurationEditor(project)
     }
 
     @Throws(ExecutionException::class)

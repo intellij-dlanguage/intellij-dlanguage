@@ -5,15 +5,18 @@ import com.intellij.execution.configuration.EnvironmentVariablesComponent
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.options.SettingsEditor
-import com.intellij.openapi.ui.ComponentWithBrowseButton.BrowseFolderActionListener
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.ui.TextComponentAccessor
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
+import com.intellij.openapi.util.text.Strings
 import com.intellij.ui.RawCommandLineEditor
 import io.github.intellij.dlanguage.DlangBundle.message
 import io.github.intellij.dlanguage.module.DlangModuleType
 import javax.swing.*
 
-class DlangRunDubConfigurationEditor : SettingsEditor<DlangRunDubConfiguration>() {
+class DlangRunDubConfigurationEditor(val project: Project) : SettingsEditor<DlangRunDubConfiguration>() {
+
     private lateinit var myMainPanel: JTabbedPane
     private lateinit var panel1: JPanel
     private lateinit var tabGeneral: JPanel
@@ -33,7 +36,7 @@ class DlangRunDubConfigurationEditor : SettingsEditor<DlangRunDubConfiguration>(
     private lateinit var tfConfig: JTextField
     private lateinit var tfArch: JTextField
     private lateinit var tfDebug: JTextField
-    private lateinit var tfCompiler: JTextField
+    private lateinit var tfCompiler: TextFieldWithBrowseButton
     private lateinit var tfBuildMode: JComboBox<*>
     private lateinit var cbVerbose: JCheckBox
     private lateinit var cbQuiet: JCheckBox
@@ -58,28 +61,51 @@ class DlangRunDubConfigurationEditor : SettingsEditor<DlangRunDubConfiguration>(
 
     /**
      * Save state of editor UI to DLangRunDubConfiguration instance.
+     *
+     * This function will be invoked repeatedly so override isReadyForApply() to implement logic to
+     * actually check that values have changed
      */
     @Throws(ConfigurationException::class)
     override fun applyEditorTo(config: DlangRunDubConfiguration) {
-        applyGeneralTabForm(config)
+        if (this.isReadyForApply) {
+            applyGeneralTabForm(config)
+        }
+    }
+
+    // todo: Have isReadyForApply check if fields have changed
+    override fun isReadyForApply(): Boolean {
+        return true
     }
 
     override fun createEditor(): JComponent {
-        val fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor()
-        fcd.isShowFileSystemRoots = true
-        fcd.title = message("dmd.run.config.selectworkingdir.title")
-        fcd.description = message("dmd.run.config.selectworkingdir.description")
-        fcd.isHideIgnored = false
-        pathWorkingDir.addActionListener(
-            BrowseFolderActionListener(
-                fcd.title, fcd.description,
-                pathWorkingDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
-            )
+        this.pathWorkingDir.addBrowseFolderListener(
+            this.project,
+            FileChooserDescriptorFactory.createSingleFolderDescriptor()
+                .withTitle(message("dmd.run.config.selectworkingdir.title"))
+                .withDescription(message("dmd.run.config.selectworkingdir.description"))
+                .withShowFileSystemRoots(true)
+                .withHideIgnored(false),
+            TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
         )
+
+        this.tfCompiler.addBrowseFolderListener(
+            this.project,
+            FileChooserDescriptorFactory.createSingleFileOrExecutableAppDescriptor()
+                .withTitle(message("d.ui.dmd.config.choosebinary"))
+                .withDescription(message("d.ui.dmd.config.choosebinary.desc"))
+                .withShowFileSystemRoots(true)
+                .withHideIgnored(true),
+            TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT)
+
         return myMainPanel
     }
 
-    override fun disposeEditor() {}
+    override fun disposeEditor() {
+        // call dispose() on the fields with Action Listeners
+        this.pathWorkingDir.dispose();
+        this.tfCompiler.dispose();
+    }
+
     private fun createUIComponents() {
         // TODO: place custom component creation code here
     }
@@ -105,7 +131,13 @@ class DlangRunDubConfigurationEditor : SettingsEditor<DlangRunDubConfiguration>(
         config.tfConfig = tfConfig.text
         config.tfArch = tfArch.text
         config.tfDebug = tfDebug.text
-        config.tfCompiler = tfCompiler.text
+
+        config.tfCompiler = if (this.tfCompiler.text.isBlank()) {
+            Strings.notNullize(ProjectRootManager.getInstance(project).projectSdk?.homePath)
+        } else {
+            tfCompiler.text
+        }
+
         config.buildMode = tfBuildMode.selectedIndex
         config.isVerbose = cbVerbose.isSelected
         config.isQuiet = cbQuiet.isSelected
@@ -133,7 +165,13 @@ class DlangRunDubConfigurationEditor : SettingsEditor<DlangRunDubConfiguration>(
         tfConfig.text = config.tfConfig
         tfArch.text = config.tfArch
         tfDebug.text = config.tfDebug
-        tfCompiler.text = config.tfCompiler
+
+        this.tfCompiler.text = if (config.tfCompiler.isNullOrBlank()) {
+            Strings.notNullize(ProjectRootManager.getInstance(project).projectSdk?.homePath)
+        } else {
+            Strings.notNullize(config.tfCompiler).trim()
+        }
+
         tfBuildMode.selectedIndex = config.buildMode
         cbTempBuild.isSelected = config.isCbTempBuild
         tfMainFile.text = config.tfMainFile

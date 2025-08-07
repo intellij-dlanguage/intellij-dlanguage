@@ -115,26 +115,30 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
     @NotNull
     @Override
     protected JComponent createEditor() {
-        final FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
-        fcd.setShowFileSystemRoots(true);
-        fcd.setTitle(DlangBundle.INSTANCE.message("dmd.run.config.selectimportfolder.title"));
-        fcd.setDescription(DlangBundle.INSTANCE.message("dmd.run.config.selectimportfolder.description"));
-        fcd.setHideIgnored(false);
+        final FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor()
+            .withShowFileSystemRoots(true)
+            .withTitle(DlangBundle.INSTANCE.message("dmd.run.config.selectimportfolder.title"))
+            .withDescription(DlangBundle.INSTANCE.message("dmd.run.config.selectimportfolder.description"))
+            .withHideIgnored(false);
 
-        pathImports.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
-            pathImports, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
-
-        //XXX: fix title and description
-        pathStringImports.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
-            pathStringImports, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
+        pathImports.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(
+            pathImports, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT)
+        );
 
         //XXX: fix title and description
-        pathDocumentation.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
-            pathDocumentation, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
+        pathStringImports.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(
+            pathStringImports, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT)
+        );
 
         //XXX: fix title and description
-        pathHeaderDir.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
-            pathHeaderDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
+        pathDocumentation.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(
+            pathDocumentation, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT)
+        );
+
+        //XXX: fix title and description
+        pathHeaderDir.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(
+            pathHeaderDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT)
+        );
 
         cbGenerateDocumentation.addChangeListener(e -> {
             final boolean enabled = cbGenerateDocumentation.isSelected();
@@ -186,6 +190,11 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
 
     @Override
     protected void disposeEditor() {
+        // call dispose() on the fields with Action Listeners
+        pathImports.dispose();
+        pathStringImports.dispose();
+        pathDocumentation.dispose();
+        pathHeaderDir.dispose();
     }
 
     /* I hope there is no misprints in next methods :) */

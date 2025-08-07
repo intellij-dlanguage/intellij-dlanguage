@@ -2,15 +2,12 @@ package io.github.intellij.dlanguage.run;
 
 import com.intellij.application.options.ModulesComboBox;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.RawCommandLineEditor;
-import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.module.DlangModuleType;
 import io.github.intellij.dlanguage.DlangBundle;
 import io.github.intellij.dlanguage.module.DlangModuleType;
 import org.jetbrains.annotations.NotNull;
@@ -59,19 +56,23 @@ public class DlangRunAppConfigurationEditor extends SettingsEditor<DlangRunAppCo
     @NotNull
     @Override
     protected JComponent createEditor() {
-        final FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFolderDescriptor();
-        fcd.setShowFileSystemRoots(true);
-        fcd.setTitle(DlangBundle.INSTANCE.message("dmd.run.config.selectworkingdir.title"));
-        fcd.setDescription(DlangBundle.INSTANCE.message("dmd.run.config.selectworkingdir.description"));
-        fcd.setHideIgnored(false);
-
-        pathWorkingDir.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(fcd.getTitle(), fcd.getDescription(),
-            pathWorkingDir, null, fcd, TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
+        pathWorkingDir.addActionListener(new TextFieldWithBrowseButton.BrowseFolderActionListener<>(
+                pathWorkingDir,
+                null,
+                FileChooserDescriptorFactory.createSingleFolderDescriptor()
+                    .withShowFileSystemRoots(true)
+                    .withTitle(DlangBundle.INSTANCE.message("dmd.run.config.selectworkingdir.title"))
+                    .withDescription(DlangBundle.INSTANCE.message("dmd.run.config.selectworkingdir.description"))
+                    .withHideIgnored(false),
+                TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT
+            )
+        );
 
         return myMainPanel;
     }
 
     @Override
     protected void disposeEditor() {
+        pathWorkingDir.dispose(); // remove the action listeners
     }
 }
