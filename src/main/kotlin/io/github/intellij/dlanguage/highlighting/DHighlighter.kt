@@ -24,13 +24,14 @@ class DHighlighter : SyntaxHighlighterBase() {
 
     private fun tokenSetMap(tokenType: IElementType): DColor? = when (tokenType) {
         TokenType.BAD_CHARACTER -> DColor.ILLEGAL
+        DlangTypes.SHEBANG -> DColor.SHEBANG
         in TokenSets.LINE_COMMENT -> DColor.LINE_COMMENT
         in TokenSets.LINE_DOCUMENTATION -> DColor.LINE_DOCUMENTATION
         in TokenSets.BLOCK_COMMENT -> DColor.BLOCK_COMMENT
         in TokenSets.BLOCK_DOCUMENTATION -> DColor.BLOCK_DOCUMENTATION
         in TokenSets.STRING_LITERAL -> DColor.STRING_LITERAL
         in TokenSets.CHAR -> DColor.CHAR
-        in TokenSets.NUMBER -> DColor.NUMBER
+        in TokenSets.NUMBER_LITERALS -> DColor.NUMBER
         in TokenSets.OPERATOR -> DColor.OPERATOR
         in TokenSets.PARENTHESES -> DColor.PARENTHESES
         in TokenSets.BRACES -> DColor.BRACES
@@ -39,6 +40,8 @@ class DHighlighter : SyntaxHighlighterBase() {
         in TokenSets.COMMA -> DColor.COMMA
         in TokenSets.DOT -> DColor.DOT
         in TokenSets.KEYWORD -> DColor.KEYWORD
+        in TokenSets.KW_SPECIAL_KEYWORDS -> DColor.SPECIAL_KEYWORD
+        in TokenSets.KW_SPECIAL_TOKENS -> DColor.SPECIAL_TOKEN
         StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN -> DColor.VALID_STRING_ESCAPE
         StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN -> DColor.INVALID_STRING_ESCAPE
         StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN -> DColor.INVALID_STRING_ESCAPE

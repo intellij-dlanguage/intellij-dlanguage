@@ -1,6 +1,5 @@
 package io.github.intellij.dlanguage.colors
 
-import com.intellij.openapi.editor.XmlHighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.options.colors.AttributesDescriptor
 
@@ -13,15 +12,19 @@ import com.intellij.openapi.editor.DefaultLanguageHighlighterColors as Default
  */
 enum class DColor(humanName: String, val default: TextAttributesKey) {
 
+    SHEBANG("Shebang", Default.METADATA),
+
     LINE_COMMENT("Comments//Line Comment", Default.LINE_COMMENT),
     BLOCK_COMMENT("Comments//Block Comment", Default.BLOCK_COMMENT),
 
     LINE_DOCUMENTATION("DDoc//Line Documentation", Default.DOC_COMMENT),
-    BLOCK_DOCUMENTATION("DDoc//Bloc comment", Default.DOC_COMMENT),
+    BLOCK_DOCUMENTATION("DDoc//Block Documentation", Default.DOC_COMMENT),
 
     AT_ATTRIBUTE("Attribute", Default.METADATA),
 
     KEYWORD("Keyword", Default.KEYWORD),
+    SPECIAL_KEYWORD("Special Keyword", Default.KEYWORD),
+    SPECIAL_TOKEN("Special Token", Default.KEYWORD),
 
     NUMBER("Number", Default.NUMBER),
 
@@ -29,7 +32,7 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
     STRING_LITERAL("String//String Literal", Default.STRING),
     VALID_STRING_ESCAPE("String//Escape Sequence", Default.VALID_STRING_ESCAPE),
     INVALID_STRING_ESCAPE("String//Invalid Escape Sequence", Default.INVALID_STRING_ESCAPE),
-    STRING_NAMED_CHARACTER_ENTITY("String//Named entity", XmlHighlighterColors.HTML_ENTITY_REFERENCE),
+    STRING_NAMED_CHARACTER_ENTITY("String//Named entity", Default.MARKUP_ENTITY),
     ILLEGAL("String//Illegal character", Default.INVALID_STRING_ESCAPE),
 
     PARENTHESES("Braces and Operators//Parenthesis", Default.PARENTHESES),

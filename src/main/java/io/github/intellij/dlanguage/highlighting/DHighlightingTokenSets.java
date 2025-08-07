@@ -10,7 +10,6 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
  */
 public class DHighlightingTokenSets {
 
-    //public static final TokenSet SHEBANG = TokenSet.create(DlangTypes.SHEBANG); // todo: get highlighting lexer working with SHEBANG
     public static final TokenSet CHAR = TokenSet.create(DlangTypes.CHARACTER_LITERAL);
 
     public static final TokenSet LINE_COMMENT = TokenSet.create(DlangTypes.LINE_COMMENT);
@@ -25,7 +24,7 @@ public class DHighlightingTokenSets {
         DlangTypes.ALTERNATE_WYSIWYG_STRING,
         DlangTypes.HEX_STRING,
         DlangTypes.TOKEN_STRING);
-    public static final TokenSet NUMBER = TokenSet.create(DlangTypes.INTEGER_LITERAL, DlangTypes.FLOAT_LITERAL);
+    public static final TokenSet NUMBER_LITERALS = TokenSet.create(DlangTypes.INTEGER_LITERAL, DlangTypes.FLOAT_LITERAL);
     public static final TokenSet SEMICOLON = TokenSet.create(DlangTypes.OP_SCOLON);
     public static final TokenSet DOT = TokenSet.create(DlangTypes.OP_DOT);
     public static final TokenSet COMMA = TokenSet.create(DlangTypes.OP_COMMA);
@@ -136,11 +135,35 @@ public class DHighlightingTokenSets {
             DlangTypes.KW_WCHAR,
             DlangTypes.KW_WHILE,
             DlangTypes.KW_WITH,
-            DlangTypes.KW___FILE__,
-            DlangTypes.KW___LINE__,
             DlangTypes.KW___GSHARED,
             DlangTypes.KW___TRAITS
 //            DlangTypes.KW___VECTOR
+    );
+
+    /**
+     * These keywords are considered to be special keywords
+     * @see <a href="https://dlang.org/spec/expression.html#specialkeywords">Special Keywords</a>
+     */
+    public static final TokenSet KW_SPECIAL_KEYWORDS = TokenSet.create(
+        DlangTypes.KW___FILE__,
+        DlangTypes.KW___FILE_FULL_PATH__,
+        DlangTypes.KW___FUNCTION__,
+        DlangTypes.KW___LINE__,
+        DlangTypes.KW___MODULE__,
+        DlangTypes.KW___PRETTY_FUNCTION__
+    );
+
+    /**
+     * These keywords are considered to be special tokens
+     * @see <a href="https://dlang.org/spec/lex.html#specialtokens">Special Tokens</a>
+     */
+    public static final TokenSet KW_SPECIAL_TOKENS = TokenSet.create(
+        DlangTypes.KW___DATE__,
+        DlangTypes.KW___EOF__,
+        DlangTypes.KW___TIME__,
+        DlangTypes.KW___TIMESTAMP__,
+        DlangTypes.KW___VENDOR__,
+        DlangTypes.KW___VERSION__
     );
 
     public static final TokenSet OPERATOR = TokenSet.create(
