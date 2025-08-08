@@ -19,6 +19,8 @@ import std.conv : to; // line comment about this import
 import jsonizer.tojson;
 import net.masterthought.cucumber.report_parser;
 
+pragma(msg, "compiler message");
+
 /**
  * A documentation comment
  */

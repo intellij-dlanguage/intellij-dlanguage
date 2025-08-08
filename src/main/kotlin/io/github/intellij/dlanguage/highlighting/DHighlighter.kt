@@ -25,6 +25,7 @@ class DHighlighter : SyntaxHighlighterBase() {
     private fun tokenSetMap(tokenType: IElementType): DColor? = when (tokenType) {
         TokenType.BAD_CHARACTER -> DColor.ILLEGAL
         DlangTypes.SHEBANG -> DColor.SHEBANG
+        DlangTypes.KW_PRAGMA -> DColor.PRAGMA
         in TokenSets.LINE_COMMENT -> DColor.LINE_COMMENT
         in TokenSets.LINE_DOCUMENTATION -> DColor.LINE_DOCUMENTATION
         in TokenSets.BLOCK_COMMENT -> DColor.BLOCK_COMMENT
