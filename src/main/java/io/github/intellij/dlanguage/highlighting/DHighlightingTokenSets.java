@@ -98,7 +98,7 @@ public class DHighlightingTokenSets {
             DlangTypes.KW_OUT,
             DlangTypes.KW_OVERRIDE,
             DlangTypes.KW_PACKAGE,
-            DlangTypes.KW_PRAGMA,
+            // DlangTypes.KW_PRAGMA, removed from this set so that it can have different highlight color
             DlangTypes.KW_PRIVATE,
             DlangTypes.KW_PROTECTED,
             DlangTypes.KW_PUBLIC,

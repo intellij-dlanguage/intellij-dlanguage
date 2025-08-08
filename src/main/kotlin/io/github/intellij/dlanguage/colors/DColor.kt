@@ -23,6 +23,7 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
     AT_ATTRIBUTE("Attribute", Default.METADATA),
 
     KEYWORD("Keyword", Default.KEYWORD),
+    PRAGMA("Pragma", Default.STATIC_METHOD),
     SPECIAL_KEYWORD("Special Keyword", Default.KEYWORD),
     SPECIAL_TOKEN("Special Token", Default.KEYWORD),
 
