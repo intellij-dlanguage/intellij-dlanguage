@@ -9,7 +9,7 @@
  +/
 
 /// A single line documentation comment
-module net.masterthought.cucumber.report_information;
+module <MODULE_DEFINITION>net.masterthought.cucumber.report_information</MODULE_DEFINITION>;
 
 import std.algorithm;
 import std.array;
@@ -22,68 +22,68 @@ import net.masterthought.cucumber.report_parser;
 /**
  * A documentation comment
  */
-@safe:
+<AT_ATTRIBUTE>@safe</AT_ATTRIBUTE>:
 class ReportInformation {
 
-    deprecated string originalId = "Some text\twith a gap";
+    deprecated <KEYWORD>string</KEYWORD> originalId = "Some text\twith a gap";
 
-    string runId = `Some \n Text`;
+    <KEYWORD>string</KEYWORD> runId = `Some \n Text`;
 
-    string  anotherId = "\&para;\U0001F603"; // ¶😃
+    <KEYWORD>string</KEYWORD>  anotherId = "\&para;\U0001F603"; // ¶😃
 
     Feature[] features;
 
     private auto symbol = '£';
 
-    private string m_name;
-    @property string name() { return m_name; }
+    private <KEYWORD>string</KEYWORD> m_name;
+    <AT_ATTRIBUTE>@property</AT_ATTRIBUTE> <KEYWORD>string</KEYWORD> <FUNCTION_DEFINITION>name</FUNCTION_DEFINITION>() { return m_name; }
 
     this(ReportParser parser) {
-        this.runId = parser.getRunId();
-        this.features = parser.getReports().map!(report => report.getFeatures()).joiner.array;
+        this.runId = parser.<FUNCTION_CALL>getRunId</FUNCTION_CALL>();
+        this.features = parser.<FUNCTION_CALL>getReports</FUNCTION_CALL>().<FUNCTION_CALL>map</FUNCTION_CALL>!(report => report.<FUNCTION_CALL>getFeatures</FUNCTION_CALL>()).<FUNCTION_CALL>joiner</FUNCTION_CALL>.<FUNCTION_CALL>array</FUNCTION_CALL>;
 
         writeln(__VENDOR__);
     }
 
-    private Feature[] processFeatures(Feature[] features) {
-        return features.map!((f) {
-            f.featureInformation = calculateFeatureInformation(f);
-            f.scenarios = addScenarioInformation(f);
+    private Feature[] <FUNCTION_DEFINITION>processFeatures</FUNCTION_DEFINITION>(Feature[] features) {
+        return features.<FUNCTION_CALL>map</FUNCTION_CALL>!((f) {
+            f.featureInformation = <FUNCTION_CALL>calculateFeatureInformation</FUNCTION_CALL>(f);
+            f.scenarios = <FUNCTION_CALL>addScenarioInformation</FUNCTION_CALL>(f);
             return f;
-        }).array;
+        }).<FUNCTION_CALL>array</FUNCTION_CALL>;
     }
 
-    public auto getTotalNumberOfBackgroundScenariosUnknown() {
-        return features.map!(f => f.getBackgroundScenariosUnknown().length).sum;
+    public auto <FUNCTION_DEFINITION>getTotalNumberOfBackgroundScenariosUnknown</FUNCTION_DEFINITION>() {
+        return features.<FUNCTION_CALL>map</FUNCTION_CALL>!(f => f.<FUNCTION_CALL>getBackgroundScenariosUnknown</FUNCTION_CALL>().length).<FUNCTION_CALL>sum</FUNCTION_CALL>;
     }
 }
 
 struct {
-    string name;
+    <KEYWORD>string</KEYWORD> name;
 }
 
 union {
-    string day;
+    <KEYWORD>string</KEYWORD> day;
 }
 
 unittest {
     // load test json from file
-    auto testJson = to!string(read("src/test/resources/project1.json"));
-    string runId = "run 1";
+    auto testJson = <FUNCTION_CALL>to</FUNCTION_CALL>!string(<FUNCTION_CALL>read</FUNCTION_CALL>("src/test/resources/project1.json"));
+    <KEYWORD>string</KEYWORD> runId = "run 1";
     ReportInformation ri = new ReportInformation(new ReportParser(runId,[testJson]));
 
     assert (ri.name != null);
     // should have correct number of features
-    ri.getFeatures().length.assertEqual(2);
+    ri.<FUNCTION_CALL>getFeatures()</FUNCTION_CALL>.length.<FUNCTION_CALL>assertEqual</FUNCTION_CALL>(2);
 
     // overall status
-    ri.getOverallStatus.assertEqual(to!string(Status.Failed));
+    ri.<FUNCTION_CALL>getOverallStatus</FUNCTION_CALL>.<FUNCTION_CALL>assertEqual(<FUNCTION_CALL>to</FUNCTION_CALL>!<KEYWORD>string</KEYWORD>(Status.Failed));
 
     // feature totals
-    Feature feature = ri.getFeatures().front;
+    Feature feature = ri.<FUNCTION_CALL>getFeatures</FUNCTION_CALL>().<FUNCTION_CALL>front</FUNCTION_CALL>;
 
 }
 
-T foo(T, E : Exception)(Node node, in string path) {
-    return node.bar!(T, E)(path);
+<TYPE_PARAMETER>T</TYPE_PARAMETER> <FUNCTION_DEFINITION>foo</FUNCTION_DEFINITION>(<TYPE_PARAMETER>T</TYPE_PARAMETER>, <TYPE_PARAMETER>E</TYPE_PARAMETER> : Exception)(Node node, in <KEYWORD>string</KEYWORD> path) {
+    return node.<FUNCTION_CALL>bar</FUNCTION_CALL>!(<TYPE_PARAMETER>T</TYPE_PARAMETER>, <TYPE_PARAMETER>E</TYPE_PARAMETER>)(path);
 }
