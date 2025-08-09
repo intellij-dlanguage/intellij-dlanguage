@@ -36,12 +36,12 @@
     <!--<depends>com.intellij.modules.vcs</depends>-->
     <!--<depends>com.intellij.modules.xml</depends>-->
     <!--<depends>com.intellij.modules.xdebugger</depends>-->
-    <depends optional="true" config-file="META-INF/idea-only.xml">com.intellij.modules.java</depends>
+    <depends optional="true" config-file="idea-only.xml">com.intellij.modules.java</depends>
     <!--<depends optional="true" config-file="idea-ultimate-only.xml">com.intellij.modules.ultimate</depends>-->
-    <depends optional="true" config-file="META-INF/copyright.xml">com.intellij.copyright</depends>
+    <depends optional="true" config-file="copyright.xml">com.intellij.copyright</depends>
 
     <!-- Both AppCode and CLion use cidr.lang -->
-    <depends optional="true" config-file="META-INF/clion-only.xml">com.intellij.modules.cidr.lang</depends>
+    <depends optional="true" config-file="clion-only.xml">com.intellij.modules.cidr.lang</depends>
     <!--<depends optional="true" config-file="clion-only.xml">com.intellij.modules.clion</depends>-->
     <!--<depends optional="true" config-file="appcode-only.xml">com.intellij.modules.appcode</depends>-->
 
