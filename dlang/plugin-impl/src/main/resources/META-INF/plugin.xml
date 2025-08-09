@@ -19,10 +19,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>1.37.2</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/68?closed=1">changelist</a>)<br/>
+        <b>1.37.3</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/68?closed=1">changelist</a>)<br/>
         <ul>
             <li>Supports IntelliJ IDEA 2024.3 - 2025.2.*</li>
-            <li>New dub configuration, now dub will auto-configure without manual intervention</li>
+            <li>minor changes to syntax-highlighting, can now independantly set colours for different type of keywords</li>
             <li>bug fixes</li>
         </ul>
     ]]>
