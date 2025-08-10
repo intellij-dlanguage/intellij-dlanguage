@@ -32,6 +32,7 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import io.github.intellij.dlanguage.DLanguage
+import io.github.intellij.dub.DubBundle
 import io.github.intellij.dlanguage.library.DlangLibraryType
 import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dlanguage.utils.DToolsNotificationAction
@@ -47,7 +48,11 @@ import io.github.intellij.dub.service.DubBinaryPathProvider
  * a project (The same way that the Maven/Gradle integration works) and when not using dub we should just
  * detect when the user adds/removes a library.
  */
-class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries", DLanguage.Icons.SDK), DumbAware {
+class ProcessDLibs : AnAction(
+    DubBundle.message("dub.actions.process-dub-libs.text"),
+    DubBundle.message("dub.actions.process-dub-libs.description"),
+    null
+), DumbAware {
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project
@@ -77,8 +82,8 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
 
     companion object {
         private val LOG = Logger.getInstance(ProcessDLibs::class.java)
-        private val MENU_PATH = "Tools > Process D Libraries"
-        private val NOTIFICATION_GROUPID = "Process D Libs"
+        private const val MENU_PATH = "Tools > Process D Libraries"
+        private const val NOTIFICATION_GROUPID = "Process D Libs"
         private var dubPathAlreadWarned = false
 
         /**
@@ -106,7 +111,7 @@ class ProcessDLibs : AnAction("Process D Libraries", "Processes the D Libraries"
 
                 run {
                     val task = object : Task.Backgroundable(project,
-                        "Updating Dub Libraries") {
+                        "Updating Dub libraries") {
                         override fun run(indicator: ProgressIndicator) {
                             processDLibsImpl(project, module, mostlySilentMode, buildBefore)
                         }
