@@ -25,11 +25,10 @@ import com.intellij.openapi.roots.ModifiableRootModel
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 import com.intellij.openapi.util.InvalidDataException
 import com.intellij.openapi.util.Key
-import com.intellij.openapi.util.text.StringUtil
 import io.github.intellij.dlanguage.DlangBundle.message
 import io.github.intellij.dlanguage.module.DlangModuleBuilder
-import io.github.intellij.dlanguage.settings.ToolKey
 import io.github.intellij.dub.run.DlangRunDubConfigurationType
+import io.github.intellij.dub.service.DubBinaryPathProvider
 import org.jdom.JDOMException
 import org.jetbrains.annotations.NonNls
 import java.io.File
@@ -41,7 +40,6 @@ class DlangDubModuleBuilder :
     DlangModuleBuilder(BUILDER_ID, message("module.dub.title"), message("module.dub.description")) {
     private var sourcePaths: MutableList<String>? = null
     private var dubOptions: Map<String, String> = HashMap()
-    private var dubBinary: String? = null
     override fun createWizardSteps(
         wizardContext: WizardContext,
         modulesProvider: ModulesProvider
@@ -74,10 +72,7 @@ class DlangDubModuleBuilder :
         model: ModifiableModuleModel?,
         runFromProjectWizard: Boolean
     ): Module {
-        if (StringUtil.isNotEmpty(dubBinary)) {
-            ToolKey.DUB_KEY.path = dubBinary
-        }
-        if (!dubOptions.isEmpty()) {
+        if (!dubOptions.isEmpty() && DubBinaryPathProvider.isDubAvailable()) {
             try {
                 val cmd = createDubInitCommand(project.basePath)
                 ApplicationManager.getApplication()
@@ -150,6 +145,7 @@ class DlangDubModuleBuilder :
         } else {
             params.addParametersString(dubOptions["dubParams"])
         }
+        val dubBinary = DubBinaryPathProvider.getDubPath()
         return GeneralCommandLine()
             .withWorkDirectory(workingDirectory)
             .withExePath(dubBinary!!)

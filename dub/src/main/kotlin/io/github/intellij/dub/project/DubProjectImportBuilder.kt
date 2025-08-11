@@ -96,7 +96,7 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
         moduleModel: ModifiableModuleModel
     ): List<Module> {
         val moduleList: MutableList<Module> = ArrayList()
-        if (DubBinaryPathProvider.isDubAvailable()) {
+        if (!DubBinaryPathProvider.isDubAvailable()) {
             NotificationGroupManager.getInstance()
                 .getNotificationGroup("Dub Import")
                 .createNotification(
