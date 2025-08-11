@@ -1,21 +1,31 @@
 package io.github.intellij.dlanguage.errorreporting
 
-import com.intellij.diagnostic.IdeaReportingEvent
+import com.intellij.ide.DataManager
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.idea.IdeaLogger
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.application.ApplicationInfo
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ApplicationNamesInfo
 import com.intellij.openapi.application.ex.ApplicationInfoEx
+import com.intellij.openapi.components.Service
+import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.diagnostic.SubmittedReportInfo
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.util.text.StringUtil
+import com.intellij.platform.ide.progress.withBackgroundProgress
+import com.intellij.platform.util.coroutines.childScope
 import com.intellij.util.Consumer
 import io.github.intellij.dlanguage.DlangBundle
-import io.sentry.*
+import io.sentry.Sentry
+import io.sentry.SentryEvent
+import io.sentry.protocol.SentryId
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.awt.Component
 
 class SentryErrorHandler : ErrorReportSubmitter() {
@@ -75,45 +85,67 @@ class SentryErrorHandler : ErrorReportSubmitter() {
             // which may be needed if cannot submit errors when on a proxy
         }
 
-        events.forEach { e ->
-            val error = if (IdeaReportingEvent::class.java.isAssignableFrom(e.javaClass)) (e as IdeaReportingEvent).data.throwable else e.throwable
+        val project = CommonDataKeys.PROJECT.getData(DataManager.getInstance().getDataContext(parentComponent))
 
-            val sentryEvent = SentryEvent(error)
+        events.forEach { e ->
+            val sentryEvent = SentryEvent(e.throwable)
+
+            sentryEvent.setExtra("Message", e.message)
 
             additionalInfo?.let {
                 sentryEvent.setExtra("User Comments", it)
             }
 
-            if(StringUtil.isNotEmpty(IdeaLogger.ourLastActionId)) {
+            if (e.attachments.isNotEmpty()) {
+                sentryEvent.setExtra("Attachments", e.attachments)
+            }
+
+            if (StringUtil.isNotEmpty(IdeaLogger.ourLastActionId)) {
                 sentryEvent.setExtra("Last Action", IdeaLogger.ourLastActionId)
             }
 
-            ApplicationManager
-                .getApplication()
-                .invokeAndWait {
-                    try {
-                        val sentryEventId = Sentry.captureEvent(sentryEvent)
-                        log.info("An error report has been submitted to Sentry.io for the D language plugin. Ref: $sentryEventId")
-
-                        // the error reporting modal will display the link text prefixed with "Submitted as"
-                        consumer.consume(
-                            SubmittedReportInfo(
-                                "https://singingbush.sentry.io/issues?query=${sentryEventId}",
-                                sentryEventId.toString(),
-                                SubmittedReportInfo.SubmissionStatus.NEW_ISSUE
-                            )
-                        )
-
-                        // Instead of displaying the sentry id we could just show the default "Submitted" message using the following:
-                        // consumer.consume(SubmittedReportInfo(null, null, SubmittedReportInfo.SubmissionStatus.NEW_ISSUE))
-                    } catch (e: Throwable) {
-                        log.warn("Unable to report error to sentry.io", e)
-                        consumer.consume(SubmittedReportInfo(null, e.message, SubmittedReportInfo.SubmissionStatus.FAILED))
+            service<SentryCoroutineScopeHolder>().coroutineScope.launch {
+                try {
+                    val sentryEventId: SentryId = if (project != null) {
+                        withBackgroundProgress(project, "Submitting error report") {
+                            Sentry.captureEvent(sentryEvent)
+                        }
+                    } else {
+                        Sentry.captureEvent(sentryEvent)
                     }
-                }
-        }
+                    log.info("An error report has been submitted to Sentry.io for the D language plugin. Ref: $sentryEventId")
 
-        return false // return true for the window to close and false for it to remain open
+                    // the error reporting modal will display the link text prefixed with "Submitted as"
+                    consumer.consume(
+                        SubmittedReportInfo(
+                            "https://singingbush.sentry.io/issues?query=${sentryEventId}",
+                            sentryEventId.toString(),
+                            SubmittedReportInfo.SubmissionStatus.NEW_ISSUE
+                        )
+                    )
+                } catch (e: Throwable) {
+                    log.warn("Unable to report error to sentry.io", e)
+                    consumer.consume(
+                        SubmittedReportInfo(
+                            null,
+                            e.message,
+                            SubmittedReportInfo.SubmissionStatus.FAILED
+                        )
+                    )
+                }
+            }
+        }
+        return true
     }
 
+}
+
+@Service
+internal class SentryCoroutineScopeHolder(coroutineScope: CoroutineScope) {
+
+    @JvmField
+    val dispatcher: CoroutineDispatcher = Dispatchers.IO
+
+    @JvmField
+    internal val coroutineScope = coroutineScope.childScope("Sentry call", dispatcher)
 }
