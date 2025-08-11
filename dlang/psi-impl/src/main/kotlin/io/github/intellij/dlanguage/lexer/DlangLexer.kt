@@ -100,6 +100,9 @@ class DlangLexer : LexerBase() {
                 flexLocateToken()
             }
         }
+        if (myBuffer[myTokenEnd] == 'c' || myBuffer[myTokenEnd] == 'w' || myBuffer[myTokenEnd] == 'd') {
+            myTokenEnd += 1
+        }
         myTokenStart = myTokenStringIndexStart
         myTokenType = DlangTypes.TOKEN_STRING
     }

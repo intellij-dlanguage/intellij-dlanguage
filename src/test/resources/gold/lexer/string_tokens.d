@@ -10,4 +10,5 @@ void main(){
   string g = q{foo$(LPAREN)};         // "foo$(LPAREN)"
   string h = q{{foo}"}"};             // "{foo}"}""
   string i = q{".-,.-`{-.c-u"};       // "",-,.-`{-,c-u""
+  string k = q{test}w;
 }
