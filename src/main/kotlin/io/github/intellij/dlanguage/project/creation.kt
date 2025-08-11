@@ -53,11 +53,11 @@ class DlangProjectGenerator : DirectoryProjectGeneratorBase<DlangProjectSettings
     /**
      * Not sure where this description is used. It doesn't show up in CLion UI
      */
-    override fun getDescription(): String? = message("module.description")
+    override fun getDescription(): String = message("module.description")
 
     override fun getHelpId(): String? = null
 
-    override fun getLogo(): Icon? = DLanguage.Icons.SDK
+    override fun getLogo(): Icon = DLanguage.Icons.LANGUAGE
 
     /**
      * Called when the project creation window is first used. Calls to createLazyPeer() will call this method
@@ -100,7 +100,7 @@ class DlangProjectGenerator : DirectoryProjectGeneratorBase<DlangProjectSettings
 
         dubPanel.border = BorderFactory.createCompoundBorder(
             BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true),
+                BorderFactory.createLineBorder(JBColor.LIGHT_GRAY, 1, true),
                 "dub"
             ),
             BorderFactory.createEmptyBorder(10, 0, 10, 0)
@@ -122,13 +122,6 @@ class DlangProjectGenerator : DirectoryProjectGeneratorBase<DlangProjectSettings
         if(settings.dubInit) {
             // todo: run dub init
         }
-
-//        val platformPrefix = PlatformUtils.getPlatformPrefix()
-//        when(platformPrefix) {
-//            PlatformUtils.APPCODE_PREFIX -> log.info("we have AppCode")
-//            PlatformUtils.CLION_PREFIX -> log.info("we have CLion")
-//            PlatformUtils.RIDER_PREFIX-> log.info("we have Rider")
-//        }
 
         ApplicationManager.getApplication().runWriteAction {
             val srcFile = baseDir

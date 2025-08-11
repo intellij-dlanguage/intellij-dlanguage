@@ -9,6 +9,13 @@
         <!-- Project Tree View -->
         <treeStructureProvider implementation="io.github.intellij.dlanguage.projectview.DTreeStructureProvider"/>
 
+        <moduleConfigurationEditorProvider
+            implementation="io.github.intellij.dlanguage.module.DlangModuleEditorsProvider"/>
+
+    </extensions>
+
+    <extensions defaultExtensionNs="io.github.intellij.dlanguage">
+        <projectWizard.dlang.buildSystem implementation="io.github.intellij.dlanguage.project.wizard.generators.IntellijDlangNewProjectWizard" />
     </extensions>
 
 </idea-plugin>

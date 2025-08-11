@@ -17,6 +17,7 @@ object DLanguage : Language("D") {
         companion object {
             @JvmField val FILE = IconLoader.getIcon("/icons/d.png", DLanguage::class.java)
             @JvmField val MODULE = FILE
+            @JvmField val LANGUAGE = FILE
             @JvmField val SDK = FILE
             @JvmField val SDK_ADD = FILE
             @JvmField val RUN = FILE

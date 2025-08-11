@@ -40,14 +40,6 @@ class DlangDubModuleBuilder :
     DlangModuleBuilder(BUILDER_ID, message("module.dub.title"), message("module.dub.description")) {
     private var sourcePaths: MutableList<String>? = null
     private var dubOptions: Map<String, String> = HashMap()
-    override fun createWizardSteps(
-        wizardContext: WizardContext,
-        modulesProvider: ModulesProvider
-    ): Array<ModuleWizardStep> {
-        return arrayOf(
-            DubInitForModuleStep(wizardContext)
-        )
-    }
 
     /*
     * When creating a project the following are called in order:

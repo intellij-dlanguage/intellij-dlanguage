@@ -22,8 +22,8 @@
         <b>1.37.3</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/68?closed=1">changelist</a>)<br/>
         <ul>
             <li>Supports IntelliJ IDEA 2024.3 - 2025.2.*</li>
-            <li>minor changes to syntax-highlighting, can now independantly set colours for different type of keywords</li>
-            <li>bug fixes</li>
+            <li>Improve UI on intellij when creating a project</li>
+            <li>Bug fixes</li>
         </ul>
     ]]>
     </change-notes>
@@ -48,6 +48,11 @@
     <xi:include href="/META-INF/sdlang.xml" xpointer="xpointer(/idea-plugin/*)"/>
 
     <xi:include href="/META-INF/io.github.intellij.dub.xml" xpointer="xpointer(/idea-plugin/*)"/>
+
+    <extensionPoints>
+        <extensionPoint qualifiedName="io.github.intellij.dlanguage.projectWizard.dlang.buildSystem"
+                        interface="io.github.intellij.dlanguage.project.wizard.generator.BuildSystemDlangNewProjectWizard" dynamic="true"/>
+    </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
 
@@ -119,6 +124,7 @@
 
 
         <directoryProjectGenerator implementation="io.github.intellij.dlanguage.project.DlangProjectGenerator"/>
+        <newProjectWizard.languageGenerator implementation="io.github.intellij.dlanguage.project.wizard.DlangNewProjectWizard"/>
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDmdConfigurationType"/>
         <programRunner implementation="io.github.intellij.dlanguage.run.DmdBuildRunner"/>
@@ -128,9 +134,6 @@
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunAppConfigurationType"/>
 
-
-        <moduleConfigurationEditorProvider
-            implementation="io.github.intellij.dlanguage.module.DlangModuleEditorsProvider"/>
 
         <!-- library -->
         <library.type implementation="io.github.intellij.dlanguage.library.DlangLibraryType"/>
