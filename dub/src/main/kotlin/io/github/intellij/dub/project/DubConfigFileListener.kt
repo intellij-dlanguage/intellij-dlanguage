@@ -9,6 +9,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileEvent
 import com.intellij.openapi.vfs.VirtualFileListener
 import io.github.intellij.dlanguage.messagebus.Topics
+import io.github.intellij.dub.Dub
 import io.github.intellij.dub.actions.ProcessDLibs.Companion.processDLibs
 
 /**
@@ -48,7 +49,7 @@ class DubConfigFileListener(
     override fun beforeFileDeletion(event: VirtualFileEvent) {
         if (event.file == dubConfigFile) {
             NotificationGroupManager.getInstance()
-                .getNotificationGroup("Dub")
+                .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
                 .createNotification(
                     "Dub",
                     "dub.json or dub.sdl file deleted.",

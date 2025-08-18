@@ -13,6 +13,8 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
+import io.github.intellij.dub.Dub
+import io.github.intellij.dub.DubBundle
 import io.github.intellij.dub.service.DubBinaryPathProvider
 import io.github.intellij.dub.tools.DescribeParser
 import io.github.intellij.dub.tools.DescribeParserException
@@ -28,7 +30,7 @@ import javax.swing.tree.TreeNode
 
 /**
  * This class is used to run 'dub describe' which outputs project info in json format. We parse the json
- * to gather up information about the projects dependencies
+ * to gather information about the projects dependencies
  */
 class DubConfigurationParser @JvmOverloads constructor(
     private val project: Project,
@@ -198,10 +200,10 @@ class DubConfigurationParser @JvmOverloads constructor(
                     LOG.info(String.format("%s exited without errors", dubCommand))
                     if (LOG.isDebugEnabled) {
                         NotificationGroupManager.getInstance()
-                            .getNotificationGroup("DubNotification")
+                            .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
                             .createNotification(
-                                "DUB Import",
-                                "dub project imported without errors",
+                                DubBundle.message("dub.import.notification.title"),
+                                "Dub project imported without errors",
                                 NotificationType.INFORMATION
                             )
                             .notify(project)
@@ -220,9 +222,9 @@ class DubConfigurationParser @JvmOverloads constructor(
                         errors.forEach(
                             Consumer { errorMessage: String? ->
                                 NotificationGroupManager.getInstance()
-                                    .getNotificationGroup("DubNotification")
+                                    .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
                                     .createNotification(
-                                        "DUB Import Error",
+                                        "Dub import error",
                                         errorMessage!!,
                                         NotificationType.WARNING
                                     )
@@ -237,7 +239,13 @@ class DubConfigurationParser @JvmOverloads constructor(
                 val message = String.format("%s exited with %s:\n%s", dubCommand, exitCode, errors[0])
                 LOG.warn(message)
                 if (!silentMode) {
-                    ApplicationManager.getApplication().invokeLater({ Messages.showErrorDialog(project, message, "Dub Import") })
+                    ApplicationManager.getApplication().invokeLater {
+                        Messages.showErrorDialog(
+                            project,
+                            message,
+                            DubBundle.message("dub.import.error.title")
+                        )
+                    }
                 }
             }
         } catch (e: com.intellij.execution.ExecutionException) {

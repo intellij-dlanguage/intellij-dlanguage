@@ -37,16 +37,11 @@
         <postStartupActivity
             implementation="io.github.intellij.dub.project.DubListenerComponent"/>
 
-        <notificationGroup id="DUB run configuration"
-                           displayType="BALLOON"/>
-        <notificationGroup id="DubNotification"
-                           displayType="BALLOON"/>
-        <notificationGroup id="Dub"
-                           displayType="BALLOON"/>
-        <notificationGroup id="Dub Import"
-                           displayType="BALLOON"/>
-        <notificationGroup id="Process D Libs"
-                           displayType="BALLOON"/>
+        <notificationGroup id="dub-notifications"
+                           bundle="i18n.text"
+                           key="dub.notification.group.name"
+                           displayType="BALLOON" />
+
 
         <!--<externalSystemManager id="DubManager" implementation="net.masterthought.dlanguage.dub.DubManager"/>-->
         <!--<externalSystemConfigLocator implementation="io.github.intellij.dub.ConfigLocator"/>-->

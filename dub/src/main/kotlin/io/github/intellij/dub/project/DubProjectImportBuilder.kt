@@ -19,6 +19,8 @@ import com.intellij.projectImport.ProjectImportBuilder
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangSdkType
 import io.github.intellij.dlanguage.utils.DToolsNotificationAction
+import io.github.intellij.dub.Dub
+import io.github.intellij.dub.DubBundle
 import io.github.intellij.dub.module.DlangDubModuleBuilder
 import io.github.intellij.dub.project.DubConfigFileListener.Companion.getDubFileFromModule
 import io.github.intellij.dub.service.DubBinaryPathProvider
@@ -81,9 +83,9 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
             return file
         }
         NotificationGroupManager.getInstance()
-            .getNotificationGroup("Dub Import")
+            .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
             .createNotification(
-                "Dub Import",
+                DubBundle.message("dub.import.notification.title"),
                 "Dub project does not seem to contain dub.json or dub.sdl.",
                 NotificationType.WARNING
             )
@@ -98,9 +100,9 @@ class DubProjectImportBuilder : ProjectImportBuilder<DubPackage>() {
         val moduleList: MutableList<Module> = ArrayList()
         if (!DubBinaryPathProvider.isDubAvailable()) {
             NotificationGroupManager.getInstance()
-                .getNotificationGroup("Dub Import")
+                .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
                 .createNotification(
-                    "Dub Import",
+                    DubBundle.message("dub.import.notification.title"),
                     "DUB executable path is empty",
                     NotificationType.WARNING
                 )

@@ -36,6 +36,7 @@ import io.github.intellij.dub.DubBundle
 import io.github.intellij.dlanguage.library.DlangLibraryType
 import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dlanguage.utils.DToolsNotificationAction
+import io.github.intellij.dub.Dub
 import io.github.intellij.dub.project.DubConfigurationParser
 import io.github.intellij.dub.project.DubPackage
 import io.github.intellij.dub.service.DubBinaryPathProvider
@@ -82,8 +83,6 @@ class ProcessDLibs : AnAction(
 
     companion object {
         private val LOG = Logger.getInstance(ProcessDLibs::class.java)
-        private const val MENU_PATH = "Tools > Process D Libraries"
-        private const val NOTIFICATION_GROUPID = "Process D Libs"
         private var dubPathAlreadWarned = false
 
         /**
@@ -133,10 +132,10 @@ class ProcessDLibs : AnAction(
             if (dubPath == null) {
                 if (!dubPathAlreadWarned) {
                     NotificationGroupManager.getInstance()
-                        .getNotificationGroup(NOTIFICATION_GROUPID)
+                        .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
                         .createNotification(
-                            "Process D Libraries",
-                            "DUB executable path is empty",
+                            DubBundle.message("dub.actions.process-dub-libs.notification.title"),
+                            DubBundle.message("dub.actions.process-dub-libs.notification.emptypath"),
                             NotificationType.WARNING
                         )
                         .addAction(DToolsNotificationAction("Configure"))
@@ -162,10 +161,10 @@ class ProcessDLibs : AnAction(
 
             if (!mostlySilentMode) {
                 NotificationGroupManager.getInstance()
-                    .getNotificationGroup(NOTIFICATION_GROUPID)
+                    .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
                     .createNotification(
-                        "Process D Libraries",
-                        "Added your dub dependency libraries",
+                        DubBundle.message("dub.actions.process-dub-libs.notification.title"),
+                        DubBundle.message("dub.actions.process-dub-libs.notification.success"),
                         NotificationType.INFORMATION
                     )
                     .notify(project)
@@ -398,9 +397,9 @@ class ProcessDLibs : AnAction(
 
         private fun displayError(project: Project?, message: String) {
             NotificationGroupManager.getInstance()
-                .getNotificationGroup(NOTIFICATION_GROUPID)
+                .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
                 .createNotification(
-                    "Process D libs",
+                    DubBundle.message("dub.actions.process-dub-libs.notification.title"),
                     message,
                     NotificationType.ERROR
                 )

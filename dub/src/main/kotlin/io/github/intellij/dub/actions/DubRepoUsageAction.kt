@@ -17,6 +17,7 @@ import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.util.SystemProperties
+import io.github.intellij.dub.Dub
 import io.github.intellij.dub.DubBundle
 import org.apache.commons.io.FileUtils
 import java.io.File
@@ -45,7 +46,6 @@ class DubRepoUsageAction : AnAction(
 
     private companion object {
         const val ONE_GiB: Long = FileUtils.ONE_GB // 1_073_741_824L (2^30 bytes)
-        const val NOTIFICATION_GROUP_ID = "DubNotification"
     }
 
     private val log = Logger.getInstance(DubRepoUsageAction::class.java)
@@ -179,7 +179,7 @@ class DubRepoUsageAction : AnAction(
             if (totalSizeBytes > ONE_GiB && (oldCaches.isNotEmpty() || oldPackages.isNotEmpty())) {
 
                 NotificationGroupManager.getInstance()
-                    .getNotificationGroup(NOTIFICATION_GROUP_ID)
+                    .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
                     .createNotification(
                         DubBundle.message("dub.actions.repo-usage.notification.title", "1 GiB"),
                         DubBundle.message("dub.actions.repo-usage.notification.content", totalSizeTxt, oldPackages.size, oldCaches.size),
@@ -192,7 +192,7 @@ class DubRepoUsageAction : AnAction(
                             FileUtil.deleteRecursively(it.toPath())
                         }
                         NotificationGroupManager.getInstance()
-                            .getNotificationGroup(NOTIFICATION_GROUP_ID)
+                            .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
                             .createNotification(
                                 DubBundle.message("dub.actions.repo-usage.update.notification.title"),
                                 DubBundle.message("dub.actions.repo-usage.removed.notification.content", allOldDirectories.size),
@@ -203,7 +203,7 @@ class DubRepoUsageAction : AnAction(
                     .notify(project)
             } else {
                 NotificationGroupManager.getInstance()
-                    .getNotificationGroup(NOTIFICATION_GROUP_ID)
+                    .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
                     .createNotification(
                         DubBundle.message("dub.actions.repo-usage.update.notification.title"),
                         DubBundle.message("dub.actions.repo-usage.update.notification.content", totalSizeTxt),

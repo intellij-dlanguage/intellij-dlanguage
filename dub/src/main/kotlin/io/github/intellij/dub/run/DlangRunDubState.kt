@@ -15,6 +15,7 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
 import io.github.intellij.dlanguage.utils.DToolsNotificationAction
 import io.github.intellij.dlanguage.utils.DUtil
+import io.github.intellij.dub.Dub
 import io.github.intellij.dub.service.DubBinaryPathProvider
 import java.nio.file.Paths
 import java.util.*
@@ -38,7 +39,7 @@ class DlangRunDubState internal constructor(
             val notCorrect = message!!.startsWith("Cannot run program")
             if (isEmpty || notCorrect) {
                 NotificationGroupManager.getInstance()
-                    .getNotificationGroup("DUB run configuration")
+                    .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
                     .createNotification(
                         "DUB settings",
                         "DUB executable is ${if (isEmpty) "not specified" else "not specified correctly"}",
