@@ -75,10 +75,21 @@
                 icon="AllIcons.General.GearPlain">
         </action>
 
-        <action id="io.github.intellij.dlanguage.ProcessDLibs" class="io.github.intellij.dub.actions.ProcessDLibs"
-                text="Process D Libraries" description="Processes the D Libraries">
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
-        </action>
+        <!-- Adds a group to the ToolsMenu that we can anchor multiple actions to -->
+        <group id="dlang-dub-tools-menu-group"
+               text="Dub (D Language)"
+               popup="true" icon="/icons/dub-ball.png">
+            <add-to-group group-id="ToolsMenu" anchor="last" />
+
+            <action id="dub.process-libs.action"
+                    class="io.github.intellij.dub.actions.ProcessDLibs">
+            </action>
+
+            <action id="dub.repo-usage.action"
+                    class="io.github.intellij.dub.actions.DubRepoUsageAction">
+            </action>
+        </group>
+
     </actions>
 
 </idea-plugin>
