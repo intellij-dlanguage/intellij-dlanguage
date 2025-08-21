@@ -1264,27 +1264,25 @@ internal class DLangParser(private val builder: PsiBuilder) {
         val m = builder.mark()
         val start = expect(DlangTypes.OP_AT)
         if (start == null) {
-            cleanup(m, DlangTypes.AT_ATTRIBUTE)
-            return false
-        }
-        if (!moreTokens()) {
-            error("`(`, or identifier expected")
-            exit_section_modified(builder, m, DlangTypes.AT_ATTRIBUTE, true)
+            m.drop()
             return false
         }
         val i = current()
         if (i === DlangTypes.ID) {
             if (peekIs(DlangTypes.OP_NOT)) {
                 if (!parseTemplateInstance()) {
-                    cleanup(m, DlangTypes.AT_ATTRIBUTE)
+                    m.done(DlangTypes.AT_ATTRIBUTE)
                     return false
                 }
-            } else advance()
+            } else {
+                advance()
+            }
+
             if (currentIs(DlangTypes.OP_PAR_LEFT)) {
                 advance() // (
                 if (!currentIs(DlangTypes.OP_PAR_RIGHT)) {
                     if (!parseArgumentList()) {
-                        cleanup(m, DlangTypes.AT_ATTRIBUTE)
+                        m.done(DlangTypes.AT_ATTRIBUTE)
                         return false
                     }
                 }
@@ -1298,11 +1296,9 @@ internal class DLangParser(private val builder: PsiBuilder) {
             }
             expect(DlangTypes.OP_PAR_RIGHT)
         } else {
-            error("`(`, or identifier expected")
-            exit_section_modified(builder, m, DlangTypes.AT_ATTRIBUTE, true)
-            return false
+            builder.error("`(`, or identifier expected")
         }
-        exit_section_modified(builder, m, DlangTypes.AT_ATTRIBUTE, true)
+        m.done(DlangTypes.AT_ATTRIBUTE)
         return true
     }
 
@@ -2590,6 +2586,12 @@ internal class DLangParser(private val builder: PsiBuilder) {
                         break
                 }
             } else {
+                if (builder.tokenType === DlangTypes.OP_COMMA) {
+                    val err = builder.mark()
+                    builder.advanceLexer()
+                    err.error("Unexpected `,` while enum member or `}` expected")
+                    continue
+                }
                 error("Enum member expected")
             }
         }
@@ -2749,7 +2751,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         val m = builder.mark()
         if (builder.tokenType === DlangTypes.OP_AT) {
             if (!parseAtAttribute()) {
-                cleanup(m, DlangTypes.ENUM_MEMBER_ATTRIBUTE)
+                m.done(DlangTypes.ENUM_MEMBER_ATTRIBUTE)
                 return false
             }
         } else if (builder.tokenType === DlangTypes.KW_DEPRECATED) {
@@ -2775,10 +2777,12 @@ internal class DLangParser(private val builder: PsiBuilder) {
      */
     fun parseEnumMember(): Boolean {
         val m = builder.mark()
-        while (moreTokens()) {
+        var memberFound = false
+        while (!builder.eof()) {
             if (!parseEnumMemberAttribute()) {
                 break
             }
+            memberFound = true
         }
 
         if (builder.tokenType !== DlangTypes.ID) {
@@ -2786,7 +2790,10 @@ internal class DLangParser(private val builder: PsiBuilder) {
             val type = parseUnexpectedType()
             if (!type) {
                 error.rollbackTo()
-                cleanup(m, DlangTypes.ENUM_MEMBER)
+                if (memberFound)
+                    m.done(DlangTypes.ENUM_MEMBER)
+                else
+                    m.drop()
                 return false
             }
             error.error("Type is not allowed for named enum")

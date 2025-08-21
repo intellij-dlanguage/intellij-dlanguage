@@ -1,4 +1,5 @@
 D Language File
+  PsiComment(DlangTokenType.LINE_COMMENT)('// invalid type declared in enum member')
   ENUM_DECLARATION
     PsiElement(DlangTokenType.enum)('enum')
     PsiElement(DlangTokenType.ID)('X')
@@ -11,6 +12,7 @@ D Language File
               PsiElement(DlangTokenType.int)('int')
         PsiElement(DlangTokenType.ID)('a')
       PsiElement(DlangTokenType.})('}')
+  PsiComment(DlangTokenType.LINE_COMMENT)('// invalid type declared in enum member')
   DLanguageAnonymousEnumDeclarationImpl(ANONYMOUS_ENUM_DECLARATION)
     PsiElement(DlangTokenType.enum)('enum')
     PsiElement(DlangTokenType.:)(':')
@@ -29,3 +31,48 @@ D Language File
       DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
         PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
     PsiElement(DlangTokenType.})('}')
+  PsiComment(DlangTokenType.LINE_COMMENT)('// 2 successive commas')
+  ENUM_DECLARATION
+    PsiElement(DlangTokenType.enum)('enum')
+    PsiElement(DlangTokenType.ID)('A')
+    DLanguageEnumBodyImpl(ENUM_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      ENUM_MEMBER
+        PsiElement(DlangTokenType.ID)('a')
+      PsiElement(DlangTokenType.,)(',')
+      PsiErrorElement:Unexpected `,` while enum member or `}` expected
+        PsiElement(DlangTokenType.,)(',')
+      PsiElement(DlangTokenType.})('}')
+  PsiComment(DlangTokenType.LINE_COMMENT)('// deprecated with no name')
+  ENUM_DECLARATION
+    PsiElement(DlangTokenType.enum)('enum')
+    PsiElement(DlangTokenType.ID)('A')
+    DLanguageEnumBodyImpl(ENUM_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      ENUM_MEMBER
+        PsiElement(DlangTokenType.ID)('a')
+      PsiElement(DlangTokenType.,)(',')
+      ENUM_MEMBER
+        DLanguageEnumMemberAttributeImpl(ENUM_MEMBER_ATTRIBUTE)
+          DLanguageDeprecatedImpl(DEPRECATED)
+            PsiElement(DlangTokenType.deprecated)('deprecated')
+      PsiErrorElement:Unexpected `,` while enum member or `}` expected
+        PsiElement(DlangTokenType.,)(',')
+      PsiElement(DlangTokenType.})('}')
+  PsiComment(DlangTokenType.LINE_COMMENT)('// attribute with no name')
+  ENUM_DECLARATION
+    PsiElement(DlangTokenType.enum)('enum')
+    PsiElement(DlangTokenType.ID)('A')
+    DLanguageEnumBodyImpl(ENUM_BODY)
+      PsiElement(DlangTokenType.{)('{')
+      ENUM_MEMBER
+        PsiElement(DlangTokenType.ID)('c')
+      PsiElement(DlangTokenType.,)(',')
+      ENUM_MEMBER
+        DLanguageEnumMemberAttributeImpl(ENUM_MEMBER_ATTRIBUTE)
+          DLanguageAtAttributeImpl(AT_ATTRIBUTE)
+            PsiElement(DlangTokenType.@)('@')
+            PsiElement(DlangTokenType.ID)('test')
+      PsiErrorElement:Unexpected `,` while enum member or `}` expected
+        PsiElement(DlangTokenType.,)(',')
+      PsiElement(DlangTokenType.})('}')
