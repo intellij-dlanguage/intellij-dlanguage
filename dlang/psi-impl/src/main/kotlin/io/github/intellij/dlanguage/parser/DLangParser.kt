@@ -28,7 +28,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             m = m.precede()
             builder.advanceLexer()
             if (parseMulExpression() == null) {
-                cleanup(m, DlangTypes.ADD_EXPRESSION)
+                m.done(DlangTypes.ADD_EXPRESSION)
                 return null
             }
             m.done(DlangTypes.ADD_EXPRESSION)
@@ -294,7 +294,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             m = m.precede()
             builder.advanceLexer()
             if (parseOrExpression() == null) {
-                cleanup(m, DlangTypes.AND_AND_EXPRESSION)
+                m.done(DlangTypes.AND_AND_EXPRESSION)
                 return null
             }
             m.done(DlangTypes.AND_AND_EXPRESSION)
@@ -317,7 +317,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             m = m.precede()
             builder.advanceLexer()
             if (parseCmpExpression() == null) {
-                cleanup(m, DlangTypes.AND_EXPRESSION)
+                m.done(DlangTypes.AND_EXPRESSION)
                 return null
             }
             m.done(DlangTypes.AND_EXPRESSION)
@@ -1678,31 +1678,31 @@ internal class DLangParser(private val builder: PsiBuilder) {
         val m = builder.mark()
         expect(DlangTypes.KW_CAST)
         if (!tokenCheck(DlangTypes.OP_PAR_LEFT)) {
-            cleanup(m, DlangTypes.CAST_EXPRESSION)
+            m.done(DlangTypes.CAST_EXPRESSION)
             return null
         }
         if (!currentIs(DlangTypes.OP_PAR_RIGHT)) {
             if (isCastQualifier) {
                 if (!parseCastQualifier()) {
-                    cleanup(m, DlangTypes.CAST_EXPRESSION)
+                    m.done(DlangTypes.CAST_EXPRESSION)
                     return null
                 }
             } else {
                 if (!parseType()) {
-                    cleanup(m, DlangTypes.CAST_EXPRESSION)
+                    m.done(DlangTypes.CAST_EXPRESSION)
                     return null
                 }
             }
         }
         if (!tokenCheck(DlangTypes.OP_PAR_RIGHT)) {
-            cleanup(m, DlangTypes.CAST_EXPRESSION)
+            m.done(DlangTypes.CAST_EXPRESSION)
             return null
         }
         if (parseUnaryExpression() == null) {
-            cleanup(m, DlangTypes.CAST_EXPRESSION)
+            m.done(DlangTypes.CAST_EXPRESSION)
             return null
         }
-        exit_section_modified(builder, m, DlangTypes.CAST_EXPRESSION, true)
+        m.done(DlangTypes.CAST_EXPRESSION)
         return m
     }
 
@@ -2431,14 +2431,14 @@ internal class DLangParser(private val builder: PsiBuilder) {
     fun parseDeleteExpression(): PsiBuilder.Marker? {
         val m = builder.mark()
         if (!tokenCheck(DlangTypes.KW_DELETE)) {
-            cleanup(m, DlangTypes.DELETE_EXPRESSION)
+            m.done(DlangTypes.DELETE_EXPRESSION)
             return null
         }
         if (parseUnaryExpression() == null) {
-            cleanup(m, DlangTypes.DELETE_EXPRESSION)
+            m.done(DlangTypes.DELETE_EXPRESSION)
             return null
         }
-        exit_section_modified(builder, m, DlangTypes.DELETE_EXPRESSION, true)
+        m.done(DlangTypes.DELETE_EXPRESSION)
         return m
     }
 
@@ -2819,7 +2819,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         if (m == null) {
             m = builder.mark()
             if (parseShiftExpression() == null) {
-                cleanup(m, DlangTypes.EQUAL_EXPRESSION)
+                m.done(DlangTypes.EQUAL_EXPRESSION)
                 return null
             }
         }
@@ -2827,7 +2827,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             advance()
         }
         if (parseShiftExpression() == null) {
-            cleanup(m, DlangTypes.EQUAL_EXPRESSION)
+            m.done(DlangTypes.EQUAL_EXPRESSION)
             return null
         }
         m.done(DlangTypes.EQUAL_EXPRESSION)
@@ -2856,18 +2856,17 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * ;)
      */
     fun parseCommaExpression(): PsiBuilder.Marker? {
-        val assign = parseAssignExpression() ?: return null
-        if (currentIs(DlangTypes.OP_COMMA)) {
-            val m = assign.precede()
+        var assign = parseAssignExpression() ?: return null
+        while (currentIs(DlangTypes.OP_COMMA)) {
+            assign = assign.precede()
             advance()
             if (!currentIsOneOf(DlangTypes.OP_PAR_RIGHT, DlangTypes.OP_BRACES_RIGHT, DlangTypes.OP_BRACKET_RIGHT)) {
-                if (parseCommaExpression() == null) {
-                    cleanup(m, DlangTypes.COMMA_EXPRESSION)
-                    return m
+                if (parseAssignExpression() == null) {
+                    assign.done(DlangTypes.COMMA_EXPRESSION)
+                    break
                 }
             }
-            m.done(DlangTypes.COMMA_EXPRESSION)
-            return m
+            assign.done(DlangTypes.COMMA_EXPRESSION)
         }
         return assign
     }
@@ -3649,7 +3648,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         if (m == null) {
             m = builder.mark()
             if (parseShiftExpression() == null) {
-                cleanup(m, DlangTypes.IDENTITY_EXPRESSION)
+                m.done(DlangTypes.IDENTITY_EXPRESSION)
                 return null
             }
         }
@@ -3657,14 +3656,14 @@ internal class DLangParser(private val builder: PsiBuilder) {
             advance()
         }
         if (!tokenCheck(DlangTypes.KW_IS)) {
-            cleanup(m, DlangTypes.IDENTITY_EXPRESSION)
+            m.done(DlangTypes.IDENTITY_EXPRESSION)
             return null
         }
         if (parseShiftExpression() == null) {
-            cleanup(m, DlangTypes.IDENTITY_EXPRESSION)
+            m.done(DlangTypes.IDENTITY_EXPRESSION)
             return null
         }
-        exit_section_modified(builder, m, DlangTypes.IDENTITY_EXPRESSION, true)
+        m.done(DlangTypes.IDENTITY_EXPRESSION)
         return m
     }
 
@@ -4012,7 +4011,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         if (m == null) {
             m = builder.mark()
             if (parseShiftExpression() == null) {
-                cleanup(m, DlangTypes.IN_EXPRESSION)
+                m.done(DlangTypes.IN_EXPRESSION)
                 return null
             }
         }
@@ -4020,14 +4019,14 @@ internal class DLangParser(private val builder: PsiBuilder) {
             advance()
         }
         if (!tokenCheck(DlangTypes.KW_IN)) {
-            cleanup(m, DlangTypes.IN_EXPRESSION)
+            m.done(DlangTypes.IN_EXPRESSION)
             return null
         }
         if (parseShiftExpression() == null) {
-            cleanup(m, DlangTypes.IN_EXPRESSION)
+            m.done(DlangTypes.IN_EXPRESSION)
             return null
         }
-        exit_section_modified(builder, m, DlangTypes.IN_EXPRESSION, true)
+        m.done(DlangTypes.IN_EXPRESSION)
         return m
     }
 
@@ -4669,7 +4668,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             m = m.precede()
             builder.advanceLexer()
             if (parseUnaryExpression() == null) {
-                cleanup(m, DlangTypes.MUL_EXPRESSION)
+                m.done(DlangTypes.MUL_EXPRESSION)
                 return null
             }
             m.done(DlangTypes.MUL_EXPRESSION)
@@ -4847,7 +4846,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             m = m.precede()
             builder.advanceLexer()
             if (parseXorExpression() == null) {
-                cleanup(m, DlangTypes.OR_EXPRESSION)
+                m.done(DlangTypes.OR_EXPRESSION)
                 return null
             }
             m.done(DlangTypes.OR_EXPRESSION)
@@ -5234,7 +5233,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             val marker = m.precede()
             builder.advanceLexer()
             if (parseUnaryExpression() == null) {
-                cleanup(marker, DlangTypes.POW_EXPRESSION)
+                marker.done(DlangTypes.POW_EXPRESSION)
                 return null
             }
             marker.done(DlangTypes.POW_EXPRESSION)
@@ -5630,20 +5629,20 @@ internal class DLangParser(private val builder: PsiBuilder) {
         if (m == null) {
             m = builder.mark()
             if (parseShiftExpression() == null) {
-                cleanup(m, DlangTypes.IDENTITY_EXPRESSION)
+                m.done(DlangTypes.IDENTITY_EXPRESSION)
                 return null
             }
         }
         if (!currentIsOneOf(DlangTypes.OP_LESS, DlangTypes.OP_LESS_EQ, DlangTypes.OP_GT, DlangTypes.OP_GT_EQ)) {
-            cleanup(m, DlangTypes.IDENTITY_EXPRESSION)
+            m.done(DlangTypes.IDENTITY_EXPRESSION)
             return null
         }
         advance()
         if (parseShiftExpression() == null) {
-            cleanup(m, DlangTypes.IDENTITY_EXPRESSION)
+            m.done(DlangTypes.IDENTITY_EXPRESSION)
             return null
         }
-        exit_section_modified(builder, m, DlangTypes.REL_EXPRESSION, true)
+        m.done(DlangTypes.REL_EXPRESSION)
         return m
     }
 
@@ -5769,7 +5768,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             m = m.precede()
             builder.advanceLexer()
             if (parseAddExpression() == null) {
-                cleanup(m, DlangTypes.SHIFT_EXPRESSION)
+                m.done(DlangTypes.SHIFT_EXPRESSION)
                 return null
             }
             m.done(DlangTypes.SHIFT_EXPRESSION)
@@ -7045,19 +7044,19 @@ internal class DLangParser(private val builder: PsiBuilder) {
             val m = orOrExpression.precede()
             advance()
             if (!parseExpression()) {
-                cleanup(m, DlangTypes.TERNARY_EXPRESSION)
+                m.done(DlangTypes.TERNARY_EXPRESSION)
                 return null
             }
             val colon = expect(DlangTypes.OP_COLON)
             if (colon == null) {
-                cleanup(m, DlangTypes.TERNARY_EXPRESSION)
+                m.done(DlangTypes.TERNARY_EXPRESSION)
                 return null
             }
             if (parseTernaryExpression() == null) {
-                cleanup(m, DlangTypes.TERNARY_EXPRESSION)
+                m.done(DlangTypes.TERNARY_EXPRESSION)
                 return null
             }
-            exit_section_modified(builder, m, DlangTypes.TERNARY_EXPRESSION, true)
+            m.done(DlangTypes.TERNARY_EXPRESSION)
             return m
         }
         return orOrExpression
@@ -7075,10 +7074,10 @@ internal class DLangParser(private val builder: PsiBuilder) {
         val m = builder.mark()
         expect(DlangTypes.KW_THROW)
         if (parseAssignExpression() == null) {
-            cleanup(m, DlangTypes.THROW_EXPRESSION)
+            m.done(DlangTypes.THROW_EXPRESSION)
             return null
         }
-        exit_section_modified(builder, m, DlangTypes.THROW_EXPRESSION, true)
+        m.done(DlangTypes.THROW_EXPRESSION)
         return m
     }
 
@@ -7579,10 +7578,10 @@ internal class DLangParser(private val builder: PsiBuilder) {
             val m = builder.mark()
             advance()
             if (parseUnaryExpression() == null) {
-                cleanup(m, DlangTypes.UNARY_EXPRESSION)
+                m.done(DlangTypes.UNARY_EXPRESSION)
                 return null
             }
-            exit_section_modified(builder, m, DlangTypes.UNARY_EXPRESSION, true)
+            m.done(DlangTypes.UNARY_EXPRESSION)
             return m
         } else if (i === DlangTypes.KW_DELETE) {
             return parseDeleteExpression()
@@ -7594,7 +7593,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         return parsePowExpression()
     }
 
-    fun parsePostfixExpression_terminal(): PsiBuilder.Marker? {
+    fun parsePostfixExpressionTerminal(): PsiBuilder.Marker? {
         var m = parsePrimaryExpression()
         if (m != null) return m
         // TypeCtor
@@ -7615,7 +7614,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         return null
     }
 
-    fun parsePostfixExpression_0(m: PsiBuilder.Marker): PsiBuilder.Marker? {
+    fun parsePostfixExpression0(m: PsiBuilder.Marker): PsiBuilder.Marker? {
         if (currentIs(DlangTypes.OP_DOT)) {
             val marker = m.precede()
             builder.advanceLexer()
@@ -7692,10 +7691,10 @@ internal class DLangParser(private val builder: PsiBuilder) {
     }
 
     fun parsePostfixExpression(): PsiBuilder.Marker? {
-        var m = parsePostfixExpression_terminal()
+        var m = parsePostfixExpressionTerminal()
         if (m == null) return m
         while (true) {
-            val marker = parsePostfixExpression_0(m!!) ?: break
+            val marker = parsePostfixExpression0(m!!) ?: break
             m = marker
         }
         return m
@@ -8008,7 +8007,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             marker = marker.precede()
             builder.advanceLexer()
             if (parseAndExpression() == null) {
-                cleanup(marker, DlangTypes.XOR_EXPRESSION)
+                marker.done(DlangTypes.XOR_EXPRESSION)
                 return null
             }
             marker.done(DlangTypes.XOR_EXPRESSION)
