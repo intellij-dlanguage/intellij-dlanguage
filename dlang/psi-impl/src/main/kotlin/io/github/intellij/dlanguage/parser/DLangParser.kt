@@ -2570,7 +2570,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         }
         val m = builder.mark()
         builder.advanceLexer()
-        while (builder.tokenType !== DlangTypes.OP_BRACES_RIGHT) {
+        while (!builder.eof() && builder.tokenType !== DlangTypes.OP_BRACES_RIGHT) {
             if (parseEnumMember()) {
                 if (builder.tokenType === DlangTypes.OP_COMMA) {
                     advance()
@@ -2668,7 +2668,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             return false
         }
         builder.advanceLexer()
-        while (moreTokens()) {
+        while (!builder.eof()) {
             if (currentIs(DlangTypes.OP_COMMA)) {
                 advance()
             } else if (currentIs(DlangTypes.OP_BRACES_RIGHT)) {
