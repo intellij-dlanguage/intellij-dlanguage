@@ -232,6 +232,7 @@ class DLanguageParserTest : DLanguageParserTestBase("parser", "d", DLangParserDe
     // enums
     fun testenums() = doDlangParserTest()
     fun testenums_errors() = doDlangParserTest(checkResult = true, shouldPass = false)
+    fun testenums_error_unfinished() = doDlangParserTest(checkResult = false, shouldPass = false)
 
     // immutable const
     fun testconst_immutable() = doDlangParserTest()
