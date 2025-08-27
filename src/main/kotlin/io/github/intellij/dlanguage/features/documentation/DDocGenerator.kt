@@ -274,8 +274,8 @@ class DDocGenerator {
             rawTextBuilder.append(txt)
         }
         val rawText = rawTextBuilder.toString()
-        val codeSnippet = rawText.substring(rawText.indexOf("\n"))
-        val rawLanguage = rawText.substring(0, rawText.indexOf("\n")).trim()
+        val rawLanguage = rawText.substringBefore("\n", missingDelimiterValue = "").trim()
+        val codeSnippet = rawText.substringAfter("\n", missingDelimiterValue = rawText)
         val language =  if (rawLanguage.isNotEmpty()) Language.findLanguageByID(rawLanguage)?: DLanguage else DLanguage
         return QuickDocHighlightingHelper.getStyledCodeBlock(element.project, language, codeSnippet )
     }
