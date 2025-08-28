@@ -145,7 +145,7 @@ static this() {
     types_extra_interfaces["BasicType"] = ["DTypedElement"];
     types_mixins["BasicType"] = "DLanguageBasicTypeImplMixin";
     types_children["BuiltinType"] = [/*todo add the types*/];  // UNUSED currently
-    types_children["CaseRangeStatement"] = ["KW_CASE*","OP_TRIPLEDOT","OP_COLON*","AssignExpression", "Statement*"];
+    types_children["CaseRangeStatement"] = ["KW_CASE*","OP_DDOT","OP_COLON*","AssignExpression", "Statement*"];
     types_extra_interfaces["CaseRangeStatement"] = ["Statement"];
     types_children["CaseStatement"] = ["KW_CASE","OP_COLON","ArgumentList","Statement*"];
     types_extra_interfaces["CaseRangeStatement"] = ["Statement"];
@@ -473,8 +473,8 @@ static this() {
     has_processDeclaration["BaseClassList"] = false;
     has_processDeclaration["BasicType"] = false;
     has_processDeclaration["BuiltinType"] = false;
-    has_processDeclaration["CaseRangeStatement"] = false;
-    has_processDeclaration["CaseStatement"] = false;
+    has_processDeclaration["CaseRangeStatement"] = true;
+    has_processDeclaration["CaseStatement"] = true;
     has_processDeclaration["CastExpression"] = false;
     has_processDeclaration["CastQualifier"] = false;
     has_processDeclaration["Catch"] = true;
@@ -490,7 +490,7 @@ static this() {
     has_processDeclaration["DebugSpecification"] = false;
     has_processDeclaration["DeclarationBlock"] = true;
     has_processDeclaration["DeclarationStatement"] = true;
-    has_processDeclaration["DefaultStatement"] = false;
+    has_processDeclaration["DefaultStatement"] = true;
     has_processDeclaration["DeleteExpression"] = false;
     has_processDeclaration["DeleteStatement"] = false;
     has_processDeclaration["Deprecated"] = false;
