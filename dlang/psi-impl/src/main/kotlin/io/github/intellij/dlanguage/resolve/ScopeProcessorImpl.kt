@@ -29,11 +29,10 @@ object ScopeProcessorImpl {
      * @param element
      * @param processor
      * @param state
-     * @param lastParent todo make use of this to determine if scope statements/decldefs contained inside a element should be processed or not.
+     * @param lastParent
      * @param place
      * @return true if it should continue, false if it should stop
      */
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: StructBody,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -43,7 +42,6 @@ object ScopeProcessorImpl {
     }
 
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: AliasInitializer,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -57,7 +55,6 @@ object ScopeProcessorImpl {
         return true
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: AutoAssignment,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -105,7 +102,6 @@ object ScopeProcessorImpl {
         return true
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: IdentifierInitializer,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -123,7 +119,6 @@ object ScopeProcessorImpl {
         return processor.execute(element, state)
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: DLanguageFunctionLiteralExpression,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -141,7 +136,6 @@ object ScopeProcessorImpl {
         return toContinue
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: DLanguageLambdaExpression,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -155,7 +149,6 @@ object ScopeProcessorImpl {
         return true
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: ClassDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -177,7 +170,6 @@ object ScopeProcessorImpl {
         return toContinue
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: InterfaceDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -199,7 +191,6 @@ object ScopeProcessorImpl {
         return toContinue
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: StructDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -221,7 +212,6 @@ object ScopeProcessorImpl {
         return toContinue
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: TemplateMixinDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -241,7 +231,6 @@ object ScopeProcessorImpl {
         return toContinue
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: TemplateDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -261,7 +250,6 @@ object ScopeProcessorImpl {
         return toContinue
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: UnionDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -297,7 +285,7 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         element.declaration?:return true
-        return ScopeProcessorImplUtil.processDeclaration(element.declaration!!, processor, state, lastParent, place)
+        return processDeclaration(element.declaration!!, processor, state, lastParent, place)
     }
 
     fun processDeclarations(element: FunctionDeclaration,
@@ -407,7 +395,6 @@ object ScopeProcessorImpl {
     }
 
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: ForStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -470,24 +457,42 @@ object ScopeProcessorImpl {
         return toContinue
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: SwitchStatement,
+    fun processDeclarations(element: CaseStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-//        element.statement?.statementNoCaseNoDefault?.blockStatement?.declarationsAndStatements?.declarationOrStatements
-        //todo truthy types in switch statement???//should declarations in the switch scope statement be processed or do they go out of scope
-        return true
+        if (lastParent == null || lastParent.parent != element) {
+            // Parent element should not see our vars
+            return true
+        }
+
+        return PsiScopesUtil.walkChildrenScopes(element, processor, state, lastParent, place)
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: FinalSwitchStatement,
+    fun processDeclarations(element: CaseRangeStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        return true//see regular switch statement
+        if (lastParent == null || lastParent.parent != element) {
+            // Parent element should not see our vars
+            return true
+        }
+        return PsiScopesUtil.walkChildrenScopes(element, processor, state, lastParent, place)
+    }
+
+    fun processDeclarations(element: DefaultStatement,
+                            processor: PsiScopeProcessor,
+                            state: ResolveState,
+                            lastParent: PsiElement?,
+                            place: PsiElement): Boolean {
+        if (lastParent == null || lastParent.parent != element) {
+            // Parent element should not see our vars
+            return true
+        }
+
+        return PsiScopesUtil.walkChildrenScopes(element, processor, state, lastParent, place)
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -497,15 +502,6 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         return true//todo I don't actually know how with statements work in D
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    fun processDeclarations(element: SynchronizedStatement,
-                            processor: PsiScopeProcessor,
-                            state: ResolveState,
-                            lastParent: PsiElement?,
-                            place: PsiElement): Boolean {
-        return true //how does scope work in synchronized D statements
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -625,8 +621,6 @@ object ScopeProcessorImpl {
         return true
     }
 
-
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: Constructor,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -646,7 +640,6 @@ object ScopeProcessorImpl {
 
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: ConditionalStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -662,7 +655,6 @@ object ScopeProcessorImpl {
         return toContinue
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: ConditionalDeclaration,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
@@ -711,7 +703,6 @@ object ScopeProcessorImpl {
         return true
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: DeclarationBlock,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
