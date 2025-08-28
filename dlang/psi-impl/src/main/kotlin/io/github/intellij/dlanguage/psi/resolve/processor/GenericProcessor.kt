@@ -17,7 +17,7 @@ class GenericProcessor(private val elementName: String, private val startPlace: 
         if (element !is DNamedElement) return true
         if (element.name != elementName) return true
         candidates = SmartList()
-        (candidates as SmartList<DResolveResult>).add(DResolveResult(element))
+        candidates!!.add(DResolveResult(element))
         resolveResult = null
         return false
     }

@@ -6,10 +6,11 @@ import com.intellij.openapi.vfs.VirtualFileFilter
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.PsiManagerEx
+import com.intellij.psi.search.GlobalSearchScope
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
-import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
 import io.github.intellij.dlanguage.psi.named.DLanguageConstructor
 import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageModule
 import org.intellij.lang.annotations.Language
 import java.io.File
 
@@ -125,8 +126,8 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         val element = referencedElement!!.resolve()
         if (resolvedFileName != null) {
             assertNotNull("Referenced not resolved", element)
-            assertInstanceOf(element!!, DlangPsiFileImpl::class.java)
-            assertEquals((element as DlangPsiFileImpl).name, resolvedFileName)
+            assertInstanceOf(element!!, DLanguageModule::class.java)
+            assertEquals((element as DLanguageModule).getFile(GlobalSearchScope.EMPTY_SCOPE).name, resolvedFileName)
         } else {
             assertNull(element)
         }

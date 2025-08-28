@@ -566,8 +566,15 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
+        if (!processor.execute(element, state))
+            return false
         val hint = processor.getHint(ElementDeclarationHint.KEY)
         if (hint != null && !hint.shouldProcess(ElementDeclarationHint.DeclarationKind.IMPORT)) {
+            return true
+        }
+
+        val canProcessStatic = state.get(IS_QUALIFIED_SYMBOL)?:false
+        if (element.kW_STATIC != null && !canProcessStatic) {
             return true
         }
 
