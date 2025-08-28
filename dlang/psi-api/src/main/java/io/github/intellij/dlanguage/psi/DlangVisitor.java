@@ -511,9 +511,9 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-//    public void visitModule(@NotNull DLanguageModule o) {
-//        visitPsiElement(o);
-//    }
+    public void visitModule(@NotNull DLanguageModule o) {
+        visitPsiElement(o);
+    }
 
     public void visitModuleDeclaration(@NotNull final DLanguageModuleDeclaration o) {
         visitPsiElement(o);
