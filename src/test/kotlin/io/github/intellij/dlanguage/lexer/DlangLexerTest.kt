@@ -132,6 +132,8 @@ class DlangLexerTest : DlangLexerTestBase("lexer") {
     fun teststring_delim_invalid_non_ending() = doTest("q\"/test\"d;", """
 BAD_CHARACTER ('q"/test"d;')
 """)
+    fun teststring_delim_unterminated() = doTest("q\"test\"", "DlangTokenType.DELIMITED_STRING ('q\"test\"')")
+    fun teststring_token_no_extension() = doTest("q{test}", "DlangTokenType.TOKEN_STRING ('q{test}')")
 
 
     // tokens

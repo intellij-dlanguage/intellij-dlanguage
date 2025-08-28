@@ -399,7 +399,6 @@ NESTING_BLOCK_DOC_END = "+/"
 
     <<EOF>>     {
           if (stringDelimiterClosed) {
-              yypushback(1);
               yybegin(YYINITIAL);
               return DELIMITED_STRING;
           }
@@ -433,7 +432,6 @@ NESTING_BLOCK_DOC_END = "+/"
 
     <<EOF>>     {
           if (stringDelimiterClosed) {
-              yypushback(1);
               yybegin(YYINITIAL);
               return DELIMITED_STRING;
           }
