@@ -38,24 +38,23 @@ class DLanguageImportDeclarationImpl : DStubBasedPsiElementBase<DLanguageImportD
         }
     }
 
-    override fun getKW_IMPORT(): PsiElement? {
-        return findChildByType<PsiElement?>(DlangTypes.KW_IMPORT)
-    }
+    override fun getKW_STATIC(): PsiElement? =
+        findChildByType(DlangTypes.KW_STATIC)
 
-    override fun getSingleImports(): MutableList<DLanguageSingleImport> {
-        return PsiTreeUtil.getChildrenOfTypeAsList<DLanguageSingleImport>(this, DLanguageSingleImport::class.java)
-    }
+    override fun getKW_IMPORT(): PsiElement? =
+        findChildByType(DlangTypes.KW_IMPORT)
 
-    override fun getImportBindings(): DLanguageImportBindings? {
-        return PsiTreeUtil.getChildOfType<DLanguageImportBindings?>(this, DLanguageImportBindings::class.java)
-    }
+    override fun getSingleImports(): List<DLanguageSingleImport> =
+        PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageSingleImport::class.java)
 
-    override fun getOP_COMMAs(): MutableList<PsiElement?> {
-        return findChildrenByType<PsiElement?>(DlangTypes.OP_COMMA)
-    }
+    override fun getImportBindings(): DLanguageImportBindings? =
+        PsiTreeUtil.getChildOfType(this, DLanguageImportBindings::class.java)
+
+    override fun getOP_COMMAs(): List<PsiElement?> =
+        findChildrenByType(DlangTypes.OP_COMMA)
 
     override fun getOP_SCOLON(): PsiElement? {
-        return findChildByType<PsiElement?>(DlangTypes.OP_SCOLON)
+        return findChildByType(DlangTypes.OP_SCOLON)
     }
 
     override fun visibility(): DVisibility {

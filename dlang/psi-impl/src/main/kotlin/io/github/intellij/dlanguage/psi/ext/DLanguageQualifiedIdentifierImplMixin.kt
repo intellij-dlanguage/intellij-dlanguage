@@ -29,7 +29,7 @@ abstract class DLanguageQualifiedIdentifierImplMixin(node: ASTNode) : ASTWrapper
         else {
             return null
         }
-        if (PsiTreeUtil.getParentOfType<AliasInitializer>(this, AliasInitializer::class.java, true, Declaration::class.java, Parameter::class.java) != null) {
+        if (PsiTreeUtil.getParentOfType(this, AliasInitializer::class.java, true, Declaration::class.java, Parameter::class.java) != null) {
             return AliasValueReference(this, range, qualifiedIdentifier, referenceElement.text)
         }
         val inTypeSuffix = PsiTreeUtil.getParentOfType<TypeSuffix>(this, TypeSuffix::class.java, true, Declaration::class.java, Parameter::class.java) != null

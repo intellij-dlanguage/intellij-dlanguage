@@ -231,7 +231,7 @@ static this() {
     types_children["ImportBind"] = ["Identifier","NamedImportBind"];
     types_mixins["ImportBind"] = "DLanguageImportBindImplMixin";
     types_children["ImportBindings"] = ["OP_COMMA*","ImportBind*","SingleImport","OP_COLON"];
-    stub_children["ImportDeclaration"] = ["KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
+    stub_children["ImportDeclaration"] = ["KW_STATIC","KW_IMPORT","SingleImport*","ImportBindings","OP_COMMA*","OP_SCOLON"];
     types_extra_interfaces["ImportDeclaration"] = ["Statement", "Declaration", "DVisibilityModifier"];
     types_children["ImportExpression"] = ["ImportExpression","AssignExpression","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_mixins["ImportExpression"] = "DLanguageImportExpressionImplMixin";

@@ -41,5 +41,4 @@ val DVisibility.stubKind: DVisibilityStubKind
                 DVisibilityStubKind.PACKAGE_SPECIFIC
             DVisibilityStubKind.PACKAGE
         }
-        else -> error("Unsupported visibility")
     }

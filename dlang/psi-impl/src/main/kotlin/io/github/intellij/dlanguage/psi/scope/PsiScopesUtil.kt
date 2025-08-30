@@ -6,8 +6,12 @@ import com.intellij.psi.PsiQualifiedReference
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import io.github.intellij.dlanguage.psi.interfaces.Expression
+import io.github.intellij.dlanguage.psi.named.DLanguageModule
+import io.github.intellij.dlanguage.psi.named.DLanguagePackage
+import io.github.intellij.dlanguage.psi.scope.processor.PackageOrModuleProcessor
 import io.github.intellij.dlanguage.psi.scope.processor.UFCSProcessor
 import io.github.intellij.dlanguage.psi.types.*
+import io.github.intellij.dlanguage.resolve.IS_QUALIFIED_SYMBOL
 import io.github.intellij.dlanguage.utils.AttributeSpecifier
 
 object PsiScopesUtil {
@@ -61,11 +65,7 @@ object PsiScopesUtil {
         processor: PsiScopeProcessor,
         state: ResolveState,
     ): Boolean {
-        var child: PsiElement? =  thisElement.prevSibling
-
-        if (child == null) {
-            return true
-        }
+        var child: PsiElement? = thisElement.prevSibling ?: return true
 
         while (child != null) {
             // ignore attribute with block (example `public {}`) as they don’t impact us
@@ -94,7 +94,17 @@ object PsiScopesUtil {
             }
             if (type == null) {
                 val target: PsiElement? = reference.qualifier?.reference?.resolve()
-                val `continue` = target?.processDeclarations(processor, ResolveState.initial(), target, reference.element) ?: true
+                var state = ResolveState.initial()
+                if (target is DLanguagePackage) {
+                    // First try to resolve to a package or module (of imported symbol)
+                    val packageProcessor = PackageOrModuleProcessor(processor, target)
+                    if (!treeWalkUp(packageProcessor, reference.element, null))
+                        return false
+                }
+                if (target is DLanguagePackage || target is DLanguageModule) {
+                    state = state.put(IS_QUALIFIED_SYMBOL, true)
+                }
+                val `continue` = target?.processDeclarations(processor, state, target, reference.element) ?: true
                 if (!`continue`)
                     return false
             }
@@ -102,6 +112,11 @@ object PsiScopesUtil {
             val processor = UFCSProcessor(processor);
             return treeWalkUp(processor, reference.element, null);
         } else {
+            // First try to resolve to a package or module (of imported symbol)
+            val packageProcessor = PackageOrModuleProcessor(processor, null)
+            if(!treeWalkUp(packageProcessor, reference.element, null))
+                return false
+
             // simple expression -> resolve a top level declaration
             return treeWalkUp(processor, reference.element, maxScope)
         }

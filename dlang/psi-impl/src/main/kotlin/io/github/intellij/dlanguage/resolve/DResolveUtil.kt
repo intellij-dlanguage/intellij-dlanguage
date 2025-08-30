@@ -48,3 +48,4 @@ object DResolveUtil {
 }
 
 val PROCESSED_FILES_KEY = Key.create<MutableList<String>>("PROCESSED_FILES")
+val IS_QUALIFIED_SYMBOL = Key.create<Boolean>("IS_QUALIFIED_SYMBOL")

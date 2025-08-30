@@ -14,11 +14,6 @@ class DImportsUsageResolveTest : DResolveTestCase() {
                 void /*<resolved>*/writeln(string a){}
             """.trimIndent()
 
-    @Throws(Exception::class)
-    override fun setUp() {
-        super.setUp()
-    }
-
     private fun doCheckByText(@Language("D") main: String) = doCheckByText2(main, content)
 
     @Test
@@ -43,8 +38,7 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             """)
     }
 
-    // TODO need to handle the static imports
-    /*@Test
+    @Test
     fun testStaticImport() {
         doCheckByText(
             """
@@ -54,7 +48,38 @@ class DImportsUsageResolveTest : DResolveTestCase() {
                     resolve.to.include./*<ref>*/writeln("static");
                 }
             """)
-    }*/
+    }
+
+    @Test
+    fun testNonStaticImportFullyQualifiedSymbol() {
+        doCheckByText(
+            """
+                import resolve.to.include;
+
+                void main() {
+                    resolve.to.include./*<ref>*/writeln("static");
+                }
+            """)
+    }
+
+    @Test
+    fun testStaticImportShouldNotResolveDirectUsage() {
+        doCheckByText2(
+            """
+                static import resolve.to.include;
+
+                void main() {
+                    /*<ref>*/writeln("static");
+                }
+            """,
+            """
+                module resolve.to.include;
+
+                void write(string a){}
+                void writeln(string a){}
+            """.trimIndent(),
+            false)
+    }
 
     @Test
     fun testRenamedImport() {
@@ -216,6 +241,21 @@ class DImportsUsageResolveTest : DResolveTestCase() {
                     /*<resolved>*/Bar
                 }
             """)
+    }
+
+    @Test
+    fun testFullyQualifiedSymbolType() {
+        doCheckByText2(
+            """
+                import resolve.to.include;
+
+                class A : resolve.to.include./*<ref>*/A {}
+            """.trimIndent(),
+            """
+                module resolve.to.include;
+
+                class /*<resolved>*/A {}
+            """.trimIndent())
     }
 
 }

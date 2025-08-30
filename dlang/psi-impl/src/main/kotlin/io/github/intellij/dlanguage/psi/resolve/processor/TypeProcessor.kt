@@ -11,6 +11,8 @@ import io.github.intellij.dlanguage.psi.DResolveResult
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
 import io.github.intellij.dlanguage.psi.interfaces.TemplateParameter
 import io.github.intellij.dlanguage.psi.interfaces.UserDefinedType
+import io.github.intellij.dlanguage.psi.named.DLanguageModule
+import io.github.intellij.dlanguage.psi.named.DLanguagePackage
 import io.github.intellij.dlanguage.utils.*
 
 class TypeProcessor(private val elementName: String,
@@ -24,7 +26,8 @@ class TypeProcessor(private val elementName: String,
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         if (element !is UserDefinedType && element !is DeclaratorIdentifier &&
             element !is AliasInitializer && element !is TemplateDeclaration &&
-            element !is TemplateParameter) {
+            element !is TemplateParameter && element !is DLanguageModule && element !is DLanguagePackage
+        ) {
             if (!(canSearchVariable && (element is Parameter || element is AutoAssignment || element is IdentifierInitializer)))
                 return true
         }

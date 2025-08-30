@@ -562,8 +562,15 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
+        if (!processor.execute(element, state))
+            return false
         val hint = processor.getHint(ElementDeclarationHint.KEY)
         if (hint != null && !hint.shouldProcess(ElementDeclarationHint.DeclarationKind.IMPORT)) {
+            return true
+        }
+
+        val canProcessStatic = state.get(IS_QUALIFIED_SYMBOL)?:false
+        if (element.kW_STATIC != null && !canProcessStatic) {
             return true
         }
 
@@ -582,9 +589,8 @@ object ScopeProcessorImpl {
         // we have an import binding, search for it first
         if (element.importBindings != null) {
             // with import binding restricts the scope of the corresponding single import
-            val base = singleImports.removeLastOrNull() // remove the last as due to binding, we can only access to his bindings
-            if (base == null)
-                return true
+            val base = singleImports.removeLastOrNull()
+                ?: return true // remove the last as due to binding, we can only access to his bindings
             for (elt in element.importBindings!!.importBinds) {
                 if (elt.namedImportBind != null) {
                     if (!processor.execute(elt.namedImportBind!!, state))

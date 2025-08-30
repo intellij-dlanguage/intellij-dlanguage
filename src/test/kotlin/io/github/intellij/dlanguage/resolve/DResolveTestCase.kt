@@ -6,12 +6,12 @@ import com.intellij.openapi.vfs.VirtualFileFilter
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.PsiManagerEx
+import com.intellij.psi.search.GlobalSearchScope
 import io.github.intellij.dlanguage.DLightPlatformCodeInsightFixtureTestCase
-import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
 import io.github.intellij.dlanguage.psi.named.DLanguageConstructor
 import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageModule
 import org.intellij.lang.annotations.Language
-import org.junit.Assert.assertNotEquals
 import java.io.File
 
 abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("resolve", "resolve") {
@@ -27,52 +27,50 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         super.setUp()
     }
 
-    private fun prepareFilesFindReferences() {
-        for (file in testDataFiles) {
+    private fun prepareFilesFindReferences(files: Array<File>) {
+        for (file in files) {
             var text = FileUtil.loadFile(file, Charsets.UTF_8)
             text = StringUtil.convertLineSeparators(text)
-            val refIndexBefore = text.indexOf("<ref>")
-            val resolvedIndexBefore = text.indexOf("<resolved>")
-            val referencedOffset: Int
-            val resolvedOffset: Int
-            if (refIndexBefore >= 0 && resolvedIndexBefore >= 0 && refIndexBefore < resolvedIndexBefore) {
-                referencedOffset = text.indexOf("<ref>")
-                text = text.replace("<ref>", "")
-                resolvedOffset = text.indexOf("<resolved>")
-                text = text.replace("<resolved>", "")
-            } else {
-                resolvedOffset = text.indexOf("<resolved>")
-                text = text.replace("<resolved>", "")
-                referencedOffset = text.indexOf("<ref>")
-                text = text.replace("<ref>", "")
-            }
-            val psiFile = myFixture.configureByText(file.name, text)
-            if (referencedOffset != -1) {
-                referencedElement = psiFile.findReferenceAt(referencedOffset)!!
-            }
-            if (resolvedOffset != -1) {
-                resolvedElement = psiFile.findElementAt(resolvedOffset)!!.parent
-            }
+            prepareFileFindReferences("<ref>", "<resolved>", text, file.name)
         }
     }
 
-    private fun doCheck(succeed: Boolean) {
+    protected fun prepareFileFindReferences(refName: String, resolvedName: String, fileText: String, fileName: String) {
+        var text = fileText
+        val refIndexBefore = text.indexOf(refName)
+        val resolvedIndexBefore = text.indexOf(resolvedName)
+        val referencedOffset: Int
+        val resolvedOffset: Int
+        if (refIndexBefore >= 0 && resolvedIndexBefore >= 0 && refIndexBefore < resolvedIndexBefore) {
+            referencedOffset = text.indexOf(refName)
+            text = text.replace(refName, "")
+            resolvedOffset = text.indexOf(resolvedName)
+            text = text.replace(resolvedName, "")
+        } else {
+            resolvedOffset = text.indexOf(resolvedName)
+            text = text.replace(resolvedName, "")
+            referencedOffset = text.indexOf(refName)
+            text = text.replace(refName, "")
+        }
+        val psiFile = myFixture.configureByText(fileName, text)
+        if (referencedOffset != -1) {
+            referencedElement = psiFile.findReferenceAt(referencedOffset)!!
+        }
+        if (resolvedOffset != -1) {
+            resolvedElement = psiFile.findElementAt(resolvedOffset)!!.parent
+        }
+    }
+
+    protected fun doCheck(succeed: Boolean, refName: String = "<ref>", resolvedName: String = "<resolved>" ) {
         if (succeed && referencedElement == null) {
-            fail("Could not find reference at caret.")
+            fail("Reference not found, ensure `${refName}` is in the file.")
         }
         if (succeed && resolvedElement == null) {
-            fail("Could not find resolved element.")
+            fail("Resolved not found, ensure `${resolvedName}` is in the file.")
         }
         if (succeed) {
             val element = referencedElement!!.resolve()
-            //function,class,constructor
-            /*if (resolvedElement instanceof DlangInterfaceOrClass ) {
-                assertEquals("Could not resolve expected reference.", resolvedElement, referencedElement.resolve().getParent());
-            }*/
-            /* else if (resolvedElement instanceof DLanguageConstructor) {
-                assertTrue(referencedElement.resolve() instanceof DLanguageConstructor);
-            }*/
-            /*else*/if (resolvedElement is DLanguageConstructor) {
+            if (resolvedElement is DLanguageConstructor) {
                 assertEquals("Could not resolve expected reference.", resolvedElement, element)
             } else if (super.getTestName(true) == "scopedImportsMembers") {
                 assertNotNull("Could not resolve expected reference.", element)
@@ -92,36 +90,16 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
     }
 
     protected fun doTest(succeed: Boolean = true) {
-        prepareFilesFindReferences()
+        prepareFilesFindReferences(testDataFiles)
         doCheck(succeed)
     }
 
     protected fun doCheckByText1(@Language("D") mainFileContent: String,
                                  succeed: Boolean = true) {
-        var text = mainFileContent
         val referenceIndicator = "/*<ref>*/"
         val resolvedIndicator = "/*<resolved>*/"
-        val refIndexBefore = mainFileContent.indexOf(referenceIndicator)
-        val resolvedIndexBefore = mainFileContent.indexOf(resolvedIndicator)
-        val referencedOffset: Int
-        val resolvedOffset: Int
-        assertNotEquals("Reference not found, ensure /*ref*/ is in the file", -1, refIndexBefore)
-        assertNotEquals("Resolved not found, ensure /*resolved*/ is in the file", -1, resolvedIndexBefore)
-        if (refIndexBefore < resolvedIndexBefore) {
-            referencedOffset = text.indexOf(referenceIndicator)
-            text = text.replace(referenceIndicator, "")
-            resolvedOffset = text.indexOf(resolvedIndicator)
-            text = text.replace(resolvedIndicator, "")
-        } else {
-            resolvedOffset = text.indexOf(resolvedIndicator)
-            text = text.replace(resolvedIndicator, "")
-            referencedOffset = text.indexOf(referenceIndicator)
-            text = text.replace(referenceIndicator, "")
-        }
-        val psiFile = myFixture.configureByText("main.d", text)
-        referencedElement = psiFile.findReferenceAt(referencedOffset)
-        resolvedElement = psiFile.findElementAt(resolvedOffset)!!.parent
-        doCheck(succeed)
+        prepareFileFindReferences(referenceIndicator,  resolvedIndicator, mainFileContent, "main.d")
+        doCheck(succeed, referenceIndicator, resolvedIndicator)
     }
 
     protected fun doCheckByText2(@Language("D") mainFileContent: String,
@@ -129,14 +107,8 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
                                  succeed: Boolean = true) {
         val referenceIndicator = "/*<ref>*/"
         val resolvedIndicator = "/*<resolved>*/"
-        val referencedOffset = mainFileContent.indexOf(referenceIndicator)
-        val mainFileText = mainFileContent.replace(referenceIndicator, "")
-        val resolvedOffset = file2.indexOf(resolvedIndicator)
-        val file2Text = file2.replace(resolvedIndicator, "")
-        val psiFile2 = myFixture.configureByText("file2.d", file2Text)
-        val psiFile = myFixture.configureByText("main.d", mainFileText)
-        referencedElement = psiFile.findReferenceAt(referencedOffset)
-        resolvedElement = psiFile2.findElementAt(resolvedOffset)!!.parent
+        prepareFileFindReferences(referenceIndicator,  resolvedIndicator, mainFileContent, "main.d")
+        prepareFileFindReferences(referenceIndicator,  resolvedIndicator, file2, "file2.d")
         doCheck(succeed)
     }
 
@@ -154,8 +126,8 @@ abstract class DResolveTestCase : DLightPlatformCodeInsightFixtureTestCase("reso
         val element = referencedElement!!.resolve()
         if (resolvedFileName != null) {
             assertNotNull("Referenced not resolved", element)
-            assertInstanceOf(element!!, DlangPsiFileImpl::class.java)
-            assertEquals((element as DlangPsiFileImpl).name, resolvedFileName)
+            assertInstanceOf(element!!, DLanguageModule::class.java)
+            assertEquals((element as DLanguageModule).getFile(GlobalSearchScope.EMPTY_SCOPE).name, resolvedFileName)
         } else {
             assertNull(element)
         }

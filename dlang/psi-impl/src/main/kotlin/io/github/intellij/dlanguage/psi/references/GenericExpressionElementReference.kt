@@ -27,7 +27,7 @@ class GenericExpressionElementReference(element: ReferenceExpression,
             PsiScopesUtil.resolveAndWalk(processor, this, null)
         }
         if (processor.getResult().size == 1) {
-            return processor.getResult()[0].element as DNamedElement
+            return processor.getResult().first().element as DNamedElement
         }
         return null
     }
