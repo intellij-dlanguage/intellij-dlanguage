@@ -24,7 +24,6 @@ import java.io.File
 import java.util.*
 import java.util.regex.Pattern
 import javax.swing.Icon
-import kotlin.collections.HashMap
 
 /**
  * Created by pirocks on 9/21/16.
@@ -33,7 +32,7 @@ import kotlin.collections.HashMap
 open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", DLanguage.Icons.CLASS), DumbAware {
 
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
-        for (template in Template.values()) {
+        for (template in Template.entries) {
             with(template) {
                 builder.addKind(StringUtil.capitalize(readableName), icon, id)
             }
