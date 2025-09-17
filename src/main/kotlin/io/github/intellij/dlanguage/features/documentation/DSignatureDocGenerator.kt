@@ -167,8 +167,8 @@ class DSignatureDocGenerator {
     }
 
     private fun appendAutoAssignmentSignature(builder: StringBuilder, element: AutoAssignment) {
-        builder.append((element.parent as AutoDeclaration).storageClasss.joinToString(" "){
-            HtmlSyntaxInfoUtil.getStyledSpan(DColor.KEYWORD.textAttributesKey, it.text, highlightingSaturation)
+        builder.append((element.parent as AutoDeclaration).storageClasss.joinToString(" ") {
+            HtmlSyntaxInfoUtil.appendStyledSpan(StringBuilder(), DColor.KEYWORD.textAttributesKey, it.text, highlightingSaturation).toString()
         }).append(" ").append(element.identifier?.text)
     }
 
