@@ -1,17 +1,16 @@
 package io.github.intellij.dlanguage
 
 import com.intellij.codeInsight.daemon.ProjectSdkSetupValidator
-import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.application.smartReadAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.module.ModuleUtilCore
+import com.intellij.openapi.progress.runBlockingCancellable
 import com.intellij.openapi.project.DumbService
-import com.intellij.openapi.project.IndexNotReadyException
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.roots.OrderRootType
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.roots.ui.configuration.ProjectSettingsService
-import com.intellij.openapi.util.Computable
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
 import com.intellij.psi.search.GlobalSearchScope.allScope
@@ -25,8 +24,6 @@ import javax.swing.event.HyperlinkEvent
  * This class is used to inform users that DMD is not setup for the project
  */
 class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
-
-    private val log = Logger.getInstance(javaClass);
 
     // basic set of packages in phobos. Due to packages being moved around in phobos we can't check all of them.
     // At some point, if we can support language versions (need to implement com.intellij.openapi.projectRoots.Sdk)
@@ -101,39 +98,36 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
 
         // Don't check for object.d or phobos unless the index is ready
         if(!DumbService.isDumb(project)) {
-            try {
+            return runBlockingCancellable {
                 if (cannotFindObjectDotD(project)) {
-                    return true
+                    return@runBlockingCancellable true
                 }
                 if (missingAnyPhobosFiles(project)) {
-                    return true
+                    return@runBlockingCancellable true
                 }
-            } catch (e: IndexNotReadyException) {
-                log.warn("Could not check for object.d and phobos as the project index is not ready", e)
+                false
             }
         }
 
         return false
     }
 
-    private fun missingAnyPhobosFiles(project: Project): Boolean =
+    private suspend fun missingAnyPhobosFiles(project: Project): Boolean =
         missingPhobosModules(project).isNotEmpty()
 
-    private fun missingPhobosModules(project: Project): List<String> {
-        val resolveFilesComputable = Computable {
+    private suspend fun missingPhobosModules(project: Project): List<String> {
+        return smartReadAction(project) {
             val scope = allScope(project)
             expectedModules.filter {
                 DModuleIndex.getFilesByModuleName(project, it, scope).isEmpty()
             }
         }
-        return DumbService.getInstance(project).runReadActionInSmartMode(resolveFilesComputable)
     }
 
-    private fun cannotFindObjectDotD(project: Project): Boolean {
-        val resolveObjectDotD: Computable<Boolean> = Computable {
+    private suspend fun cannotFindObjectDotD(project: Project): Boolean {
+        return smartReadAction(project) {
             DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet().firstOrNull()?.containingFile as DlangPsiFile? == null
         }
-        return DumbService.getInstance(project).runReadActionInSmartMode(resolveObjectDotD)
     }
 
     /*
@@ -180,18 +174,14 @@ class DLangProjectDmdSetupValidator : ProjectSdkSetupValidator {
             } else if(sdk.sdkType == DlangSdkType.getInstance() && sdk.rootProvider.getFiles(OrderRootType.SOURCES).isEmpty()) {
                 return DlangBundle.message("d.ui.compilerconfig.missing.sourcepaths")
             } else if(sdk.sdkType == DlangSdkType.getInstance() && !DumbService.isDumb(project)) {
-                try {
+                return runBlockingCancellable {
                     if (cannotFindObjectDotD(project)) {
-                        return DlangBundle.message("d.ui.dmd.object.path.not.set")
+                        return@runBlockingCancellable DlangBundle.message("d.ui.dmd.object.path.not.set")
                     }
                     if (missingAnyPhobosFiles(project)) {
-                        return DlangBundle.message("d.ui.dmd.phobos.path.not.set") + missingPhobosModules(project).foldRight("") { s: String, acc: String -> "$acc $s" }
+                        return@runBlockingCancellable DlangBundle.message("d.ui.dmd.phobos.path.not.set") + missingPhobosModules(project).foldRight("") { s: String, acc: String -> "$acc $s" }
                     }
-                } catch (e: IndexNotReadyException) {
-                    log.warn("Cannot check for existence of phobos or druntime as index not ready", e)
-                    //todo: this try/catch block is a bit of a kludge, at some point we should roll our own EditorNotifications.Provider<EditorNotificationPanel>()
-                    // https://github.com/intellij-dlanguage/intellij-dlanguage/issues/402
-                    // https://intellij-support.jetbrains.com/hc/en-us/community/posts/360000094950
+                    null
                 }
             }
         }
