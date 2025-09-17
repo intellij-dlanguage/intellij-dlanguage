@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NonNls
 import java.awt.BorderLayout
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
-import java.awt.Insets
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.io.IOException
@@ -46,7 +45,7 @@ class OutputElementsEditor(state: ModuleConfigurationState) : ModuleElementsEdit
         group.add(myPerModuleCompilerOutput)
 
         val listener =
-            ActionListener { e: ActionEvent? -> enableCompilerSettings(!myInheritCompilerOutput.isSelected) }
+            ActionListener { _: ActionEvent? -> enableCompilerSettings(!myInheritCompilerOutput.isSelected) }
 
         myInheritCompilerOutput.addActionListener(listener)
         myPerModuleCompilerOutput.addActionListener(listener)
@@ -75,7 +74,7 @@ class OutputElementsEditor(state: ModuleConfigurationState) : ModuleElementsEdit
             this.compilerExtension!!.isExcludeOutput
         )
 
-        myCbExcludeOutput.addActionListener { e: ActionEvent? ->
+        myCbExcludeOutput.addActionListener { _: ActionEvent? ->
             this.compilerExtension!!.isExcludeOutput = myCbExcludeOutput.isSelected
         }
 
@@ -196,7 +195,7 @@ class OutputElementsEditor(state: ModuleConfigurationState) : ModuleElementsEdit
 
     private fun createOutputPathPanel(title: String?, commitPathRunnable: CommitPathRunnable): CommitableFieldPanel {
         val textField = JTextField()
-        val outputPathsChooserDescriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor()
+        val outputPathsChooserDescriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor().withTitle(title).withDescription("")
         outputPathsChooserDescriptor.isHideIgnored = false
         InsertPathAction.addTo(textField, outputPathsChooserDescriptor)
         FileChooserFactory.getInstance().installFileCompletion(textField, outputPathsChooserDescriptor, true, null)
@@ -229,7 +228,7 @@ class OutputElementsEditor(state: ModuleConfigurationState) : ModuleElementsEdit
             textField,
             null,
             null,
-            object : BrowseFilesListener(textField, title, "", outputPathsChooserDescriptor) {
+            object : BrowseFilesListener(textField, outputPathsChooserDescriptor) {
                 override fun actionPerformed(e: ActionEvent?) {
                     super.actionPerformed(e)
                     commitRunnable.run()
@@ -250,7 +249,7 @@ class OutputElementsEditor(state: ModuleConfigurationState) : ModuleElementsEdit
         return ProjectBundle.message("output.tab.title")
     }
 
-    override fun getHelpTopic(): @NonNls String? {
+    override fun getHelpTopic(): @NonNls String {
         return "project.structureModulesPage.outputJavadoc"
     }
 
