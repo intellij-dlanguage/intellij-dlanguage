@@ -4,7 +4,6 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.util.Disposer
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import java.util.*
@@ -41,6 +40,7 @@ class DubToolWindow : ToolWindowFactory {
     /*
     * This method replaces the old tool window condition class that was used
     */
+    @Deprecated("Use isApplicableAsync")
     override fun isApplicable(project: Project): Boolean {
         log.debug("DUB Tool Window Condition: value(${project.name})")
 
