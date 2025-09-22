@@ -84,7 +84,6 @@ public interface DlangTypes {
     DlangElementType ATTRIBUTE = new DlangElementType("ATTRIBUTE");
     DlangElementType ATTRIBUTE_SPECIFIER = new DlangElementType("ATTRIBUTE_SPECIFIER");
     DlangElementType AUTO_DECLARATION = new DlangElementType("AUTO_DECLARATION");
-    DlangElementType BASE_CLASS = new DlangElementType("BASE_CLASS");
     DlangElementType BASE_CLASS_LIST = new DlangElementType("BASE_CLASS_LIST");
     DlangElementType BASIC_TYPE = new DlangElementType("BASIC_TYPE");
     DlangElementType BREAK_STATEMENT = new DlangElementType("BREAK_STATEMENT");
@@ -533,8 +532,6 @@ public interface DlangTypes {
                 return new DLanguageAutoDeclarationImpl(node);
             } else if (type == AUTO_ASSIGNMENT) {
                 return new DLanguageAutoAssignmentImpl(node);
-            } else if (type == BASE_CLASS) {
-                return new DLanguageBaseClassImpl(node);
             } else if (type == BASE_CLASS_LIST) {
                 return new DLanguageBaseClassListImpl(node);
             } else if (type == BASIC_TYPE) {

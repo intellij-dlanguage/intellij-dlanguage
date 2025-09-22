@@ -132,9 +132,9 @@ class DSignatureDocGenerator {
         if (element.templateParameters != null) {
             appendTemplateParameters(builder, element.templateParameters!!)
         }
-        if (element.baseClassList?.baseClasss?.isNotEmpty() == true) {
+        if (element.baseClassList?.basicTypes?.isNotEmpty() == true) {
             builder.append(": ")
-            builder.append(element.baseClassList?.baseClasss?.joinToString(", ") { it.text })
+            builder.append(element.baseClassList?.basicTypes?.joinToString(", ") { it.text })
         }
     }
 
@@ -146,9 +146,9 @@ class DSignatureDocGenerator {
         if (element.templateParameters != null) {
             appendTemplateParameters(builder, element.templateParameters!!)
         }
-        if (element.baseClassList?.baseClasss?.isNotEmpty() == true) {
+        if (element.baseClassList?.basicTypes?.isNotEmpty() == true) {
             builder.append(": ")
-            builder.append(element.baseClassList?.baseClasss?.joinToString(", ") { it.text })
+            builder.append(element.baseClassList?.basicTypes?.joinToString(", ") { it.text })
         }
     }
 

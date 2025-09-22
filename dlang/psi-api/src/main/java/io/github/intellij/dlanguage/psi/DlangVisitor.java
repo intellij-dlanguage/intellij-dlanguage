@@ -170,10 +170,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitBaseClass(@NotNull final DLanguageBaseClass o) {
-        visitPsiElement(o);
-    }
-
     public void visitBaseClassList(@NotNull final DLanguageBaseClassList o) {
         visitPsiElement(o);
     }

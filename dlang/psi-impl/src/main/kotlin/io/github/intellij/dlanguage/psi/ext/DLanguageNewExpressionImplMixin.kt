@@ -12,9 +12,10 @@ abstract class DLanguageNewExpressionImplMixin(node: ASTNode) : ASTWrapperPsiEle
     DLanguageNewExpression {
 
     override fun getDType(): DType? {
-        val dtype = type?.dType?:return null
+        val dtype = type?.dType?: return null
         // TODO handle aliased type
-        if ((dtype as? UserDefinedDType)?.instance is ClassDeclaration) {
+        val resolved = (dtype as? UserDefinedDType)?.resolve()
+        if (resolved is ClassDeclaration) {
             // it is a reference type
             return dtype
         }

@@ -65,7 +65,6 @@ typealias Attribute = io.github.intellij.dlanguage.psi.DLanguageAttribute
 typealias AttributeSpecifier = io.github.intellij.dlanguage.psi.DLanguageAttributeSpecifier
 typealias AutoAssignment = DLanguageAutoAssignment
 typealias AutoDeclaration = io.github.intellij.dlanguage.psi.DLanguageAutoDeclaration
-typealias BaseClass = io.github.intellij.dlanguage.psi.DLanguageBaseClass
 typealias BaseClassList = io.github.intellij.dlanguage.psi.DLanguageBaseClassList
 typealias BasicType = io.github.intellij.dlanguage.psi.DLanguageBasicType
 typealias BlockStatement = io.github.intellij.dlanguage.psi.DLanguageBlockStatement
