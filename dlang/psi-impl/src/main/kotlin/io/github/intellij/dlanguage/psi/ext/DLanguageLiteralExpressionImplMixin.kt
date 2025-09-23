@@ -128,7 +128,6 @@ abstract class DLanguageLiteralExpressionImplMixin(node: ASTNode) : ASTWrapperPs
     }
 
     private fun getSuperType(aClass: ClassDeclaration): DType? {
-        // TODO implement
-        return null
+        return aClass.parentClass?.dType
     }
 }
