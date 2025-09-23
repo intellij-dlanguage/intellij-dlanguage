@@ -13,7 +13,7 @@ class PackageOrModuleProcessor(private val delegate: PsiScopeProcessor, private 
 
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         if (element is ImportDeclaration) {
-            val packages = element.singleImports.filter { it.identifier == null }.mapNotNull{
+            val packages = element.singleImports.filter { it.identifier == null }.mapNotNull {
                 var id = it.identifierChain ?: return@mapNotNull null
                 while(id.identifierChain != null && (parentPackage == null || getImportText(id.identifierChain!!) != parentPackage.qualifiedName))
                     id = id.identifierChain!!

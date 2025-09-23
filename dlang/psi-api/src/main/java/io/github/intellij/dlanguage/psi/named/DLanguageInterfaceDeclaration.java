@@ -11,7 +11,10 @@ import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
 import io.github.intellij.dlanguage.psi.interfaces.UserDefinedType;
 import io.github.intellij.dlanguage.stubs.DLanguageInterfaceDeclarationStub;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 
 public interface DLanguageInterfaceDeclaration extends PsiElement, DNamedElement, Declaration, UserDefinedType,
@@ -36,4 +39,7 @@ public interface DLanguageInterfaceDeclaration extends PsiElement, DNamedElement
 
     @Nullable
     DLanguageBaseClassList getBaseClassList();
+
+    @NotNull
+    List<DLanguageInterfaceDeclaration> getInterfaces();
 }
