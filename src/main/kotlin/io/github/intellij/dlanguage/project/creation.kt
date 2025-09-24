@@ -28,7 +28,6 @@ import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangBundle.message
 import io.github.intellij.dlanguage.DlangSdkType
 import io.github.intellij.dlanguage.project.ui.DubInitCheckBox
-import java.awt.Color
 import java.util.function.Predicate
 import javax.swing.BorderFactory
 import javax.swing.BoxLayout
@@ -169,7 +168,7 @@ class DlangProjectGeneratorPeer(settings: DlangProjectSettings, ui: JComponent) 
      */
     override fun validate(): ValidationInfo? {
         return if(settings.sdk == null)
-            ValidationInfo("No SDK defined", this.component)
+            ValidationInfo("No SDK defined")
         else null
     }
 }

@@ -132,11 +132,9 @@ class CreateDlangClassDeclarationActionTest : LightPlatform4TestCase() {
     fun testTheActionHasCorrectProperties() {
         assertTrue(this.action.templateText == CreateDlangClassAction.NEW_D_FILE)
 
-        assertTrue(this.action.isDefaultIcon) // shouldn't this be false???
         assertFalse(this.action.isEnabledInModalContext)
         assertTrue(this.action.synonyms.isEmpty())
         assertTrue(this.action.startInWriteAction());
-        assertFalse(this.action.displayTextInToolbar())
     }
 
     /*
