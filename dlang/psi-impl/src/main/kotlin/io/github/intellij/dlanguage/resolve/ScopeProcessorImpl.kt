@@ -321,7 +321,7 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        if (lastParent === element.declaration) {
+        if (lastParent in element.expressions) {
             // declaration cannot see our vars
             return true
         }

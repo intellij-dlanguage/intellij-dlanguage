@@ -340,7 +340,7 @@ static this() {
     types_extra_interfaces["StaticConstructor"] = ["Declaration"];
     stub_children ["StaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_extra_interfaces["StaticDestructor"] = ["Declaration"];
-    types_children["StaticForeachDeclaration"] = ["KW_FOREACH", "KW_FOREACH_REVERSE", "Declaration", "Expression*", "OP_BRACES_RIGHT", "OP_BRACES_LEFT", "OP_DDOT", "ForeachType", "ForeachTypeList", "OP_SCOLON", "KW_STATIC"];
+    types_children["StaticForeachDeclaration"] = ["KW_FOREACH", "KW_FOREACH_REVERSE", "Declaration*", "Expression*", "OP_BRACES_RIGHT", "OP_BRACES_LEFT", "OP_DDOT", "ForeachType", "ForeachTypeList", "OP_SCOLON", "KW_STATIC"];
     types_extra_interfaces["StaticForeachDeclaration"] = ["Declaration"];
     types_children["StaticForeachStatement"] = ["KW_STATIC", "ForeachStatement"];
     types_extra_interfaces["StaticForeachStatement"] = ["Statement"];
