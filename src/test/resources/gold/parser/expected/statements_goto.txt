@@ -6,8 +6,9 @@ D Language File
       DLanguageIfStatementImpl(IF_STATEMENT)
         PsiElement(DlangTokenType.if)('if')
         PsiElement(DlangTokenType.()('(')
-        DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-          PsiElement(DlangTokenType.ID)('foo')
+        IF_CONDITION
+          DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
+            PsiElement(DlangTokenType.ID)('foo')
         PsiElement(DlangTokenType.))(')')
         DLanguageGotoStatementImpl(GOTO_STATEMENT)
           PsiElement(DlangTokenType.goto)('goto')

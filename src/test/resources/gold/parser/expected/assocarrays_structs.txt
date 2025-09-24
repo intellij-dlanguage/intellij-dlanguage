@@ -104,10 +104,9 @@ D Language File
               PsiElement(DlangTokenType.()('(')
               DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
                 FOREACH_TYPE
-                  DLanguageTypeImpl(TYPE)
-                    DLanguageBasicTypeImpl(BASIC_TYPE)
-                      DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-                        PsiElement(DlangTokenType.char)('char')
+                  DLanguageBasicTypeImpl(BASIC_TYPE)
+                    DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
+                      PsiElement(DlangTokenType.char)('char')
                   PsiElement(DlangTokenType.ID)('c')
               PsiElement(DlangTokenType.;)(';')
               DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)

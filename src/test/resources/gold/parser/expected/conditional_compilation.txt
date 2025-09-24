@@ -608,8 +608,9 @@ D Language File
               DLanguageIfStatementImpl(IF_STATEMENT)
                 PsiElement(DlangTokenType.if)('if')
                 PsiElement(DlangTokenType.()('(')
-                DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
-                  PsiElement(DlangTokenType.INTEGER_LITERAL)('0')
+                IF_CONDITION
+                  DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
+                    PsiElement(DlangTokenType.INTEGER_LITERAL)('0')
                 PsiElement(DlangTokenType.))(')')
                 DLanguageBlockStatementImpl(BLOCK_STATEMENT)
                   PsiElement(DlangTokenType.{)('{')

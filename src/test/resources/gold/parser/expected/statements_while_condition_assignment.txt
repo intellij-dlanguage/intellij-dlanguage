@@ -26,11 +26,10 @@ D Language File
         DLanguageWhileStatementImpl(WHILE_STATEMENT)
           PsiElement(DlangTokenType.while)('while')
           PsiElement(DlangTokenType.()('(')
-          DLanguageTypeImpl(TYPE)
+          IF_CONDITION
             DLanguageBasicTypeImpl(BASIC_TYPE)
               DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
                 PsiElement(DlangTokenType.int)('int')
-          IF_CONDITION
             PsiElement(DlangTokenType.ID)('not_four')
             PsiElement(DlangTokenType.=)('=')
             DLanguageParenthesisedExpressionImpl(PARENTHESISED_EXPRESSION)

@@ -26,8 +26,9 @@ D Language File
         DLanguageIfStatementImpl(IF_STATEMENT)
           PsiElement(DlangTokenType.if)('if')
           PsiElement(DlangTokenType.()('(')
-          DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
-            PsiElement(DlangTokenType.ID)('y')
+          IF_CONDITION
+            DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
+              PsiElement(DlangTokenType.ID)('y')
           PsiElement(DlangTokenType.))(')')
           DLanguageReturnStatementImpl(RETURN_STATEMENT)
             PsiElement(DlangTokenType.return)('return')
