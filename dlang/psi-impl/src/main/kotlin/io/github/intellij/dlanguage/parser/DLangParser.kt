@@ -3728,76 +3728,99 @@ internal class DLangParser(private val builder: PsiBuilder) {
         return true
     }
 
+    /**
+     * Parse IfConditionStorageClass, returns if it parsed a valid storage class
+     *
+     * $(RULEDEF ifCondition):
+     *   $(LITERAL 'auto')
+     * | $(LITERAL 'scope')
+     * | $(LITERAL 'ref')
+     * | $(RULE typeConstructors)
+     * ;)
+     */
+    private fun parseIfConditionStorageClass(): Boolean {
+        if (builder.tokenType === DlangTypes.KW_AUTO || builder.tokenType === DlangTypes.KW_SCOPE || builder.tokenType === DlangTypes.KW_REF) {
+            builder.advanceLexer()
+            return true
+        }
+        if (isTypeCtor(current())) {
+            var beforeAdvance = builder.mark()
+            while (isTypeCtor(current())) {
+                beforeAdvance.drop()
+                beforeAdvance = builder.mark()
+                builder.advanceLexer()
+            }
+            // goes back for TypeCtor(Type) = identifier (aka type)
+            if (builder.tokenType === DlangTypes.OP_PAR_LEFT) {
+                beforeAdvance.rollbackTo()
+                return false
+            }
+            beforeAdvance.drop()
+            return true
+        }
+        return false
+    }
 
     /**
      * Parse IfCondition
      *
-     *
      * $(RULEDEF ifCondition):
-     * $(LITERAL 'auto') $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
-     * $(LITERAL 'scope') $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
-     * | $(RULE typeConstructors) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
-     * | $(RULE type) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
+     *  $(RULE ifConditionStorageClass) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
+     * | $(RULE ifConditionStorageClass)* $(RULE basicType) $(LITERAL Identifier) $(LITERAL '=') $(RULE expression)
      * | $(RULE expression)
      * ;)
      */
     fun parseIfCondition(): Boolean {
-        // ex. case:
-        //    `if (auto identifier = exp)`
-        //    `if (scope identifier = exp)`
-        if (currentIsOneOf(DlangTypes.KW_AUTO, DlangTypes.KW_SCOPE)) {
-            val ifCondition = builder.mark()
-            advance()
-            val i = expect(DlangTypes.ID)
-            if (i != null) expect(DlangTypes.OP_EQ)
-            if (!parseExpression()) {
-                cleanup(ifCondition, DlangTypes.IF_CONDITION)
-                return false
+        val m = builder.mark()
+        var storageClassCount = 0
+        while (parseIfConditionStorageClass())
+            storageClassCount++
+
+        if (storageClassCount == 1 && builder.tokenType === DlangTypes.ID) {
+            val breakpoint = builder.mark()
+            // check for `id = expression` form
+            builder.advanceLexer()
+            if (builder.tokenType === DlangTypes.OP_EQ) {
+                builder.advanceLexer()
+                breakpoint.drop()
+                parseExpression()
+                m.done(DlangTypes.IF_CONDITION)
+                return true
             }
-            ifCondition.done(DlangTypes.IF_CONDITION)
-        } else {
-            if (builder.eof()) {
-                return false
-            }
-            // consume for TypeCtors = identifier
-            if (isTypeCtor(current())) {
-                var before_advance = builder.mark()
-                while (isTypeCtor(current())) {
-                    before_advance.drop()
-                    before_advance = builder.mark()
-                    advance()
-                }
-                // goes back for TypeCtor(Type) = identifier
-                if (currentIs(DlangTypes.OP_PAR_LEFT)) {
-                    before_advance.rollbackTo()
-                } else {
-                    before_advance.drop()
-                }
-            }
-            val bookmark = builder.mark()
-            val type = parseType()
-            if (!type || !currentIs(DlangTypes.ID) || !peekIs(DlangTypes.OP_EQ)) {
-                bookmark.rollbackTo()
-                return parseExpression()
-            } else {
-                bookmark.drop()
-                val ifCondition = builder.mark()
-                if (!tokenCheck(DlangTypes.ID)) {
-                    cleanup(ifCondition, DlangTypes.IF_CONDITION)
-                    return false
-                }
+            // Else try the other form
+            breakpoint.rollbackTo()
+        }
+
+        // Try form BasicType Declarator = Expression
+        val breakpoint = builder.mark()
+        if (parseBasicType()) {
+            parseTypeSuffixes()
+            if (builder.tokenType === DlangTypes.ID) {
+                // form confirmed
+                breakpoint.drop()
+                builder.advanceLexer()
                 if (!tokenCheck(DlangTypes.OP_EQ)) {
-                    cleanup(ifCondition, DlangTypes.IF_CONDITION)
+                    m.done(DlangTypes.IF_CONDITION)
                     return false
                 }
-                if (!parseExpression()) {
-                    cleanup(ifCondition, DlangTypes.IF_CONDITION)
-                    return false
-                }
-                ifCondition.done(DlangTypes.IF_CONDITION)
+                parseExpression()
+                m.done(DlangTypes.IF_CONDITION)
+                return true
             }
         }
-        return true
+
+        // Last it’s a simple expression
+        if (storageClassCount == 0) {
+            breakpoint.rollbackTo()
+            if (parseExpression()) {
+                m.done(DlangTypes.IF_CONDITION)
+                return true
+            }
+        } else {
+            breakpoint.drop()
+        }
+        m.done(DlangTypes.IF_CONDITION)
+        return false
     }
 
     fun parseThenStatement(): Boolean {
@@ -7278,11 +7301,6 @@ internal class DLangParser(private val builder: PsiBuilder) {
      */
     fun parseBasicType(): Boolean {
         val m = builder.mark()
-        if (!moreTokens()) {
-            error("basic type expected instead of EOF")
-            exit_section_modified(builder, m, DlangTypes.BASIC_TYPE, true)
-            return false
-        }
         if (builder.tokenType === DlangTypes.OP_DOT) {
             builder.advanceLexer()
         }

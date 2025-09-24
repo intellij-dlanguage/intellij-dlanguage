@@ -226,7 +226,7 @@ static this() {
     types_mixins["IdentityExpression"] = "DLanguageIdentityExpressionImplMixin";
     types_extra_interfaces["IdentityExpression"] = ["Expression"];
     stub_children ["IfCondition"] = ["Identifier",  "AssignExpression*","OP_COMMA*", "KW_AUTO", "KW_SCOPE","Type", "OP_EQ"];
-    types_children["IfStatement"] = [/*"Identifier","AssignExpression*","OP_COMMA*",*/"Statement","KW_ELSE","KW_IF","OP_PAR_LEFT","OP_PAR_RIGHT"/*,"KW_AUTO","Type","OP_EQ"*/,"IfCondition"];
+    types_children["IfStatement"] = ["Statement","KW_ELSE","KW_IF","OP_PAR_LEFT","OP_PAR_RIGHT","IfCondition"];
     types_extra_interfaces["IfStatement"] = ["Statement"];
     types_children["ImportBind"] = ["Identifier","NamedImportBind"];
     types_mixins["ImportBind"] = "DLanguageImportBindImplMixin";
