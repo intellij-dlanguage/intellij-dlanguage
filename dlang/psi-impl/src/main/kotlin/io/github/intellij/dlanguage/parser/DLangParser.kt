@@ -3054,14 +3054,14 @@ internal class DLangParser(private val builder: PsiBuilder) {
     fun parseStaticForeachStatement(): Boolean {
         val m = builder.mark()
         if (expect(DlangTypes.KW_STATIC) == null) {
-            cleanup(m, DlangTypes.ASSOC_ARRAY_LITERAL)
+            m.done(DlangTypes.STATIC_FOREACH_STATEMENT)
             return false
         }
         if (!parseForeachStatement()) {
-            cleanup(m, DlangTypes.ASSOC_ARRAY_LITERAL)
+            m.done(DlangTypes.STATIC_FOREACH_STATEMENT)
             return false
         }
-        m.done(DlangTypes.ASSOC_ARRAY_LITERAL)
+        m.done(DlangTypes.STATIC_FOREACH_STATEMENT)
         return true
     }
 
@@ -3136,9 +3136,9 @@ internal class DLangParser(private val builder: PsiBuilder) {
      *
      *
      * $(GRAMMAR $(RULEDEF foreachType):
-     * ($(LITERAL 'scope') | $(LITERAL 'ref') | $(LITERAL 'enum') | $(RULE typeConstructor))* $(RULE basicType) $(LITERAL Identifier)
-     * | ($(LITERAL 'scope') | $(LITERAL 'ref') | $(LITERAL 'enum') | $(RULE typeConstructor))* $(LITERAL Identifier)
-     * | ($(LITERAL 'scope') | $(LITERAL 'ref') | $(LITERAL 'enum') | $(RULE typeConstructor))* $(LITERAL 'alias') $(LITERAL Identifier)
+     * $(LITERAL 'scope') | $(LITERAL 'ref') | $(LITERAL 'enum') | $(RULE typeConstructor)* $(RULE basicType) $(RULE typeSuffix)* $(LITERAL Identifier)
+     * | $(LITERAL 'scope') | $(LITERAL 'ref') | $(LITERAL 'enum') | $(RULE typeConstructor)* $(LITERAL Identifier)
+     * | $(LITERAL 'scope') | $(LITERAL 'ref') | $(LITERAL 'enum') | $(RULE typeConstructor)* $(LITERAL 'alias') $(LITERAL Identifier)
      * ;)
      */
     fun parseForeachType() {
