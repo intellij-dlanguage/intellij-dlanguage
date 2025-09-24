@@ -3079,10 +3079,6 @@ internal class DLangParser(private val builder: PsiBuilder) {
             return false
         }
         val types = parseForeachTypeList()
-        if (types < 0) {
-            cleanup(m, elementType)
-            return false
-        }
         val canBeRange = types == 1
         if (!tokenCheck(DlangTypes.OP_SCOLON)) {
             cleanup(m, elementType)
@@ -3140,45 +3136,53 @@ internal class DLangParser(private val builder: PsiBuilder) {
      *
      *
      * $(GRAMMAR $(RULEDEF foreachType):
-     * ($(LITERAL 'scope') | $(LITERAL 'ref') | $(LITERAL 'alias') | $(LITERAL 'enum') | $(RULE typeConstructor))* $(RULE type)? $(LITERAL Identifier)
+     * ($(LITERAL 'scope') | $(LITERAL 'ref') | $(LITERAL 'enum') | $(RULE typeConstructor))* $(RULE basicType) $(LITERAL Identifier)
+     * | ($(LITERAL 'scope') | $(LITERAL 'ref') | $(LITERAL 'enum') | $(RULE typeConstructor))* $(LITERAL Identifier)
+     * | ($(LITERAL 'scope') | $(LITERAL 'ref') | $(LITERAL 'enum') | $(RULE typeConstructor))* $(LITERAL 'alias') $(LITERAL Identifier)
      * ;)
      */
-    fun parseForeachType(): Boolean {
+    fun parseForeachType() {
         val m = builder.mark()
         while (moreTokens()) {
             if (currentIs(DlangTypes.KW_SCOPE)) {
-                advance()
+                builder.advanceLexer()
             } else if (currentIs(DlangTypes.KW_REF)) {
-                advance()
-            } else if (currentIs(DlangTypes.KW_ALIAS)) {
-                advance()
+                builder.advanceLexer()
             } else if (currentIs(DlangTypes.KW_ENUM)) {
-                advance()
+                builder.advanceLexer()
             } else if (!parseTypeConstructor()) {
                 break
             }
         }
-        if (currentIs(DlangTypes.ID) && peekIsOneOf(DlangTypes.OP_COMMA, DlangTypes.OP_SCOLON)) {
-            advance()
-            exit_section_modified(builder, m, DlangTypes.FOREACH_TYPE, true)
-            return true
+
+        var aliased = false
+        if (builder.tokenType === DlangTypes.KW_ALIAS) {
+            builder.advanceLexer()
+            aliased = true
         }
-        if (!parseType()) {
-            cleanup(m, DlangTypes.FOREACH_TYPE)
-            return false
+
+        if (builder.tokenType === DlangTypes.ID && peekIsOneOf(DlangTypes.OP_COMMA, DlangTypes.OP_SCOLON)) {
+            builder.advanceLexer()
+            m.done(DlangTypes.FOREACH_TYPE)
+            return
         }
-        val ident = expect(DlangTypes.ID)
-        if (ident == null) {
-            cleanup(m, DlangTypes.FOREACH_TYPE)
-            return false
+        if (aliased) {
+            errorUpToExcluded("Identifier expected", DlangTypes.OP_SCOLON, DlangTypes.OP_COMMA, DlangTypes.OP_PAR_RIGHT)
+            m.done(DlangTypes.FOREACH_TYPE)
+            return
         }
-        exit_section_modified(builder, m, DlangTypes.FOREACH_TYPE, true)
-        return true
+        if (!parseBasicType()) {
+            errorUpToExcluded("Type expected", DlangTypes.OP_PAR_RIGHT)
+            m.done(DlangTypes.FOREACH_TYPE)
+            return
+        }
+        parseTypeSuffixes()
+        expect(DlangTypes.ID)
+        m.done(DlangTypes.FOREACH_TYPE)
     }
 
     /**
      * Parses a ForeachTypeList
-     *
      *
      * $(GRAMMAR $(RULEDEF foreachTypeList):
      * $(RULE foreachType) ($(LITERAL ',') $(RULE foreachType))*
@@ -3187,17 +3191,20 @@ internal class DLangParser(private val builder: PsiBuilder) {
     fun parseForeachTypeList(): Int {
         val marker = builder.mark()
         var count = 0
-        while (moreTokens()) {
-            if (!parseForeachType()) {
-                cleanup(marker, DlangTypes.FOREACH_TYPE_LIST)
-                return -1
-            }
+        while (!builder.eof()) {
+            parseForeachType()
             count++
             if (currentIs(DlangTypes.OP_COMMA)) {
-                advance()
-            } else break
+                builder.advanceLexer()
+                if (builder.tokenType === DlangTypes.OP_SCOLON) {
+                    builder.error("Foreach variable expected")
+                    break
+                }
+            } else {
+                break
+            }
         }
-        exit_section_modified(builder, marker, DlangTypes.FOREACH_TYPE_LIST, true)
+        marker.done(DlangTypes.FOREACH_TYPE_LIST)
         return count
     }
 
@@ -7158,7 +7165,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
      *
      *
      * $(GRAMMAR $(RULEDEF type):
-     * $(RULE typeConstructors)? $(RULE type2) $(RULE typeSuffix)*
+     * $(RULE typeConstructors)? $(RULE basicType) $(RULE typeSuffix)*
      * ;)
      */
     @JvmOverloads
@@ -8196,6 +8203,19 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 break
             } else advance()
         }
+    }
+
+    private fun errorUpToExcluded(message: String, vararg errorElements: IElementType) {
+        val error = builder.mark()
+        while (moreTokens()) {
+            if (currentIsOneOf(
+                    *errorElements
+                )
+            ) {
+                break
+            } else advance()
+        }
+        error.error(message)
     }
 
     private fun skip(o: IElementType, c: IElementType) {

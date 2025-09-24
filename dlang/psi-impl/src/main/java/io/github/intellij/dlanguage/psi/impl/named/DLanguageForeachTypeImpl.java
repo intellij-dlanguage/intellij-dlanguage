@@ -5,10 +5,11 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import io.github.intellij.dlanguage.psi.DLanguageBasicType;
 import io.github.intellij.dlanguage.psi.DLanguageForeachStatement;
-import io.github.intellij.dlanguage.psi.DLanguageType;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.interfaces.Expression;
 import io.github.intellij.dlanguage.psi.named.DLanguageClassDeclaration;
 import io.github.intellij.dlanguage.psi.named.DLanguageForeachType;
 import io.github.intellij.dlanguage.psi.named.DLanguageStructDeclaration;
@@ -68,8 +69,20 @@ public class DLanguageForeachTypeImpl extends
 
     @Override
     @Nullable
-    public DLanguageType getType() {
-        return PsiTreeUtil.getChildOfType(this, DLanguageType.class);
+    public PsiElement getOP_EQ() {
+        return findChildByType(OP_EQ);
+    }
+
+    @Override
+    @Nullable
+    public Expression getExpression() {
+        return PsiTreeUtil.getChildOfType(this, Expression.class);
+    }
+
+    @Override
+    @Nullable
+    public DLanguageBasicType getBasicType() {
+        return PsiTreeUtil.getChildOfType(this, DLanguageBasicType.class);
     }
 
     @Nullable
@@ -80,8 +93,8 @@ public class DLanguageForeachTypeImpl extends
     @Override
     @NotNull
     public DType getDType() {
-        if (getType() != null) {
-            return getType().getDType();
+        if (getBasicType() != null) {
+            return getBasicType().getDType();
         }
         var foreach = PsiTreeUtil.getParentOfType(this, DLanguageForeachStatement.class);
         assert foreach != null;
