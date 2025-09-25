@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        idea: [ '2025.1', '2025.2' ]
+        idea: [ '2025.1', '2025.2.2', 'LATEST-EAP-SNAPSHOT' ]
         jdk: [ '21' ]
         #os: [ubuntu-latest, windows-latest, macOS-latest]
 
