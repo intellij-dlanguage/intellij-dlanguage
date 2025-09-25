@@ -13,8 +13,10 @@ D Language File
         DLanguageIfStatementImpl(IF_STATEMENT)
           PsiElement(DlangTokenType.if)('if')
           PsiElement(DlangTokenType.()('(')
+          PsiComment(DlangTokenType.BLOCK_COMMENT)('/*Comment started\n}')
+          IF_CONDITION
+            <empty list>
         PsiErrorElement:Unable to parse this statement
           <empty list>
         PsiErrorElement:Expected } instead of EOF
           <empty list>
-        PsiComment(DlangTokenType.BLOCK_COMMENT)('/*Comment started\n}')

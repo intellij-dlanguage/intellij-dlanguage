@@ -321,7 +321,11 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        //todo handle place
+        if (lastParent in element.expressions) {
+            // declaration cannot see our vars
+            return true
+        }
+
         var shouldContinue = true
         if (element.foreachType != null) {
             if (!processor.execute(element.foreachType!!, state)) {
@@ -344,12 +348,11 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        if (lastParent == null || lastParent.parent != element) {
-            // Parent element should not see our vars
+        if (lastParent == null || lastParent.parent != element || lastParent === element.expression) {
+            // Parent element should not see our vars, and the iterated variable cannot see our vars
             return true
         }
 
-        //todo handle place
         var shouldContinue = true
         if (element.foreachType != null) {
             if (!processor.execute(element.foreachType!!, state)) {
@@ -444,16 +447,16 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        //todo check for an else if
+        if (lastParent == null || lastParent.parent != element || lastParent === element.ifCondition) {
+            // Parent element should not see our vars and value of the declared variable should not see the variable itself
+            return true
+        }
         var toContinue = true
         if (element.ifCondition?.identifier != null) {
             if (!processor.execute(element.ifCondition!!, state)) {
                 toContinue = false
             }
         }
-        /*if (!ScopeProcessorImplUtil.processDeclarationsOrStatements(element.declarationOrStatements, processor, state, lastParent, place)) {
-            toContinue = false
-        }*/
         return toContinue
     }
 

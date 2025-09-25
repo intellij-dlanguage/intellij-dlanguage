@@ -226,7 +226,7 @@ static this() {
     types_mixins["IdentityExpression"] = "DLanguageIdentityExpressionImplMixin";
     types_extra_interfaces["IdentityExpression"] = ["Expression"];
     stub_children ["IfCondition"] = ["Identifier",  "AssignExpression*","OP_COMMA*", "KW_AUTO", "KW_SCOPE","Type", "OP_EQ"];
-    types_children["IfStatement"] = [/*"Identifier","AssignExpression*","OP_COMMA*",*/"Statement","KW_ELSE","KW_IF","OP_PAR_LEFT","OP_PAR_RIGHT"/*,"KW_AUTO","Type","OP_EQ"*/,"IfCondition"];
+    types_children["IfStatement"] = ["Statement","KW_ELSE","KW_IF","OP_PAR_LEFT","OP_PAR_RIGHT","IfCondition"];
     types_extra_interfaces["IfStatement"] = ["Statement"];
     types_children["ImportBind"] = ["Identifier","NamedImportBind"];
     types_mixins["ImportBind"] = "DLanguageImportBindImplMixin";
@@ -340,7 +340,7 @@ static this() {
     types_extra_interfaces["StaticConstructor"] = ["Declaration"];
     stub_children ["StaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_extra_interfaces["StaticDestructor"] = ["Declaration"];
-    types_children["StaticForeachDeclaration"] = ["KW_FOREACH", "KW_FOREACH_REVERSE", "Declaration", "Expression*", "OP_BRACES_RIGHT", "OP_BRACES_LEFT", "OP_DDOT", "ForeachType", "ForeachTypeList", "OP_SCOLON", "KW_STATIC"];
+    types_children["StaticForeachDeclaration"] = ["KW_FOREACH", "KW_FOREACH_REVERSE", "Declaration*", "Expression*", "OP_BRACES_RIGHT", "OP_BRACES_LEFT", "OP_DDOT", "ForeachType", "ForeachTypeList", "OP_SCOLON", "KW_STATIC"];
     types_extra_interfaces["StaticForeachDeclaration"] = ["Declaration"];
     types_children["StaticForeachStatement"] = ["KW_STATIC", "ForeachStatement"];
     types_extra_interfaces["StaticForeachStatement"] = ["Statement"];

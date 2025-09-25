@@ -44,9 +44,7 @@ D Language File
           DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
             FOREACH_TYPE
               PsiElement(DlangTokenType.ref)('ref')
-              DLanguageBasicTypeImpl(BASIC_TYPE)
-                DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-                  PsiElement(DlangTokenType.uint)('uint')
+              PsiElement(DlangTokenType.alias)('alias')
               PsiElement(DlangTokenType.ID)('u')
           PsiElement(DlangTokenType.;)(';')
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
@@ -66,9 +64,8 @@ D Language File
           PsiElement(DlangTokenType.()('(')
           DLanguageForeachTypeListImpl(FOREACH_TYPE_LIST)
             FOREACH_TYPE
-              DLanguageBasicTypeImpl(BASIC_TYPE)
-                DLanguageBuiltinTypeImpl(BUILTIN_TYPE)
-                  PsiElement(DlangTokenType.uint)('uint')
+              PsiElement(DlangTokenType.immutable)('immutable')
+              PsiElement(DlangTokenType.alias)('alias')
               PsiElement(DlangTokenType.ID)('u')
           PsiElement(DlangTokenType.;)(';')
           DLanguageReferenceExpressionImpl(REFERENCE_EXPRESSION)
