@@ -21,9 +21,15 @@ class DResolveTest : DResolveTestCase() {
     fun testClassUsageToClassDefinition() = doTest()
 
     @Test
+    fun testClassInheritedFieldUsageToDefinition() = doTest()
+    @Test
+    fun testClassInheritedFieldWithThisUsageToDefinition() = doTest()
+    @Test
+    fun testClassInheritedFieldWithSuperUsageToDefinition() = doTest()
+
+    @Test
     fun testPrimaryExpressionToFunctionDefinition() = doTest()
 
-    //test dos not pass for reasons not clear to me. The feature in question does work though. todo
 //    @Test fun testOverloadedParameterCount() = doTest()
 
     @Test
