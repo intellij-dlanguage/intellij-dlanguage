@@ -271,4 +271,7 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testFunctionCallUFCSWithLocalSelectiveImportResolve() = doTest()
+
+    @Test
+    fun testFunctionCallUFCSWithoutImportShouldNotResolve() = doTest(false)
 }
