@@ -32,7 +32,9 @@ class DVisibilityProcessor : PsiScopeProcessor, ElementDeclarationHint {
     }
 
     override fun shouldProcess(kind: ElementDeclarationHint.DeclarationKind): Boolean {
-        return kind != ElementDeclarationHint.DeclarationKind.IMPORT
+        return kind != ElementDeclarationHint.DeclarationKind.IMPORT &&
+            kind != ElementDeclarationHint.DeclarationKind.CLASS &&
+            kind != ElementDeclarationHint.DeclarationKind.INTERFACE
     }
 
     @Suppress("UNCHECKED_CAST")

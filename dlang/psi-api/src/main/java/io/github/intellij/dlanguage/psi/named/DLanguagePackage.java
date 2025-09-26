@@ -53,7 +53,7 @@ public interface DLanguagePackage extends DNamedElement, PsiCheckedRenameElement
     PsiFile @NotNull [] getFiles(@NotNull GlobalSearchScope searchScope);
 
     /**
-     * This method must be invoked on the packege after all directories corresponding
+     * This method must be invoked on the package after all directories corresponding
      * to it have been renamed/moved accordingly to the qualified name change.
      *
      * @param newQualifiedName the new qualified name of the package.

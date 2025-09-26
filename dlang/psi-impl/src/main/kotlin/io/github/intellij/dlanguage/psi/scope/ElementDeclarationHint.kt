@@ -10,6 +10,9 @@ interface ElementDeclarationHint {
 
     enum class DeclarationKind {
         IMPORT,
+        CLASS,
+        INTERFACE,
+
         // add more if necessary
     }
 

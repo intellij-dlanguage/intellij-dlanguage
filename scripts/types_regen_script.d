@@ -139,8 +139,7 @@ static this() {
     types_children["BreakStatement"] = ["KW_BREAK","Identifier","OP_SCOLON"];
     types_extra_interfaces["BreakStatement"] = ["Statement", "LabelQualifier"];
     types_mixins["BreakStatement"] = "DLanguageBreakStatementImplMixin";
-    types_children["BaseClass"] = ["TypeofExpression","OP_DOT","BasicType"];
-    types_children["BaseClassList"] = ["BaseClass*","OP_COMMA*"];
+    types_children["BaseClassList"] = ["BasicType*","OP_COMMA*"];
     types_children["BasicType"] = ["Type","TypeofExpression","MixinType","Expression*","Vector","BuiltinType","QualifiedIdentifier","OP_DOT","OP_PAR_RIGHT","OP_PAR_LEFT","KW_SUPER","KW_THIS","KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED"];
     types_extra_interfaces["BasicType"] = ["DTypedElement"];
     types_mixins["BasicType"] = "DLanguageBasicTypeImplMixin";
@@ -469,7 +468,6 @@ static this() {
     has_processDeclaration["AutoAssignment"] = false;
     has_processDeclaration["BlockStatement"] = true;
     has_processDeclaration["BreakStatement"] = false;
-    has_processDeclaration["BaseClass"] = false;
     has_processDeclaration["BaseClassList"] = false;
     has_processDeclaration["BasicType"] = false;
     has_processDeclaration["BuiltinType"] = false;

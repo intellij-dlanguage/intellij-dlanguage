@@ -279,10 +279,9 @@ D Language File
     PsiElement(DlangTokenType.ID)('Code')
     PsiElement(DlangTokenType.:)(':')
     DLanguageBaseClassListImpl(BASE_CLASS_LIST)
-      DLanguageBaseClassImpl(BASE_CLASS)
-        DLanguageBasicTypeImpl(BASIC_TYPE)
-          DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
-            PsiElement(DlangTokenType.ID)('Bar')
+      DLanguageBasicTypeImpl(BASIC_TYPE)
+        DLanguageQualifiedIdentifierImpl(QUALIFIED_IDENTIFIER)
+          PsiElement(DlangTokenType.ID)('Bar')
     DLanguageStructBodyImpl(STRUCT_BODY)
       PsiElement(DlangTokenType.{)('{')
       FUNCTION_DECLARATION

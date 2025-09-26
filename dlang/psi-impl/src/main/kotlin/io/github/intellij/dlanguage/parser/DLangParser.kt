@@ -1519,24 +1519,11 @@ internal class DLangParser(private val builder: PsiBuilder) {
      *
      *
      * $(GRAMMAR $(RULEDEF baseClass):
-     * $(RULE type2)
+     * $(RULE basicType)
      * ;)
      */
     fun parseBaseClass(): Boolean {
-        val m = builder.mark()
-        if (!moreTokens()) {
-            cleanup(m, DlangTypes.BASE_CLASS)
-            return false
-        }
-        if (isProtection(current())) {
-            advance()
-        }
-        if (!parseBasicType()) {
-            cleanup(m, DlangTypes.BASE_CLASS)
-            return false
-        }
-        exit_section_modified(builder, m, DlangTypes.BASE_CLASS, true)
-        return true
+        return parseBasicType()
     }
 
     /**
@@ -1547,19 +1534,17 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * $(RULE baseClass) ($(LITERAL ',') $(RULE baseClass))*
      * ;)
      */
-    fun parseBaseClassList(): Boolean {
+    fun parseBaseClassList() {
         val m = builder.mark()
-        while (moreTokens()) {
+        while (!builder.eof()) {
             if (!parseBaseClass()) {
-                cleanup(m, DlangTypes.BASE_CLASS_LIST)
-                return false
+                break
             }
             if (currentIs(DlangTypes.OP_COMMA)) {
-                advance()
+                builder.advanceLexer()
             } else break
         }
-        exit_section_modified(builder, m, DlangTypes.BASE_CLASS_LIST, true)
-        return true
+        m.done(DlangTypes.BASE_CLASS_LIST)
     }
 
     /**
@@ -4750,19 +4735,17 @@ internal class DLangParser(private val builder: PsiBuilder) {
         val m = builder.mark()
         expect(DlangTypes.KW_NEW)
         expect(DlangTypes.KW_CLASS)
-        if (currentIs(DlangTypes.OP_PAR_LEFT)) if (!parseArguments()) {
-            cleanup(m, DlangTypes.NEW_ANON_CLASS_EXPRESSION)
-            return false
+        if (currentIs(DlangTypes.OP_PAR_LEFT)) {
+            if (!parseArguments()) {
+                cleanup(m, DlangTypes.NEW_ANON_CLASS_EXPRESSION)
+                return false
+            }
         }
-        if (!currentIs(DlangTypes.OP_BRACES_LEFT)) if (!parseBaseClassList()) {
-            cleanup(m, DlangTypes.NEW_ANON_CLASS_EXPRESSION)
-            return false
+        if (!currentIs(DlangTypes.OP_BRACES_LEFT)) {
+            parseBaseClassList()
         }
-        if (!parseStructBody()) {
-            cleanup(m, DlangTypes.NEW_ANON_CLASS_EXPRESSION)
-            return false
-        }
-        exit_section_modified(builder, m, DlangTypes.NEW_ANON_CLASS_EXPRESSION, true)
+        parseStructBody()
+        m.done(DlangTypes.NEW_ANON_CLASS_EXPRESSION)
         return true
     }
 
@@ -8456,9 +8439,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
 
     private fun baseClassList(): Boolean {
         advance() // :
-        if (!parseBaseClassList()) {
-            return false
-        }
+        parseBaseClassList()
         if (currentIs(DlangTypes.KW_IF)) {
             return constraint(true)
         }

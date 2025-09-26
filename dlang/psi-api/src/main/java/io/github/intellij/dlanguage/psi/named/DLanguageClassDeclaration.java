@@ -1,20 +1,24 @@
 package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiQualifiedNamedElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.DLanguageBaseClassList;
 import io.github.intellij.dlanguage.psi.DLanguageConstraint;
 import io.github.intellij.dlanguage.psi.DLanguageStructBody;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
+import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.interfaces.HasMembers;
 import io.github.intellij.dlanguage.psi.interfaces.UserDefinedType;
 import io.github.intellij.dlanguage.stubs.DLanguageClassDeclarationStub;
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 
-public interface DLanguageClassDeclaration extends PsiElement, DNamedElement, Declaration, UserDefinedType,
+
+public interface DLanguageClassDeclaration extends PsiQualifiedNamedElement, DNamedElement, Declaration, UserDefinedType,
     StubBasedPsiElement<DLanguageClassDeclarationStub>, HasMembers<DLanguageClassDeclarationStub> {
     @Nullable
     PsiElement getKW_CLASS();
@@ -36,4 +40,10 @@ public interface DLanguageClassDeclaration extends PsiElement, DNamedElement, De
 
     @Nullable
     DLanguageBaseClassList getBaseClassList();
+
+    @Nullable
+    DLanguageClassDeclaration getParentClass();
+
+    @NotNull
+    List<DLanguageInterfaceDeclaration> getInterfaces();
 }

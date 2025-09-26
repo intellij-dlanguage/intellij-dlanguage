@@ -10,10 +10,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.named.DLanguageInterfaceDeclaration;
+import io.github.intellij.dlanguage.psi.types.UserDefinedDType;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DLanguageInterfaceDeclarationStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
@@ -52,6 +56,25 @@ public class DlangInterfaceDeclarationImpl extends
     }
 
     @Override
+    public @NotNull List<DLanguageInterfaceDeclaration> getInterfaces() {
+        var baseClassElement = getBaseClassList();
+        if (baseClassElement == null || baseClassElement.getBasicTypes().isEmpty()) return List.of();
+
+        var referenceElements = baseClassElement.getBasicTypes();
+        var result = new ArrayList<DLanguageInterfaceDeclaration>();
+        for (var element : referenceElements) {
+            var dtype = element.getDType();
+            if (dtype instanceof UserDefinedDType elementType) {
+                var psiResolved = elementType.resolve();
+                if (psiResolved instanceof DLanguageInterfaceDeclaration resolved) {
+                    result.add(resolved);
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
     @Nullable
     public DLanguageConstraint getConstraint() {
         return PsiTreeUtil.getChildOfType(this, DLanguageConstraint.class);
@@ -80,9 +103,6 @@ public class DlangInterfaceDeclarationImpl extends
     public DLanguageStructBody getStructBody() {
         return PsiTreeUtil.getChildOfType(this, DLanguageStructBody.class);
     }
-//    public String getFullName() {
-//        return DPsiImplUtil.getFullName(this);
-//    }
 
     @Nullable
     public PsiElement getNameIdentifier() {

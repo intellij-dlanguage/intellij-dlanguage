@@ -6,6 +6,7 @@ import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.search.GlobalSearchScope
 import io.github.intellij.dlanguage.index.DModuleIndex
+import io.github.intellij.dlanguage.psi.DLanguageBaseClassList
 import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
 import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
 import io.github.intellij.dlanguage.psi.DlangTypes
@@ -154,6 +155,12 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
+
+        val hint = processor.getHint(ElementDeclarationHint.KEY)
+        if (hint != null && !hint.shouldProcess(ElementDeclarationHint.DeclarationKind.CLASS)) {
+            return true
+        }
+
         var toContinue = true
         if (element.templateParameters != null) {
             if (!element.templateParameters!!.processDeclarations(processor, state, lastParent, place)) {
@@ -163,6 +170,20 @@ object ScopeProcessorImpl {
         if (element.structBody?.declarations != null) {
             for (declaration in element.structBody?.declarations!!) {
                 if (!processDeclaration(declaration, processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+        }
+
+        // To prevent recursivity, if we checked the parent element, we are sure we don’t want to check the element itself (a child)
+        if (lastParent is DLanguageBaseClassList) return true
+
+        toContinue = toContinue && (element.parentClass?.processDeclarations(processor, state, lastParent, place)?:true)
+
+        if (hint != null && hint.shouldProcess(ElementDeclarationHint.DeclarationKind.INTERFACE)) {
+            val processedInterfaces = mutableSetOf<InterfaceDeclaration>()
+            for (parentInterface in element.interfaces) {
+                if (!processDeclarationInInterface(parentInterface, processor, state, processedInterfaces, lastParent, place)) {
                     toContinue = false
                 }
             }
@@ -175,12 +196,32 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
+        return processDeclarationInInterface(element, processor, state, mutableSetOf(), lastParent, place);
+    }
+
+    private fun processDeclarationInInterface(element: InterfaceDeclaration,
+                                      processor: PsiScopeProcessor,
+                                      state: ResolveState,
+                                      visited: MutableSet<InterfaceDeclaration>,
+                                      lastParent: PsiElement?,
+                                      place: PsiElement): Boolean {
+        if (!visited.add(element))
+            return true
+
+        val hint = processor.getHint(ElementDeclarationHint.KEY)
+        if (hint != null && !hint.shouldProcess(ElementDeclarationHint.DeclarationKind.INTERFACE)) {
+            return true
+        }
+
         var toContinue = true
         if (element.templateParameters != null) {
             if (!element.templateParameters!!.processDeclarations(processor, state, lastParent, place)) {
                 toContinue = false
             }
         }
+
+        if (!toContinue) return false
+
         if (element.structBody?.declarations != null) {
             for (declaration in element.structBody?.declarations!!) {
                 if (!processDeclaration(declaration, processor, state, lastParent, place)) {
@@ -188,6 +229,18 @@ object ScopeProcessorImpl {
                 }
             }
         }
+
+        if (!toContinue) return false
+
+        // To prevent recursivity, if we checked the parent element, we are sure we don’t want to check the element itself (a child)
+        if (element is DLanguageBaseClassList) return true
+
+        for (parentInterface in element.interfaces) {
+            if (!processDeclarationInInterface(parentInterface, processor, state, visited, lastParent, place)) {
+                toContinue = false
+            }
+        }
+
         return toContinue
     }
 
