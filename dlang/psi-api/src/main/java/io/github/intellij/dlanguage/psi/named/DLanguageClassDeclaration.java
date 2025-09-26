@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.psi.named;
 
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiQualifiedNamedElement;
 import com.intellij.psi.StubBasedPsiElement;
 import io.github.intellij.dlanguage.psi.DLanguageBaseClassList;
 import io.github.intellij.dlanguage.psi.DLanguageConstraint;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
-public interface DLanguageClassDeclaration extends PsiElement, DNamedElement, Declaration, UserDefinedType,
+public interface DLanguageClassDeclaration extends PsiQualifiedNamedElement, DNamedElement, Declaration, UserDefinedType,
     StubBasedPsiElement<DLanguageClassDeclarationStub>, HasMembers<DLanguageClassDeclarationStub> {
     @Nullable
     PsiElement getKW_CLASS();

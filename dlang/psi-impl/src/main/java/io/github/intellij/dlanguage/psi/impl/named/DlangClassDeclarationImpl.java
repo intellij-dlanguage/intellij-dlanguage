@@ -61,7 +61,7 @@ public class DlangClassDeclarationImpl extends
     @Override
     public @Nullable DLanguageClassDeclaration getParentClass() {
         // Object does not have a parent, it is the root of all the classes
-        if ("Object".equals(getName())) return null;
+        if ("Object".equals(getQualifiedName())) return null;
 
         var baseClassElement = getBaseClassList();
         if (baseClassElement == null || baseClassElement.getBasicTypes().isEmpty()) return null;
@@ -139,4 +139,14 @@ public class DlangClassDeclarationImpl extends
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 
+    @Nullable
+    @Override
+    public String getQualifiedName() {
+        var file = getContainingFile();
+
+        if (file instanceof DlangPsiFile dlangPsiFile)
+            return dlangPsiFile.getFullyQualifiedModuleName() + "." + getName();
+
+        return getName();
+    }
 }
