@@ -426,13 +426,13 @@ static this() {
 
     has_processDeclaration["AddExpression"] = false;
     has_processDeclaration["AliasAssign"] = false;
-    has_processDeclaration["AliasDeclaration"] = false;
+    has_processDeclaration["AliasDeclaration"] = true;
     has_processDeclaration["AliasInitializer"] = false;
     has_processDeclaration["AliasThisDeclaration"] = false;
     has_processDeclaration["AlignAttribute"] = false;
     has_processDeclaration["AndAndExpression"] = false;
     has_processDeclaration["AndExpression"] = false;
-    has_processDeclaration["AnonymousEnumDeclaration"] = false;
+    has_processDeclaration["AnonymousEnumDeclaration"] = true;
     has_processDeclaration["ArgumentList"] = false;
     has_processDeclaration["Arguments"] = false;
     has_processDeclaration["ArrayAccessExpression"] = false;
@@ -552,7 +552,7 @@ static this() {
     has_processDeclaration["OrExpression"] = false;
     has_processDeclaration["OrOrExpression"] = false;
     has_processDeclaration["OutStatement"] = true;
-    has_processDeclaration["Parameter"] = false;
+    has_processDeclaration["Parameter"] = true;
     has_processDeclaration["ParameterAttribute"] = false;
     has_processDeclaration["Parameters"] = false;
     has_processDeclaration["Postblit"] = false;
@@ -615,7 +615,7 @@ static this() {
     has_processDeclaration["VariableDeclaration"] = false;
     has_processDeclaration["Vector"] = false;
     has_processDeclaration["VersionCondition"] = false;
-    //has_processDeclaration["VersionSpecification"] = false;
+    has_processDeclaration["VersionSpecification"] = true;
     has_processDeclaration["WhileStatement"] = true;
     has_processDeclaration["WithStatement"] = false;
     has_processDeclaration["XorExpression"] = false;

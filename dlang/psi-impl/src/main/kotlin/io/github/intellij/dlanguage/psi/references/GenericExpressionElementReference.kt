@@ -22,7 +22,8 @@ class GenericExpressionElementReference(element: ReferenceExpression,
     override fun resolve(): PsiElement? {
         val processor = GenericProcessor(referenceName, myElement)
         if (isModuleScopeOperator(element)) {
-            element.containingFile.processDeclarations(processor, ResolveState.initial(), null, element)
+            val containingFile = element.containingFile
+            containingFile.processDeclarations(processor, ResolveState.initial(), containingFile, element)
         } else {
             PsiScopesUtil.resolveAndWalk(processor, this, null)
         }

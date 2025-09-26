@@ -192,6 +192,12 @@ class DResolveTest : DResolveTestCase() {
     fun testVariableInitializationAssignedValueItselfShouldNotResolve() = doTest(false)
 
     @Test
+    fun testVariableInitializationAssignedValueItself2ShouldNotResolve() = doTest(false)
+
+    @Test
+    fun testVariableInitializationAssignedValueItself3ShouldNotResolve() = doTest(false)
+
+    @Test
     fun testVariableInitializationAssignedValueNextInitializationSameVariableDeclarationShouldNotResolve() = doTest(false)
 
     @Test

@@ -104,7 +104,7 @@ object PsiScopesUtil {
                 if (target is DLanguagePackage || target is DLanguageModule) {
                     state = state.put(IS_QUALIFIED_SYMBOL, true)
                 }
-                val `continue` = target?.processDeclarations(processor, state, target, reference.element) ?: true
+                val `continue` = target?.processDeclarations(processor, state, null, reference.element) ?: true
                 if (!`continue`)
                     return false
             }
@@ -134,7 +134,7 @@ object PsiScopesUtil {
         }
         if (type is UserDefinedDType) {
             val target = type.resolve()
-            return target.processDeclarations(processor, ResolveState.initial(), target, place)
+            return target.processDeclarations(processor, ResolveState.initial(), null, place)
         }
         return true
     }
