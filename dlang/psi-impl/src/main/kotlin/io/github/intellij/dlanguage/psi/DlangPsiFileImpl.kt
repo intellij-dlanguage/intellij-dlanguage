@@ -129,7 +129,7 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                 objects = objects.filter {it.containingDirectory.name == "dmd" }.toSet()
 
             val objectModule = objects.firstOrNull()?.containingFile as DlangPsiFile?
-            toContinue = objectModule?.processDeclarations(processor, newState, objectModule, objectModule) != false
+            toContinue = objectModule?.processDeclarations(processor, newState, lastParent, place) != false
         }
         processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, null)
         return toContinue
