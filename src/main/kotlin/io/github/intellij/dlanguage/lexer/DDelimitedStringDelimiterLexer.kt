@@ -6,6 +6,7 @@ import com.intellij.psi.tree.IElementType
 import io.github.intellij.dlanguage.psi.DlangTypes.DELIMITED_STRING
 import io.github.intellij.dlanguage.utils.getCorrespondingClosingDelimiter
 import io.github.intellij.dlanguage.utils.getOpeningDelimiter
+import io.github.intellij.dlanguage.utils.isPredefinedDelimiter
 
 /**
  * Lex the string to highlight the Delimiter in the delimitedString
@@ -93,6 +94,15 @@ class DDelimitedStringDelimiterLexer : LexerBase() {
     private fun locateEndingToken(start: Int): Int {
         val delimiter = getCorrespondingClosingDelimiter(openingDelimiter!!)
         state = 3
-        return start + bufferSequence.subSequence(start, bufferEnd).split(delimiter)[0].length
+
+        // for this case always the last one, lexer handle it (there can be some nesting of symbols)
+        if (delimiter != openingDelimiter)
+            return start + bufferSequence.subSequence(start, bufferEnd).lastIndexOf(delimiter)
+
+        if (isPredefinedDelimiter(delimiter))
+            return start + bufferSequence.subSequence(start, bufferEnd).split(delimiter)[0].length
+
+        // the delimiter is a user defined text
+        return start + bufferSequence.subSequence(start, bufferEnd).split("\n$delimiter")[0].length + 1 // +1 as we added the \n character
     }
 }
