@@ -23,6 +23,7 @@
         <ul>
             <li>Supports IntelliJ IDEA 2025.1 - 2025.2.*</li>
             <li>Improve UI on intellij when creating a project</li>
+            <li>Better resolution of symbols<li>
             <li>Bug fixes</li>
         </ul>
     ]]>

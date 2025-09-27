@@ -89,6 +89,8 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testAliasValueWithSameNameAsAliasDeclarationShouldNotResolveToAliasDeclaration2() = doTest(false)
+    @Test
+    fun testAliasValueWithSameNameAsAliasDeclarationShouldNotResolveToAliasDeclaration3() = doTest(false)
 
     @Test
     fun testScopedImportsFail() = doTest(false)
@@ -172,6 +174,9 @@ class DResolveTest : DResolveTestCase() {
     fun testEnumUsageWithoutEnumTypePrefixShouldNotResolve() = doTest(false)
 
     @Test
+    fun testEnumUsageWithoutEnumTypePrefixShouldNotResolve2() = doTest(false)
+
+    @Test
     fun testEnumValueQualifiedAsTypeShouldNotResolve() = doTest(false)
 
     @Test
@@ -220,6 +225,9 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testVariableInCaseDefaultStatement() = doTest()
+
+    @Test
+    fun testWithStatementShouldResolveInnerElements() = doTest()
 
     @Test
     fun testReferenceInVariableDeclarationMustNotResolveToVariableDeclarationItself() = doTest()
@@ -288,5 +296,11 @@ class DResolveTest : DResolveTestCase() {
     fun testFunctionCallUFCSWithLocalSelectiveImportResolve() = doTest()
 
     @Test
+    fun testFunctionCallUFCSWithLocalSelectiveImportResolve2() = doTest()
+
+    @Test
     fun testFunctionCallUFCSWithoutImportShouldNotResolve() = doTest(false)
+
+    @Test
+    fun functionDeclarationInSameConditionalDeclarationBlockAsUsageShouldResolve() = doTest()
 }
