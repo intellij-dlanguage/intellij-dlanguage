@@ -172,6 +172,9 @@ class DResolveTest : DResolveTestCase() {
     fun testEnumUsageWithoutEnumTypePrefixShouldNotResolve() = doTest(false)
 
     @Test
+    fun testEnumUsageWithoutEnumTypePrefixShouldNotResolve2() = doTest(false)
+
+    @Test
     fun testEnumValueQualifiedAsTypeShouldNotResolve() = doTest(false)
 
     @Test
