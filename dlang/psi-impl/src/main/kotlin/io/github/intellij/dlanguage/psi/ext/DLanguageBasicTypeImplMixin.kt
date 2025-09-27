@@ -21,7 +21,7 @@ abstract class DLanguageBasicTypeImplMixin(node: ASTNode) : ASTWrapperPsiElement
             return DPrimitiveType.fromText(builtinType!!.text);
         }
         if (qualifiedIdentifier != null) {
-            var resolved = qualifiedIdentifier?.reference?.resolve()
+            val resolved = qualifiedIdentifier?.reference?.resolve()
             var dType: DType = DUnknownType()
             if (resolved != null) {
                 dType = when (resolved) {

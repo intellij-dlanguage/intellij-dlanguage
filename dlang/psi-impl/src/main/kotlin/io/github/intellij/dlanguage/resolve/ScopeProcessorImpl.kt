@@ -296,7 +296,7 @@ object ScopeProcessorImpl {
         if (!toContinue) return false
 
         // To prevent recursivity, if we checked the parent element, we are sure we don’t want to check the element itself (a child)
-        if (element is DLanguageBaseClassList) return true
+        if (lastParent is DLanguageBaseClassList) return true
 
         for (parentInterface in element.interfaces) {
             if (!processDeclarationInInterface(parentInterface, processor, state, visited, null, place)) {
@@ -392,7 +392,7 @@ object ScopeProcessorImpl {
 
         for (declaration in element.declarations) {
             // Don’t process the declaration twice, we just processed it
-            if (lastParent != null && lastParent.parent === declaration) {
+            if (lastParent != null && lastParent === declaration) {
                 continue
             }
             if (!declaration.processDeclarations(processor, state, lastParent, place)) {
@@ -701,8 +701,8 @@ object ScopeProcessorImpl {
                             place: PsiElement): Boolean {
         for (enumMember in element.enumMembers) {
             // enum member cannot be seen from his assigned value (and values after the declaration neither)
-            if (lastParent != null && lastParent == enumMember)
-                return true
+            if (lastParent != null && lastParent === enumMember)
+                continue
 
             if (!processor.execute(enumMember, state)) {
                 return false
@@ -851,6 +851,10 @@ object ScopeProcessorImpl {
                             place: PsiElement): Boolean {
         var toContinue = true
         for (statement in element.statements) {
+            // Don’t processe the declaration twice, we just processed it
+            if (lastParent != null && lastParent === statement) {
+                continue
+            }
             // do not break as there can be multiple definition of the same element based on certain condition
             if (!statement.processDeclarations(processor, state, lastParent, place)) {
                 toContinue = false
@@ -865,20 +869,18 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
+        // Our member cannot see other declarations
+        if (lastParent != null && lastParent.parent === element) {
+            return true
+        }
         for (decl in element.declarations) {
-            // Don’t processe the declaration twice, we just processed it
-            if (lastParent != null && lastParent.parent === decl) {
-                continue
-            }
+            // Note: only 2 declarations are possible the one for the if and the one for the else
             if (!decl.processDeclarations(processor, state, lastParent, place)) {
                 toContinue = false
             }
         }
         for (block in element.declarationBlocks) {
-            // Don’t processe the declaration twice, we just processed it
-            if (lastParent != null && lastParent.parent === block) {
-                continue
-            }
+            // Note: only 2 declarations blocks are possible the one for the if and the one for the else
             if (!block.processDeclarations(processor, state, lastParent, place)) {
                 toContinue = false
             }
@@ -916,7 +918,7 @@ object ScopeProcessorImpl {
         var toContinue = true
         for (decl in element.declarations) {
             // Don’t processe the declaration twice, we just processed it
-            if (lastParent != null && lastParent.parent === decl) {
+            if (lastParent != null && lastParent === decl) {
                 continue
             }
             if (!decl.processDeclarations(processor, state, lastParent, place)) {
