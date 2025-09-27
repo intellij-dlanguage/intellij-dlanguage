@@ -89,6 +89,8 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testAliasValueWithSameNameAsAliasDeclarationShouldNotResolveToAliasDeclaration2() = doTest(false)
+    @Test
+    fun testAliasValueWithSameNameAsAliasDeclarationShouldNotResolveToAliasDeclaration3() = doTest(false)
 
     @Test
     fun testScopedImportsFail() = doTest(false)
@@ -298,4 +300,7 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testFunctionCallUFCSWithoutImportShouldNotResolve() = doTest(false)
+
+    @Test
+    fun functionDeclarationInSameConditionalDeclarationBlockAsUsageShouldResolve() = doTest()
 }

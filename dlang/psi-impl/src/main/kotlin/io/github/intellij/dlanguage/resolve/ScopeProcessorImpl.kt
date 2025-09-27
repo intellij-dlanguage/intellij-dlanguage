@@ -892,7 +892,34 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
+        // Maybe change Psi structure to separate staticIF and version(Foo) forms into 2 different nodes
         var toContinue = true
+
+        // `version(FOO):` form
+        if (element.kW_ELSE == null && element.oP_COLON != null) {
+            // Our member cannot see other declarations
+            for (decl in element.declarations) {
+                // don’t process declaration twice, we just processed it
+                if (lastParent != null && lastParent === decl) {
+                    continue
+                }
+                if (!decl.processDeclarations(processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+            for (block in element.declarationBlocks) {
+                // don’t process declaration twice, we just processed it
+                if (lastParent != null && lastParent === block) {
+                    continue
+                }
+                if (!block.processDeclarations(processor, state, lastParent, place)) {
+                    toContinue = false
+                }
+            }
+            return toContinue
+        }
+
+        // Static If
         // Our member cannot see other declarations
         if (lastParent != null && lastParent.parent === element) {
             return true
