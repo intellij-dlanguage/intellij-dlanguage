@@ -7,6 +7,7 @@ import com.intellij.psi.tree.ILazyParseableElementType;
 import io.github.intellij.dlanguage.documentation.DlangDocCommentType;
 import io.github.intellij.dlanguage.psi.impl.*;
 import io.github.intellij.dlanguage.psi.impl.named.*;
+import io.github.intellij.dlanguage.psi.impl.named.DLanguageOutStatementImpl;
 
 public interface DlangTypes {
     IElementType FUNCTION_DECLARATION = DStubElementTypes.FUNCTION_DECLARATION;

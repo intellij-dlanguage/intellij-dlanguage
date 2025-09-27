@@ -42,6 +42,7 @@ string[] named_children = [
     "LabeledStatement",
     "ModuleDeclaration",
     "NamedImportBind",
+    "OutStatement",
     "Parameter",
     "SingleImport",
     "StructDeclaration",
@@ -289,7 +290,6 @@ static this() {
     types_mixins["OrOrExpression"] = "DLanguageOrOrExpressionImplMixin";
     types_extra_interfaces["OrOrExpression"] = ["Expression"];
     types_children["OutContractExpression"] = ["KW_OUT", "OP_PAR_LEFT", "OP_SCOLON", "AssertArguments", "OP_PAR_RIGHT"];
-    types_children["OutStatement"] = ["Identifier","BlockStatement","KW_OUT","OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_children["ParameterAttribute"] = ["KW_FINAL","KW_IN","KW_LAZY","KW_OUT","KW_REF","KW_SCOPE","KW_AUTO","KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED","AtAttribute"];
     types_children["ParenthesisedExpression"] = ["OP_PAR_LEFT", "Expression", "OP_PAR_RIGHT"];
     types_mixins["ParenthesisedExpression"] = "DLanguageParenthesisedExpressionImplMixin";
@@ -530,9 +530,9 @@ static this() {
     has_processDeclaration["InContractExpression"] = false;
     has_processDeclaration["InStatement"] = false;
     has_processDeclaration["Initializer"] = false;
-    //has_processDeclaration["InterfaceDeclaration"] = true;
+    has_processDeclaration["InterfaceDeclaration"] = true;
     has_processDeclaration["Invariant"] = false;
-    has_processDeclaration["IsExpression"] = true;
+    has_processDeclaration["IsExpression"] = false;
     has_processDeclaration["KeyValuePair"] = false;
     has_processDeclaration["KeyValuePairs"] = false;
     has_processDeclaration["LambdaExpression"] = true;
@@ -543,7 +543,7 @@ static this() {
     has_processDeclaration["MixinDeclaration"] = false;
     has_processDeclaration["MixinQualifiedIdentifier"] = false;
     has_processDeclaration["MixinTemplateName"] = false;
-    //has_processDeclaration["ModuleDeclaration"] = false;
+    has_processDeclaration["ModuleDeclaration"] = false;
     has_processDeclaration["MulExpression"] = false;
     has_processDeclaration["NamedImportBind"] = false;
     has_processDeclaration["NewAnonClassExpression"] = false;
@@ -551,7 +551,7 @@ static this() {
     has_processDeclaration["Operands"] = false;
     has_processDeclaration["OrExpression"] = false;
     has_processDeclaration["OrOrExpression"] = false;
-    has_processDeclaration["OutStatement"] = true;
+    has_processDeclaration["OutStatement"] = false;
     has_processDeclaration["Parameter"] = true;
     has_processDeclaration["ParameterAttribute"] = false;
     has_processDeclaration["Parameters"] = false;
