@@ -417,7 +417,7 @@ static this() {
     types_extra_interfaces["VersionCondition"] = ["Declaration"];
     types_children["WhileStatement"] = ["KW_WHILE","IfCondition","Statement","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_extra_interfaces["WhileStatement"] = ["Statement"];
-    types_children["WithStatement"] = ["KW_WITH","AssignExpression*","OP_COMMA*","OP_PAR_RIGHT","OP_PAR_LEFT","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement"];
+    types_children["WithStatement"] = ["KW_WITH","OP_PAR_LEFT","Expression","OP_PAR_RIGHT","Statement"];
     types_extra_interfaces["WithStatement"] = ["Statement"];
     types_children["XorExpression"] = ["Expression*", "OP_XOR"];
     types_extra_interfaces["XorExpression"] = ["BitwiseExpression"];
@@ -617,7 +617,7 @@ static this() {
     has_processDeclaration["VersionCondition"] = false;
     has_processDeclaration["VersionSpecification"] = true;
     has_processDeclaration["WhileStatement"] = true;
-    has_processDeclaration["WithStatement"] = false;
+    has_processDeclaration["WithStatement"] = true;
     has_processDeclaration["XorExpression"] = false;
 }
 

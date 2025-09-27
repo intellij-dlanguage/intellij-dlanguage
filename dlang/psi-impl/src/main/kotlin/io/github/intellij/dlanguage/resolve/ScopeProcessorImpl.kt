@@ -14,6 +14,8 @@ import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.psi.interfaces.DVisibility
 import io.github.intellij.dlanguage.psi.scope.ElementDeclarationHint
 import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil
+import io.github.intellij.dlanguage.psi.types.DUnknownType
+import io.github.intellij.dlanguage.psi.types.UserDefinedDType
 import io.github.intellij.dlanguage.utils.*
 
 
@@ -659,13 +661,35 @@ object ScopeProcessorImpl {
         return PsiScopesUtil.walkChildrenScopes(element, processor, state, lastParent, place)
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun processDeclarations(element: WithStatement,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        return true//todo I don't actually know how with statements work in D
+
+        // Outside elements cannot see our members
+        if (lastParent != null && lastParent.parent !== element)
+            return true
+        // Our expression cannot see our members
+        if (lastParent != null && lastParent === element.expression)
+            return true
+
+        val hint = processor.getHint(ElementDeclarationHint.KEY)
+
+        // Eager return if the processor does not accept elements
+        // FIXME: introduce proper type, this check is mainly to prevent PackageOrModule to check it (optimization)
+        if (hint != null && !hint.shouldProcess(ElementDeclarationHint.DeclarationKind.CLASS))
+            return true
+
+        val elementType = element.expression?.dType
+        if (elementType != null && elementType !is DUnknownType) {
+            if (elementType is UserDefinedDType) {
+                val resolvedTypeElement = elementType.resolve()
+                if (!resolvedTypeElement.processDeclarations(processor, state, null, place))
+                    return false
+            }
+        }
+        return true
     }
 
     @Suppress("UNUSED_PARAMETER")

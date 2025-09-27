@@ -225,6 +225,9 @@ class DResolveTest : DResolveTestCase() {
     fun testVariableInCaseDefaultStatement() = doTest()
 
     @Test
+    fun testWithStatementShouldResolveInnerElements() = doTest()
+
+    @Test
     fun testReferenceInVariableDeclarationMustNotResolveToVariableDeclarationItself() = doTest()
 
     @Test
