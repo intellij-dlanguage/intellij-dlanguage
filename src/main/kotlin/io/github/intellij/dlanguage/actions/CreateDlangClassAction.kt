@@ -29,26 +29,29 @@ import javax.swing.Icon
  * Created by pirocks on 9/21/16.
  * mostly copy-pasted from "CreateDlangFileAction.java"
  */
-open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", DLanguage.Icons.CLASS), DumbAware {
+class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", DLanguage.Icons.CLASS), DumbAware {
 
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
+        builder.setTitle(NEW_D_FILE)
+
         for (template in Template.entries) {
             with(template) {
                 builder.addKind(StringUtil.capitalize(readableName), icon, id)
             }
         }
 
-        builder.setTitle(NEW_D_FILE)
-            .setValidator(ClassNameValidator())
+        builder.setValidator(ClassNameValidator)
     }
 
     override fun createFileFromTemplate(name: String, template: FileTemplate, inRequestedDirectory: PsiDirectory): PsiFile {
         val sourceRoot = findSourceRootOrDefault(inRequestedDirectory, inRequestedDirectory.virtualFile)
 
+        val inputName = if (name.endsWith(".d")) name.dropLast(2) else name
+
         val segments = inRequestedDirectory.virtualFile.path.removePrefix(sourceRoot.path).split("/")
             .filter { it.isNotBlank() }
             .toMutableList()
-        val nameSegments = name.split(".")
+        val nameSegments = inputName.split(".")
         segments.addAll(nameSegments)
 
         assert(segments.isNotEmpty())
@@ -73,7 +76,7 @@ open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "",
                 .put("DLANGUAGE_MODULE_NAME", dlangModuleName)
                 .put("DLANGUAGE_CLASS_NAME", aggregate)
                 .build()
-                .toMap(HashMap<String, Any>()),
+                .toMap(),
             storeDirectory,
             null
         )
@@ -115,36 +118,40 @@ open class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "",
             ?: defaultSourceRoot
     }
 
-    inner class ClassNameValidator : InputValidatorEx {
-        private val VALID_MODULE_NAME_REGEX = Pattern.compile("[A-Za-z_][0-z_.]*")
-        override fun getErrorText(inputString: String): String? {
-            if (inputString.isEmpty()) {
-                return null
-            }
-            return if (VALID_MODULE_NAME_REGEX.matcher(inputString).matches()) {
-                null
-            } else String.format("\'%s\' is not a valid D class name.", inputString)
-        }
-
-        override fun checkInput(inputString: String): Boolean {
-            return true
-        }
-
-        override fun canClose(inputString: String): Boolean {
-            return getErrorText(inputString) == null
-        }
-    }
-
     companion object {
         const val NEW_D_FILE = "New D File"
-
-        enum class Template(val id: String, val readableName: String, val icon: Icon) {
-            MODULE("d_language_module", "module", DLanguage.Icons.MODULE),
-            CLASS("d_language_class", "class", DLanguage.Icons.NODE_CLASS),
-            INTERFACE("d_language_interface", "interface", DLanguage.Icons.NODE_INTERFACE),
-            STRUCT("d_language_struct", "struct", DLanguage.Icons.NODE_STRUCT),
-            UNION("d_language_union", "union", DLanguage.Icons.NODE_UNION),
-            ENUM("d_language_enum", "enum", DLanguage.Icons.NODE_ENUM)
-        }
     }
+}
+
+object ClassNameValidator : InputValidatorEx {
+    private val VALID_MODULE_NAME_REGEX = Pattern.compile("^[A-Za-z_][0-z_.]*$")
+    override fun getErrorText(inputString: String): String? {
+        if (inputString.trim().isEmpty()) {
+            return "Name can’t be empty"
+        }
+
+        val parts = inputString.split(".")
+        if (parts.any { it.trim().isEmpty() }) {
+            return "Name can’t have empty parts"
+        }
+
+        if (!VALID_MODULE_NAME_REGEX.matcher(inputString.trim()).matches()) {
+            return "Not a valid D class name."
+        }
+
+        return null
+    }
+
+    override fun checkInput(inputString: String): Boolean = true
+
+    override fun canClose(inputString: String): Boolean = getErrorText(inputString) == null
+}
+
+private enum class Template(val id: String, val readableName: String, val icon: Icon) {
+    MODULE("d_language_module", "module", DLanguage.Icons.MODULE),
+    CLASS("d_language_class", "class", DLanguage.Icons.NODE_CLASS),
+    INTERFACE("d_language_interface", "interface", DLanguage.Icons.NODE_INTERFACE),
+    STRUCT("d_language_struct", "struct", DLanguage.Icons.NODE_STRUCT),
+    UNION("d_language_union", "union", DLanguage.Icons.NODE_UNION),
+    ENUM("d_language_enum", "enum", DLanguage.Icons.NODE_ENUM)
 }
