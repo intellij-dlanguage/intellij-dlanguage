@@ -9,6 +9,7 @@ import com.intellij.psi.util.startOffset
 import io.github.intellij.dlanguage.utils.LiteralExpression
 import io.github.intellij.dlanguage.utils.getCorrespondingClosingDelimiter
 import io.github.intellij.dlanguage.utils.getOpeningDelimiter
+import io.github.intellij.dlanguage.utils.isPredefinedDelimiter
 import org.apache.commons.lang3.StringUtils
 
 /**
@@ -30,10 +31,18 @@ class DStringLiteralAnnotator : Annotator {
                     }.let { holder.newAnnotation(HighlightSeverity.ERROR, it).create() }
                     continue
                 }
-                val closingDelimiter = getCorrespondingClosingDelimiter(openingDelimiter)
+                var closingDelimiter = getCorrespondingClosingDelimiter(openingDelimiter)
+
+                // impossible, handled at lexer directly
+                if (closingDelimiter != openingDelimiter)
+                    continue
+
+                if (!isPredefinedDelimiter(openingDelimiter))
+                    closingDelimiter = "\n$closingDelimiter"
+
                 val lines = value.split(closingDelimiter)
-                val expectedDelimitersCount = if (openingDelimiter == closingDelimiter) 2 else 1
-                if (lines.size > expectedDelimitersCount + 1) {
+                val expectedDelimitersCount = if (!isPredefinedDelimiter(openingDelimiter)) 1 else 2
+                if (lines.size > expectedDelimitersCount) {
                     val elemStartIndex = elem.startOffset + 2 // + 2 to because we skipped q"
                     holder.newAnnotation(HighlightSeverity.ERROR, "Illegal text found after closing delimiter, expected \" character instead")
                         .range(TextRange(elemStartIndex + StringUtils.ordinalIndexOf(value, closingDelimiter, expectedDelimitersCount) + closingDelimiter.length, elemStartIndex + value.length)).create()

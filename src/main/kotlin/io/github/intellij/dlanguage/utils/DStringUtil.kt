@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.utils
 
+private val predefinedDelimiters = listOf('(', ')' , '[', ']', '{', '}', '<', '>', '/', '\\')
 
 /**
  * Take the opening delimiter of a String and return the corresponding closing one
@@ -14,12 +15,16 @@ fun getCorrespondingClosingDelimiter(openingDelimiter: String) : String {
     }
 }
 
+fun isPredefinedDelimiter(literal: String): Boolean {
+    return predefinedDelimiters.indexOf(literal[0]) != -1
+}
+
 /**
  * Take a Delimited String content without the surrounding delimiters (`q"` and `"`) and
  * return the opening delimiter, or null if the delimiter is invalid.
  */
 fun getOpeningDelimiter(literal: String) : String? {
-    if (listOf('(', ')' , '[', ']', '{', '}', '<', '>', '/', '\\').indexOf(literal[0]) != -1)
+    if (isPredefinedDelimiter(literal))
         return literal[0].toString()
 
     // Invalid delimiter
