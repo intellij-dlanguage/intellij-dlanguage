@@ -28,6 +28,9 @@ class DResolveTest : DResolveTestCase() {
     fun testClassInheritedFieldWithSuperUsageToDefinition() = doTest()
 
     @Test
+    fun testInterfaceInheritanceResolve() = doTest()
+
+    @Test
     fun testPrimaryExpressionToFunctionDefinition() = doTest()
 
 //    @Test fun testOverloadedParameterCount() = doTest()
@@ -80,6 +83,12 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testAliasDeclarationWithAliasValueContainingTemplateInstanceDotIdentifier() = doTest()
+
+    @Test
+    fun testAliasValueWithSameNameAsAliasDeclarationShouldNotResolveToAliasDeclaration() = doTest(false)
+
+    @Test
+    fun testAliasValueWithSameNameAsAliasDeclarationShouldNotResolveToAliasDeclaration2() = doTest(false)
 
     @Test
     fun testScopedImportsFail() = doTest(false)
@@ -190,6 +199,12 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testVariableInitializationAssignedValueItselfShouldNotResolve() = doTest(false)
+
+    @Test
+    fun testVariableInitializationAssignedValueItself2ShouldNotResolve() = doTest(false)
+
+    @Test
+    fun testVariableInitializationAssignedValueItself3ShouldNotResolve() = doTest(false)
 
     @Test
     fun testVariableInitializationAssignedValueNextInitializationSameVariableDeclarationShouldNotResolve() = doTest(false)

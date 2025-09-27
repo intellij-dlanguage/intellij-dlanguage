@@ -3,12 +3,16 @@ package io.github.intellij.dlanguage.psi.impl.named;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.named.DLanguageParameter;
-import io.github.intellij.dlanguage.psi.types.*;
+import io.github.intellij.dlanguage.psi.types.DType;
+import io.github.intellij.dlanguage.psi.types.DUnknownType;
+import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DLanguageParameterStub;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -172,5 +176,10 @@ public class DLanguageParameterImpl extends
 
         // Case for a parameter in function lambda expression
         return new DUnknownType(); // TODO
+    }
+
+    @Override
+    public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+        return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
     }
 }

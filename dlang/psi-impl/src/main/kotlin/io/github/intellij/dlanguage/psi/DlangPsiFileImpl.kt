@@ -16,7 +16,6 @@ import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.psi.interfaces.Declaration
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration
 import io.github.intellij.dlanguage.resolve.PROCESSED_FILES_KEY
-import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil.processDeclaration
 import io.github.intellij.dlanguage.utils.getImportText
 import org.apache.commons.lang3.StringUtils
 import java.util.*
@@ -110,7 +109,10 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
                 }
             }
             else if (element is Declaration) {
-                if (!processDeclaration(element, processor, newState, lastParent, place)) {
+                // Don’t reprocess the declaration we just processed.
+                if (lastParent != null && lastParent == element)
+                    continue
+                if (!element.processDeclarations(processor, newState, lastParent, place)) {
                     toContinue = false
                 }
                 // processDeclaration may overwrite the declaration holder, so reset it before re-processing
@@ -121,13 +123,7 @@ class DlangPsiFileImpl(viewProvider: FileViewProvider) : PsiFileBase(viewProvide
         if (toContinue && getFullyQualifiedModuleName() != "object" && this == place.containingFile) {
             if (DumbService.isDumb(project))
                 return true
-            var objects = DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet()
-            // FIXME Hack hack hack for dmd repository (that otherwise resolve to an object module defined in tests)
-            if (objects.size > 1)
-                objects = objects.filter { it.name == "object.d" }.toSet()
-            if (objects.size > 1)
-                objects = objects.filter {it.containingDirectory.name == "dmd" }.toSet()
-
+            val objects = DModuleIndex.getFilesByModuleName(project, "object", allScope(project)).toSet()
             val objectModule = objects.firstOrNull()?.containingFile as DlangPsiFile?
             toContinue = objectModule?.processDeclarations(processor, newState, lastParent, place) != false
         }

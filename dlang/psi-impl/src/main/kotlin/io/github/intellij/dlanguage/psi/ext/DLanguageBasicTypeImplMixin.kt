@@ -5,6 +5,8 @@ import com.intellij.lang.ASTNode
 import io.github.intellij.dlanguage.psi.DLanguageBasicType
 import io.github.intellij.dlanguage.psi.interfaces.DTypedElement
 import io.github.intellij.dlanguage.psi.named.DLanguageFunctionDeclaration
+import io.github.intellij.dlanguage.psi.named.DLanguageModule
+import io.github.intellij.dlanguage.psi.named.DLanguagePackage
 import io.github.intellij.dlanguage.psi.types.DArrayType
 import io.github.intellij.dlanguage.psi.types.DPrimitiveType
 import io.github.intellij.dlanguage.psi.types.DType
@@ -19,13 +21,15 @@ abstract class DLanguageBasicTypeImplMixin(node: ASTNode) : ASTWrapperPsiElement
             return DPrimitiveType.fromText(builtinType!!.text);
         }
         if (qualifiedIdentifier != null) {
-            var resolved = qualifiedIdentifier?.reference?.resolve()
+            val resolved = qualifiedIdentifier?.reference?.resolve()
             var dType: DType = DUnknownType()
             if (resolved != null) {
                 dType = when (resolved) {
                     is DTypedElement -> resolved.dType
                     is DLanguageFunctionDeclaration -> resolved.returnDType
                     is NamedImportBind -> DUnknownType() // TODO implement (needs to put the implementation int the NamedImportBind)
+                    is DLanguagePackage -> DUnknownType()
+                    is DLanguageModule -> DUnknownType()
                     else -> {
                         assert(false) {"Unexpected/Unimplemented case of Qualified identifier DType for a Basic Type"}
                         DUnknownType()
