@@ -46,7 +46,12 @@ class CreateDlangClassAction : CreateFileFromTemplateAction(NEW_D_FILE, "", DLan
     override fun createFileFromTemplate(name: String, template: FileTemplate, inRequestedDirectory: PsiDirectory): PsiFile {
         val sourceRoot = findSourceRootOrDefault(inRequestedDirectory, inRequestedDirectory.virtualFile)
 
-        val inputName = if (name.endsWith(".d")) name.dropLast(2) else name
+        val inputName = if (name.endsWith(".d"))
+                            name.dropLast(2)
+                        else if (name.endsWith(".di"))
+                            name.dropLast(3)
+                        else
+                            name
 
         val segments = inRequestedDirectory.virtualFile.path.removePrefix(sourceRoot.path).split("/")
             .filter { it.isNotBlank() }
