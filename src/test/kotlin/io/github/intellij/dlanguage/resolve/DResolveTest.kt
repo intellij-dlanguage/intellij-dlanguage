@@ -165,6 +165,9 @@ class DResolveTest : DResolveTestCase() {
     fun testStaticForeachLoopVariableOutOfScopeUsageShouldNotResolve() = doTest(false)
 
     @Test
+    fun testStaticForeachDeclarationShouldSeeEachOther() = doTest()
+
+    @Test
     fun testConstructorCallResolveParameters() = doTest()
 
     @Test
@@ -218,6 +221,24 @@ class DResolveTest : DResolveTestCase() {
     fun testVariableInitializationAssignedValueNextInitializationSameVariableDeclarationShouldNotResolve() = doTest(false)
 
     @Test
+    fun testVariableUsageWithDeclarationInSameDeclarationBlockShouldResolve() = doTest()
+
+    @Test
+    fun testVariableUsageWithDeclarationInSameDeclarationBlockShouldResolve2() = doTest()
+
+    @Test
+    fun testVariableUsageWithDeclarationInSameDeclarationBlockShouldResolve3() = doTest()
+
+    @Test
+    fun testVariableUsageWithDeclarationInSameDeclarationBlockShouldResolve4() = doTest()
+
+    @Test
+    fun testVariableUsageWithNameShadowingTheTemplateName() = doTest()
+
+    @Test
+    fun testVariableUsageWithNameShadowingTheTemplateName2() = doTest()
+
+    @Test
     fun testVariableInCaseStatement() = doTest()
 
     @Test
@@ -258,6 +279,12 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testTemplateTupleUsage2InTemplatedClassShouldResolve() = doTest()
+
+    @Test
+    fun testTemplateRecursiveCallShouldResolveToTemplateDeclaration() = doTest()
+
+    @Test
+    fun testTemplateRecursiveCallShouldResolveToTemplateDeclaration2() = doTest()
 
     @Test
     fun testLambdaParameterUsageShouldResolve() = doTest()
