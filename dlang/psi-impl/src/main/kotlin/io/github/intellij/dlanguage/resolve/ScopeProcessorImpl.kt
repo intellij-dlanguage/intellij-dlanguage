@@ -76,6 +76,13 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
 
+        // our value can see our parameters
+        if (element.templateParameters != null) {
+            if (!element.templateParameters!!.processDeclarations(processor, state, lastParent, place)) {
+                return false
+            }
+        }
+
         // Element in initializer cannot see our elements
         if (lastParent != null && lastParent.parent === element) {
             return true
@@ -84,11 +91,6 @@ object ScopeProcessorImpl {
         if (!processor.execute(element, state))
             return false
 
-        if (element.templateParameters != null) {
-            if (!element.templateParameters!!.processDeclarations(processor, state, lastParent, place)) {
-                return false
-            }
-        }
         return true
     }
 
@@ -97,15 +99,16 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        // Our children cannot see our elements
-        if (lastParent != null && lastParent.parent === element)
-            return true
-
+        // Our value can see our parameters
         if (element.templateParameters != null) {
             if (!element.templateParameters!!.processDeclarations(processor, state, lastParent, place)) {
                 return false
             }
         }
+
+        // Our children cannot see our elements
+        if (lastParent != null && lastParent.parent === element)
+            return true
 
         return processor.execute(element, state)
     }

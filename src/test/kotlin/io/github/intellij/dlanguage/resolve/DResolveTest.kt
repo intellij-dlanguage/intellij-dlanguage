@@ -93,6 +93,9 @@ class DResolveTest : DResolveTestCase() {
     fun testAliasValueWithSameNameAsAliasDeclarationShouldNotResolveToAliasDeclaration3() = doTest(false)
 
     @Test
+    fun testAliasValueElementCanResolveToAliasParameter() = doTest()
+
+    @Test
     fun testScopedImportsFail() = doTest(false)
 
     @Test
@@ -225,6 +228,9 @@ class DResolveTest : DResolveTestCase() {
 
     @Test
     fun testVariableInCaseDefaultStatement() = doTest()
+
+    @Test
+    fun testVariableValueCanResolveToVariableTemplateParameter() = doTest()
 
     @Test
     fun testWithStatementShouldResolveInnerElements() = doTest()
