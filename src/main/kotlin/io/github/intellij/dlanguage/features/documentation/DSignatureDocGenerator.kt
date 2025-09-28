@@ -500,6 +500,7 @@ class DSignatureDocGenerator {
     }
 
     private fun appendTemplateArguments(builder: StringBuilder, element: TemplateArguments) {
+        element.templateArgumentList?:return
         builder.append(element.templateArgumentList!!.templateArguments.joinToString(", ") {
             val argumentBuilder = StringBuilder()
             appendType(argumentBuilder, it.type)
@@ -507,7 +508,6 @@ class DSignatureDocGenerator {
                 argumentBuilder.append(it.assignExpression!!.text)
             argumentBuilder.toString()
         })
-
     }
 
     private fun appendTemplateSingleArgument(builder: StringBuilder, element: TemplateSingleArgument) {
