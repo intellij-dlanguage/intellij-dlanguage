@@ -26,7 +26,8 @@ class TypeProcessor(private val elementName: String,
     override fun execute(element: PsiElement, state: ResolveState): Boolean {
         if (element !is UserDefinedType && element !is DeclaratorIdentifier &&
             element !is AliasInitializer && element !is TemplateDeclaration &&
-            element !is TemplateParameter && element !is DLanguageModule && element !is DLanguagePackage
+            element !is TemplateParameter && element !is NamedImportBind &&
+            element !is DLanguageModule && element !is DLanguagePackage
         ) {
             if (!(canSearchVariable && (element is Parameter || element is AutoAssignment || element is IdentifierInitializer)))
                 return true
