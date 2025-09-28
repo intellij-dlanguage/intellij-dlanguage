@@ -198,6 +198,9 @@ class DResolveTest : DResolveTestCase() {
     fun testNestedStructMemberUsageShouldResolve() = doTest()
 
     @Test
+    fun testStructMemberAccessShouldNotMatchFunctionParameterOfTheStruct() = doTest(false)
+
+    @Test
     fun testLocalTypeDefinitionWithUsageAfterDefinitionShouldResolve() = doTest()
     @Test
     fun testLocalTypeDefinitionWithUsageBeforeDefinitionShouldNotResolve() = doTest(false)

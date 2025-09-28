@@ -1,6 +1,5 @@
 package io.github.intellij.dlanguage.resolve
 
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
@@ -22,24 +21,20 @@ import io.github.intellij.dlanguage.utils.*
  * implements processDeclarations for various statements
  */
 object ScopeProcessorImpl {
-    val logger = Logger.getInstance("io.github.intellij.dlanguage.resolve.ScopeProcessorImpl")
-
-    /**
-     * takes the elements declared in the given psi and passes them to the scope processor via the execute method. The scope processor will return false if it has found what it is "looking for". Note that certain declarations processors will not process child block statement/aggregate bodies since those have their own processor.
-     * Some of the process declarations methods may return early while others will search through the entire scope
-     * @param element
-     * @param processor
-     * @param state
-     * @param lastParent
-     * @param place
-     * @return true if it should continue, false if it should stop
-     */
     fun processDeclarations(element: StructBody,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        return element.declarations.none { !it.processDeclarations(processor, state, lastParent, place) }
+        var toContinue = true
+        for (declaration in element.declarations) {
+            // don’t re-process the declaration we just processed
+            if (lastParent === declaration)
+                continue
+            if (!declaration.processDeclarations(processor, state, lastParent, place))
+                toContinue = false
+        }
+        return toContinue
     }
 
     fun processDeclarations(element: AliasDeclaration,
@@ -448,7 +443,7 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        if (lastParent == null || lastParent.parent == element) {
+        if (lastParent !== null && lastParent.parent == element) {
             // Only our member can see our elements
 
             if (!PsiScopesUtil.walkChildrenScopes(element, processor, state, lastParent, place))
