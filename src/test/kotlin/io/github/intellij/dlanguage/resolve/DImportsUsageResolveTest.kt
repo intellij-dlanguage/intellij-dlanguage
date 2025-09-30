@@ -258,4 +258,19 @@ class DImportsUsageResolveTest : DResolveTestCase() {
             """.trimIndent())
     }
 
+    @Test
+    fun testRenamedImportForType() {
+        doCheckByText2(
+            """
+                import resolve.to.include : /*<resolved>*/renamed = A;
+
+                const /*<ref>*/renamed element;
+            """.trimIndent(),
+            """
+                module resolve.to.include;
+
+                class A {}
+            """.trimIndent()
+        )
+    }
 }

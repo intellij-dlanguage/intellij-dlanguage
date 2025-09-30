@@ -1,11 +1,9 @@
 package io.github.intellij.dlanguage.resolve
 
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.util.PsiTreeUtil
 import io.github.intellij.dlanguage.index.DModuleIndex
 import io.github.intellij.dlanguage.psi.DLanguageBaseClassList
 import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
@@ -23,24 +21,20 @@ import io.github.intellij.dlanguage.utils.*
  * implements processDeclarations for various statements
  */
 object ScopeProcessorImpl {
-    val logger = Logger.getInstance("io.github.intellij.dlanguage.resolve.ScopeProcessorImpl")
-
-    /**
-     * takes the elements declared in the given psi and passes them to the scope processor via the execute method. The scope processor will return false if it has found what it is "looking for". Note that certain declarations processors will not process child block statement/aggregate bodies since those have their own processor.
-     * Some of the process declarations methods may return early while others will search through the entire scope
-     * @param element
-     * @param processor
-     * @param state
-     * @param lastParent
-     * @param place
-     * @return true if it should continue, false if it should stop
-     */
     fun processDeclarations(element: StructBody,
                             processor: PsiScopeProcessor,
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        return element.declarations.none { !it.processDeclarations(processor, state, lastParent, place) }
+        var toContinue = true
+        for (declaration in element.declarations) {
+            // don’t re-process the declaration we just processed
+            if (lastParent === declaration)
+                continue
+            if (!declaration.processDeclarations(processor, state, lastParent, place))
+                toContinue = false
+        }
+        return toContinue
     }
 
     fun processDeclarations(element: AliasDeclaration,
@@ -76,6 +70,13 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
 
+        // our value can see our parameters
+        if (element.templateParameters != null) {
+            if (!element.templateParameters!!.processDeclarations(processor, state, lastParent, place)) {
+                return false
+            }
+        }
+
         // Element in initializer cannot see our elements
         if (lastParent != null && lastParent.parent === element) {
             return true
@@ -84,11 +85,6 @@ object ScopeProcessorImpl {
         if (!processor.execute(element, state))
             return false
 
-        if (element.templateParameters != null) {
-            if (!element.templateParameters!!.processDeclarations(processor, state, lastParent, place)) {
-                return false
-            }
-        }
         return true
     }
 
@@ -97,15 +93,16 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        // Our children cannot see our elements
-        if (lastParent != null && lastParent.parent === element)
-            return true
-
+        // Our value can see our parameters
         if (element.templateParameters != null) {
             if (!element.templateParameters!!.processDeclarations(processor, state, lastParent, place)) {
                 return false
             }
         }
+
+        // Our children cannot see our elements
+        if (lastParent != null && lastParent.parent === element)
+            return true
 
         return processor.execute(element, state)
     }
@@ -358,11 +355,15 @@ object ScopeProcessorImpl {
             }
         }
 
-        for (declaration in element.declarations) {
-            if (!declaration.processDeclarations(processor, state, lastParent, place)) {
-                toContinue = false
+        // Only check declarations if we want to see inside
+        if (lastParent === null) {
+            for (declaration in element.declarations) {
+                if (!declaration.processDeclarations(processor, state, lastParent, place)) {
+                    toContinue = false
+                }
             }
         }
+
         return toContinue
     }
 
@@ -371,37 +372,23 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        if (!processor.execute(element, state))
+        if (lastParent == null || lastParent.parent == element) {
+            // Only our member can see our elements
+
+            if (!PsiScopesUtil.walkChildrenScopes(element, processor, state, lastParent, place))
+                return false
+
+            if (element.templateParameters != null) {
+                if (!element.templateParameters!!.processDeclarations(processor, state, lastParent, place)) {
+                    return false
+                }
+            }
+        }
+
+        if(!processor.execute(element, state))
             return false
 
-        var toContinue = true
-        // Only our members can see our parameters and nothing else
-        if (lastParent != null && lastParent.parent !== element) {
-            return true
-        }
-        if (element.templateParameters != null) {
-            if (!element.templateParameters!!.processDeclarations(processor, state, lastParent, place)) {
-                toContinue = false
-            }
-        }
-        if (!toContinue)
-            return false
-
-        if (PsiTreeUtil.isContextAncestor(element, place, true)) {
-            // We are inside the template, don’t look for other declarations
-            return true
-        }
-
-        for (declaration in element.declarations) {
-            // Don’t process the declaration twice, we just processed it
-            if (lastParent != null && lastParent === declaration) {
-                continue
-            }
-            if (!declaration.processDeclarations(processor, state, lastParent, place)) {
-                toContinue = false
-            }
-        }
-        return toContinue
+        return true
     }
 
     fun processDeclarations(element: UnionDeclaration,
@@ -456,8 +443,11 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        if (lastParent == null || lastParent.parent == element) {
+        if (lastParent !== null && lastParent.parent == element) {
             // Only our member can see our elements
+
+            if (!PsiScopesUtil.walkChildrenScopes(element, processor, state, lastParent, place))
+                return false
 
             if (element.parameters != null) {
                 for (parameter in element.parameters!!.parameters) {
@@ -471,9 +461,6 @@ object ScopeProcessorImpl {
                     return false
                 }
             }
-
-            if (!PsiScopesUtil.walkChildrenScopes(element, processor, state, lastParent, place))
-                return false
         }
 
         if(!processor.execute(element, state))
@@ -489,7 +476,7 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         if (lastParent != null && (lastParent.parent !== element || lastParent in element.expressions)) {
-            // declaration cannot see our vars and our expressions neither
+            // declaration and our expressions neither cannot see our vars
             return true
         }
 
@@ -506,6 +493,16 @@ object ScopeProcessorImpl {
                 }
             }
         }
+
+        for (declaration in element.declarations) {
+            // Don’t processe the declaration twice, we just processed it
+            if (lastParent != null && lastParent === element) {
+                continue
+            }
+            if (!declaration.processDeclarations(processor, state, lastParent, place))
+                shouldContinue = false
+        }
+
         return shouldContinue
     }
 
@@ -879,7 +876,7 @@ object ScopeProcessorImpl {
             if (lastParent != null && lastParent === statement) {
                 continue
             }
-            // do not break as there can be multiple definition of the same element based on certain condition
+            // do not break as there can be multiple definition of the same element based on a certain condition
             if (!statement.processDeclarations(processor, state, lastParent, place)) {
                 toContinue = false
             }
@@ -967,11 +964,13 @@ object ScopeProcessorImpl {
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
         var toContinue = true
+
+        // Our children can only access to elements declared before them
+        if (lastParent != null && lastParent.parent === element) {
+            return PsiScopesUtil.walkChildrenScopes(element, processor, state, lastParent, place)
+        }
+
         for (decl in element.declarations) {
-            // Don’t processe the declaration twice, we just processed it
-            if (lastParent != null && lastParent === decl) {
-                continue
-            }
             if (!decl.processDeclarations(processor, state, lastParent, place)) {
                 toContinue = false
             }
