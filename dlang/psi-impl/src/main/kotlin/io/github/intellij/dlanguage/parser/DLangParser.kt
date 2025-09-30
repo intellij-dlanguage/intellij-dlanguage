@@ -3018,80 +3018,69 @@ internal class DLangParser(private val builder: PsiBuilder) {
             return false
         }
         bookmark.drop()
-        parseForeach(DlangTypes.STATIC_FOREACH_DECLARATION, true)
-        exit_section_modified(builder, m, DlangTypes.STATIC_FOREACH_DECLARATION, true)
+        parseForeach(true)
+        m.done(DlangTypes.STATIC_FOREACH_DECLARATION)
         return true
     }
 
     /**
      * Parses a ForeachStatement
      *
-     *
      * $(GRAMMAR $(RULEDEF foreachStatement):
-     * ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachTypeList) $(LITERAL ';') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE NoScopeNonEmptyStatement)
+     *   ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachTypeList) $(LITERAL ';') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE NoScopeNonEmptyStatement)
      * | ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachType) $(LITERAL ';') $(RULE expression) $(LITERAL '..') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE NoScopeNonEmptyStatement)
      * ;)
      */
     fun parseForeachStatement(): Boolean {
-        return parseForeach(DlangTypes.FOREACH_STATEMENT, false)
+        val m = builder.mark()
+        val r = parseForeach(false)
+        m.done(DlangTypes.FOREACH_STATEMENT)
+        return r
     }
 
     fun parseStaticForeachStatement(): Boolean {
         val m = builder.mark()
         if (expect(DlangTypes.KW_STATIC) == null) {
-            m.done(DlangTypes.STATIC_FOREACH_STATEMENT)
             return false
         }
-        if (!parseForeachStatement()) {
-            m.done(DlangTypes.STATIC_FOREACH_STATEMENT)
-            return false
-        }
-        m.done(DlangTypes.STATIC_FOREACH_STATEMENT)
-        return true
+        val r = parseForeach(false)
+        m.done(DlangTypes.FOREACH_STATEMENT)
+        return r
     }
 
-    fun parseForeach(elementType: IElementType, declOnly: Boolean): Boolean {
-        val m = builder.mark()
+    private fun parseForeach(declOnly: Boolean): Boolean {
         if (currentIsOneOf(DlangTypes.KW_FOREACH, DlangTypes.KW_FOREACH_REVERSE)) {
             advance()
         } else {
             error("`foreach` or `foreach_reverse` expected")
-            cleanup(m, elementType)
             return false
         }
         if (!tokenCheck(DlangTypes.OP_PAR_LEFT)) {
-            cleanup(m, elementType)
             return false
         }
         val types = parseForeachTypeList()
         val canBeRange = types == 1
         if (!tokenCheck(DlangTypes.OP_SCOLON)) {
-            cleanup(m, elementType)
             return false
         }
         if (!parseExpression()) {
-            cleanup(m, elementType)
             return false
         }
         if (currentIs(DlangTypes.OP_DDOT)) {
             if (!canBeRange) {
                 error("Cannot have more than one foreach variable for a foreach range statement")
-                cleanup(m, elementType)
                 return false
             }
             advance()
             if (!parseExpression()) {
-                cleanup(m, elementType)
                 return false
             }
         }
         if (!tokenCheck(DlangTypes.OP_PAR_RIGHT)) {
-            cleanup(m, elementType)
             return false
         }
         if (currentIs(DlangTypes.OP_BRACES_RIGHT)) {
             error("Statement expected")
-            cleanup(m, elementType)
             return true
         }
         if (declOnly) {
@@ -3099,20 +3088,16 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 advance()
                 parseDeclDefsWithRecoveryUpToParentScope()
                 if (!tokenCheck(DlangTypes.OP_BRACES_RIGHT)) {
-                    cleanup(m, elementType)
                     return false
                 }
             } else if (!parseDeclDef()) {
-                cleanup(m, elementType)
                 return false
             }
         } else {
             if (!parseNoScopeNonEmptyStatement()) {
-                cleanup(m, elementType)
                 return false
             }
         }
-        exit_section_modified(builder, m, elementType, true)
         return true
     }
 

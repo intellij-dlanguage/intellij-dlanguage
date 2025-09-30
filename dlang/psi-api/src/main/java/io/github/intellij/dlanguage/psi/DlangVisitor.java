@@ -901,11 +901,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(dlangSingleImport);
     }
 
-    public void visitStaticForeachStatement(
-        DLanguageStaticForeachStatement dLangStaticForeachStatement) {
-        visitPsiElement(dLangStaticForeachStatement);
-    }
-
     public void visitStaticForeachDeclaration(DLanguageStaticForeachDeclaration dLanguageStaticForeachDeclaration) {
         visitPsiElement(dLanguageStaticForeachDeclaration);
     }

@@ -223,7 +223,6 @@ public interface DlangTypes {
     DlangElementType ADD_EXPRESSION = new DlangElementType("ADD_EXPRESSION");
     DlangElementType BUILTIN_TYPE = new DlangElementType("BUILTIN_TYPE");
     DlangElementType STATIC_FOREACH_DECLARATION = new DlangElementType("STATIC_FOREACH_DECLARATION");
-    DlangElementType STATIC_FOREACH_STATEMENT = new DlangElementType("STATIC_FOREACH_STATEMENT");
 
     IElementType LINE_DOC = new DlangDocCommentType("LINE_DOC");
     IElementType BLOCK_DOC = new DlangDocCommentType("BLOCK_DOC");
@@ -839,8 +838,6 @@ public interface DlangTypes {
                 return new DLanguageBuiltinTypeImpl(node);
             } else if (type == NAMED_IMPORT_BIND) {
                 return new DLanguageNamedImportBindImpl(node);
-            } else if (type == STATIC_FOREACH_STATEMENT) {
-                return new DLanguageStaticForeachStatementImpl(node);
             } else if (type == STATIC_FOREACH_DECLARATION) {
                 return new DLanguageStaticForeachDeclarationImpl(node);
             } else if (type == ALIAS_ASSIGN) {

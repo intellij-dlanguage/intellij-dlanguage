@@ -157,7 +157,7 @@ static this() {
     types_children["CommaExpression"] = ["Expression*", "OP_COMMA"];
     types_mixins["CommaExpression"] = "DLanguageCommaExpressionImplMixin";
     types_extra_interfaces["CommaExpression"] = ["Expression"];
-    types_children["CompileCondition"] = [ "VersionCondition",  "DebugCondition",  "StaticIfCondition"];
+    types_children["CompileCondition"] = [ "VersionCondition",  "DebugCondition", "StaticIfCondition"];
     types_children["ConditionalDeclaration"] = ["CompileCondition", "Declaration*","OP_COLON","KW_ELSE","DeclarationBlock*"];
     types_extra_interfaces["ConditionalDeclaration"] = ["Declaration"];
     types_children["ConditionalStatement"] = ["CompileCondition", "Statement*", "KW_ELSE","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
@@ -182,7 +182,7 @@ static this() {
     types_children["DollarExpression"] = ["OP_DOLLAR"];
     types_mixins["DollarExpression"] = "DLanguageDollarExpressionImplMixin";
     types_extra_interfaces["DollarExpression"] = ["Expression"];
-    types_children["DoStatement"] = ["KW_DO","KW_WHILE","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","Expression*","OP_COMMA*","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT"];
+    types_children["DoStatement"] = ["KW_DO","KW_WHILE","Statement","Expression*","OP_COMMA*","OP_SCOLON","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_extra_interfaces["DoStatement"] = ["Statement"];
     types_children["EmptyDeclaration"] = ["OP_SCOLON"];
     types_extra_interfaces["EmptyDeclaration"] = ["Declaration"];
@@ -206,8 +206,8 @@ static this() {
     types_extra_interfaces["FundamentalTypePropertyExpression"] = ["Expression"];
     types_children["ForStatement"] = ["Statement*", "AssignExpression*","OP_BRACES_RIGHT","OP_BRACES_LEFT","KW_FOR","OP_SCOLON*","OP_PAR_LEFT", "OP_PAR_RIGHT"];
     types_extra_interfaces["ForStatement"] = ["Statement"];
-    types_children["ForeachStatement"] = ["KW_FOREACH","KW_FOREACH_REVERSE","Statement", "Expression","OP_BRACES_RIGHT","OP_BRACES_LEFT","OP_DDOT","ForeachType","ForeachTypeList","OP_SCOLON"];
-    types_extra_interfaces["ForeachStatement"] = ["Statement"];
+    types_children["ForeachStatement"] = ["KW_STATIC","KW_FOREACH","KW_FOREACH_REVERSE","Statement","Expression*","OP_BRACES_RIGHT","OP_BRACES_LEFT","OP_DDOT","ForeachTypeList","OP_SCOLON"];
+    types_extra_interfaces["ForeachStatement"] = ["Statement", "Foreach"];
     types_children["ForeachTypeList"] = ["ForeachType*","OP_COMMA*"];
     types_children["FunctionAttribute"] = ["AtAttribute","KW_PURE","KW_NOTHROW"];
     types_children["FunctionCallExpression"] = ["ArgumentList", "Expression", "OP_PAR_LEFT", "OP_PAR_RIGHT"];
@@ -255,7 +255,7 @@ static this() {
     types_children["LambdaExpression"] = ["Identifier","KW_FUNCTION","KW_DELEGATE","OP_LAMBDA_ARROW","Expression","Parameters","FunctionAttribute*"];
     types_mixins["LambdaExpression"] = "DLanguageLambdaExpressionImplMixin";
     types_extra_interfaces["LambdaExpression"] = ["Expression"];
-    types_children["LastCatch"] = ["KW_CATCH","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement"];
+    types_children["LastCatch"] = ["KW_CATCH","Statement","DebugSpecification"];
     types_children["LinkageAttribute"] = ["IdentifierChain","Identifier","OP_PAR_RIGHT","OP_PAR_LEFT","OP_PLUS_PLUS","KW_EXTERN","OP_COMMA"];
     types_children["LiteralExpression"] = ["KW_THIS", "KW_SUPER", "KW_NULL", "KW_TRUE", "KW_FALSE", "INTEGER_LITERAL", "FLOAT_LITERAL", "CHARACTER_LITERAL", "ALTERNATE_WYSIWYG_STRING*", "DOUBLE_QUOTED_STRING*", "WYSIWYG_STRING*", "DELIMITED_STRING*", "TOKEN_STRING*", "HEX_STRING*"];
     types_extra_interfaces["LiteralExpression"] = ["Expression"];
@@ -304,7 +304,7 @@ static this() {
     types_mixins["PowExpression"] = "DLanguagePowExpressionImplMixin";
     types_extra_interfaces["PowExpression"] = ["Expression"];
     types_children["PragmaExpression"] = ["Identifier","ArgumentList","OP_PAR_LEFT","OP_PAR_RIGHT","OP_COMMA","KW_PRAGMA"]; // Note contrary to his name suggest, it is not an exression
-    types_children["PragmaStatement"] = ["PragmaExpression", "OP_SCOLON", "DefaultStatement","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","CaseStatement","CaseRangeStatement"];
+    types_children["PragmaStatement"] = ["PragmaExpression", "OP_SCOLON","Statement"];
     types_children["QualifiedIdentifier"] = ["Identifier", "TemplateInstance", "OP_BRACKET_LEFT", "OP_BRACKET_RIGHT", "Expression", "OP_DOT", "QualifiedIdentifier"];
     types_mixins["QualifiedIdentifier"] = "DLanguageQualifiedIdentifierImplMixin";
     types_children["ReferenceExpression"] = ["OP_DOT", "Identifier", "TemplateInstance", "Expression"];
@@ -316,7 +316,7 @@ static this() {
     types_extra_interfaces["RelExpression"] = ["Expression"];
     types_children["ReturnStatement"] = ["KW_RETURN","Expression*","OP_COMMA*","OP_SCOLON"];
     types_extra_interfaces["ReturnStatement"] = ["Statement"];
-    types_children["ScopeGuardStatement"] = ["KW_SCOPE","Identifier","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","OP_PAR_LEFT","OP_PAR_RIGHT"];
+    types_children["ScopeGuardStatement"] = ["KW_SCOPE","Identifier","Statement","DebugSpecification", "OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_extra_interfaces["ScopeGuardStatement"] = ["Statement"];
     stub_children ["SharedStaticConstructor"] = ["KW_STATIC","KW_SHARED","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_extra_interfaces["SharedStaticConstructor"] = ["Declaration"];
@@ -340,18 +340,16 @@ static this() {
     stub_children ["StaticDestructor"] = ["OP_TILDA","KW_STATIC","KW_THIS","OP_PAR_LEFT","OP_PAR_RIGHT","FunctionBody"];
     types_extra_interfaces["StaticDestructor"] = ["Declaration"];
     types_children["StaticForeachDeclaration"] = ["KW_FOREACH", "KW_FOREACH_REVERSE", "Declaration*", "Expression*", "OP_BRACES_RIGHT", "OP_BRACES_LEFT", "OP_DDOT", "ForeachType", "ForeachTypeList", "OP_SCOLON", "KW_STATIC"];
-    types_extra_interfaces["StaticForeachDeclaration"] = ["Declaration"];
-    types_children["StaticForeachStatement"] = ["KW_STATIC", "ForeachStatement"];
-    types_extra_interfaces["StaticForeachStatement"] = ["Statement"];
+    types_extra_interfaces["StaticForeachDeclaration"] = ["Declaration", "Foreach"];
     types_children["StaticIfCondition"] = ["StaticIfCondition","Expression","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["StorageClass"] = ["AtAttribute","Deprecated","AlignAttribute","LinkageAttribute","KW_SYNCHRONIZED","KW_ABSTRACT","KW_CONST","KW_IMMUTABLE","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC","KW_THROW"];
     types_children["StructBody"] = ["OP_BRACES_RIGHT","OP_BRACES_LEFT","Declaration*"];
     types_children["StructInitializer"] = ["StructMemberInitializers*","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
     types_children["StructMemberInitializer"] = ["Identifier","OP_COLON","Expression", "ArrayLiteral", "StructInitializer"];
     types_children["StructMemberInitializers"] = ["StructMemberInitializer*","OP_COMMA*"];
-    types_children["SwitchStatement"] = ["KW_SWITCH","OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","DefaultStatement","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","CaseStatement","CaseRangeStatement"];
+    types_children["SwitchStatement"] = ["KW_SWITCH","OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","Statement","DebugSpecification"];
     types_extra_interfaces["SwitchStatement"] = ["Statement"];
-    types_children["SynchronizedStatement"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","LabeledStatement","BlockStatement","IfStatement","WhileStatement","DoStatement","ForStatement","ForeachStatement","SwitchStatement","FinalSwitchStatement","ContinueStatement","BreakStatement","ReturnStatement","GotoStatement","WithStatement","SynchronizedStatement","TryStatement","ScopeGuardStatement","PragmaStatement","AsmStatement","DebugSpecification", "ConditionalStatement", "VersionSpecification","StaticAssertStatement","ExpressionStatement","KW_SYNCHRONIZED"];
+    types_children["SynchronizedStatement"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","Statement","DebugSpecification","KW_SYNCHRONIZED"];
     types_extra_interfaces["SynchronizedStatement"] = ["Statement"];
     stub_children["TemplateAliasParameter"] = ["KW_ALIAS","Identifier","Type*","AssignExpression*","OP_COLON","OP_EQ"];
     types_extra_interfaces["TemplateAliasParameter"] = ["TemplateParameter"];

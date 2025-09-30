@@ -512,17 +512,12 @@ object ScopeProcessorImpl {
                             state: ResolveState,
                             lastParent: PsiElement?,
                             place: PsiElement): Boolean {
-        if (lastParent == null || lastParent.parent !== element || lastParent === element.expression) {
+        if (lastParent == null || lastParent.parent !== element || lastParent in element.expressions) {
             // Parent element should not see our vars, and the iterated variable cannot see our vars
             return true
         }
 
         var shouldContinue = true
-        if (element.foreachType != null) {
-            if (!processor.execute(element.foreachType!!, state)) {
-                shouldContinue = false
-            }
-        }
         if (element.foreachTypeList?.foreachTypes != null) {
             for (foreachType in element.foreachTypeList!!.foreachTypes) {
                 if (!processor.execute(foreachType, state)) {
