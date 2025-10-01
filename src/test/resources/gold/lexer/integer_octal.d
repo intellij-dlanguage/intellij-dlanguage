@@ -1,5 +1,5 @@
 import std.stdio;
 
 void main(){
-  int a = 011b;
+  int a = 0b11;
 }
