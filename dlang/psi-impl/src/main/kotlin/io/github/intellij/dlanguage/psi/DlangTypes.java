@@ -59,7 +59,7 @@ public interface DlangTypes {
     DlangElementType ARRAY_INITIALIZER = new DlangElementType("ARRAY_INITIALIZER");
     DlangElementType ARRAY_LITERAL = new DlangElementType("ARRAY_LITERAL");
     DlangElementType ARRAY_LITERAL_EXPRESSION = new DlangElementType("ARRAY_LITERAL_EXPRESSION");
-    DlangElementType ARRAY_MEMBER_INITIALIZATION = new DlangElementType("ARRAY_MEMBER_INITIALIZATION");
+    DlangElementType ARRAY_MEMBER_INITIALIZER = new DlangElementType("ARRAY_MEMBER_INITIALIZER");
     DlangElementType ASM_ADD_EXP = new DlangElementType("ASM_ADD_EXP");
     DlangElementType ASM_AND_EXP = new DlangElementType("ASM_AND_EXP");
     DlangElementType ASM_BR_EXP = new DlangElementType("ASM_BR_EXP");
@@ -186,7 +186,6 @@ public interface DlangTypes {
     DlangElementType STRUCT_BODY = new DlangElementType("STRUCT_BODY");
     DlangElementType STRUCT_INITIALIZER = new DlangElementType("STRUCT_INITIALIZER");
     DlangElementType STRUCT_MEMBER_INITIALIZER = new DlangElementType("STRUCT_MEMBER_INITIALIZER");
-    DlangElementType STRUCT_MEMBER_INITIALIZERS = new DlangElementType("STRUCT_MEMBER_INITIALIZERS");
     DlangElementType SWITCH_STATEMENT = new DlangElementType("SWITCH_STATEMENT");
     DlangElementType SYNCHRONIZED_STATEMENT = new DlangElementType("SYNCHRONIZED_STATEMENT");
     DlangElementType TEMPLATE_ARGUMENT = new DlangElementType("TEMPLATE_ARGUMENT");
@@ -478,8 +477,8 @@ public interface DlangTypes {
                 return new DLanguageArrayLiteralImpl(node);
             } else if (type == ARRAY_LITERAL_EXPRESSION) {
                 return new DLanguageArrayLiteralExpressionImpl(node);
-            } else if (type == ARRAY_MEMBER_INITIALIZATION) {
-                return new DLanguageArrayMemberInitializationImpl(node);
+            } else if (type == ARRAY_MEMBER_INITIALIZER) {
+                return new DLanguageArrayMemberInitializerImpl(node);
             } else if (type == ASM_ADD_EXP) {
                 return new DLanguageAsmAddExpImpl(node);
             } else if (type == ASM_AND_EXP) {
@@ -744,8 +743,6 @@ public interface DlangTypes {
                 return new DLanguageStructInitializerImpl(node);
             } else if (type == STRUCT_MEMBER_INITIALIZER) {
                 return new DLanguageStructMemberInitializerImpl(node);
-            } else if (type == STRUCT_MEMBER_INITIALIZERS) {
-                return new DLanguageStructMemberInitializersImpl(node);
             } else if (type == SWITCH_STATEMENT) {
                 return new DLanguageSwitchStatementImpl(node);
             } else if (type == SYNCHRONIZED_STATEMENT) {

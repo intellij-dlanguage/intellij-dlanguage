@@ -18,8 +18,8 @@ plugins {
     alias(libs.plugins.kover)
 }
 
-// When testing, set to "true" if you want to have expected data written (to easily update lexer/parser tests)
-val overrideTestData = "false"
+// When testing, set to `true` if you want to have expected data written (to easily update lexer/parser tests)
+val overrideTestData = false
 
 allprojects {
     tasks {
@@ -41,7 +41,7 @@ allprojects {
 
         withType<Test> {
             systemProperty("idea.tests.overwrite.data", overrideTestData)
-            systemProperty("java.awt.headless", "true") // avoid "Must be precomputed" error, because IDE is not started (LoadingState.APP_STARTED.isOccurred is false)
+            systemProperty("java.awt.headless", true) // avoid "Must be precomputed" error, because IDE is not started (LoadingState.APP_STARTED.isOccurred is false)
         }
     }
 

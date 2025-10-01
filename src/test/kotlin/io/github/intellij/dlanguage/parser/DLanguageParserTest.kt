@@ -22,6 +22,7 @@ class DLanguageParserTest : DLanguageParserTestBase("parser", "d", DLangParserDe
     fun testdeclaration1() = doDlangParserTest()
     fun testdeclaration_alias() = doDlangParserTest()
     fun testdeclaration_alias2() = doDlangParserTest()
+    fun testdeclaration_anonymous_function_call() = doDlangParserTest()
     fun testdeclaration_symbols() = doDlangParserTest()
     fun testdeclaration_type_storage2() = doDlangParserTest()
     fun testdeclaration_type_storage1() = doDlangParserTest()

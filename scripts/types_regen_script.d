@@ -97,12 +97,12 @@ static this() {
     types_children["ArrayAccessExpression"] = ["Expression", "IndexExpression"];
     types_extra_interfaces["ArrayAccessExpression"] = ["Expression"];
     types_mixins["ArrayAccessExpression"] = "DLanguageArrayAccessExpressionImplMixin";
-    types_children["ArrayInitializer"] = ["OP_COMMA*", "ArrayMemberInitialization*"];
-    types_children["ArrayLiteral"] = ["ArrayInitializer", "OP_BRACKET_RIGHT", "OP_BRACKET_LEFT"];
+    types_children["ArrayInitializer"] = ["OP_BRACKET_LEFT", "OP_COMMA*", "ArrayMemberInitializer*", "OP_BRACKET_RIGHT"];
+    types_children["ArrayLiteral"] = ["OP_BRACKET_LEFT", "OP_COMMA*", "Expression*", "OP_BRACKET_RIGHT"];
     types_children["ArrayLiteralExpression"] = ["ArrayLiteral", "AssocArrayLiteral"];
     types_mixins["ArrayLiteralExpression"] = "DLanguageArrayLiteralExpressionImplMixin";
     types_extra_interfaces["ArrayLiteralExpression"] = ["Expression"];
-    types_children["ArrayMemberInitialization"] = ["Expression", "OP_COLON", "ArrayLiteral", "StructInitializer", "OP_BRACES_LEFT"];
+    types_children["ArrayMemberInitializer"] = ["Expression", "OP_COLON", "ArrayLiteral", "StructInitializer", "OP_BRACES_LEFT"];
     types_children["AsmAddExp"] = ["AsmAddExp", "AsmMulExp",  "OP_MINUS", "OP_PLUS"];
     types_children["AsmAndExp"] = ["AsmAndExp", "AsmEqualExp", "OP_AND"];
     types_children["AsmBrExp"] = ["AsmExp", "AsmUnaExp", "AsmBrExp", "OP_BRACKET_RIGHT", "OP_BRACKET_LEFT"];
@@ -238,7 +238,7 @@ static this() {
     types_extra_interfaces["ImportExpression"] = ["Expression"];
     types_children["IndexExpression"] = ["OP_BRACKET_LEFT","OP_BRACKET_RIGHT","Expression*", "OP_COMMA*", "OP_COLON*", "OP_DDOT*"]; // contrary to what his name suggest, it is not an expression
     types_children["InExpression"] = ["ShiftExpression*","KW_IN","OP_NOT"];
-    types_children["Initializer"] = ["KW_VOID","Expression", "ArrayLiteral", "StructInitializer"];
+    types_children["Initializer"] = ["KW_VOID","Expression", "ArrayInitializer", "StructInitializer"];
     types_children["InContractExpression"] = ["KW_IN","OP_PAR_LEFT", "AssertArguments", "OP_PAR_RIGHT"];
     types_children["InOutContractExpression"] = ["InContractExpression", "OutContractExpression"];
     types_children["InOutStatement"] = ["InStatement", "OutStatement"];
@@ -248,7 +248,7 @@ static this() {
     types_children["IsExpression"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","Type","Identifier","TypeSpecialization","TemplateParameterList","OP_COMMA","OP_COLON","OP_EQ","KW_IS"];
     types_mixins["IsExpression"] = "DLanguageIsExpressionImplMixin";
     types_extra_interfaces["IsExpression"] = ["Expression"];
-    types_children["KeyValuePair"] = ["AssignExpression*","OP_COLON"];
+    types_children["KeyValuePair"] = ["Expression*","OP_COLON"];
     types_children["KeyValuePairs"] = ["OP_COMMA*","KeyValuePair*"];
     stub_children ["LabeledStatement"] = ["Identifier", "OP_COLON","Statement"];
     types_extra_interfaces["LabeledStatement"] = ["Statement"];
@@ -344,9 +344,8 @@ static this() {
     types_children["StaticIfCondition"] = ["StaticIfCondition","Expression","OP_PAR_RIGHT","OP_PAR_LEFT"];
     types_children["StorageClass"] = ["AtAttribute","Deprecated","AlignAttribute","LinkageAttribute","KW_SYNCHRONIZED","KW_ABSTRACT","KW_CONST","KW_IMMUTABLE","KW_AUTO","KW_ENUM","KW_EXTERN","KW_FINAL","KW_INOUT","KW_NOTHROW","KW_OVERRIDE","KW_PURE","KW_REF","KW___GSHARED","KW_SCOPE","KW_STATIC","KW_THROW"];
     types_children["StructBody"] = ["OP_BRACES_RIGHT","OP_BRACES_LEFT","Declaration*"];
-    types_children["StructInitializer"] = ["StructMemberInitializers*","OP_BRACES_RIGHT","OP_BRACES_LEFT"];
+    types_children["StructInitializer"] = ["OP_BRACES_LEFT", "StructMemberInitializer*", "OP_COMMA*", "OP_BRACES_RIGHT",];
     types_children["StructMemberInitializer"] = ["Identifier","OP_COLON","Expression", "ArrayLiteral", "StructInitializer"];
-    types_children["StructMemberInitializers"] = ["StructMemberInitializer*","OP_COMMA*"];
     types_children["SwitchStatement"] = ["KW_SWITCH","OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","Statement","DebugSpecification"];
     types_extra_interfaces["SwitchStatement"] = ["Statement"];
     types_children["SynchronizedStatement"] = ["OP_PAR_RIGHT","OP_PAR_LEFT","AssignExpression*","OP_COMMA*","Statement","DebugSpecification","KW_SYNCHRONIZED"];
@@ -436,7 +435,7 @@ static this() {
     has_processDeclaration["ArrayAccessExpression"] = false;
     has_processDeclaration["ArrayInitializer"] = false;
     has_processDeclaration["ArrayLiteral"] = false;
-    has_processDeclaration["ArrayMemberInitialization"] = false;
+    has_processDeclaration["ArrayMemberInitializer"] = false;
     has_processDeclaration["AsmAddExp"] = false;
     has_processDeclaration["AsmAndExp"] = false;
     has_processDeclaration["AsmBrExp"] = false;
@@ -579,7 +578,6 @@ static this() {
 //    has_processDeclaration["StructDeclaration"] = true;
     has_processDeclaration["StructInitializer"] = false;
     has_processDeclaration["StructMemberInitializer"] = false;
-    has_processDeclaration["StructMemberInitializers"] = false;
     has_processDeclaration["String"] = false;
     has_processDeclaration["SwitchStatement"] = false;
     has_processDeclaration["SynchronizedStatement"] = false;
