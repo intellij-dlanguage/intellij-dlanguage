@@ -1,5 +1,6 @@
-import std.stdio;
-
-void main(){
-  int a = 0;
-}
+0;
+0L;
+4.a();
+4L.a;
+1.f;
+1.foo;
