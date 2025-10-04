@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.github.intellij.dlanguage.psi.DlangTypes.*;
+import static io.github.intellij.dlanguage.utils.DTypeConversionUtilKt.getCommonType;
 
 public class DLanguageForeachTypeImpl extends
     DNamedStubbedPsiElementBase<DLanguageForeachTypeStub> implements DLanguageForeachType {
@@ -112,8 +113,11 @@ public class DLanguageForeachTypeImpl extends
             if (foreach.getExpressions().size() > 1) {
                 // Specs for foreach https://dlang.org/spec/statement.html#foreach-statement
                 // foreach range statement so 2 expressions
-                // TODO need to determine the type from the range statement (common type of type1 and type2)
-                expressionType = foreach.getExpressions().get(1).getDType();
+                var rangeCommonType = getCommonType(foreach.getExpressions().getFirst().getDType(), foreach.getExpressions().get(1).getDType());
+                if (rangeCommonType == null)
+                    expressionType = new DUnknownType();
+                else
+                    expressionType = new DArrayType(rangeCommonType, null);
             } else {
                 expressionType = foreach.getExpressions().getFirst().getDType();
             }
@@ -149,9 +153,16 @@ public class DLanguageForeachTypeImpl extends
                     return arrayExpressionType.getBase();
                 }
                 if (foreachTypes.size() == 2) {
-                    if (elementIdx == 0)
-                        return DPrimitiveType.fromText("int"); // TODO size_t
-                    else
+                    if (elementIdx == 0) {
+                        if (arrayExpressionType.isFixedSize()) {
+                            // take the shortest size that fits
+                            var size = arrayExpressionType.getSize();
+                            if (size <= 256)
+                                return DPrimitiveType.Companion.getUSHORT();
+                            return DPrimitiveType.Companion.getUINT();
+                        }
+                        return DPrimitiveType.fromText("int"); // TODO size_t (if size not known, otherwise smallest type that can contain it)
+                    } else
                         return arrayExpressionType.getBase();
                 }
                 return new DUnknownType(); // semantic error, this variable should not exist
