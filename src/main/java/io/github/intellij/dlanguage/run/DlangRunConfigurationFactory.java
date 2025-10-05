@@ -1,6 +1,5 @@
 package io.github.intellij.dlanguage.run;
 
-import com.intellij.compiler.options.CompileStepBeforeRun;
 import com.intellij.execution.BeforeRunTask;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
@@ -51,8 +50,5 @@ public abstract class DlangRunConfigurationFactory extends ConfigurationFactory 
     @Override
     public void configureBeforeRunTaskDefaults(Key<? extends BeforeRunTask> providerID, BeforeRunTask task) {
         super.configureBeforeRunTaskDefaults(providerID, task);
-        if(CompileStepBeforeRun.ID.equals(providerID) ) {
-            task.setEnabled(false); // don't add the 'Make' task
-        }
     }
 }
