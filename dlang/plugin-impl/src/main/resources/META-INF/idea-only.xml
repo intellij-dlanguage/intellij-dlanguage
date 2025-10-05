@@ -1,4 +1,5 @@
-<idea-plugin>
+<idea-plugin xmlns:xi="http://www.w3.org/2001/XInclude">
+    <xi:include href="/META-INF/dub-idea-only.xml" xpointer="xpointer(/idea-plugin/*)"/>
 
     <extensions defaultExtensionNs="com.intellij">
         <iconProvider id="dlangIconProvider" implementation="io.github.intellij.dlanguage.DlangIconProvider" />
