@@ -55,7 +55,7 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitArrayMemberInitialization(@NotNull final DLanguageArrayMemberInitialization o) {
+    public void visitArrayMemberInitializer(@NotNull final DLanguageArrayMemberInitializer o) {
         visitPsiElement(o);
     }
 
@@ -683,10 +683,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitStructMemberInitializers(@NotNull final DLanguageStructMemberInitializers o) {
-        visitPsiElement(o);
-    }
-
     public void visitSwitchStatement(@NotNull final DLanguageSwitchStatement o) {
         visitPsiElement(o);
     }
@@ -899,11 +895,6 @@ public class DlangVisitor extends PsiElementVisitor {
 
     public void visitSingleImport(DLanguageSingleImport dlangSingleImport) {
         visitPsiElement(dlangSingleImport);
-    }
-
-    public void visitStaticForeachStatement(
-        DLanguageStaticForeachStatement dLangStaticForeachStatement) {
-        visitPsiElement(dLangStaticForeachStatement);
     }
 
     public void visitStaticForeachDeclaration(DLanguageStaticForeachDeclaration dLanguageStaticForeachDeclaration) {

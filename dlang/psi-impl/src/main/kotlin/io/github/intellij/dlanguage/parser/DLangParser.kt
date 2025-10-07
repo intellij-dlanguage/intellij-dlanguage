@@ -382,22 +382,31 @@ internal class DLangParser(private val builder: PsiBuilder) {
      *
      *
      * $(GRAMMAR $(RULEDEF arrayInitializer):
-     * ($(RULE arrayMemberInitialization) ($(LITERAL ',') $(RULE arrayMemberInitialization)?)*)?
+     *  $(LITERAL '[') ($(RULE arrayMemberInitializer) ($(LITERAL ',') $(RULE arrayMemberInitializer)?)*)? $(LITERAL ']')
      * ;)
      */
     fun parseArrayInitializer(): Boolean {
-        val arrayInit = builder.mark()
-        while (moreTokens()) {
-            if (currentIs(DlangTypes.OP_BRACKET_RIGHT)) break
+        val m = builder.mark()
+        assert(builder.tokenType === DlangTypes.OP_BRACKET_LEFT)
+        builder.advanceLexer()
+        var r = true
+        while (!builder.eof() && builder.tokenType !== DlangTypes.OP_BRACKET_RIGHT) {
+            val bookmark = builder.mark()
             if (!parseArrayMemberInitialization()) {
-                cleanup(arrayInit, DlangTypes.ARRAY_INITIALIZER)
-                return false
+                bookmark.rollbackTo()
+                initializerRecover("Invalid array initializer", DlangTypes.OP_BRACKET_LEFT, DlangTypes.OP_BRACKET_RIGHT)
+                r = false
+                break
             }
-            if (currentIs(DlangTypes.OP_COMMA)) advance()
-            else break
+            bookmark.drop()
+            if (builder.tokenType === DlangTypes.OP_COMMA)
+                builder.advanceLexer()
+            else
+                break
         }
-        exit_section_modified(builder, arrayInit, DlangTypes.ARRAY_INITIALIZER, true)
-        return true
+        expect(DlangTypes.OP_BRACKET_RIGHT)
+        m.done(DlangTypes.ARRAY_INITIALIZER)
+        return r
     }
 
     /**
@@ -408,26 +417,34 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * $(LITERAL '[') $(RULE ArrayMemberInitiolizations)? $(LITERAL ']')
      * ;)
      */
-    fun parseArrayLiteral(): PsiBuilder.Marker? {
+    fun parseArrayLiteral() {
         val m = builder.mark()
         val open = expect(DlangTypes.OP_BRACKET_LEFT)
         if (open == null) {
-            cleanup(m, DlangTypes.ARRAY_LITERAL)
-            return null
+            m.done(DlangTypes.ARRAY_LITERAL)
+            return
         }
-        if (!currentIs(DlangTypes.OP_BRACKET_RIGHT)) {
-            if (!parseArrayInitializer()) {
-                cleanup(m, DlangTypes.ARRAY_LITERAL)
-                return null
+        while (!builder.eof() && builder.tokenType !==DlangTypes.OP_BRACKET_RIGHT) {
+            val bookmark = builder.mark()
+            if (parseAssignExpression() == null) {
+                bookmark.rollbackTo()
+                initializerRecover("Invalid array initializer", DlangTypes.OP_BRACKET_LEFT, DlangTypes.OP_BRACKET_RIGHT)
+                m.done(DlangTypes.ARRAY_LITERAL)
+                return
+            }
+            bookmark.drop()
+            if (builder.tokenType == DlangTypes.OP_COMMA) {
+                builder.advanceLexer()
+            } else {
+                break
             }
         }
-        val close = expect(DlangTypes.OP_BRACKET_RIGHT)
-        if (close == null) {
-            cleanup(m, DlangTypes.ARRAY_INITIALIZER)
-            return null
+        if (builder.tokenType !== DlangTypes.OP_BRACKET_RIGHT) {
+            initializerRecover("] expected", DlangTypes.OP_BRACKET_LEFT, DlangTypes.OP_BRACKET_RIGHT)
         }
-        exit_section_modified(builder, m, DlangTypes.ARRAY_LITERAL, true)
-        return m
+        if (!builder.eof())
+            builder.advanceLexer()
+        m.done(DlangTypes.ARRAY_LITERAL)
     }
 
     /**
@@ -435,51 +452,28 @@ internal class DLangParser(private val builder: PsiBuilder) {
      *
      *
      * $(GRAMMAR $(RULEDEF arrayMemberInitialization):
-     * ($(RULE assignExpression) $(LITERAL ':'))? $(RULE nonVoidInitializer)
+     *   ($RULE nonVoidInitializer)
+     * | ($(RULE assignExpression) $(LITERAL ':'))? $(RULE nonVoidInitializer)
      * ;)
      */
     fun parseArrayMemberInitialization(): Boolean {
         val m = builder.mark()
-        if (currentIs(DlangTypes.OP_BRACKET_LEFT)) {
-            val bookmark = builder.mark()
-            skipBrackets()
-            if (currentIs(DlangTypes.OP_COLON)) {
-                bookmark.rollbackTo()
-                if (parseAssignExpression() == null) {
-                    cleanup(m, DlangTypes.ARRAY_MEMBER_INITIALIZATION)
-                    return false
-                }
-                advance() // :
-                if (!parseNonVoidInitializer()) {
-                    cleanup(m, DlangTypes.ARRAY_MEMBER_INITIALIZATION)
-                    return false
-                }
-                exit_section_modified(builder, m, DlangTypes.ARRAY_MEMBER_INITIALIZATION, true)
-                return true
-            } else {
-                bookmark.rollbackTo()
-            }
+        val bookmark = builder.mark()
+        if (!parseNonVoidInitializer()) {
+            bookmark.rollbackTo()
+            val r = parseExpression()
+            m.done(DlangTypes.ARRAY_MEMBER_INITIALIZER)
+            return r
         }
-        if (currentIs(DlangTypes.OP_BRACES_LEFT)) {
-            if (!parseNonVoidInitializer()) {
-                cleanup(m, DlangTypes.ARRAY_MEMBER_INITIALIZATION)
-                return false
-            }
-        } else {
-            val assignExpression = parseAssignExpression() != null
-            if (!assignExpression) {
-                cleanup(m, DlangTypes.ARRAY_MEMBER_INITIALIZATION)
-                return false
-            }
-            if (currentIs(DlangTypes.OP_COLON)) {
-                advance()
-                if (!parseNonVoidInitializer()) {
-                    cleanup(m, DlangTypes.ARRAY_MEMBER_INITIALIZATION)
-                    return false
-                }
-            }
+        bookmark.drop()
+
+        if (builder.tokenType === DlangTypes.OP_COLON) {
+            builder.advanceLexer()
+            val r = parseNonVoidInitializer()
+            m.done(DlangTypes.ARRAY_MEMBER_INITIALIZER)
+            return r
         }
-        exit_section_modified(builder, m, DlangTypes.ARRAY_MEMBER_INITIALIZATION, true)
+        m.done(DlangTypes.ARRAY_MEMBER_INITIALIZER)
         return true
     }
 
@@ -1118,26 +1112,26 @@ internal class DLangParser(private val builder: PsiBuilder) {
     fun parseAssertArguments(): Boolean {
         val m = builder.mark()
         if (parseAssignExpression() == null) {
-            cleanup(m, DlangTypes.ASSERT_ARGUMENTS)
+            m.done(DlangTypes.ASSERT_ARGUMENTS)
             return false
         }
         if (currentIs(DlangTypes.OP_COMMA)) {
             advance()
         }
         if (currentIs(DlangTypes.OP_PAR_RIGHT)) {
-            exit_section_modified(builder, m, DlangTypes.ASSERT_ARGUMENTS, true)
+            m.done(DlangTypes.ASSERT_ARGUMENTS)
             return true
         }
         while (!currentIs(DlangTypes.OP_PAR_RIGHT)) {
             if (parseAssignExpression() == null) {
-                cleanup(m, DlangTypes.ASSERT_ARGUMENTS)
+                m.done(DlangTypes.ASSERT_ARGUMENTS)
                 return false
             }
             if (currentIs(DlangTypes.OP_COMMA)) {
                 advance()
             }
         }
-        exit_section_modified(builder, m, DlangTypes.ASSERT_ARGUMENTS, true)
+        m.done(DlangTypes.ASSERT_ARGUMENTS)
         return true
     }
 
@@ -1153,18 +1147,18 @@ internal class DLangParser(private val builder: PsiBuilder) {
         val m = builder.mark()
         advance() // "assert"
         if (!tokenCheck(DlangTypes.OP_PAR_LEFT)) {
-            cleanup(m, DlangTypes.ASSERT_EXPRESSION)
+            m.done(DlangTypes.ASSERT_EXPRESSION)
             return null
         }
         if (!parseAssertArguments()) {
-            cleanup(m, DlangTypes.ASSERT_EXPRESSION)
+            m.done(DlangTypes.ASSERT_EXPRESSION)
             return null
         }
         if (!tokenCheck(DlangTypes.OP_PAR_RIGHT)) {
-            cleanup(m, DlangTypes.ASSERT_EXPRESSION)
+            m.done(DlangTypes.ASSERT_EXPRESSION)
             return null
         }
-        exit_section_modified(builder, m, DlangTypes.ASSERT_EXPRESSION, true)
+        m.done(DlangTypes.ASSERT_EXPRESSION)
         return m
     }
 
@@ -1231,22 +1225,21 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * $(LITERAL '[') $(RULE keyValuePairs) $(LITERAL ']')
      * ;)
      */
-    fun parseAssocArrayLiteral(): PsiBuilder.Marker? {
+    fun parseAssocArrayLiteral() {
         val m = builder.mark()
         if (expect(DlangTypes.OP_BRACKET_LEFT) == null) {
-            cleanup(m, DlangTypes.ASSOC_ARRAY_LITERAL)
-            return null
+            m.done(DlangTypes.ASSOC_ARRAY_LITERAL)
+            return
         }
         if (!parseKeyValuePairs()) {
-            cleanup(m, DlangTypes.ASSOC_ARRAY_LITERAL)
-            return null
+            m.done(DlangTypes.ASSOC_ARRAY_LITERAL)
+            return
         }
         if (expect(DlangTypes.OP_BRACKET_RIGHT) == null) {
-            cleanup(m, DlangTypes.ASSOC_ARRAY_LITERAL)
-            return null
+            m.done(DlangTypes.ASSOC_ARRAY_LITERAL)
+            return
         }
-        exit_section_modified(builder, m, DlangTypes.ASSOC_ARRAY_LITERAL, true)
-        return m
+        m.done(DlangTypes.ASSOC_ARRAY_LITERAL)
     }
 
     /**
@@ -1510,10 +1503,6 @@ internal class DLangParser(private val builder: PsiBuilder) {
         return true
     }
 
-    private fun isProtection(type: IElementType?): Boolean {
-        return Protections.contains(type)
-    }
-
     /**
      * Parses a BaseClass
      *
@@ -1618,11 +1607,6 @@ internal class DLangParser(private val builder: PsiBuilder) {
         }
         exit_section_modified(builder, m, DlangTypes.CASE_RANGE_STATEMENT, true)
         return true
-    }
-
-    fun parseCaseRangeStatement(): Boolean {
-        val m = builder.mark()
-        return parseCaseRangeStatement(m)
     }
 
     /**
@@ -2194,7 +2178,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
 
     fun parseAttributeSpecifier(marker: PsiBuilder.Marker): Boolean {
         val bookmark = builder.mark()
-        var hasAttribute = parseAttribute()
+        val hasAttribute = parseAttribute()
         if (!hasAttribute) {
             bookmark.rollbackTo()
             return false
@@ -3018,80 +3002,69 @@ internal class DLangParser(private val builder: PsiBuilder) {
             return false
         }
         bookmark.drop()
-        parseForeach(DlangTypes.STATIC_FOREACH_DECLARATION, true)
-        exit_section_modified(builder, m, DlangTypes.STATIC_FOREACH_DECLARATION, true)
+        parseForeach(true)
+        m.done(DlangTypes.STATIC_FOREACH_DECLARATION)
         return true
     }
 
     /**
      * Parses a ForeachStatement
      *
-     *
      * $(GRAMMAR $(RULEDEF foreachStatement):
-     * ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachTypeList) $(LITERAL ';') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE NoScopeNonEmptyStatement)
+     *   ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachTypeList) $(LITERAL ';') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE NoScopeNonEmptyStatement)
      * | ($(LITERAL 'foreach') | $(LITERAL 'foreach_reverse')) $(LITERAL '$(LPAREN)') $(RULE foreachType) $(LITERAL ';') $(RULE expression) $(LITERAL '..') $(RULE expression) $(LITERAL '$(RPAREN)') $(RULE NoScopeNonEmptyStatement)
      * ;)
      */
     fun parseForeachStatement(): Boolean {
-        return parseForeach(DlangTypes.FOREACH_STATEMENT, false)
+        val m = builder.mark()
+        val r = parseForeach(false)
+        m.done(DlangTypes.FOREACH_STATEMENT)
+        return r
     }
 
     fun parseStaticForeachStatement(): Boolean {
         val m = builder.mark()
         if (expect(DlangTypes.KW_STATIC) == null) {
-            m.done(DlangTypes.STATIC_FOREACH_STATEMENT)
             return false
         }
-        if (!parseForeachStatement()) {
-            m.done(DlangTypes.STATIC_FOREACH_STATEMENT)
-            return false
-        }
-        m.done(DlangTypes.STATIC_FOREACH_STATEMENT)
-        return true
+        val r = parseForeach(false)
+        m.done(DlangTypes.FOREACH_STATEMENT)
+        return r
     }
 
-    fun parseForeach(elementType: IElementType, declOnly: Boolean): Boolean {
-        val m = builder.mark()
+    private fun parseForeach(declOnly: Boolean): Boolean {
         if (currentIsOneOf(DlangTypes.KW_FOREACH, DlangTypes.KW_FOREACH_REVERSE)) {
             advance()
         } else {
             error("`foreach` or `foreach_reverse` expected")
-            cleanup(m, elementType)
             return false
         }
         if (!tokenCheck(DlangTypes.OP_PAR_LEFT)) {
-            cleanup(m, elementType)
             return false
         }
         val types = parseForeachTypeList()
         val canBeRange = types == 1
         if (!tokenCheck(DlangTypes.OP_SCOLON)) {
-            cleanup(m, elementType)
             return false
         }
         if (!parseExpression()) {
-            cleanup(m, elementType)
             return false
         }
         if (currentIs(DlangTypes.OP_DDOT)) {
             if (!canBeRange) {
                 error("Cannot have more than one foreach variable for a foreach range statement")
-                cleanup(m, elementType)
                 return false
             }
             advance()
             if (!parseExpression()) {
-                cleanup(m, elementType)
                 return false
             }
         }
         if (!tokenCheck(DlangTypes.OP_PAR_RIGHT)) {
-            cleanup(m, elementType)
             return false
         }
         if (currentIs(DlangTypes.OP_BRACES_RIGHT)) {
             error("Statement expected")
-            cleanup(m, elementType)
             return true
         }
         if (declOnly) {
@@ -3099,20 +3072,16 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 advance()
                 parseDeclDefsWithRecoveryUpToParentScope()
                 if (!tokenCheck(DlangTypes.OP_BRACES_RIGHT)) {
-                    cleanup(m, elementType)
                     return false
                 }
             } else if (!parseDeclDef()) {
-                cleanup(m, elementType)
                 return false
             }
         } else {
             if (!parseNoScopeNonEmptyStatement()) {
-                cleanup(m, elementType)
                 return false
             }
         }
-        exit_section_modified(builder, m, elementType, true)
         return true
     }
 
@@ -4792,38 +4761,32 @@ internal class DLangParser(private val builder: PsiBuilder) {
      *
      *
      * $(GRAMMAR $(RULEDEF nonVoidInitializer):
-     * $(RULE assignExpression)
-     * | $(RULE arrayLiteral)
+     *   $(RULE arrayLiteral)
      * | $(RULE structInitializer)
+     * |  $(RULE assignExpression)
      * ;)
      */
     fun parseNonVoidInitializer(): Boolean {
-        if (currentIs(DlangTypes.OP_BRACES_LEFT)) {
+        if (builder.tokenType === DlangTypes.OP_BRACES_LEFT) {
             val b = peekPastBraces()
-            if (b === DlangTypes.OP_PAR_LEFT) {
-                return parseAssignExpression() != null
+            if (b == DlangTypes.OP_PAR_LEFT) {
+                // Anonymous function call
+                return parseExpression()
             }
             val bookmark = builder.mark()
-            val initializer = parseStructInitializer()
-            if (initializer) {
-                bookmark.drop()
-                return true
+            if (!parseStructInitializer()) {
+                bookmark.rollbackTo()
+                return parseExpression()
             }
-            bookmark.rollbackTo()
-        } else if (currentIs(DlangTypes.OP_BRACKET_LEFT)) {
-            var isAA = false
-            val bookmark = builder.mark()
-            advance()
-            if (currentIs(DlangTypes.OP_BRACKET_LEFT)) {
-                advance()
-                val c = peekPastBrackets()
-                isAA = c === DlangTypes.OP_COLON
-            }
-            bookmark.rollbackTo()
+            bookmark.drop()
+            return true
+        } else if (builder.tokenType === DlangTypes.OP_BRACKET_LEFT) {
             val b = peekPastBrackets()
-            if (!isAA && (b === DlangTypes.OP_COMMA || b === DlangTypes.OP_PAR_RIGHT || b === DlangTypes.OP_BRACKET_RIGHT || b === DlangTypes.OP_BRACES_RIGHT || b === DlangTypes.OP_SCOLON)) {
-                return parseArrayLiteral() != null
+            if (b == DlangTypes.OP_DOT || b == DlangTypes.OP_BRACKET_LEFT) {
+                // Array literal . something expression or, define and access static array expression
+                return parseExpression()
             }
+            return parseArrayInitializer()
         }
         return parseAssignExpression() != null
     }
@@ -6383,29 +6346,31 @@ internal class DLangParser(private val builder: PsiBuilder) {
     /**
      * Parses an StructInitializer
      *
-     *
      * $(GRAMMAR $(RULEDEF structInitializer):
-     * $(LITERAL '{') $(RULE structMemberInitializers)? $(LITERAL '}')
+     * $(LITERAL '{') $(RULE structMemberInitializer) ($(LITERAL ',') $(RULE structMemberInitializer)?)* $(LITERAL '}')
      * ;)
      */
     fun parseStructInitializer(): Boolean {
         val m = builder.mark()
         expect(DlangTypes.OP_BRACES_LEFT)
-        if (currentIs(DlangTypes.OP_BRACES_RIGHT)) {
-            advance()
-        } else {
-            if (!parseStructMemberInitializers()) {
-                cleanup(m, DlangTypes.STRUCT_INITIALIZER)
-                return false
+        var r = true
+        while (!builder.eof() && builder.tokenType !== DlangTypes.OP_BRACES_RIGHT) {
+            val bookmark = builder.mark()
+            if (!parseStructMemberInitializer()) {
+                bookmark.rollbackTo()
+                initializerRecover("Invalid Struct initializer", DlangTypes.OP_BRACES_LEFT, DlangTypes.OP_BRACES_RIGHT)
+                r = false
+                break
             }
-            val e = expect(DlangTypes.OP_BRACES_RIGHT)
-            if (e == null) {
-                cleanup(m, DlangTypes.STRUCT_INITIALIZER)
-                return false
-            }
+            bookmark.drop()
+            if (currentIs(DlangTypes.OP_COMMA))
+                advance()
+            else
+                break
         }
-        exit_section_modified(builder, m, DlangTypes.STRUCT_INITIALIZER, true)
-        return true
+        expect(DlangTypes.OP_BRACES_RIGHT)
+        m.done(DlangTypes.STRUCT_INITIALIZER)
+        return r
     }
 
     /**
@@ -6422,31 +6387,9 @@ internal class DLangParser(private val builder: PsiBuilder) {
             advance()
             advance()
         }
-        if (!parseNonVoidInitializer()) {
-            cleanup(m, DlangTypes.STRUCT_MEMBER_INITIALIZER)
-            return false
-        }
-        exit_section_modified(builder, m, DlangTypes.STRUCT_MEMBER_INITIALIZER, true)
-        return true
-    }
-
-    /**
-     * Parses StructMemberInitializers
-     *
-     *
-     * $(GRAMMAR $(RULEDEF structMemberInitializers):
-     * $(RULE structMemberInitializer) ($(LITERAL ',') $(RULE structMemberInitializer)?)*
-     * ;)
-     */
-    fun parseStructMemberInitializers(): Boolean {
-        val m = builder.mark()
-        do {
-            parseStructMemberInitializer()
-            if (currentIs(DlangTypes.OP_COMMA)) advance()
-            else break
-        } while (moreTokens() && !currentIs(DlangTypes.OP_BRACES_RIGHT))
-        exit_section_modified(builder, m, DlangTypes.STRUCT_MEMBER_INITIALIZERS, true)
-        return true
+        val r = parseNonVoidInitializer()
+        m.done(DlangTypes.STRUCT_MEMBER_INITIALIZER)
+        return r
     }
 
     /**
@@ -8058,6 +8001,27 @@ internal class DLangParser(private val builder: PsiBuilder) {
         recovery.error(errorMessage)
     }
 
+    fun initializerRecover(errorMessage: String, openingTokenType: IElementType, closingTokenType: IElementType) {
+        val recovery = builder.mark()
+        var parentLevel = 0
+        while (!builder.eof()) {
+            if (builder.tokenType === closingTokenType) {
+                parentLevel--
+                if (parentLevel == 0) {
+                    // we are at the closing character of the array, stop it
+                    break
+                }
+                if (parentLevel < 0) {
+                    break
+                }
+            } else if (builder.tokenType === openingTokenType) {
+                parentLevel++
+            }
+            builder.advanceLexer()
+        }
+        recovery.error(errorMessage)
+    }
+
     /**
      * Returns: true if there are more tokens
      */
@@ -8219,28 +8183,6 @@ internal class DLangParser(private val builder: PsiBuilder) {
         error.error(message)
     }
 
-    private fun skip(o: IElementType, c: IElementType) {
-        assert(currentIs(o))
-        advance()
-        var depth = 1
-        while (moreTokens()) {
-            if (builder.tokenType === c) {
-                advance()
-                depth--
-                if (depth <= 0) return
-            } else if (builder.tokenType === o) {
-                depth++
-                advance()
-            } else {
-                advance()
-            }
-        }
-    }
-
-    private fun skipBrackets() {
-        skip(DlangTypes.OP_BRACKET_LEFT, DlangTypes.OP_BRACKET_RIGHT)
-    }
-
     private fun peekPast(o: IElementType, c: IElementType): IElementType? {
         if (builder.eof()) return null
         var depth = 1
@@ -8264,12 +8206,12 @@ internal class DLangParser(private val builder: PsiBuilder) {
         return peekPast(DlangTypes.OP_PAR_LEFT, DlangTypes.OP_PAR_RIGHT)
     }
 
-    private fun peekPastBrackets(): IElementType? {
-        return peekPast(DlangTypes.OP_BRACKET_LEFT, DlangTypes.OP_BRACKET_RIGHT)
-    }
-
     private fun peekPastBraces(): IElementType? {
         return peekPast(DlangTypes.OP_BRACES_LEFT, DlangTypes.OP_BRACES_RIGHT)
+    }
+
+    private fun peekPastBrackets(): IElementType? {
+        return peekPast(DlangTypes.OP_BRACKET_LEFT, DlangTypes.OP_BRACKET_RIGHT)
     }
 
     /**
@@ -8548,14 +8490,6 @@ internal class DLangParser(private val builder: PsiBuilder) {
             DlangTypes.KW_USHORT,
             DlangTypes.KW_VOID,
             DlangTypes.KW_WCHAR
-        )
-
-        private val Protections: Set<IElementType?> = Sets.newHashSet<IElementType?>(
-            DlangTypes.KW_EXPORT,
-            DlangTypes.KW_PACKAGE,
-            DlangTypes.KW_PRIVATE,
-            DlangTypes.KW_PUBLIC,
-            DlangTypes.KW_PROTECTED
         )
     }
 }
