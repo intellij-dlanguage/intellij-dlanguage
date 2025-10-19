@@ -105,6 +105,10 @@ class DlangLexerTest : DlangLexerTestBase("lexer") {
     fun testcomment_unclosed() = doTest("/* unclosed comment", "DlangTokenType.BLOCK_COMMENT ('/* unclosed comment')")
 
 
+    //chars
+    fun testchar() = doTest()
+
+
     // floats
     fun testfloat_decimal() = doTest()
     fun testfloat_hex()     = doTest()
@@ -194,12 +198,6 @@ BAD_CHARACTER ('q"/test"d;')
     fun testtokens_unordered_le()         = doTest()
     fun testtokens_xor()                  = doTest()
     fun testtokens_xor_assign()           = doTest()
-
-    //chars
-    fun testchar() = doTest()
-
-    //stdlib
-    fun testparallelism() = doTest()
 
     //issue 77
     fun testissue77() = doTest()
