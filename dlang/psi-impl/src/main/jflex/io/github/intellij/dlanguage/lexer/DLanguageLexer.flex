@@ -162,7 +162,7 @@ NESTING_BLOCK_DOC_END = "+/"
  {BLOCK_COMMENT_START}      { yybegin(BLOCK_COMMENT_CONTENT);}
 
  {CHARACTER_LITERAL}        { return CHARACTER_LITERAL; }
- {INTEGER_LITERAL}/((\.[a-zA-Z])|([^\.[a-zA-Z]])|\.\.+) { return INTEGER_LITERAL; }
+ {INTEGER_LITERAL}/((\.[:letter:])|([^\.[:letter:]])|\.\.+) { return INTEGER_LITERAL; }
  {FLOAT_LITERAL}            { return FLOAT_LITERAL; }
  {WYSIWYG_STRING}           { return WYSIWYG_STRING; }
  {ALTERNATE_WYSIWYG_STRING} { return ALTERNATE_WYSIWYG_STRING; }
