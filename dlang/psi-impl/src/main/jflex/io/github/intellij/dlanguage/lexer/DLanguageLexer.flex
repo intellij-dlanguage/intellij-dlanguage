@@ -244,7 +244,6 @@ NESTING_BLOCK_DOC_END = "+/"
  "protected"                { return KW_PROTECTED; }
  "public"                   { return KW_PUBLIC; }
  "export"                   { return KW_EXPORT; }
- "delete"                   { return KW_DELETE; }
  "null"                     { return KW_NULL; }
  "true"                     { return KW_TRUE; }
  "false"                    { return KW_FALSE; }

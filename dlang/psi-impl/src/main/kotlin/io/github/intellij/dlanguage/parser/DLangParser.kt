@@ -7531,7 +7531,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
      * ;)
      */
     fun parseUnaryExpression(): PsiBuilder.Marker? {
-        val i = current()
+        val i = builder.tokenType
         if (i === DlangTypes.OP_AND || i === DlangTypes.OP_NOT || i === DlangTypes.OP_ASTERISK || i === DlangTypes.OP_PLUS || i === DlangTypes.OP_MINUS || i === DlangTypes.OP_TILDA || i === DlangTypes.OP_PLUS_PLUS || i === DlangTypes.OP_MINUS_MINUS) {
             val m = builder.mark()
             advance()
@@ -7541,7 +7541,10 @@ internal class DLangParser(private val builder: PsiBuilder) {
             }
             m.done(DlangTypes.UNARY_EXPRESSION)
             return m
-        } else if (i === DlangTypes.KW_DELETE) {
+        } else if (i === DlangTypes.ID && builder.tokenText == "delete") {
+            // TODO add check for compiler version
+            // Delete is no more a keyword, but it can be in certain cases
+            builder.remapCurrentToken(DlangTypes.KW_DELETE)
             return parseDeleteExpression()
         } else if (i === DlangTypes.KW_CAST) {
             return parseCastExpression()

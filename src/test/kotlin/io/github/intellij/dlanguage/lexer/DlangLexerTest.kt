@@ -34,7 +34,6 @@ class DlangLexerTest : DlangLexerTestBase("lexer") {
     fun testkeyword_debug()               = doTest()
     fun testkeyword_default()             = doTest()
     fun testkeyword_delegate()            = doTest()
-    fun testkeyword_delete()              = doTest()
     fun testkeyword_do()                  = doTest()
     fun testkeyword_else()                = doTest()
     fun testkeyword_enum()                = doTest()
@@ -207,4 +206,7 @@ BAD_CHARACTER ('q"/test"d;')
 
     //issue 365
     fun testissue365() = doTest()
+
+    //issue 1159
+    fun testissue1159() = doTest()
 }
