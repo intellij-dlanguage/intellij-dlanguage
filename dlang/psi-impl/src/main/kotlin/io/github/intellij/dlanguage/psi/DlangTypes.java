@@ -54,7 +54,6 @@ public interface DlangTypes {
     DlangElementType AND_EXPRESSION = new DlangElementType("AND_EXPRESSION");
     DlangElementType ANONYMOUS_ENUM_DECLARATION = new DlangElementType("ANONYMOUS_ENUM_DECLARATION");
     DlangElementType ARGUMENT_LIST = new DlangElementType("ARGUMENT_LIST");
-    DlangElementType ARGUMENTS = new DlangElementType("ARGUMENTS");
     DlangElementType ARRAY_ACCESS_EXPRESSION = new DlangElementType("ARRAY_ACCESS_EXPRESSION");
     DlangElementType ARRAY_INITIALIZER = new DlangElementType("ARRAY_INITIALIZER");
     DlangElementType ARRAY_LITERAL = new DlangElementType("ARRAY_LITERAL");
@@ -155,6 +154,8 @@ public interface DlangTypes {
     DlangElementType MIXIN_QUALIFIED_IDENTIFIER = new DlangElementType("MIXIN_QUALIFIED_IDENTIFIER");
     DlangElementType MIXIN_TEMPLATE_NAME = new DlangElementType("MIXIN_TEMPLATE_NAME");
     DlangElementType MUL_EXPRESSION = new DlangElementType("MUL_EXPRESSION");
+    DlangElementType NAMED_ARGUMENT = new DlangElementType("NAMED_ARGUMENT");
+    DlangElementType NAMED_ARGUMENT_LIST = new DlangElementType("NAMED_ARGUMENT_LIST");
     DlangElementType NAMESPACE_LIST = new DlangElementType("NAMESPACE_LIST");
     DlangElementType NEW_ANON_CLASS_EXPRESSION = new DlangElementType("NEW_ANON_CLASS_EXPRESSION");
     DlangElementType NEW_EXPRESSION = new DlangElementType("NEW_EXPRESSION");
@@ -467,8 +468,6 @@ public interface DlangTypes {
                 return new DLanguageAnonymousEnumDeclarationImpl(node);
             } else if (type == ARGUMENT_LIST) {
                 return new DLanguageArgumentListImpl(node);
-            } else if (type == ARGUMENTS) {
-                return new DLanguageArgumentsImpl(node);
             } else if (type == ARRAY_ACCESS_EXPRESSION) {
                 return new DLanguageArrayAccessExpressionImpl(node);
             } else if (type == ARRAY_INITIALIZER) {
@@ -681,6 +680,10 @@ public interface DlangTypes {
                 return new DLanguageMixinTemplateNameImpl(node);
             } else if (type == MUL_EXPRESSION) {
                 return new DLanguageMulExpressionImpl(node);
+            } else if (type == NAMED_ARGUMENT) {
+                return new DLanguageNamedArgumentImpl(node);
+            } else if (type == NAMED_ARGUMENT_LIST) {
+                return new DLanguageNamedArgumentListImpl(node);
             } else if (type == NAMESPACE_LIST) {
                 return new DLanguageNamespaceListImpl(node);
             } else if (type == NEW_ANON_CLASS_EXPRESSION) {

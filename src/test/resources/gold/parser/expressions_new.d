@@ -18,4 +18,7 @@ foreach (ref a; bar)
         b = new int[30];
     }
 }
+
+auto _ = new A(i: 3);
+auto _ = new class (i: x + x) I { };
 }

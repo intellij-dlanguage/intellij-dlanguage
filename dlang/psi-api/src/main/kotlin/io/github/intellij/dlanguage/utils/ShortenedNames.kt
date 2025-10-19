@@ -35,7 +35,6 @@ typealias AndAndExpression = io.github.intellij.dlanguage.psi.DLanguageAndAndExp
 typealias AndExpression = io.github.intellij.dlanguage.psi.DLanguageAndExpression
 typealias AnonymousEnumDeclaration = io.github.intellij.dlanguage.psi.DLanguageAnonymousEnumDeclaration
 typealias ArgumentList = io.github.intellij.dlanguage.psi.DLanguageArgumentList
-typealias Arguments = io.github.intellij.dlanguage.psi.DLanguageArguments
 typealias ArrayInitializer = io.github.intellij.dlanguage.psi.DLanguageArrayInitializer
 typealias ArrayLiteral = io.github.intellij.dlanguage.psi.DLanguageArrayLiteral
 typealias ArrayMemberInitializer = io.github.intellij.dlanguage.psi.DLanguageArrayMemberInitializer

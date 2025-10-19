@@ -35,10 +35,6 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
-    public void visitArguments(@NotNull final DLanguageArguments o) {
-        visitPsiElement(o);
-    }
-
     public void visitArrayAccessExpression(@NotNull final DLanguageArrayAccessExpression o) {
         visitElement(o);
     }
@@ -516,6 +512,14 @@ public class DlangVisitor extends PsiElementVisitor {
     }
 
     public void visitMulExpression(@NotNull final DLanguageMulExpression o) {
+        visitPsiElement(o);
+    }
+
+    public void visitNamedArgument(@NotNull final DLanguageNamedArgument o) {
+        visitPsiElement(o);
+    }
+
+    public void visitNamedArgumentList(@NotNull final DLanguageNamedArgumentList o) {
         visitPsiElement(o);
     }
 

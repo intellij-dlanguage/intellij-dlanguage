@@ -110,6 +110,7 @@ class DLanguageParserTest : DLanguageParserTestBase("parser", "d", DLangParserDe
     fun testexpressions_import() = doDlangParserTest()
     fun testexpressions_in() = doDlangParserTest()
     fun testexpressions_mixin() = doDlangParserTest()
+    fun testexpressions_named_parameters() = doDlangParserTest()
     fun testexpressions_operators() = doDlangParserTest()
     fun testexpressions_precedence() = doDlangParserTest()
     fun testexpressions_scalar() = doDlangParserTest()

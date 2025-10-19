@@ -328,15 +328,14 @@ internal class DLangParser(private val builder: PsiBuilder) {
     /**
      * Parses an ArgumentList.
      *
-     *
      * $(GRAMMAR $(RULEDEF argumentList):
      * $(RULE assignExpression) ($(LITERAL ',') $(RULE assignExpression)?)*
      * ;)
      */
     private fun parseArgumentList(): Boolean {
-        if (currentIs(DlangTypes.OP_PAR_RIGHT)) return true
+        if (builder.tokenType === DlangTypes.OP_PAR_RIGHT) return true
         val m = builder.mark()
-        while (!currentIs(DlangTypes.OP_PAR_RIGHT)) {
+        while (!builder.eof() && builder.tokenType !== DlangTypes.OP_PAR_RIGHT) {
             if (parseAssignExpression() == null) {
                 cleanup(m, DlangTypes.ARGUMENT_LIST)
                 return false
@@ -352,29 +351,52 @@ internal class DLangParser(private val builder: PsiBuilder) {
     }
 
     /**
-     * Parses Arguments.
+     * Parses a named argument list
      *
-     *
-     * $(GRAMMAR $(RULEDEF arguments):
-     * $(LITERAL '$(LPAREN)') $(RULE argumentList)? $(LITERAL '$(RPAREN)')
-     * ;)
+     * $(GRAMMAR $(RULEDEF namedArgumentList)):
+     * $(RULE namedArgument) ($(LITERAL '$(OP_COMMA)') $(Rule namedArgument)?)?
      */
-    fun parseArguments(): Boolean {
+    private fun parseNamedArgumentList() {
+        if (currentIs(DlangTypes.OP_PAR_RIGHT)) return
         val m = builder.mark()
-        if (!tokenCheck(DlangTypes.OP_PAR_LEFT)) {
-            cleanup(m, DlangTypes.ARGUMENTS)
-            return false
+        while (!builder.eof() && builder.tokenType !== DlangTypes.OP_PAR_RIGHT) {
+            parseNamedArgument()
+            if (currentIs(DlangTypes.OP_PAR_RIGHT)) break
+            if (!currentIs(DlangTypes.OP_COMMA)) {
+                break
+            }
+            advance()
         }
-        if (!currentIs(DlangTypes.OP_PAR_RIGHT)) if (!parseArgumentList()) {
-            cleanup(m, DlangTypes.ARGUMENTS)
-            return false
+        m.done(DlangTypes.NAMED_ARGUMENT_LIST)
+    }
+
+    /**
+     * Parses a named argument
+     *
+     * $(GRAMMAR $(RULEDEF namedArgument)):
+     * $(LITERAL Identifier) $(LITERAL '$(OP_COLON)') $(Rule assignExpression)
+     */
+    private fun parseNamedArgument() {
+        val m = builder.mark()
+        if (builder.tokenType === DlangTypes.ID && builder.lookAhead(1) === DlangTypes.OP_COLON) {
+            builder.advanceLexer()
+            builder.advanceLexer()
         }
-        if (!tokenCheck(DlangTypes.OP_PAR_RIGHT)) {
-            cleanup(m, DlangTypes.ARGUMENTS)
-            return false
+        if (parseAssignExpression() == null) {
+            argumentRecover("assign expression expected")
         }
-        exit_section_modified(builder, m, DlangTypes.ARGUMENTS, true)
-        return true
+        m.done(DlangTypes.NAMED_ARGUMENT)
+    }
+
+    private fun argumentRecover(errorMessage: String, ) {
+        val recovery = builder.mark()
+        while (!builder.eof()) {
+            if (builder.tokenType === DlangTypes.OP_COMMA || builder.tokenType === DlangTypes.OP_PAR_LEFT) {
+                break
+            }
+            builder.advanceLexer()
+        }
+        recovery.error(errorMessage)
     }
 
     /**
@@ -4705,8 +4727,11 @@ internal class DLangParser(private val builder: PsiBuilder) {
         expect(DlangTypes.KW_NEW)
         expect(DlangTypes.KW_CLASS)
         if (currentIs(DlangTypes.OP_PAR_LEFT)) {
-            if (!parseArguments()) {
-                cleanup(m, DlangTypes.NEW_ANON_CLASS_EXPRESSION)
+            builder.advanceLexer()
+            if (!currentIs(DlangTypes.OP_PAR_RIGHT))
+                parseNamedArgumentList()
+            if (!tokenCheck(DlangTypes.OP_PAR_RIGHT)) {
+                m.done(DlangTypes.NEW_ANON_CLASS_EXPRESSION)
                 return false
             }
         }
@@ -4731,28 +4756,30 @@ internal class DLangParser(private val builder: PsiBuilder) {
         val m = builder.mark()
         if (peekIs(DlangTypes.KW_CLASS)) {
             if (!parseNewAnonClassExpression()) {
-                cleanup(m, DlangTypes.NEW_EXPRESSION)
+                m.done(DlangTypes.NEW_EXPRESSION)
                 return null
             }
         } else {
             expect(DlangTypes.KW_NEW)
             if (!parseType(true)) {
-                cleanup(m, DlangTypes.NEW_EXPRESSION)
+                m.done(DlangTypes.NEW_EXPRESSION)
                 return null
             }
             if (currentIs(DlangTypes.OP_BRACKET_LEFT)) {
-                advance()
+                builder.advanceLexer()
                 if (parseAssignExpression() == null) {
-                    cleanup(m, DlangTypes.NEW_EXPRESSION)
+                    m.done(DlangTypes.NEW_EXPRESSION)
                     return null
                 }
                 expect(DlangTypes.OP_BRACKET_RIGHT)
-            } else if (currentIs(DlangTypes.OP_PAR_LEFT)) if (!parseArguments()) {
-                cleanup(m, DlangTypes.NEW_EXPRESSION)
-                return null
+            } else if (currentIs(DlangTypes.OP_PAR_LEFT)) {
+                builder.advanceLexer()
+                if (!currentIs(DlangTypes.OP_PAR_RIGHT))
+                    parseNamedArgumentList()
+                expect(DlangTypes.OP_PAR_RIGHT)
             }
         }
-        exit_section_modified(builder, m, DlangTypes.NEW_EXPRESSION, true)
+        m.done(DlangTypes.NEW_EXPRESSION)
         return m
     }
 
@@ -5426,10 +5453,10 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 advance()
                 expect(DlangTypes.ID)
             } else if (currentIs(DlangTypes.OP_PAR_LEFT)) {
-                if (!parseArguments()) {
-                    cleanup(m, DlangTypes.FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION)
-                    return null
-                }
+                builder.advanceLexer()
+                if (!currentIs(DlangTypes.OP_PAR_RIGHT))
+                    parseNamedArgumentList()
+                expect(DlangTypes.OP_PAR_RIGHT)
                 m.done(DlangTypes.FUNDAMENTAL_TYPE_CONSTRUCT_EXPRESSION)
                 return m
             } else {
@@ -7567,7 +7594,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 m.rollbackTo()
                 return null
             }
-            parseArgumentList()
+            parseNamedArgumentList()
             expect(DlangTypes.OP_PAR_RIGHT)
             m.done(DlangTypes.POSTFIX_EXPRESSION)
             return m
@@ -7605,7 +7632,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         if (currentIs(DlangTypes.OP_PAR_LEFT)) {
             val marker = m.precede()
             builder.advanceLexer()
-            parseArgumentList()
+            parseNamedArgumentList()
             expect(DlangTypes.OP_PAR_RIGHT)
             marker.done(DlangTypes.FUNCTION_CALL_EXPRESSION)
             return marker
