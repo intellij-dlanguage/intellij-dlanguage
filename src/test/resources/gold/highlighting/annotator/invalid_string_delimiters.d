@@ -17,3 +17,10 @@ TEST</error>";
 
 
 enum a = q"(foo(xxxx))"; // this is a legal string
+enum a = q"HERE
+foo
+HERE"; // this is a legal string
+enum a = q"übel
+foo
+übel"; // this is a legal string
+enum a = q"/foo/"; // this is a legal string

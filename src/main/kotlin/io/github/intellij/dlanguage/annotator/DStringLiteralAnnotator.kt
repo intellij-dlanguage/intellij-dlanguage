@@ -41,11 +41,11 @@ class DStringLiteralAnnotator : Annotator {
                     closingDelimiter = "\n$closingDelimiter"
 
                 val lines = value.split(closingDelimiter)
-                val expectedDelimitersCount = if (!isPredefinedDelimiter(openingDelimiter)) 1 else 2
+                val expectedDelimitersCount = if (isPredefinedDelimiter(openingDelimiter) && getCorrespondingClosingDelimiter(openingDelimiter) == openingDelimiter) 3 else 2
                 if (lines.size > expectedDelimitersCount) {
                     val elemStartIndex = elem.startOffset + 2 // + 2 to because we skipped q"
                     holder.newAnnotation(HighlightSeverity.ERROR, "Illegal text found after closing delimiter, expected \" character instead")
-                        .range(TextRange(elemStartIndex + StringUtils.ordinalIndexOf(value, closingDelimiter, expectedDelimitersCount) + closingDelimiter.length, elemStartIndex + value.length)).create()
+                        .range(TextRange(elemStartIndex + StringUtils.ordinalIndexOf(value, closingDelimiter, expectedDelimitersCount - 1) + closingDelimiter.length, elemStartIndex + value.length)).create()
                 }
             }
             return
