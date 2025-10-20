@@ -93,7 +93,6 @@ static this() {
     types_extra_interfaces["AnonymousEnumDeclaration"] = ["Declaration", "DTypedElement"];
     types_mixins["AnonymousEnumDeclaration"] = "DLanguageAnonymousEnumDeclarationImplMixin";
     types_children["ArgumentList"] = ["Expression*", "OP_COMMA*"];
-    types_children["Arguments"] = ["ArgumentList","OP_PAR_RIGHT", "OP_PAR_LEFT"];
     types_children["ArrayAccessExpression"] = ["Expression", "IndexExpression"];
     types_extra_interfaces["ArrayAccessExpression"] = ["Expression"];
     types_mixins["ArrayAccessExpression"] = "DLanguageArrayAccessExpressionImplMixin";
@@ -198,7 +197,7 @@ static this() {
     types_children["Finally"] = ["KW_FINALLY", "Statement"];
     types_children["FinalSwitchStatement"] = ["KW_FINAL", "SwitchStatement"];
     types_extra_interfaces["FinalSwitchStatement"] = ["Statement"];
-    types_children["FundamentalTypeConstructExpression"] = ["BasicType", "OP_PAR_LEFT", "ArgumentList", "OP_PAR_RIGHT"];
+    types_children["FundamentalTypeConstructExpression"] = ["BasicType", "OP_PAR_LEFT", "NamedArgumentList", "OP_PAR_RIGHT"];
     types_mixins["FundamentalTypeConstructExpression"] = "DLanguageFundamentalTypeConstructExpressionImplMixin";
     types_extra_interfaces["FundamentalTypeConstructExpression"] = ["Expression"];
     types_children["FundamentalTypePropertyExpression"] = ["BasicType", "OP_DOT", "Identifier"];
@@ -210,7 +209,7 @@ static this() {
     types_extra_interfaces["ForeachStatement"] = ["Statement", "Foreach"];
     types_children["ForeachTypeList"] = ["ForeachType*","OP_COMMA*"];
     types_children["FunctionAttribute"] = ["AtAttribute","KW_PURE","KW_NOTHROW"];
-    types_children["FunctionCallExpression"] = ["ArgumentList", "Expression", "OP_PAR_LEFT", "OP_PAR_RIGHT"];
+    types_children["FunctionCallExpression"] = ["Expression", "OP_PAR_LEFT", "NamedArgumentList", "OP_PAR_RIGHT"];
     types_mixins["FunctionCallExpression"] = "DLanguageFunctionCallExpressionImplMixin";
     types_extra_interfaces["FunctionCallExpression"] = ["Statement", "Expression"];
     types_children["FunctionContract"] = ["OP_BRACES_LEFT", "InOutStatement", "OP_PAR_LEFT", "InOutContractExpression"];
@@ -277,10 +276,12 @@ static this() {
     types_children["MulExpression"] = ["Expression*","OP_MOD","OP_DIV","OP_ASTERISK"];
     types_mixins["MulExpression"] = "DLanguageMulExpressionImplMixin";
     types_extra_interfaces["MulExpression"] = ["Expression"];
+    types_children["NamedArgument"] = ["Identifier", "OP_COLON", "Expression", "OP_COMMA"];
+    types_children["NamedArgumentList"] = ["NamedArgument*", "OP_COMMA*"];
     stub_children ["NamedImportBind"] = ["Identifier",  "OP_EQ"];
     types_children["NamespaceList"] = ["OP_COMMA",  "Expression*"];
-    types_children["NewAnonClassExpression"] = ["KW_NEW","KW_CLASS","Arguments","BaseClassList", "StructBody"];
-    types_children["NewExpression"] = ["KW_NEW","NewAnonClassExpression","Type", "Expression", "Arguments","OP_BRACKET_LEFT","OP_BRACKET_RIGHT"];
+    types_children["NewAnonClassExpression"] = ["KW_NEW", "KW_CLASS", "OP_PAR_LEFT", "NamedArgumentList", "OP_PAR_RIGHT", "BaseClassList", "StructBody"];
+    types_children["NewExpression"] = ["KW_NEW", "NewAnonClassExpression", "Type", "OP_PAR_LEFT", "NamedArgumentList", "OP_PAR_RIGHT", "OP_BRACKET_LEFT", "Expression","OP_BRACKET_RIGHT"];
     types_mixins["NewExpression"] = "DLanguageNewExpressionImplMixin";
     types_extra_interfaces["NewExpression"] = ["Expression"];
     types_children["Operands"] = ["OP_COMMA","Operands","AsmExp"];
@@ -297,7 +298,7 @@ static this() {
     types_children["Parameters"] = ["OP_COMMA*","OP_TRIPLEDOT","Parameter*","OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_children["Postblit"] = ["FunctionBody","OP_SCOLON","KW_THIS*","OP_PAR_LEFT","OP_PAR_RIGHT","MemberFunctionAttribute"];
     types_extra_interfaces["Postblit"] = ["Declaration"];
-    types_children["PostfixExpression"] = ["Expression", "OP_PLUS_PLUS", "OP_MINUS_MINUS"];
+    types_children["PostfixExpression"] = ["Expression", "OP_PLUS_PLUS", "OP_MINUS_MINUS", "OP_PAR_LEFT", "NamedArgumentList", "OP_PAR_RIGHT"];
     types_mixins["PostfixExpression"] = "DLanguagePostfixExpressionImplMixin";
     types_extra_interfaces["PostfixExpression"] = ["Expression"];
     types_children["PowExpression"] = ["Expression*","OP_POW"];
@@ -431,7 +432,6 @@ static this() {
     has_processDeclaration["AndExpression"] = false;
     has_processDeclaration["AnonymousEnumDeclaration"] = true;
     has_processDeclaration["ArgumentList"] = false;
-    has_processDeclaration["Arguments"] = false;
     has_processDeclaration["ArrayAccessExpression"] = false;
     has_processDeclaration["ArrayInitializer"] = false;
     has_processDeclaration["ArrayLiteral"] = false;
