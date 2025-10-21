@@ -166,6 +166,7 @@ public interface DlangTypes {
     DlangElementType OUT_STATEMENT = new DlangElementType("OUT_STATEMENT");
     DlangElementType PARAMETERS = new DlangElementType("PARAMETERS");
     DlangElementType PARENTHESISED_EXPRESSION = new DlangElementType("PARENTHESISED_EXPRESSION");
+    DlangElementType PLACEMENT_NEW = new DlangElementType("PLACEMENT_NEW");
     DlangElementType POSTBLIT = new DlangElementType("POSTBLIT");
     DlangElementType POSTFIX_EXPRESSION = new DlangElementType("POSTFIX_EXPRESSION");
     DlangElementType POW_EXPRESSION = new DlangElementType("POW_EXPRESSION");
@@ -704,6 +705,8 @@ public interface DlangTypes {
                 return new DLanguageParametersImpl(node);
             } else if (type == PARENTHESISED_EXPRESSION) {
                 return new DLanguageParenthesisedExpressionImpl(node);
+            } else if (type == PLACEMENT_NEW) {
+                return new DLanguagePlacementNewImpl(node);
             } else if (type == POSTBLIT) {
                 return new DLanguagePostblitImpl(node);
             } else if (type == POSTFIX_EXPRESSION) {

@@ -571,6 +571,10 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitPlacementNew(@NotNull final DLanguagePlacementNew o) {
+        visitPsiElement(o);
+    }
+
     public void visitPostblit(@NotNull final DLanguagePostblit o) {
         visitPsiElement(o);
     }
