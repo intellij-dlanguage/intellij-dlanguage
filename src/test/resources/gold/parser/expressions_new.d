@@ -21,4 +21,8 @@ foreach (ref a; bar)
 
 auto _ = new A(i: 3);
 auto _ = new class (i: x + x) I { };
+    
+// placement new
+auto _ = new (s) S();
+auto _ = new (mallocate!S()) S;
 }

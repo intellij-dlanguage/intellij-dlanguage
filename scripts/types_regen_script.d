@@ -281,7 +281,7 @@ static this() {
     stub_children ["NamedImportBind"] = ["Identifier",  "OP_EQ"];
     types_children["NamespaceList"] = ["OP_COMMA",  "Expression*"];
     types_children["NewAnonClassExpression"] = ["KW_NEW", "KW_CLASS", "OP_PAR_LEFT", "NamedArgumentList", "OP_PAR_RIGHT", "BaseClassList", "StructBody"];
-    types_children["NewExpression"] = ["KW_NEW", "NewAnonClassExpression", "Type", "OP_PAR_LEFT", "NamedArgumentList", "OP_PAR_RIGHT", "OP_BRACKET_LEFT", "Expression","OP_BRACKET_RIGHT"];
+    types_children["NewExpression"] = ["KW_NEW", "PlacementNew", "NewAnonClassExpression", "Type", "OP_PAR_LEFT", "NamedArgumentList", "OP_PAR_RIGHT", "OP_BRACKET_LEFT", "Expression","OP_BRACKET_RIGHT"];
     types_mixins["NewExpression"] = "DLanguageNewExpressionImplMixin";
     types_extra_interfaces["NewExpression"] = ["Expression"];
     types_children["Operands"] = ["OP_COMMA","Operands","AsmExp"];
@@ -291,11 +291,12 @@ static this() {
     types_mixins["OrOrExpression"] = "DLanguageOrOrExpressionImplMixin";
     types_extra_interfaces["OrOrExpression"] = ["Expression"];
     types_children["OutContractExpression"] = ["KW_OUT", "OP_PAR_LEFT", "OP_SCOLON", "AssertArguments", "OP_PAR_RIGHT"];
+    types_children["Parameters"] = ["OP_COMMA*","OP_TRIPLEDOT","Parameter*","OP_PAR_LEFT","OP_PAR_RIGHT"];
     types_children["ParameterAttribute"] = ["KW_FINAL","KW_IN","KW_LAZY","KW_OUT","KW_REF","KW_SCOPE","KW_AUTO","KW_CONST","KW_IMMUTABLE","KW_INOUT","KW_SHARED","AtAttribute"];
     types_children["ParenthesisedExpression"] = ["OP_PAR_LEFT", "Expression", "OP_PAR_RIGHT"];
     types_mixins["ParenthesisedExpression"] = "DLanguageParenthesisedExpressionImplMixin";
     types_extra_interfaces["ParenthesisedExpression"] = ["Expression"];
-    types_children["Parameters"] = ["OP_COMMA*","OP_TRIPLEDOT","Parameter*","OP_PAR_LEFT","OP_PAR_RIGHT"];
+    types_children["PlacementNew"] = ["OP_PAR_LEFT*","Expression","OP_PAR_RIGHT"];
     types_children["Postblit"] = ["FunctionBody","OP_SCOLON","KW_THIS*","OP_PAR_LEFT","OP_PAR_RIGHT","MemberFunctionAttribute"];
     types_extra_interfaces["Postblit"] = ["Declaration"];
     types_children["PostfixExpression"] = ["Expression", "OP_PLUS_PLUS", "OP_MINUS_MINUS", "OP_PAR_LEFT", "NamedArgumentList", "OP_PAR_RIGHT"];

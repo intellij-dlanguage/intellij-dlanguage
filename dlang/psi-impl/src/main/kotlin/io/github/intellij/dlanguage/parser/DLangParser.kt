@@ -4717,21 +4717,19 @@ internal class DLangParser(private val builder: PsiBuilder) {
     /**
      * Parses a NewAnonClassExpression
      *
-     *
      * $(GRAMMAR $(RULEDEF newAnonClassExpression):
-     * $(LITERAL 'new') $(LITERAL 'class') $(RULE arguments)? $(RULE baseClassList)? $(RULE structBody)
+     * $(LITERAL 'new') $(RULE placementExpression)? $(LITERAL 'class') $(RULE arguments)? $(RULE baseClassList)? $(RULE structBody)
      * ;)
      */
-    fun parseNewAnonClassExpression(): Boolean {
-        val m = builder.mark()
-        expect(DlangTypes.KW_NEW)
-        expect(DlangTypes.KW_CLASS)
+    fun parseNewAnonClassExpression(marker: PsiBuilder.Marker): Boolean {
+        assert(builder.tokenType === DlangTypes.KW_CLASS)
+        builder.advanceLexer()
         if (currentIs(DlangTypes.OP_PAR_LEFT)) {
             builder.advanceLexer()
             if (!currentIs(DlangTypes.OP_PAR_RIGHT))
                 parseNamedArgumentList()
             if (!tokenCheck(DlangTypes.OP_PAR_RIGHT)) {
-                m.done(DlangTypes.NEW_ANON_CLASS_EXPRESSION)
+                marker.done(DlangTypes.NEW_ANON_CLASS_EXPRESSION)
                 return false
             }
         }
@@ -4739,48 +4737,76 @@ internal class DLangParser(private val builder: PsiBuilder) {
             parseBaseClassList()
         }
         parseStructBody()
-        m.done(DlangTypes.NEW_ANON_CLASS_EXPRESSION)
+        marker.done(DlangTypes.NEW_ANON_CLASS_EXPRESSION)
         return true
     }
 
     /**
      * Parses a NewExpression
      *
-     *
-     * $(GRAMMAR $(RULEDEF newExpression):
-     * $(LITERAL 'new') $(RULE type) (($(LITERAL '[') $(RULE assignExpression) $(LITERAL ']')) | $(RULE arguments))?
+     * $(LITERAL 'new') $(RULE placementExpression)? $(RULE type) (($(LITERAL '[') $(RULE assignExpression) $(LITERAL ']')) | $(RULE arguments))?
      * | $(RULE newAnonClassExpression)
      * ;)
      */
     fun parseNewExpression(): PsiBuilder.Marker? {
         val m = builder.mark()
-        if (peekIs(DlangTypes.KW_CLASS)) {
-            if (!parseNewAnonClassExpression()) {
+        val newAnnonClassMarker = builder.mark()
+        expect(DlangTypes.KW_NEW)
+
+        if (builder.tokenType === DlangTypes.OP_PAR_LEFT) {
+            if (!parsePlacementNew()) {
+                newAnnonClassMarker.drop()
                 m.done(DlangTypes.NEW_EXPRESSION)
                 return null
             }
-        } else {
-            expect(DlangTypes.KW_NEW)
-            if (!parseType(true)) {
+        }
+
+        if (builder.tokenType === DlangTypes.KW_CLASS) {
+            val res = parseNewAnonClassExpression(newAnnonClassMarker)
+            m.done(DlangTypes.NEW_EXPRESSION)
+            return if (res) m else null
+        }
+
+        newAnnonClassMarker.drop()
+        if (!parseType(true)) {
+            m.done(DlangTypes.NEW_EXPRESSION)
+            return null
+        }
+        if (currentIs(DlangTypes.OP_BRACKET_LEFT)) {
+            builder.advanceLexer()
+            if (parseAssignExpression() == null) {
                 m.done(DlangTypes.NEW_EXPRESSION)
                 return null
             }
-            if (currentIs(DlangTypes.OP_BRACKET_LEFT)) {
-                builder.advanceLexer()
-                if (parseAssignExpression() == null) {
-                    m.done(DlangTypes.NEW_EXPRESSION)
-                    return null
-                }
-                expect(DlangTypes.OP_BRACKET_RIGHT)
-            } else if (currentIs(DlangTypes.OP_PAR_LEFT)) {
-                builder.advanceLexer()
-                if (!currentIs(DlangTypes.OP_PAR_RIGHT))
-                    parseNamedArgumentList()
-                expect(DlangTypes.OP_PAR_RIGHT)
-            }
+            expect(DlangTypes.OP_BRACKET_RIGHT)
+        } else if (currentIs(DlangTypes.OP_PAR_LEFT)) {
+            builder.advanceLexer()
+            if (!currentIs(DlangTypes.OP_PAR_RIGHT))
+                parseNamedArgumentList()
+            expect(DlangTypes.OP_PAR_RIGHT)
         }
         m.done(DlangTypes.NEW_EXPRESSION)
         return m
+    }
+
+    /**
+     * Parses a placement new
+     *
+     * $(LITERAL '(') $(RULE assignExpression) $(LITERAL ')'
+     */
+    fun parsePlacementNew(): Boolean {
+        assert (builder.tokenType === DlangTypes.OP_PAR_LEFT)
+        val m = builder.mark()
+        builder.advanceLexer()
+        if (builder.tokenType === DlangTypes.OP_PAR_RIGHT) {
+            builder.error("Expression expected")
+        } else if (parseAssignExpression() == null) {
+            m.done(DlangTypes.NEW_EXPRESSION)
+            return false
+        }
+        expect(DlangTypes.OP_PAR_RIGHT)
+        m.done(DlangTypes.PLACEMENT_NEW)
+        return true
     }
 
     /**
@@ -7147,20 +7173,15 @@ internal class DLangParser(private val builder: PsiBuilder) {
     @JvmOverloads
     fun parseType(inNewExpression: Boolean = false): Boolean {
         val m = builder.mark()
-        if (!moreTokens()) {
-            error("type expected")
-            exit_section_modified(builder, m, DlangTypes.TYPE, true)
-            return false
-        }
         val i = current()
         if (isTypeCtor(i)) {
             if (!peekIs(DlangTypes.OP_PAR_LEFT)) if (!parseTypeConstructors()) {
-                cleanup(m, DlangTypes.TYPE)
+                m.done(DlangTypes.TYPE)
                 return false
             }
         }
         if (!parseBasicType()) {
-            cleanup(m, DlangTypes.TYPE)
+            m.done(DlangTypes.TYPE)
             return false
         }
         while (moreTokens()) {
@@ -7181,19 +7202,19 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 }
                 bookmark.rollbackTo()
                 if (!parseTypeSuffix()) {
-                    cleanup(m, DlangTypes.TYPE)
+                    m.done(DlangTypes.TYPE)
                     return false
                 }
             } else if (i1 === DlangTypes.OP_ASTERISK || i1 === DlangTypes.KW_DELEGATE || i1 === DlangTypes.KW_FUNCTION) {
                 if (!parseTypeSuffix()) {
-                    cleanup(m, DlangTypes.TYPE)
+                    m.done(DlangTypes.TYPE)
                     return false
                 }
             } else {
                 break
             }
         }
-        exit_section_modified(builder, m, DlangTypes.TYPE, true)
+        m.done(DlangTypes.TYPE)
         return true
     }
 
@@ -7260,7 +7281,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
         val i = builder.tokenType
         if (i === DlangTypes.ID) {
             if (!parseQualifiedIdentifier()) {
-                cleanup(m, DlangTypes.BASIC_TYPE)
+                m.done(DlangTypes.BASIC_TYPE)
                 return false
             }
         } else if (isBuiltinType(i)) {
@@ -7269,61 +7290,61 @@ internal class DLangParser(private val builder: PsiBuilder) {
             // note: super can be removed but `this` can be an alias to an instance.
             advance()
             if (builder.tokenType !== DlangTypes.OP_DOT) {
-                cleanup(m, DlangTypes.BASIC_TYPE)
+                m.done(DlangTypes.BASIC_TYPE)
                 return false
             }
             advance()
             if (!parseQualifiedIdentifier()) {
-                cleanup(m, DlangTypes.BASIC_TYPE)
+                m.done(DlangTypes.BASIC_TYPE)
                 return false
             }
         } else if (i === DlangTypes.KW___TRAITS) {
             if (parseTraitsExpression() == null) {
-                cleanup(m, DlangTypes.BASIC_TYPE)
+                m.done(DlangTypes.BASIC_TYPE)
                 return false
             }
         } else if (i === DlangTypes.KW_TYPEOF) {
             if (parseTypeofExpression() == null) {
-                cleanup(m, DlangTypes.BASIC_TYPE)
+                m.done(DlangTypes.BASIC_TYPE)
                 return false
             }
             if (currentIs(DlangTypes.OP_DOT)) {
                 advance()
                 if (!parseQualifiedIdentifier()) {
-                    cleanup(m, DlangTypes.BASIC_TYPE)
+                    m.done(DlangTypes.BASIC_TYPE)
                     return false
                 }
             }
         } else if (i === DlangTypes.KW_MIXIN) {
             if (parseMixinType()) {
-                cleanup(m, DlangTypes.BASIC_TYPE)
+                m.done(DlangTypes.BASIC_TYPE)
                 return false
             }
         } else if (i === DlangTypes.KW_CONST || i === DlangTypes.KW_IMMUTABLE || i === DlangTypes.KW_INOUT || i === DlangTypes.KW_SHARED) {
             advance()
             if (!tokenCheck(DlangTypes.OP_PAR_LEFT)) {
-                cleanup(m, DlangTypes.BASIC_TYPE)
+                m.done(DlangTypes.BASIC_TYPE)
                 return false
             }
             if (!(parseType())) {
-                cleanup(m, DlangTypes.BASIC_TYPE)
+                m.done(DlangTypes.BASIC_TYPE)
                 return false
             }
             if (!tokenCheck(DlangTypes.OP_PAR_RIGHT)) {
-                cleanup(m, DlangTypes.BASIC_TYPE)
+                m.done(DlangTypes.BASIC_TYPE)
                 return false
             }
         } else if (i === DlangTypes.KW___VECTOR) {
             if (!(parseVector())) {
-                cleanup(m, DlangTypes.BASIC_TYPE)
+                m.done(DlangTypes.BASIC_TYPE)
                 return false
             }
         } else {
             error("Basic type, type constructor, symbol, `typeof`, `__traits`, `__vector` or `mixin` expected")
-            exit_section_modified(builder, m, DlangTypes.BASIC_TYPE, true)
+            m.done(DlangTypes.BASIC_TYPE)
             return false
         }
-        exit_section_modified(builder, m, DlangTypes.BASIC_TYPE, true)
+        m.done(DlangTypes.BASIC_TYPE)
         return true
     }
 
