@@ -138,6 +138,8 @@ BAD_CHARACTER ('q"/test"d;')
     fun teststring_delim_unterminated() = doTest("q\"test\"", "DlangTokenType.DELIMITED_STRING ('q\"test\"')")
     fun teststring_token_no_extension() = doTest("q{test}", "DlangTokenType.TOKEN_STRING ('q{test}')")
 
+    // ies
+    fun teststring_ies()           = doTest()
 
     // tokens
     fun testtokens_and()                  = doTest()

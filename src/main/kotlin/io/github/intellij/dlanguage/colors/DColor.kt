@@ -31,6 +31,7 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
 
     CHAR("String//Char", Default.STRING),
     STRING_LITERAL("String//String Literal", Default.STRING),
+    IES_FRAGMENT_DELIMITER("String//Interpolation Delimiter", Default.VALID_STRING_ESCAPE),
     VALID_STRING_ESCAPE("String//Escape Sequence", Default.VALID_STRING_ESCAPE),
     INVALID_STRING_ESCAPE("String//Invalid Escape Sequence", Default.INVALID_STRING_ESCAPE),
     STRING_NAMED_CHARACTER_ENTITY("String//Named entity", Default.MARKUP_ENTITY),

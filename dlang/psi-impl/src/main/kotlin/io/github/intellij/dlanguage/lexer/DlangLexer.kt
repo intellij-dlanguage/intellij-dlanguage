@@ -25,6 +25,7 @@ class DlangLexer : LexerBase() {
         myTokenStart = startOffset
         myBufferEnd = endOffset
         myTokenType = null
+        myState = initialState
         flexLexer.reset(myBuffer, startOffset, endOffset, initialState)
     }
 
@@ -111,6 +112,7 @@ class DlangLexer : LexerBase() {
 
     private fun flexLocateToken() {
         flexLexer.goTo(myTokenStart)
+        myState = flexLexer.yystate()
         myTokenType = flexLexer.advance()
         myTokenEnd = flexLexer.tokenEnd
     }

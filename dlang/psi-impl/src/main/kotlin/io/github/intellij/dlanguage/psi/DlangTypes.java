@@ -235,6 +235,13 @@ public interface DlangTypes {
     DlangTokenType DOUBLE_QUOTED_STRING = new DlangTokenType("DOUBLE_QUOTED_STRING");
     DlangTokenType FLOAT_LITERAL = new DlangTokenType("FLOAT_LITERAL");
     DlangTokenType HEX_STRING = new DlangTokenType("HEX_STRING");
+    DlangTokenType IES_STRING = new DlangTokenType("IES_STRING");
+    DlangTokenType IES_START = new DlangTokenType("IES_START");
+    DlangTokenType IES_TEXT = new DlangTokenType("IES_TEXT");
+    DlangTokenType IES_TEXT_RAW = new DlangTokenType("IES_TEXT_RAW");
+    DlangTokenType IES_FRAGMENT_START = new DlangTokenType("IES_FRAGMENT_START");
+    DlangTokenType IES_FRAGMENT_END = new DlangTokenType("IES_FRAGMENT_END");
+    DlangTokenType IES_END = new DlangTokenType("IES_END");
     DlangTokenType ID = new DlangTokenType("ID");
     DlangTokenType INTEGER_LITERAL = new DlangTokenType("INTEGER_LITERAL");
     DlangTokenType KW_ABSTRACT = new DlangTokenType("abstract");
@@ -627,6 +634,8 @@ public interface DlangTypes {
                 return new DLanguageMixinQualifiedIdentifierImpl(node);
             } else if (type == IDENTITY_EXPRESSION) {
                 return new DLanguageIdentityExpressionImpl(node);
+            } else if (type == IES_STRING) {
+                return new DLanguageIESStringImpl(node);
             } else if (type == IF_STATEMENT) {
                 return new DLanguageIfStatementImpl(node);
             } else if (type == IMPORT_BIND) {

@@ -14,6 +14,9 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
   private char stringDelimiter;
   private String stringDelimiter2;
   private boolean stringDelimiterClosed;
+  private int nestedParDepth = 0;
+  private int nestedBraceDepth = 0;
+  private int prevState = 0;
 
   public _DlangLexer() {
     this((java.io.Reader)null);
@@ -73,6 +76,10 @@ ESCAPE_SEQUENCE_HEX_OCTAL = ("\\x" {HEX_DIGIT} {HEX_DIGIT}) | ("\\" {OCTAL_DIGIT
 ESCAPE_SEQUENCE_UNICODE = ("\\u" {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT})
               | ("\\U" {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT} {HEX_DIGIT})
 
+IES_START = i\"
+IES_WYSIWYG_START = i`
+IES_QSTRING_START = iq\{
+
 CHARACTER_LITERAL = \' ( [^\r\n\t\f\\] | {ESCAPE_SEQUENCE} )? \'?
 
 
@@ -124,12 +131,29 @@ BLOCK_DOC_END = "*/"
 NESTING_BLOCK_DOC_START = "/++"
 NESTING_BLOCK_DOC_END = "+/"
 
-%state WAITING_VALUE, NESTING_COMMENT_CONTENT, BLOCK_COMMENT_CONTENT
+%state NESTING_COMMENT_CONTENT, BLOCK_COMMENT_CONTENT
 %state NESTING_DOC_CONTENT, BLOCK_DOC_CONTENT, ALTERNATE_DELIMITED_STRING, ALTERNATE2_DELIMITED_STRING
+%state IES_FRAGMENT
+%xstate IES, IES_WYSIWYG, IES_QSTRING
 
 %%
 
-<YYINITIAL> {
+<IES_FRAGMENT> {
+    ")" {
+        if (nestedParDepth > 0) {
+            nestedParDepth--;
+            return OP_PAR_RIGHT;
+        }
+        yybegin(prevState);
+        return IES_FRAGMENT_END;
+    }
+    "(" {
+        nestedParDepth++;
+        return OP_PAR_LEFT;
+    }
+}
+
+<YYINITIAL, IES_FRAGMENT> {
  {WHITE_SPACE}       { return com.intellij.psi.TokenType.WHITE_SPACE; }
 
  {NESTING_BLOCK_COMMENT_START}{NESTING_BLOCK_COMMENT_END} {
@@ -175,6 +199,22 @@ NESTING_BLOCK_DOC_END = "+/"
     stringDelimiter = yycharat(yylength()-1);
     stringDelimiterClosed = false;
     yybegin(ALTERNATE_DELIMITED_STRING);
+  }
+
+ {IES_START}               {
+    yybegin(IES);
+    return IES_START;
+ }
+
+ {IES_WYSIWYG_START}               {
+     yybegin(IES_WYSIWYG);
+     return IES_START;
+  }
+
+ {IES_QSTRING_START}               {
+     yybegin(IES_QSTRING);
+     nestedBraceDepth = 1;
+     return IES_START;
   }
 
  "module"                   { return KW_MODULE; }
@@ -245,7 +285,6 @@ NESTING_BLOCK_DOC_END = "+/"
  "new"                      { return KW_NEW; }
  "typeid"                   { return KW_TYPEID; }
  "is"                       { return KW_IS; }
-// "!is"/[^a-z]               { return KW_NOT_IS; }
  "struct"                   { return KW_STRUCT; }
  "union"                    { return KW_UNION; }
  "class"                    { return KW_CLASS; }
@@ -268,7 +307,6 @@ NESTING_BLOCK_DOC_END = "+/"
  "__VENDOR__"               { return KW___VENDOR__; }
  "__VERSION__"              { return KW___VERSION__; }
  "in"                       { return KW_IN; }
-// "!in"/[^a-z]               { return KW_NOT_IN; }
  "asm"                      { return KW_ASM; }
  "assert"                   { return KW_ASSERT; }
  "case"                     { return KW_CASE; }
@@ -298,7 +336,6 @@ NESTING_BLOCK_DOC_END = "+/"
  "template"                 { return KW_TEMPLATE; }
  "lazy"                     { return KW_LAZY; }
  "out"                      { return KW_OUT; }
-// "nogc"                     { return KW_NOGC; }//not a reserved word
  "__traits"                 { return KW___TRAITS; }
  "unittest"                 { return KW_UNITTEST; }
  ";"                        { return OP_SCOLON; }
@@ -439,6 +476,59 @@ NESTING_BLOCK_DOC_END = "+/"
               return DELIMITED_STRING;
           }
       }
+}
+
+
+// Interpolation Expression Sequence
+<IES> {
+    (\\\" | \\\$ | \\\( | [^\"$])+ { return IES_TEXT; }
+    \$ / [^\(\"] {} // to catch $test but not $" (end of ies)
+    \" {STRING_POSTFIX}? {
+        yybegin(YYINITIAL);
+        return IES_END;
+    }
+    "$(" {
+        yybegin(IES_FRAGMENT);
+        prevState = IES;
+        return IES_FRAGMENT_START;
+    }
+    [^] { return IES_TEXT; }
+}
+
+<IES_WYSIWYG> {
+    [^`$]+ { return IES_TEXT_RAW; }
+    ` {STRING_POSTFIX}? {
+        yybegin(YYINITIAL);
+        return IES_END;
+    }
+    "$(" {
+        yybegin(IES_FRAGMENT);
+        prevState = IES_WYSIWYG;
+        return IES_FRAGMENT_START;
+    }
+    [^] { return IES_TEXT_RAW; }
+}
+
+
+<IES_QSTRING> {
+    \} {STRING_POSTFIX}? {
+        nestedBraceDepth--;
+        assert(nestedBraceDepth >= 0);
+        if (nestedBraceDepth == 0) {
+            yybegin(YYINITIAL);
+            return IES_END;
+        }
+    }
+    "$(" {
+        yybegin(IES_FRAGMENT);
+        prevState = IES_QSTRING;
+        return IES_FRAGMENT_START;
+    }
+    \{ {
+        nestedBraceDepth++;
+    }
+    [^{}$]+ { return IES_TEXT_RAW; }
+    [^] { return IES_TEXT_RAW; }
 }
 
 ///////////////////////////////////////////

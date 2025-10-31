@@ -43,6 +43,8 @@ class DHighlighter : SyntaxHighlighterBase() {
         in TokenSets.KEYWORD -> DColor.KEYWORD
         in TokenSets.KW_SPECIAL_KEYWORDS -> DColor.SPECIAL_KEYWORD
         in TokenSets.KW_SPECIAL_TOKENS -> DColor.SPECIAL_TOKEN
+        DlangTypes.IES_START, DlangTypes.IES_END, DlangTypes.IES_TEXT -> DColor.STRING_LITERAL
+        DlangTypes.IES_FRAGMENT_START, DlangTypes.IES_FRAGMENT_END -> DColor.IES_FRAGMENT_DELIMITER
         StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN -> DColor.VALID_STRING_ESCAPE
         StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN -> DColor.INVALID_STRING_ESCAPE
         StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN -> DColor.INVALID_STRING_ESCAPE

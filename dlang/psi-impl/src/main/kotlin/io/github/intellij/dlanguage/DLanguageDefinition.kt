@@ -13,6 +13,7 @@ import com.intellij.psi.tree.TokenSet.create
 import com.intellij.psi.tree.TokenSet.orSet
 import io.github.intellij.dlanguage.lexer.DlangLexer
 import io.github.intellij.dlanguage.parser.ParserWrapper
+import io.github.intellij.dlanguage.psi.DTokenSets.IES_TOKENS
 import io.github.intellij.dlanguage.psi.DTokenSets.STRING_LITERALS
 import io.github.intellij.dlanguage.psi.DlangPsiFileImpl
 import io.github.intellij.dlanguage.psi.DlangTypes
@@ -30,7 +31,7 @@ class DLangParserDefinition : ParserDefinition {
 
     override fun spaceExistenceTypeBetweenTokens(left: ASTNode?, right: ASTNode?): ParserDefinition.SpaceRequirements = ParserDefinition.SpaceRequirements.MAY
 
-    override fun getStringLiteralElements(): TokenSet = STRING_LITERALS
+    override fun getStringLiteralElements(): TokenSet = orSet(STRING_LITERALS, IES_TOKENS)
 
     override fun getFileNodeType(): DFileStubElementType = DFileStubElementType.INSTANCE
 
