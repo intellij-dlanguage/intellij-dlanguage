@@ -11,5 +11,6 @@ class DHighlightingLexer : LayeredLexer(DlangLexer()) {
         registerLayer(DLiteralEscapesLexer(CHARACTER_LITERAL), CHARACTER_LITERAL)
         registerLayer(DLiteralEscapesLexer(DOUBLE_QUOTED_STRING), DOUBLE_QUOTED_STRING)
         registerLayer(DDelimitedStringDelimiterLexer(), DELIMITED_STRING)
+        registerLayer(DLiteralEscapesLexer(IES_TEXT), IES_TEXT)
     }
 }

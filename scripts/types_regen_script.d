@@ -224,6 +224,7 @@ static this() {
     types_children["IdentityExpression"] = ["Expression*","KW_IS","OP_NOT"];
     types_mixins["IdentityExpression"] = "DLanguageIdentityExpressionImplMixin";
     types_extra_interfaces["IdentityExpression"] = ["Expression"];
+    types_children["IESString"] = [];
     stub_children ["IfCondition"] = ["Identifier",  "AssignExpression*","OP_COMMA*", "KW_AUTO", "KW_SCOPE","Type", "OP_EQ"];
     types_children["IfStatement"] = ["Statement","KW_ELSE","KW_IF","OP_PAR_LEFT","OP_PAR_RIGHT","IfCondition"];
     types_extra_interfaces["IfStatement"] = ["Statement"];

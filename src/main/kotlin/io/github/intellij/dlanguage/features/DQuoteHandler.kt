@@ -22,12 +22,13 @@ class DQuoteHandler : SimpleTokenSetQuoteHandler(
         val start = iterator.start
         return when (iterator.tokenType) {
             WYSIWYG_STRING, DELIMITED_STRING, TOKEN_STRING -> offset - start <= 2
+            IES_START -> true
             else -> super.isOpeningQuote(iterator, offset)
         }
     }
 
     override fun isClosingQuote(iterator: HighlighterIterator, offset: Int): Boolean {
-        var closingQuote = super.isClosingQuote(iterator, offset)
+        var closingQuote = super.isClosingQuote(iterator, offset) || iterator.tokenType === IES_END
         if (closingQuote) {
             // check escape next
             if (!iterator.atEnd()) {
@@ -42,6 +43,8 @@ class DQuoteHandler : SimpleTokenSetQuoteHandler(
     }
 
     override fun hasNonClosedLiteral(editor: Editor, iterator: HighlighterIterator, offset: Int): Boolean {
+        if (!(myLiteralTokenSet.contains(iterator.tokenType) || iterator.tokenType === IES_START))
+            return false
         val document = editor.document
         val text = document.text
         val quote = text.substring(iterator.start, iterator.start + 1)
@@ -63,10 +66,15 @@ class DQuoteHandler : SimpleTokenSetQuoteHandler(
             DOUBLE_QUOTED_STRING,
             DELIMITED_STRING,
             WYSIWYG_STRING,
+            IES_START,
             HEX_STRING -> "\""
             ALTERNATE_WYSIWYG_STRING -> "`"
             TOKEN_STRING -> "}"
             else -> null
         }
+    }
+
+    override fun isInsideLiteral(iterator: HighlighterIterator?): Boolean {
+        return super.isInsideLiteral(iterator) || iterator?.tokenType === IES_TEXT
     }
 }

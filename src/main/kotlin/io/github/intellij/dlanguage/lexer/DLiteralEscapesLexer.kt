@@ -6,6 +6,7 @@ import com.intellij.openapi.util.text.StringUtil.isOctalDigit
 import com.intellij.psi.StringEscapesTokenTypes.*
 import com.intellij.psi.tree.IElementType
 import com.intellij.util.text.CharArrayUtil.indexOf
+import io.github.intellij.dlanguage.psi.DlangTypes
 import io.github.intellij.dlanguage.psi.DlangTypes.VALID_NAMED_CHARACTER_ENTITY
 import java.lang.Integer.min
 
@@ -61,6 +62,7 @@ class DLiteralEscapesLexer(private val defaultToken: IElementType) : LexerBase()
                 isValidNamedCharacterEntities(tokenStart, tokenEnd) -> VALID_NAMED_CHARACTER_ENTITY
                 else -> INVALID_CHARACTER_ESCAPE_TOKEN
             }
+            '$' -> if (defaultToken == DlangTypes.IES_TEXT) VALID_STRING_ESCAPE_TOKEN else INVALID_CHARACTER_ESCAPE_TOKEN
             else ->
                 when {
                     isValidOctalDigit(tokenStart, tokenEnd) -> VALID_STRING_ESCAPE_TOKEN

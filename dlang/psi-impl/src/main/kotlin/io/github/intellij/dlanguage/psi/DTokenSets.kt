@@ -33,6 +33,14 @@ object DTokenSets {
     )
 
     @JvmField
+    val IES_TOKENS = TokenSet.create(
+        DlangTypes.IES_START,
+        DlangTypes.IES_TEXT,
+        DlangTypes.IES_FRAGMENT_START,
+        DlangTypes.IES_FRAGMENT_END,
+    )
+
+    @JvmField
     val INTEGER_LITERALS: TokenSet = TokenSet.create(DlangTypes.INTEGER_LITERAL)
 
     @JvmField

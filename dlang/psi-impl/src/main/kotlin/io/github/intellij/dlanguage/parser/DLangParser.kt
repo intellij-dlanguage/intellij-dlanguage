@@ -5423,7 +5423,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             val m = builder.mark()
             if (currentIsOneOf(*stringLiteralsArray)) {
                 do {
-                    advance()
+                    parseString()
                 } while (currentIsOneOf(*stringLiteralsArray))
             } else {
                 advance()
@@ -5588,6 +5588,34 @@ internal class DLangParser(private val builder: PsiBuilder) {
         }
 
         return null
+    }
+
+    private fun parseString() {
+        if (builder.tokenType !== DlangTypes.IES_START) {
+            // standard string
+            builder.advanceLexer()
+            return
+        }
+
+        assert (builder.tokenType === DlangTypes.IES_START)
+        val m = builder.mark()
+        builder.advanceLexer()
+        while(!builder.eof()) {
+            if (builder.tokenType === DlangTypes.IES_TEXT || builder.tokenType === DlangTypes.IES_TEXT_RAW)
+                builder.advanceLexer()
+            else if (builder.tokenType === DlangTypes.IES_FRAGMENT_START) {
+                builder.advanceLexer()
+                parseAssignExpression()
+                expect(DlangTypes.IES_FRAGMENT_END)
+            } else if (builder.tokenType === DlangTypes.IES_END) {
+                builder.advanceLexer()
+                break
+            } else {
+                builder.mark().error("Unexpected ies-string token")
+                break
+            }
+        }
+        m.done(DlangTypes.IES_STRING)
     }
 
     private fun isLiteral(i: IElementType?): Boolean {
@@ -8496,7 +8524,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
             DlangTypes.WYSIWYG_STRING,
             DlangTypes.DELIMITED_STRING,
             DlangTypes.TOKEN_STRING,
-            DlangTypes.HEX_STRING
+            DlangTypes.HEX_STRING,
+            DlangTypes.IES_START
         )
 
         private val literals: Set<IElementType?> = Sets.newHashSet<IElementType?>(
@@ -8513,7 +8542,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
             DlangTypes.WYSIWYG_STRING,
             DlangTypes.DELIMITED_STRING,
             DlangTypes.TOKEN_STRING,
-            DlangTypes.HEX_STRING
+            DlangTypes.HEX_STRING,
+            DlangTypes.IES_START
         )
 
         private val builtinTypes: Set<IElementType?> = Sets.newHashSet<IElementType?>(

@@ -383,6 +383,10 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitIESString(@NotNull final DLanguageIESString o) {
+        visitPsiElement(o);
+    }
+
     public void visitIfStatement(@NotNull final DLanguageIfStatement o) {
         visitPsiElement(o);
     }
@@ -426,10 +430,6 @@ public class DlangVisitor extends PsiElementVisitor {
     public void visitInOutStatement(@NotNull final DLanguageInOutStatement o) {
         visitPsiElement(o);
     }
-
-//    public void visitInitialize(@NotNull DLanguageInitialize o) {
-//        visitPsiElement(o);
-//    }
 
     public void visitInitializer(@NotNull final DLanguageInitializer o) {
         visitPsiElement(o);
