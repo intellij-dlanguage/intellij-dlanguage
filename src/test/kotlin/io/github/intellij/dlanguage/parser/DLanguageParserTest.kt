@@ -107,6 +107,7 @@ class DLanguageParserTest : DLanguageParserTestBase("parser", "d", DLangParserDe
     fun testexpressions_function_literal() = doDlangParserTest()
     fun testexpressions_function_literal2() = doDlangParserTest()
     fun testexpressions_function_literal3() = doDlangParserTest()
+    fun testexpressions_function_literal_parameterless() = doDlangParserTest() // issue #1174
     fun testexpressions_ies_string() = doDlangParserTest()
     fun testexpressions_import() = doDlangParserTest()
     fun testexpressions_in() = doDlangParserTest()
