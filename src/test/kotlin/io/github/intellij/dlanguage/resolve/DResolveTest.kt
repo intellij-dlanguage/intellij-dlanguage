@@ -129,6 +129,12 @@ class DResolveTest : DResolveTestCase() {
     fun testScopeOperatorXResolveLocal() = doTest()
 
     @Test
+    fun testScopeOperatorTypeResolveGlobal() = doTest()
+
+    @Test
+    fun testScopeOperatorTypeInnerTypeResolveGlobalInner() = doTest()
+
+    @Test
     fun testGotoToLabeledStatementShouldResolve() = doTest()
 
     @Test
