@@ -4826,13 +4826,10 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 // Anonymous function call
                 return parseExpression()
             }
-            val bookmark = builder.mark()
-            if (!parseStructInitializer()) {
-                bookmark.rollbackTo()
+            if (isExpInitializer()) {
                 return parseExpression()
             }
-            bookmark.drop()
-            return true
+            return parseStructInitializer()
         } else if (builder.tokenType === DlangTypes.OP_BRACKET_LEFT) {
             val b = peekPastBrackets()
             if (b == DlangTypes.OP_DOT || b == DlangTypes.OP_BRACKET_LEFT) {
@@ -8178,8 +8175,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
 
     private val isStorageClass: Boolean
         get() {
-            if (!moreTokens()) return false
-            val i = current()
+            if (builder.eof()) return false
+            val i = builder.tokenType
             return if (i === DlangTypes.KW_CONST || i === DlangTypes.KW_IMMUTABLE || i === DlangTypes.KW_INOUT || i === DlangTypes.KW_SHARED) {
                 !peekIs(DlangTypes.OP_PAR_LEFT)
             } else i === DlangTypes.OP_AT || i === DlangTypes.KW_DEPRECATED || i === DlangTypes.KW_ABSTRACT || i === DlangTypes.KW_ALIGN || i === DlangTypes.KW_AUTO || i === DlangTypes.KW_ENUM || i === DlangTypes.KW_EXTERN || i === DlangTypes.KW_FINAL || i === DlangTypes.KW_NOTHROW || i === DlangTypes.KW_OVERRIDE || i === DlangTypes.KW_PURE || i === DlangTypes.KW_REF || i === DlangTypes.KW___GSHARED || i === DlangTypes.KW_SCOPE || i === DlangTypes.KW_STATIC || i === DlangTypes.KW_SYNCHRONIZED
@@ -8187,8 +8184,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
 
     val isAttribute: Boolean
         get() {
-            if (!moreTokens()) return false
-            val i = current()
+            if (builder.eof()) return false
+            val i = builder.tokenType
             if (i === DlangTypes.KW_CONST || i === DlangTypes.KW_IMMUTABLE || i === DlangTypes.KW_INOUT || i === DlangTypes.KW_SCOPE) {
                 return !peekIs(DlangTypes.OP_PAR_LEFT)
             } else if (i === DlangTypes.KW_STATIC) {
@@ -8232,7 +8229,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
     }
 
     private fun currentIsMemberFunctionAttribute(): Boolean {
-        return moreTokens() && isMemberFunctionAttribute(current())
+        return !builder.eof() && isMemberFunctionAttribute(builder.tokenType)
     }
 
     private fun error(message: String) {
@@ -8379,7 +8376,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
     private fun currentIsOneOf(vararg types: IElementType): Boolean {
         if (builder.eof()) return false
 
-        val curr = current()
+        val curr = builder.tokenType
 
         if (curr != null) {
             return listOf(*types).contains(curr)
@@ -8453,11 +8450,6 @@ internal class DLangParser(private val builder: PsiBuilder) {
         parseStructBody()
     }
 
-    private fun emptyBody(): Boolean {
-        advance()
-        return true
-    }
-
     private fun baseClassList(): Boolean {
         advance() // :
         parseBaseClassList()
@@ -8477,7 +8469,8 @@ internal class DLangParser(private val builder: PsiBuilder) {
             if (currentIs(DlangTypes.OP_BRACES_LEFT)) {
                 return parseStructBody()
             } else if (currentIs(DlangTypes.OP_SCOLON)) {
-                return emptyBody()
+                builder.advanceLexer()
+                return true
             } else {
                 error("Struct body or ';' expected")
                 return false
@@ -8490,12 +8483,88 @@ internal class DLangParser(private val builder: PsiBuilder) {
             return constraint(false)
         }
         if (currentIs(DlangTypes.OP_SCOLON)) {
-            return emptyBody()
+            builder.advanceLexer()
+            return true
         }
         if (currentIs(DlangTypes.OP_COLON)) {
             return baseClassList()
         }
         return parseStructBody()
+    }
+
+    /**
+     * Return true if it’s an expression initializer, false if its a struct initializer
+     */
+    private fun isExpInitializer(): Boolean {
+        /* Scan ahead to discern between a struct initializer and
+         * parameterless function literal.
+         *
+         * We'll scan the topmost curly bracket level for statement-related
+         * tokens, thereby ruling out a struct initializer.  (A struct
+         * initializer which itself contains function literals may have
+         * statements at nested curly bracket levels.)
+         *
+         * It's important that this function literal check not be
+         * pendantic, otherwise a function having the slightest syntax
+         * error would emit confusing errors when we proceed to parse it
+         * as a struct initializer.
+         *
+         * The following two ambiguous cases will be treated as a struct
+         * initializer (best we can do without type info):
+         *     {}
+         *     {{statements...}}  - i.e. it could be struct initializer
+         *        with one function literal, or function literal having an
+         *        extra level of curly brackets
+         * If a function literal is intended in these cases (unlikely),
+         * source can use a more explicit function literal syntax
+         * (e.g. prefix with "()" for empty parameter list).
+         */
+        val bookmark = builder.mark()
+        var parentheses = 0
+        var braces = 1
+        while (!builder.eof()) {
+            builder.advanceLexer()
+            when (builder.tokenType) {
+                DlangTypes.OP_PAR_LEFT -> parentheses++
+                DlangTypes.OP_PAR_RIGHT -> parentheses--
+                DlangTypes.KW_SCOPE -> {
+                    // lambda param can have the `scope` storage (S s = { (scope Type Id){} })
+                    if (parentheses != 0 && braces == 1) {
+                        bookmark.rollbackTo()
+                        return false
+                    }
+                }
+                DlangTypes.KW_ASM,
+                DlangTypes.KW_CLASS,
+                DlangTypes.KW_DEBUG,
+                DlangTypes.KW_ENUM,
+                DlangTypes.KW_IF,
+                DlangTypes.KW_INTERFACE,
+                DlangTypes.KW_PRAGMA,
+                DlangTypes.OP_SCOLON,
+                DlangTypes.KW_STRUCT,
+                DlangTypes.KW_SWITCH,
+                DlangTypes.KW_SYNCHRONIZED,
+                DlangTypes.KW_TRY,
+                DlangTypes.KW_UNION,
+                DlangTypes.KW_VERSION,
+                DlangTypes.KW_WHILE,
+                DlangTypes.KW_WITH -> {
+                        if (braces == 1) {
+                            bookmark.rollbackTo()
+                            return true
+                        }
+                }
+                DlangTypes.OP_BRACES_LEFT -> braces++
+                DlangTypes.OP_BRACES_RIGHT -> {
+                    if (--braces == 0) {
+                        break
+                    }
+                }
+            }
+        }
+        bookmark.rollbackTo()
+        return false
     }
 
     companion object {
