@@ -209,7 +209,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 }
             }
         }
-        exit_section_modified(builder, m, DlangTypes.ALIAS_INITIALIZER, true)
+        m.done(DlangTypes.ALIAS_INITIALIZER)
         return true
     }
 
@@ -383,12 +383,12 @@ internal class DLangParser(private val builder: PsiBuilder) {
             builder.advanceLexer()
         }
         if (parseAssignExpression() == null) {
-            argumentRecover("assign expression expected")
+            argumentRecover()
         }
         m.done(DlangTypes.NAMED_ARGUMENT)
     }
 
-    private fun argumentRecover(errorMessage: String, ) {
+    private fun argumentRecover() {
         val recovery = builder.mark()
         while (!builder.eof()) {
             if (builder.tokenType === DlangTypes.OP_COMMA || builder.tokenType === DlangTypes.OP_PAR_LEFT) {
@@ -396,7 +396,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
             }
             builder.advanceLexer()
         }
-        recovery.error(errorMessage)
+        recovery.error("Assign expression expected")
     }
 
     /**
@@ -4489,12 +4489,18 @@ internal class DLangParser(private val builder: PsiBuilder) {
         }
         builder.advanceLexer()
         if (!parseArgumentList()) {
+            bookmark.rollbackTo()
             m.done(DlangTypes.MIXIN_DECLARATION)
-            return true
+            return false
+        }
+        expect(DlangTypes.OP_PAR_RIGHT)
+        if (builder.tokenType !== DlangTypes.OP_SCOLON) {
+            // if no scolon, it’s probably a mixin type part of a function declaration
+            bookmark.rollbackTo()
+            return false
         }
         bookmark.drop()
-        expect(DlangTypes.OP_PAR_RIGHT)
-        expect(DlangTypes.OP_SCOLON)
+        builder.advanceLexer()
         m.done(DlangTypes.MIXIN_DECLARATION)
         return true
     }
@@ -7341,7 +7347,7 @@ internal class DLangParser(private val builder: PsiBuilder) {
                 }
             }
         } else if (i === DlangTypes.KW_MIXIN) {
-            if (parseMixinType()) {
+            if (!parseMixinType()) {
                 m.done(DlangTypes.BASIC_TYPE)
                 return false
             }

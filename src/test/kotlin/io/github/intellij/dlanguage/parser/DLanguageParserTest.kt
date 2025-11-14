@@ -328,6 +328,9 @@ class DLanguageParserTest : DLanguageParserTestBase("parser", "d", DLangParserDe
     fun testtraits_special_keywords() = doDlangParserTest()
     fun testtraits_getattributes() = doDlangParserTest()
 
+    // types
+    fun testtype_mixin() = doDlangParserTest()
+
     // unittest
     fun testunittests() = doDlangParserTest()
 
