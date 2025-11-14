@@ -335,6 +335,9 @@ class DResolveTest : DResolveTestCase() {
     fun testFunctionCallUFCSWithLocalImportResolveLocalFunction() = doTest()
 
     @Test
+    fun testFunctionCallUFCSWithLocalImportToAliasSymbol() = doTest()
+
+    @Test
     fun testFunctionCallUFCSWithLocalSelectiveImportResolve() = doTest()
 
     @Test

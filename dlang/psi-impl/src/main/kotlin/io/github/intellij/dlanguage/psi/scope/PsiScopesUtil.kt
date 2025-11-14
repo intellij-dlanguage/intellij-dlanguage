@@ -109,8 +109,8 @@ object PsiScopesUtil {
                     return false
             }
             // UFCS search
-            val processor = UFCSProcessor(processor);
-            return treeWalkUp(processor, reference.element, null);
+            val processor = UFCSProcessor(processor)
+            return treeWalkUp(processor, reference.element, null)
         } else {
             // First try to resolve to a package or module (of imported symbol)
             val packageProcessor = PackageOrModuleProcessor(processor, null)

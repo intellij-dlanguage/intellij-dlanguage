@@ -14,7 +14,8 @@ class UFCSProcessor(private val delegate: PsiScopeProcessor) : PsiScopeProcessor
             return delegate.execute(element, state)
         if (isCurrentModuleEval &&
             (element is FunctionDeclaration ||
-                element is TemplateDeclaration)) {
+                element is TemplateDeclaration ||
+                element is AliasInitializer)) {
             return delegate.execute(element, state)
         }
         return true
