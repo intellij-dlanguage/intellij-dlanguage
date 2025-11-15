@@ -198,6 +198,7 @@ class DLanguageParserTest : DLanguageParserTestBase("parser", "d", DLangParserDe
     fun testassocarrays_membership() = doDlangParserTest()
     fun testassocarrays_structs() = doDlangParserTest()
     fun testassocarrays_word_count() = doDlangParserTest()
+    fun testassocarrays_invalid_syntax() = doDlangParserTest(shouldPass = false)
 
     // structs and unions
     fun teststructs() = doDlangParserTest()
