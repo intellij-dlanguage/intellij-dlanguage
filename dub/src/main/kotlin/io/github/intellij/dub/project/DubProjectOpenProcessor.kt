@@ -51,7 +51,7 @@ class DubProjectOpenProcessor : ProjectOpenProcessorBase<DubProjectImportBuilder
         return ArrayUtil.contains(file.name, *SUPPORTED_FILES)
     }
 
-    override fun doOpenProject(
+    override suspend fun openProjectAsync(
         virtualFile: VirtualFile,
         projectToClose: Project?,
         forceOpenInNewFrame: Boolean
@@ -76,7 +76,7 @@ class DubProjectOpenProcessor : ProjectOpenProcessorBase<DubProjectImportBuilder
         if (project != null) {
             // Run on EDT for with the ability to take a write action lock
             ApplicationManager.getApplication().invokeLater {
-                var mm = ModuleManager.getInstance(project)
+                val mm = ModuleManager.getInstance(project)
                 mm.modules.forEach{
                     // I couldn't figure out where project was gaining the additional module(s)
                     // so we'll just dispose it and it'll be fine and things should work ok without it
@@ -100,7 +100,7 @@ class DubProjectOpenProcessor : ProjectOpenProcessorBase<DubProjectImportBuilder
     }
 
     // Need to override when extending ProjectOpenProcessorBase<DubProjectImportBuilder>
-    override fun doQuickImport(file: VirtualFile, context: WizardContext): Boolean {
+    override fun doQuickImport(file: VirtualFile, wizardContext: WizardContext): Boolean {
         val builder: DubProjectImportBuilder =
             ProjectImportBuilder.EXTENSIONS_POINT_NAME.findExtensionOrFail(
                 DubProjectImportBuilder::class.java
@@ -110,7 +110,7 @@ class DubProjectOpenProcessor : ProjectOpenProcessorBase<DubProjectImportBuilder
             builder.getParameters().dubBinary = DubBinaryPathProvider.getDubPath()
             //builder.setRootDirectory(context.getProjectFileDirectory());
             builder.setRootDirectory(rootDirectory.path)
-            context.projectName = rootDirectory.name
+            wizardContext.projectName = rootDirectory.name
             LOG.debug("Opening dub project")
             true
         } else {

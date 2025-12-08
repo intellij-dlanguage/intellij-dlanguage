@@ -25,7 +25,7 @@ dependencies {
     testRuntimeOnly (libs.junit.engine)
 
     intellijPlatform {
-        intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
+        intellijIdea(providers.gradleProperty("ideaVersion").get())
         bundledPlugins(
             "com.intellij.java",
             "com.intellij.java.ide"

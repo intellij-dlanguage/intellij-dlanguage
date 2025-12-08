@@ -26,12 +26,12 @@ dependencies {
     testRuntimeOnly (libs.junit.engine)
 
     intellijPlatform {
-        intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
+        intellijIdea(providers.gradleProperty("ideaVersion").get())
+        bundledModule("intellij.platform.langInjection")
         bundledPlugins(
             "com.intellij.java",
             "com.intellij.java.ide",
             "com.intellij.modules.json",
-            "org.intellij.intelliLang",
             "com.intellij.copyright"
         )
         testFramework(TestFrameworkType.Platform)

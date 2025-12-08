@@ -27,7 +27,7 @@ dependencies {
     testImplementation (libs.junit.engine)
     testRuntimeOnly (libs.junit.engine)
     intellijPlatform {
-        intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
+        intellijIdea(providers.gradleProperty("ideaVersion").get())
         testFramework(TestFrameworkType.Platform)
     }
 }
