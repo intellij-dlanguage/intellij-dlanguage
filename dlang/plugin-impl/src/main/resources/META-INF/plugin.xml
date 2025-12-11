@@ -19,12 +19,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>1.38</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/70?closed=1">changelist</a>)<br/>
+        <b>1.39</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/71?closed=1">changelist</a>)<br/>
         <ul>
-            <li>Supports IntelliJ IDEA 2025.1 - 2025.2.*</li>
-            <li>Improve UI on intellij when creating a project</li>
-            <li>Better resolution of symbols<li>
-            <li>Bug fixes</li>
+            <li>Supports IntelliJ IDEA 2025.3 - 2025.3.*</li>
         </ul>
     ]]>
     </change-notes>

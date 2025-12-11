@@ -20,7 +20,7 @@ dependencies {
     testRuntimeOnly (libs.junit.engine)
 
     intellijPlatform {
-        intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
+        intellijIdea(providers.gradleProperty("ideaVersion").get())
         bundledPlugins("com.intellij.platform.images")
         testFramework(TestFrameworkType.Platform)
     }

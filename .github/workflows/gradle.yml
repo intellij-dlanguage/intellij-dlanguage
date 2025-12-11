@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        idea: [ '2025.1', '2025.2', '2025.2.4' ]
+        idea: [ '2025.3' ]
         jdk: [ '21' ]
         #os: [ubuntu-latest, windows-latest, macOS-latest]
 
@@ -22,6 +22,7 @@ jobs:
         distribution: temurin
         java-version: ${{ matrix.jdk }}
         cache: gradle
+
     - name: Install D compiler
       uses: dlang-community/setup-dlang@v2
 

@@ -27,7 +27,7 @@ class DlangNewProjectWizard : LanguageGeneratorNewProjectWizard {
 
         override val self = this
 
-        override val label = "Build System:"
+        override val label = "Build System:" // todo: use DlangBundle message bundle
 
         override val buildSystemProperty by ::stepProperty
 

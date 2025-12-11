@@ -16,6 +16,6 @@ dependencies {
     implementation(project(":utils"))
     implementation(libs.sentry)
     intellijPlatform {
-        intellijIdeaCommunity(providers.gradleProperty("ideaVersion").get())
+        intellijIdea(providers.gradleProperty("ideaVersion").get())
     }
 }
