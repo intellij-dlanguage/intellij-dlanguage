@@ -36,6 +36,8 @@
     <!--<depends>com.intellij.modules.vcs</depends>-->
     <!--<depends>com.intellij.modules.xml</depends>-->
     <!--<depends>com.intellij.modules.xdebugger</depends>-->
+    <depends optional="true" config-file="serve-d.xml">com.intellij.modules.lsp</depends>
+
     <depends optional="true" config-file="idea-only.xml">com.intellij.modules.java</depends>
     <!--<depends optional="true" config-file="idea-ultimate-only.xml">com.intellij.modules.ultimate</depends>-->
     <depends optional="true" config-file="copyright.xml">com.intellij.copyright</depends>

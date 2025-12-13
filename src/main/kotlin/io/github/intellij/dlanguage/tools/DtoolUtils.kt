@@ -73,6 +73,7 @@ object DtoolUtils {
 
     @JvmStatic
     fun String?.toSemVer(): SemVer? {
+        // todo: consider deprecating this and just using com.intellij.util.text.SemVer.parseFromText() instead
         return if (this.isSemVer()) {
             val parts = this!!.split(".")
                 .filterNot { s -> s.isEmpty() }
