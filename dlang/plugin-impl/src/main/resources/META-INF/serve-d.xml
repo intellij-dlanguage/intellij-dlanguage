@@ -1,0 +1,5 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <platform.lsp.serverSupportProvider implementation="io.github.intellij.dlanguage.lsp.ServeDProvider"/>
+    </extensions>
+</idea-plugin>
