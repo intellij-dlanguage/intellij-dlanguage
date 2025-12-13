@@ -1,0 +1,9 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <platform.lsp.serverSupportProvider implementation="io.github.intellij.dlanguage.lsp.ServeDProvider"/>
+
+        <projectConfigurable groupId="language" order="first"
+                             displayName="D LSP (Serve-D)"
+                             instance="io.github.intellij.dlanguage.lsp.settings.ServeDSettings"/>
+    </extensions>
+</idea-plugin>
