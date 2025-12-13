@@ -17,10 +17,12 @@ repositories {
 dependencies {
     api(project(":"))
     implementation(project(":utils"))
+    implementation(project(":dlang:psi-api"))
 
     testImplementation(project(":"))
     testImplementation(project(":dlang:plugin-impl"))
 
+    testImplementation (libs.mockito.kotlin)
     testImplementation (libs.junit.engine)
     testRuntimeOnly (libs.junit.engine)
 
