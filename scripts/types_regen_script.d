@@ -965,6 +965,11 @@ int main(string[] args) {
         return 1;
     }
     bool genInterface = args[1] == "Interface";
+    if(genInterface) {
+        writeln("re-generating Java interfaces");
+    } else {
+        writeln("re-generating Java implementation classes");
+    }
 
     // preparatory work
     if (!genInterface && !exists("impl"))
@@ -1044,9 +1049,13 @@ int main(string[] args) {
 `;
             }
             interfaceFile ~= "\n}\n";
-            File f = File(interfaceClassName ~ ".java", "w");
+            string javaFileName = interfaceClassName ~ ".java";
+
+            File f = File(javaFileName, "w");
             f.write(interfaceFile);
             f.close();
+
+            writeln(" - " ~ javaFileName);
         } else if (generate_stubImpl.canFind(key)) {
             // implementation
             string implClassName = "DLanguage" ~ key ~ "Impl";
@@ -1056,9 +1065,13 @@ int main(string[] args) {
                 implFile ~= getterMethod(toget);
             }
             implFile ~= "\n}\n";
-            File f = File(chainPath("impl",implClassName ~ ".java"),"w");
+            string javaFileName = implClassName ~ ".java";
+
+            File f = File(chainPath("impl", javaFileName), "w");
             f.write(implFile);
             f.close();
+
+            writeln(" - impl/" ~ javaFileName);
         }
     }
     return 0;

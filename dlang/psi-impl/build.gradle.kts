@@ -27,20 +27,31 @@ val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer
     targetOutputDir.set(file("gen/io/github/intellij/dlanguage/"))
 }
 
-
-val ensureDirectory = tasks.register<DefaultTask>("ensureDirectory") {
-    val file = file("gen/io/github/intellij/dlanguage/psi/impl")
-    outputs.dir("gen/io/github/intellij/dlanguage/psi/impl")
+/*
+ * Create's the working directory needed for the generatePsi task.
+ * 'gen/io/github/intellij/dlanguage/psi'
+ * Note that the types_regen_script.d script will create an 'impl' directory within this path
+ * for the generated Java implementation classes.
+ */
+val createWorkingDirectory = tasks.register<DefaultTask>("createWorkingDirectory") {
+    description = "Create required working dir for the generatePsi task"
+    val file = file("gen/io/github/intellij/dlanguage/psi")
+    outputs.dir("gen/io/github/intellij/dlanguage/psi")
     doFirst {
         Files.createDirectories(file.toPath())
     }
 }
 
 val generatePsi = tasks.register<Exec>("generatePsi") {
-    dependsOn(ensureDirectory)
+    description = "Generate PSI implementation classes using rdmd"
+    dependsOn(createWorkingDirectory)
+    outputs.dir("gen/io/github/intellij/dlanguage/psi/impl")
     workingDir("gen/io/github/intellij/dlanguage/psi/")
     executable("rdmd")
     args("${rootProject.projectDir}/scripts/types_regen_script.d", "Implementation")
+    doLast {
+        standardOutput?.let { println(it) }
+    }
 }
 
 val generate by tasks.registering {
