@@ -10,7 +10,7 @@ sentry = "8+"
 # plugins
 gradleIntelliJPlatformPlugin = "2.10.5"
 grammarkit = "2023.3.0.1"
-kotlin = "2.2.+"
+kotlin = "2.3.+"
 kover = "0.9.4"
 coverallsJacoco = "1.2.20"
 
