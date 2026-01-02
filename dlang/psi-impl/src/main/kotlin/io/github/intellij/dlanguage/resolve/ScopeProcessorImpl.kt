@@ -214,6 +214,11 @@ object ScopeProcessorImpl {
             return true
         }
 
+        // Base class list cannot match itself (prevent infinite recursion)
+        if (lastParent != null && lastParent == element.baseClassList) {
+            return true
+        }
+
         if (!processor.execute(element, state))
             return false
 
@@ -269,6 +274,11 @@ object ScopeProcessorImpl {
 
         val hint = processor.getHint(ElementDeclarationHint.KEY)
         if (hint != null && !hint.shouldProcess(ElementDeclarationHint.DeclarationKind.INTERFACE)) {
+            return true
+        }
+
+        // Base class list cannot match itself (prevent infinite recursion)
+        if (lastParent != null && lastParent == element.baseClassList) {
             return true
         }
 

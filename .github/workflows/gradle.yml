@@ -1,16 +1,26 @@
 name: Build & Verify
 
-on: [push, pull_request]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - develop
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 20
     name: IDEA ${{ matrix.idea }} & JDK ${{ matrix.jdk }}
     strategy:
       fail-fast: false
       matrix:
-        idea: [ '2025.3' ]
+        idea: [ '2025.3', '2025.3.1.1' ]
         jdk: [ '21' ]
         #os: [ubuntu-latest, windows-latest, macOS-latest]
 
