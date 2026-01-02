@@ -28,6 +28,11 @@ class DResolveTest : DResolveTestCase() {
     fun testClassInheritedFieldWithSuperUsageToDefinition() = doTest()
 
     @Test
+    fun testClassParentInheritorShouldNotResolveItself() = doTest(false)
+    @Test
+    fun testInterfaceParentInheritorShouldNotResolveItself() = doTest(false)
+
+    @Test
     fun testInterfaceInheritanceResolve() = doTest()
 
     @Test

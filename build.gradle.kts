@@ -32,8 +32,8 @@ allprojects {
 
         withType<KotlinCompile> {
             compilerOptions {
-                apiVersion.set(KotlinVersion.KOTLIN_2_1)
-                languageVersion.set(KotlinVersion.KOTLIN_2_1)
+                apiVersion.set(KotlinVersion.KOTLIN_2_2)
+                languageVersion.set(KotlinVersion.KOTLIN_2_2)
                 jvmTarget.set(JvmTarget.JVM_21)
                 //allWarningsAsErrors.set(true)
             }
