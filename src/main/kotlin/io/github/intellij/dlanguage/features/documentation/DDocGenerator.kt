@@ -120,11 +120,16 @@ class DDocGenerator {
                     builder.append(DocumentationMarkup.SECTION_HEADER_START)
                     builder.append(section.getTitle()!!.text)
                     builder.append(DocumentationMarkup.SECTION_SEPARATOR)
+                    builder.append("<p>")
                     builder.append(buildContent(section.getContent()!!, linksDeclarations))
+                    builder.append("</p>")
                     builder.append(DocumentationMarkup.SECTION_END)
                     builder.append("</tr>")
                 }
             }
+        }
+        if (startedSection) {
+            builder.append(DocumentationMarkup.SECTIONS_END)
         }
     }
 
