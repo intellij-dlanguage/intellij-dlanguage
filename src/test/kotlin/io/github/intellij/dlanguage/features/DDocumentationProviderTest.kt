@@ -1,6 +1,8 @@
 package io.github.intellij.dlanguage.features
 
-import com.intellij.codeInsight.documentation.DocumentationManager
+import com.intellij.lang.documentation.ide.IdeDocumentationTargetProvider
+import com.intellij.platform.backend.documentation.DocumentationData
+import com.intellij.platform.backend.documentation.impl.computeDocumentationBlocking
 import com.intellij.psi.util.startOffset
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
 import io.github.intellij.dlanguage.psi.named.DLanguageClassDeclaration
@@ -9,46 +11,13 @@ import org.junit.Test
 
 class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
 
-    private var provider: DDocumentationProvider? = null
-
     @Throws(Exception::class)
     public override fun setUp() {
         super.setUp()
-        provider = DDocumentationProvider()
     }
 
     override fun getTestDataPath(): String {
         return this.javaClass.classLoader.getResource("gold/documentation")!!.path
-    }
-
-    @Test
-    fun testGetUrlForHandlesSingleImport() {
-        myFixture.configureByText("example.d", "import std.typecons;")
-
-        val elementAndContext = DocumentationManager.getInstance(project)
-            .findTargetElementAndContext(myFixture.editor, 13, myFixture.file)!!
-
-        val result = provider!!.getUrlFor(elementAndContext.first, elementAndContext.second)
-        assertEquals("https://dlang.org/phobos/std_typecons.html", result[0])
-    }
-
-    @Test
-    fun testGetUrlForHandlesNullAndNonImportStatement() {
-        myFixture.configureByText("example.d", "class User { int id; string name;}")
-
-        val elementAndContext = DocumentationManager.getInstance(project)
-            .findTargetElementAndContext(myFixture.editor, 17, myFixture.file)!!
-
-        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(null, null))
-        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(elementAndContext.first, null))
-        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(null, elementAndContext.second))
-        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(elementAndContext.first, elementAndContext.second))
-    }
-
-    @Test
-    fun testGenerateDocHandlesNull() {
-        val text = provider!!.generateDoc(null, null)
-        assertNull("Should return null rather than throwing exception", text)
     }
 
     @Test
@@ -58,11 +27,10 @@ class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
         // class User { int id; string name;}
         //                  ^
         myFixture.editor.caretModel.moveToOffset(17)
-        val docElement = DocumentationManager.getInstance(project)
-            .findTargetElement(myFixture.editor, myFixture.file)
-        val text = provider!!.generateDoc(docElement, null)
-        assertNotNull(text)
-        assertTrue(text!!.contains("int"))
+        val data = findDocumentationData()
+        assertNotNull(data)
+        val text = data!!.html
+        assertTrue(text.contains("int"))
         assertTrue(text.contains("id"))
     }
 
@@ -73,12 +41,11 @@ class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
         // class User { int id; private string name;}
         //                                      ^
         myFixture.editor.caretModel.moveToOffset(37)
-        val docElement = DocumentationManager.getInstance(project)
-            .findTargetElement(myFixture.editor, myFixture.file)
-        val text = provider!!.generateDoc(docElement, null)
-        assertNotNull(text)
+        val data = findDocumentationData()
+        assertNotNull(data)
+        val text = data!!.html
         //assertTrue(text.contains("private")) XXX it’s private, so we can display it
-        assertTrue(text!!.contains("string"))
+        assertTrue(text.contains("string"))
         assertTrue(text.contains("name"))
     }
 
@@ -89,11 +56,10 @@ class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
         // int x = 0;
         //     ^
         myFixture.editor.caretModel.moveToOffset(4)
-        val docElement = DocumentationManager.getInstance(project)
-            .findTargetElement(myFixture.editor, myFixture.file)
-        val text = provider!!.generateDoc(docElement, null)
-        assertNotNull(text)
-        assertTrue(text!!.contains("int"))
+        val data = findDocumentationData()
+        assertNotNull(data)
+        val text = data!!.html
+        assertTrue(text.contains("int"))
         assertTrue(text.contains("x"))
     }
 
@@ -108,12 +74,10 @@ class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
 
         // put the caret on the doSomething() function in the source file
         myFixture.editor.caretModel.moveToOffset(doSomethingMethod!!.identifier!!.startOffset)
-        val docElement = DocumentationManager.getInstance(project)
-            .findTargetElement(myFixture.editor, myFixture.file)
-        val text = provider!!.generateDoc(docElement, null)
-        assertNotNull(text)
-        //assertTrue(text!!.contains("static"))
-        assertTrue(text!!.contains("void"))
+        val data = findDocumentationData()
+        assertNotNull(data)
+        val text = data!!.html
+        assertTrue(text.contains("void"))
         assertTrue(text.contains("doSomething"))
         assertTrue(text.contains("()"))
         assertTrue(text.contains("This is the method documentation."))
@@ -127,12 +91,10 @@ class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
 
         // put the caret on the doSomething() function in the source file
         myFixture.editor.caretModel.moveToOffset(myCodeClass!!.identifier!!.startOffset)
-        val docElement = DocumentationManager.getInstance(project)
-            .findTargetElement(myFixture.editor, myFixture.file)
-        val text = provider!!.generateDoc(docElement, null)
-        assertNotNull(text)
-
-        assertTrue(text!!.contains("This is the CLASS documentation"))
+        val data = findDocumentationData()
+        assertNotNull(data)
+        val text = data!!.html
+        assertTrue(text.contains("This is the CLASS documentation"))
     }
 
 
@@ -149,12 +111,10 @@ class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
 
         // put the caret on the doSomething() function in the source file
         myFixture.editor.caretModel.moveToOffset(myCodeClass!!.identifier!!.startOffset)
-        val docElement = DocumentationManager.getInstance(project)
-            .findTargetElement(myFixture.editor, myFixture.file)
-        val text = provider!!.generateDoc(docElement, null)
-        assertNotNull(text)
-
-        assertTrue(text!!.contains("Contains empty code snippet"))
+        val data = findDocumentationData()
+        assertNotNull(data)
+        val text = data!!.html
+        assertTrue(text.contains("Contains empty code snippet"))
     }
 
     @Test
@@ -168,10 +128,19 @@ class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
 
         // put the caret on the declaration in the source file
         myFixture.editor.caretModel.moveToOffset(myCodeClass!!.identifier!!.startOffset)
-        val docElement = DocumentationManager.getInstance(project)
-            .findTargetElement(myFixture.editor, myFixture.file)
-        val text = provider!!.generateDoc(docElement, null)
-        assertNotNull(text)
-        assertFalse(text!!.contains("<div class='content'>"))
+        val data = findDocumentationData()
+        assertNotNull(data)
+        val text = data!!.html
+        assertFalse(text.contains("<div class='content'>"))
     }
+
+    private fun findDocumentationData(): DocumentationData? {
+        val targets = IdeDocumentationTargetProvider.getInstance(project)
+            .documentationTargets(myFixture.editor, myFixture.file, myFixture.caretOffset)
+        assertSize(1, targets)
+        val target = targets.single()
+        val data = computeDocumentationBlocking(target.createPointer())
+        return data
+    }
+
 }
