@@ -70,7 +70,7 @@ object DDocElementTypes {
 
     // Specials sections
     @JvmField val DDOC_COPYRIGHT_SECTION = DlangDocElementType("DDOC_COPYRIGHT_SECTION") // Module level only
-    @JvmField val DDOC_PARAMS_SECTION = DlangDocElementType("DDOC_COPYRIGHT_SECTION") // Function level, special syntax
+    @JvmField val DDOC_PARAMS_SECTION = DlangDocElementType("DDOC_PARAMS_SECTION") // Function level, special syntax
     @JvmField val DDOC_MACROS_SECTION = DlangDocElementType("DDOC_MACROS_SECTION") // Same syntax as params
 
 

@@ -26,13 +26,14 @@ import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_HISTORY_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_HORIZONTAL_RULE
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_IMAGE
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_INLINE_REFERENCE_TEXT
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LEFT_BRACKET
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LEFT_PARENTHESES
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LICENSE_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_DECLARATION
+import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_INLINE_REFERENCE_TEXT
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_NAME
+import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_REFERENCE_TO
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_TEXT
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_MACROS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_MACRO_CALL
@@ -42,7 +43,6 @@ import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_PARAMS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_QUOTE
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_QUOTE_CHAR
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_REFERENCE_TO
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_RETURNS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_RIGHT_BRACKET
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_RIGHT_PARENTHESES
@@ -219,6 +219,7 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
         val contentMarker = builder.mark()
         var continueParagraph = true
         hasSomeData = false
+        hasLineBreak = false
         while (!isEndOfComment() && continueParagraph) {
             if (hasSomeData && hasSectionName()){
                 continueParagraph = false

@@ -35,5 +35,3 @@ D Language File
       PsiElement(DDOC_COMMENT_DATA)('should not make the parser crash')
       PsiElement(DDOC_WHITESPACE)('\n ')
   PsiElement(DDOC_COMMENT_END)('*/')
-  PsiElement(DDOC_WHITESPACE)('\n')
-  PsiElement(DDOC_COMMENT_DATA)('int declaration;')
