@@ -152,12 +152,20 @@ EMBEDDED_CODE_DELIMITER="``""`"+|"~~""~"+|"--""-"+
 }
 
 <COMMENT_DATA_START> {
+  // TODO macro & params sections
+
+  // TODO list
+  {LIST_ITEM}/{WHITE_DOC_SPACE_CHAR} { yybegin(COMMENT_DATA); return DDOC_ORDERED_LIST_POINT; }
+  ("+"|"-"|"*")/{WHITE_DOC_SPACE_CHAR} { yybegin(COMMENT_DATA); return DDOC_UNORDERED_LIST_POINT; }
+
+  // TODO table
   > { return DDOC_QUOTE_CHAR; }
   {HEADING}" " { yybegin(HEADING); return DDOC_HEADING_CHARS; }
   {HEADING}[\n\r] { backExcludingNewLine(); return DDOC_HEADING_CHARS; }
   {EMBEDDED_CODE_DELIMITER} { yybegin(EMBEDDED_CODE); embeddedCodeDelimiter = yycharat(yylength() - 1); return DDOC_EMBEDDED_CODE_DELIMITER; }
 }
 <COMMENT_DATA_START, COMMENT_DATA> {
+  "://" { yybegin(COMMENT_DATA); return DDOC_COMMENT_DATA; }
   : { yybegin(COMMENT_DATA); return DDOC_COLON; }
   "!" { yybegin(COMMENT_DATA); return DDOC_EXCLAMATION_MARK; }
   "[" { yybegin(COMMENT_DATA); return DDOC_LEFT_BRACKET; }
