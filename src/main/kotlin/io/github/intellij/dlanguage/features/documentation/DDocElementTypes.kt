@@ -17,6 +17,8 @@ object DDocElementTypes {
     @JvmField val DDOC_EMBEDDED_CODE_DELIMITER = DlangDocElementType("DDOC_EMBEDDED_CODE_DELIMITER")
     @JvmField val DDOC_EMBEDDED_CODE_CONTENT = DlangDocElementType("DDOC_EMBEDDED_CODE_CONTENT")
     @JvmField val DDOC_HEADING_CHARS = DlangDocElementType("DDOC_HEADING_CHARS")
+    @JvmField val DDOC_ORDERED_LIST_POINT = DlangDocElementType("DDOC_ORDERED_LIST_POINT")
+    @JvmField val DDOC_UNORDERED_LIST_POINT = DlangDocElementType("DDOC_UNORDERED_LIST_POINT")
 
     @JvmField val DDOC_MACRO_OPEN = DlangDocElementType("DDOC_MACRO_OPEN")
     @JvmField val DDOC_MACRO_END = DlangDocElementType("DDOC_MACRO_END")
@@ -31,11 +33,14 @@ object DDocElementTypes {
     @JvmField val DDOC_INLINE_CODE = DlangDocElementType("DDOC_INLINE_CODE")
     @JvmField val DDOC_HEADING = DlangDocElementType("DDOC_HEADING")
     @JvmField val DDOC_QUOTE = DlangDocElementType("DDOC_QUOTE")
+    @JvmField val DDOC_LIST_ITEM = DlangDocElementType("DDOC_LIST_ITEM")
+    @JvmField val DDOC_LIST_ITEM_CONTENT = DlangDocElementType("DDOC_LIST_ITEM_CONTENT")
     @JvmField val DDOC_ORDERED_LIST = DlangDocElementType("DDOC_ORDERED_LIST")
     @JvmField val DDOC_UNORDERED_LIST = DlangDocElementType("DDOC_UNORDERED_LIST")
     @JvmField val DDOC_HORIZONTAL_RULE = DlangDocElementType("DDOC_HORIZONTAL_RULE")
     @JvmField val DDOC_SIMPLE_EMPHASIS = DlangDocElementType("DDOC_SIMPLE_EMPHASIS")
     @JvmField val DDOC_DOUBLE_EMPHASIS = DlangDocElementType("DDOC_DOUBLE_EMPHASIS")
+    @JvmField val DDOC_TRIPLE_EMPHASIS = DlangDocElementType("DDOC_TRIPLE_EMPHASIS")
     @JvmField val DDOC_MACRO_CALL = DlangDocElementType("DDOC_MACRO_CALL")
     @JvmField val DDOC_LINK = DlangDocElementType("DDOC_LINK")
     @JvmField val DDOC_LINK_DECLARATION = DlangDocElementType("DDOC_LINK_DECLARATION")
@@ -49,8 +54,7 @@ object DDocElementTypes {
 
     // Sections
     @JvmField val DDOC_SECTION_TITLE = DlangDocElementType("DDOC_SECTION_TITLE")
-    @JvmField val DDOC_SECTION_CONTENT = DlangDocElementType("DDOC_SECTION_CONTENT")
-    @JvmField val DDOC_ANONYMOUS_SECTION = DlangDocElementType("DDOC_ANONYMOUS_SECTION")
+    @JvmField val DDOC_SECTION_PARAGRAPH = DlangDocElementType("DDOC_SECTION_PARAGRAPH")
     @JvmField val DDOC_NAMED_SECTION = DlangDocElementType("DDOC_NAMED_SECTION")
 
     @JvmField val DDOC_SUMMARY_SECTION = DlangDocElementType("DDOC_SUMMARY_SECTION") // unnamed
@@ -76,11 +80,7 @@ object DDocElementTypes {
 
     // TODO Remain Highlighting
     /*
-    LISTS (think to support them in markdown quote)
-      ordered
-      unordered
     TABLES
-    ~ TEXT_EMPHASIS  // see ddoc tests, (see italic in bold)
     IDENTIFIER_EMPHASIS // highlighting ref (see java)
     ~ PUNCTUATION_ESCAPES // mainly macro but need to support \\
     */

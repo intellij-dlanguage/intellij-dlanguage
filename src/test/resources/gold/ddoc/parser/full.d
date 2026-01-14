@@ -20,6 +20,15 @@
   *
   * [ref]: https://dlang.org "The D Language Website"
   *
+  * - A parent list item
+  *
+  *   With a second paragraph
+  *
+  *   - A sub-item
+  *     ---
+  *     // A code example inside the sub-item
+  *     ---
+  *
   * > To D, or not to D. -- Willeam NerdSpeare
   * ___
   * ***

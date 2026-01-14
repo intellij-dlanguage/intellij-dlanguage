@@ -11,7 +11,6 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import io.github.intellij.dlanguage.documentation.DDocLanguage
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_ANONYMOUS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_AUTHORS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_BUGS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COPYRIGHT_SECTION
@@ -47,7 +46,6 @@ class DDocParserDefinition : ParserDefinition {
 
     override fun createElement(node: ASTNode): PsiElement {
         return when(node.elementType) {
-            DDOC_ANONYMOUS_SECTION -> DDocAnonymousSectionImpl(node)
             DDOC_NAMED_SECTION -> DDocNamedSectionImpl(node)
             DDOC_SUMMARY_SECTION -> DDocSummarySectionImpl(node)
             DDOC_DESCRIPTION_SECTION -> DDocDescriptionSectionImpl(node)
@@ -69,10 +67,10 @@ class DDocParserDefinition : ParserDefinition {
             DDOC_MACROS_SECTION -> DDocMacroSectionImpl(node)
 
             DDOC_LINK_DECLARATION -> DDocLinkDeclarationImpl(node)
-            else -> return DlangDocPsiElementImpl(node)
+            else -> DlangDocPsiElementImpl(node)
         }
     }
 
-    override fun createFile(viewProvider: FileViewProvider): PsiFile = DlangPsiFileImpl(viewProvider) // TODO can actually be DDocFile (.dd)
+    override fun createFile(viewProvider: FileViewProvider): PsiFile = DlangPsiFileImpl(viewProvider)
 
 }

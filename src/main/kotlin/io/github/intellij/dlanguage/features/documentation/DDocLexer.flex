@@ -15,7 +15,6 @@ import static io.github.intellij.dlanguage.documentation.psi.DDocMetaElementType
   private char embeddedCodeDelimiter;
 
   // TODO support nested comments support
-  // TODO support for ddoc (no leading star)
   public _DDocLexer() {
       this((java.io.Reader)null);
       macroParenCount = 0;
@@ -61,10 +60,13 @@ HEADING="#"{1,6}
 NON_HEADING="######""#"+
 
 HORIZONTAL_RULE=("- -"" -"+)|(("_"" "?"_")(" "?"_")+)|(("*"" "?"*")(" "?"*")+)
-SIMPLE_EMPHASIS="*"~([^\\]"*")
-DOUBLE_EMPHASIS="**"~([^\\]"**")
+SIMPLE_EMPHASIS="*"([^" "])([^\n])*([^\\" "\n]"*")
+DOUBLE_EMPHASIS="**"([^" "])([^\n])*([^\\" "\n]"**")
+TRIPLE_EMPHASIS="***"([^" "])([^\n])*([^\\" "\n]"***")
 EMBEDDED_CODE_DELIMITER="``""`"+|"~~""~"+|"--""-"+
 
+ORDERED_LIST_ITEM={DIGIT}+"."
+UNORDERED_LIST_ITEM="+"|"-"|"*"
 
 %state COMMENT_DATA_START, COMMENT_DATA, DOC_MACRO_START, DOC_MACRO, HEADING
 
@@ -76,6 +78,7 @@ EMBEDDED_CODE_DELIMITER="``""`"+|"~~""~"+|"--""-"+
 %%
 
 <YYINITIAL> {
+  // TODO ditto keyword
   {MULTILINE_DOC_COMMENT_BEGIN} { yybegin(COMMENT_DATA_START); nestedStyle = false; return DDOC_COMMENT_START; }
   {MULTILINE_DOC_COMMENT_BEGIN_NESTED} { yybegin(COMMENT_DATA_START); nestedStyle = true; return DDOC_COMMENT_START; }
   {DOC_COMMENT_BEGIN} { yybegin(COMMENT_DATA_START); return DDOC_COMMENT_START; }
@@ -153,12 +156,10 @@ EMBEDDED_CODE_DELIMITER="``""`"+|"~~""~"+|"--""-"+
 
 <COMMENT_DATA_START> {
   // TODO macro & params sections
-
-  // TODO list
-  {LIST_ITEM}/{WHITE_DOC_SPACE_CHAR} { yybegin(COMMENT_DATA); return DDOC_ORDERED_LIST_POINT; }
-  ("+"|"-"|"*")/{WHITE_DOC_SPACE_CHAR} { yybegin(COMMENT_DATA); return DDOC_UNORDERED_LIST_POINT; }
-
   // TODO table
+
+  {ORDERED_LIST_ITEM}/{WHITE_DOC_SPACE_CHAR} { yybegin(COMMENT_DATA); return DDOC_ORDERED_LIST_POINT; }
+  {UNORDERED_LIST_ITEM}/{WHITE_DOC_SPACE_CHAR} { yybegin(COMMENT_DATA); return DDOC_UNORDERED_LIST_POINT; }
   > { return DDOC_QUOTE_CHAR; }
   {HEADING}" " { yybegin(HEADING); return DDOC_HEADING_CHARS; }
   {HEADING}[\n\r] { backExcludingNewLine(); return DDOC_HEADING_CHARS; }
@@ -166,6 +167,7 @@ EMBEDDED_CODE_DELIMITER="``""`"+|"~~""~"+|"--""-"+
 }
 <COMMENT_DATA_START, COMMENT_DATA> {
   "://" { yybegin(COMMENT_DATA); return DDOC_COMMENT_DATA; }
+  "\*" { yybegin(COMMENT_DATA); return DDOC_COMMENT_DATA; }
   : { yybegin(COMMENT_DATA); return DDOC_COLON; }
   "!" { yybegin(COMMENT_DATA); return DDOC_EXCLAMATION_MARK; }
   "[" { yybegin(COMMENT_DATA); return DDOC_LEFT_BRACKET; }
@@ -173,8 +175,9 @@ EMBEDDED_CODE_DELIMITER="``""`"+|"~~""~"+|"--""-"+
   "(" { yybegin(COMMENT_DATA); return DDOC_LEFT_PARENTHESES; }
   ")" { yybegin(COMMENT_DATA); return DDOC_RIGHT_PARENTHESES; }
   {HORIZONTAL_RULE} { yybegin(COMMENT_DATA); return DDOC_HORIZONTAL_RULE; }
+  {TRIPLE_EMPHASIS} {yybegin(COMMENT_DATA); return DDOC_TRIPLE_EMPHASIS; }
   {DOUBLE_EMPHASIS} {yybegin(COMMENT_DATA); return DDOC_DOUBLE_EMPHASIS; }
-  {SIMPLE_EMPHASIS} {yybegin(COMMENT_DATA); return DDOC_SIMPLE_EMPHASIS; }  // FIXME: handle tricky cases (bold inside italic)
+  {SIMPLE_EMPHASIS} {yybegin(COMMENT_DATA); return DDOC_SIMPLE_EMPHASIS; }
   {INLINE_CODE_DELIMITER}[^"`"\n\r]*{INLINE_CODE_DELIMITER} { yybegin(COMMENT_DATA); return DDOC_INLINE_CODE; }
   {NON_HEADING} { yybegin(COMMENT_DATA); return DDOC_COMMENT_DATA; }
 }

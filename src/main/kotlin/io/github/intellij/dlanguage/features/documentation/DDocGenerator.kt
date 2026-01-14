@@ -6,12 +6,13 @@ import com.intellij.lang.documentation.QuickDocHighlightingHelper
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiWhiteSpace
+import com.intellij.psi.TokenType
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.childLeafs
 import com.intellij.psi.util.elementType
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_LEADING_ASTERISKS
 import io.github.intellij.dlanguage.documentation.psi.DlangDocComment
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_ANONYMOUS_SECTION
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COLON
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COMMENT_DATA
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_DOUBLE_EMPHASIS
@@ -28,15 +29,18 @@ import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_REFERENCE_TO
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_TEXT
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_MACRO_CALL
+import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_ORDERED_LIST
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_QUOTE
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_QUOTE_CHAR
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_SIMPLE_EMPHASIS
+import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_TRIPLE_EMPHASIS
+import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_UNORDERED_LIST
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_WHITESPACE
 import io.github.intellij.dlanguage.features.documentation.psi.DlangDocPsiElement
-import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocAnonymousSectionImpl
 import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocDescriptionSectionImpl
 import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocLinkDeclarationImpl
 import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocNamedSectionImpl
+import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocSummarySectionImpl
 import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration
 import io.github.intellij.dlanguage.utils.*
 
@@ -80,69 +84,91 @@ class DDocGenerator {
         // TODO actually choose which section to add (example copyright to display only for module)
         for (el in elements) {
             val linksDeclarations = PsiTreeUtil.findChildrenOfType(el, DDocLinkDeclarationImpl::class.java)
+            if (el.sections().isEmpty())
+                continue
             appendContentSections(sectionsBuilder, el.sections(), linksDeclarations)
         }
 
         if (sectionsBuilder.isBlank())
             return
-        builder.append(DocumentationMarkup.CONTENT_START)
         builder.append(sectionsBuilder)
-        builder.append(DocumentationMarkup.CONTENT_END)
     }
 
     private fun appendContentSections(builder: StringBuilder, sections: Array<PsiElement>, linksDeclarations: Collection<DDocLinkDeclarationImpl>) {
-        var startedSection = false
-        for (section in sections) {
-            when (section) {
-                is DDocAnonymousSectionImpl -> {
-                    if (startedSection) {
-                        startedSection = false
-                        builder.append(DocumentationMarkup.SECTIONS_END)
-                    }
-                    builder.append("<p>")
-                    builder.append(buildContent(section.getContent()!!, linksDeclarations))
-                    builder.append("</p>")
+        var i = 0
+        // TODO refactor to have section only being sections (not polluted)
+        while (sections[i].elementType == DDOC_WHITESPACE || sections[i].elementType == TokenType.WHITE_SPACE || sections[i].elementType == DDOC_COMMENT_LEADING_ASTERISKS) {
+            i++
+        }
+        val summary = sections[i]
+        if (summary is DDocSummarySectionImpl) {
+            builder.append(DocumentationMarkup.CONTENT_START)
+            builder.append("<p>")
+            builder.append(buildContent(summary.getSection(), linksDeclarations))
+            builder.append("</p>")
+            i++
+            if (i >= sections.size) {
+                builder.append(DocumentationMarkup.CONTENT_END)
+                return
+            }
+            while (sections[i].elementType == DDOC_WHITESPACE || sections[i].elementType == DDOC_COMMENT_LEADING_ASTERISKS) {
+                i++
+                if (i >= sections.size) {
+                    builder.append(DocumentationMarkup.CONTENT_END)
+                    return
                 }
-
-                is DDocDescriptionSectionImpl -> {
-                    for (anonymousSection in section.getSections()) {
+            }
+            if (sections.size > i) {
+                while (sections[i].elementType == DDOC_WHITESPACE || sections[i].elementType == TokenType.WHITE_SPACE || sections[i].elementType == DDOC_COMMENT_LEADING_ASTERISKS) {
+                    i++
+                    if (i >= sections.size) {
+                        builder.append(DocumentationMarkup.CONTENT_END)
+                        return
+                    }
+                }
+                val description = sections[i]
+                if (description is DDocDescriptionSectionImpl) {
+                    for (content in description.getSections()) {
                         builder.append("<p>")
-                        builder.append(buildContent(anonymousSection.getContent()!!, linksDeclarations))
+                        builder.append(buildContent(content, linksDeclarations))
                         builder.append("</p>")
                     }
+                    i++
                 }
-
+            }
+            builder.append(DocumentationMarkup.CONTENT_END)
+        }
+        if (i >= sections.size) return
+        builder.append(DocumentationMarkup.SECTIONS_START)
+        for (section in sections.slice(i until sections.size)) {
+            when (section) {
                 is DDocNamedSectionImpl -> {
-                    if (!startedSection) {
-                        startedSection = true
-                        builder.append(DocumentationMarkup.SECTIONS_START)
-                    }
                     builder.append(DocumentationMarkup.SECTION_HEADER_START)
-                    builder.append(section.getTitle()!!.text)
+                    builder.append(section.getTitle().text)
                     builder.append(DocumentationMarkup.SECTION_SEPARATOR)
-                    builder.append("<p>")
-                    builder.append(buildContent(section.getContent()!!, linksDeclarations))
-                    builder.append("</p>")
+                    val contents = section.getContents()
+                    for (content in contents) {
+                        builder.append("<p>")
+                        builder.append(buildContent(content, linksDeclarations))
+                        builder.append("</p>")
+                    }
                     builder.append(DocumentationMarkup.SECTION_END)
                     builder.append("</tr>")
                 }
             }
         }
-        if (startedSection) {
-            builder.append(DocumentationMarkup.SECTIONS_END)
-        }
+        builder.append(DocumentationMarkup.SECTIONS_END)
     }
 
     private fun buildContent(section: PsiElement, linksDeclarations: Collection<DDocLinkDeclarationImpl>): String {
         val builder = StringBuilder()
 
-        val childs = (section as? DlangDocPsiElement)?.getDescriptionElements()?: section.children
-        for (element in childs) {
+        val children = (section as? DlangDocPsiElement)?.getDescriptionElements()?.toList()?: section.childLeafs().toList()
+        for (element in children) {
             if (element.elementType == DDOC_COMMENT_LEADING_ASTERISKS)
                 continue
             when (element.elementType) {
                 DDOC_WHITESPACE -> builder.append(" ")
-                DDOC_ANONYMOUS_SECTION -> builder.append(buildContent(element, linksDeclarations))
                 DDOC_COMMENT_DATA -> builder.append(element.text)
                 DDOC_COLON -> builder.append(element.text)
                 DDOC_MACRO_CALL -> builder.append(element.text) // TODO interpret macro (substitute by the value)
@@ -176,6 +202,11 @@ class DDocGenerator {
                     builder.append(element.text.substring(2, element.text.length - 2)) // text without ** **
                     builder.append("</b>")
                 }
+                DDOC_TRIPLE_EMPHASIS -> {
+                    builder.append("<b><i>")
+                    builder.append(element.text.substring(3, element.text.length - 3)) // text without *** ***
+                    builder.append("</i></b>")
+                }
                 DDOC_QUOTE -> {
                     builder.append("<blockquote>")
                     builder.append(buildContent(element, linksDeclarations))
@@ -190,6 +221,16 @@ class DDocGenerator {
                     builder.append(buildLinkContent(linkContent, true, linksDeclarations))
                 }
                 DDOC_LINK_DECLARATION -> continue // its content is replaced in DDOC_LINKs
+                DDOC_ORDERED_LIST -> {
+                    builder.append("<ol>")
+                    buildListContent(builder, element, linksDeclarations)
+                    builder.append("</ol>")
+                }
+                DDOC_UNORDERED_LIST -> {
+                    builder.append("<ul>")
+                    buildListContent(builder, element, linksDeclarations)
+                    builder.append("</ul>")
+                }
                 else -> builder.append(element.text)
             }
         }
@@ -229,7 +270,7 @@ class DDocGenerator {
         }
         else {
             if (referenceTo != null) {
-                val target = linksDeclarations.find { it.firstChild.text == referenceTo}
+                val target = linksDeclarations.find { it.firstChild.text == referenceTo }
                 var referenceToText = ""
                 for (e in element.getDescriptionElements()) {
                     referenceToText += e.text
@@ -283,5 +324,14 @@ class DDocGenerator {
         val codeSnippet = rawText.substringAfter("\n", missingDelimiterValue = rawText)
         val language =  if (rawLanguage.isNotEmpty()) Language.findLanguageByID(rawLanguage)?: DLanguage else DLanguage
         return QuickDocHighlightingHelper.getStyledCodeBlock(element.project, language, codeSnippet )
+    }
+
+    private fun buildListContent(builder: StringBuilder, element: PsiElement, linksDeclarations: Collection<DDocLinkDeclarationImpl>) {
+        val children = element.children
+        for (child in children) {
+            builder.append("<li>")
+            builder.append(buildContent(child.lastChild, linksDeclarations))
+            builder.append("</li>")
+        }
     }
 }
