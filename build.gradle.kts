@@ -97,7 +97,9 @@ dependencies {
 
     testImplementation (project(":dlang:plugin-impl"))
 
-    testImplementation (libs.mockito.kotlin)
+    testImplementation (libs.mockito.kotlin) {
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
+    }
 
     testImplementation (libs.junit.engine)
     testRuntimeOnly (libs.junit.engine)
