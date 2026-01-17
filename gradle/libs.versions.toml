@@ -1,10 +1,10 @@
 [versions]
 # libraries
-annotations = "26.0.2-1"
+annotations = "26.+"
 gson = "2.13.+"
 junit = "4.13+"
 junit-vintage = "6.0+"
-mockito-kotlin = "6.1+"
+mockito-kotlin = "6.2+"
 sentry = "8+"
 
 # plugins
