@@ -1,0 +1,20 @@
+{
+  "name": "IntelliJ D Language Plugin",
+  "image": "mcr.microsoft.com/devcontainers/java:21-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "redhat.java",
+        "vscjava.vscode-gradle",
+        "vscjava.vscode-maven",
+        "Kotlin.kotlin"
+      ]
+    }
+  },
+  "postCreateCommand": "java -version && gradle --version",
+  "remoteUser": "vscode"
+}
