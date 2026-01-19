@@ -350,10 +350,10 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 new PropertyField(key.getFlagsKey(), flagsField));
 
             pathField.addBrowseFolderListener(
-                String.format("Select %s executable", command),
-                "",
                 null,
                 new DubToolBinaryChooserDescriptor(command)
+                    .withTitle(String.format("Select %s executable", command))
+                    .withDescription("")
             );
 
             autoFindButton.addActionListener(new LocateToolListener(pathField, command));
