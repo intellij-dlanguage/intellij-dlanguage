@@ -19,6 +19,8 @@ object DDocElementTypes {
     @JvmField val DDOC_HEADING_CHARS = DlangDocElementType("DDOC_HEADING_CHARS")
     @JvmField val DDOC_ORDERED_LIST_POINT = DlangDocElementType("DDOC_ORDERED_LIST_POINT")
     @JvmField val DDOC_UNORDERED_LIST_POINT = DlangDocElementType("DDOC_UNORDERED_LIST_POINT")
+    @JvmField val DDOC_ID = DlangDocElementType("DDOC_ID")
+    @JvmField val DDOC_EQ = DlangDocElementType("DDOC_EQ")
 
     @JvmField val DDOC_MACRO_OPEN = DlangDocElementType("DDOC_MACRO_OPEN")
     @JvmField val DDOC_MACRO_END = DlangDocElementType("DDOC_MACRO_END")
@@ -45,6 +47,7 @@ object DDocElementTypes {
     @JvmField val DDOC_LINK = DlangDocElementType("DDOC_LINK")
     @JvmField val DDOC_LINK_DECLARATION = DlangDocElementType("DDOC_LINK_DECLARATION")
     @JvmField val DDOC_IMAGE = DlangDocElementType("DDOC_IMAGE")
+    @JvmField val DDOC_KEY_VALUE_ELEMENT = DlangDocElementType("DDOC_KEY_VALUE_ELEMENT")
 
     // Intermediate Content for highlighting
     @JvmField val DDOC_LINK_TEXT = DlangDocElementType("DDOC_LINK_TEXT")

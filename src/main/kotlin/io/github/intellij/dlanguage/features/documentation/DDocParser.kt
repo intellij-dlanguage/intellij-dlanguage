@@ -157,8 +157,8 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
             else -> DDocElementTypes.DDOC_NAMED_SECTION
         }
         when(markerType) {
-            DDocElementTypes.DDOC_MACROS_SECTION -> parseMacroSection(marker, markerType)
-            DDocElementTypes.DDOC_PARAMS_SECTION -> parseParamsSection(marker, markerType)
+            DDocElementTypes.DDOC_MACROS_SECTION,
+            DDocElementTypes.DDOC_PARAMS_SECTION -> parseSpecialSection(marker, markerType)
             else -> {
                 do {
                     parseParagraph()
@@ -221,6 +221,7 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
             DDocElementTypes.DDOC_EMBEDDED_CODE_DELIMITER -> parseEmbeddedCode()
             DDocElementTypes.DDOC_ORDERED_LIST_POINT -> parseOrderedList()
             DDocElementTypes.DDOC_UNORDERED_LIST_POINT -> parseUnorderedList()
+            DDocElementTypes.DDOC_ID -> parseIdInNotParams()
             else -> builder.advanceLexer()
         }
         return false
@@ -435,21 +436,37 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
         m.done(DDocElementTypes.DDOC_LIST_ITEM)
     }
 
-    private fun parseMacroSection(marker: PsiBuilder.Marker, markerType: IElementType) {
-        // FIXME actually parse the real section (same as praams)
-        do {
-            parseParagraph()
-            consumeBlankLines()
-        } while (!isEndOfComment() && !hasSectionName())
-        marker.done(markerType)
+    private fun parseIdInNotParams() {
+        assert (builder.tokenType == DDocElementTypes.DDOC_ID)
+        val m = builder.mark()
+        builder.advanceLexer()
+        if (builder.tokenType == DDocElementTypes.DDOC_WHITESPACE)
+            builder.advanceLexer()
+        assert (builder.tokenType == DDocElementTypes.DDOC_EQ)
+        builder.advanceLexer()
+        m.collapse(DDocElementTypes.DDOC_COMMENT_DATA)
     }
 
-    private fun parseParamsSection(marker: PsiBuilder.Marker, markerType: IElementType) {
-        // FIXME actually parse the real section (same as praams)
-        do {
-            parseParagraph()
-            consumeBlankLines()
-        } while (!isEndOfComment() && !hasSectionName())
+    private fun parseSpecialSection(marker: PsiBuilder.Marker, markerType: IElementType) {
+        // In case we have some unwanted data
+        while (!isEndOfComment() && !hasSectionName() && builder.tokenType !== DDocElementTypes.DDOC_ID) {
+            parseItem()
+        }
+        while (!isEndOfComment() && !hasSectionName()) {
+            assert (builder.tokenType === DDocElementTypes.DDOC_ID)
+            val m = builder.mark()
+            builder.advanceLexer()
+            if (getTokenType() === DDocElementTypes.DDOC_WHITESPACE) {
+                builder.advanceLexer()
+            }
+            assert(builder.tokenType === DDocElementTypes.DDOC_EQ)
+            builder.advanceLexer()
+            while (!isEndOfComment() && !hasSectionName() && builder.tokenType !== DDocElementTypes.DDOC_ID) {
+                parseItem()
+                consumeBlankLines()
+            }
+            m.done(DDocElementTypes.DDOC_KEY_VALUE_ELEMENT)
+        }
         marker.done(markerType)
     }
 

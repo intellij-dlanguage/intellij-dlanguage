@@ -37,10 +37,7 @@ import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_UNORDERED_LIST
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_WHITESPACE
 import io.github.intellij.dlanguage.features.documentation.psi.DlangDocPsiElement
-import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocDescriptionSectionImpl
-import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocLinkDeclarationImpl
-import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocNamedSectionImpl
-import io.github.intellij.dlanguage.features.documentation.psi.impl.DDocSummarySectionImpl
+import io.github.intellij.dlanguage.features.documentation.psi.impl.*
 import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration
 import io.github.intellij.dlanguage.utils.*
 
@@ -142,6 +139,18 @@ class DDocGenerator {
         builder.append(DocumentationMarkup.SECTIONS_START)
         for (section in sections.slice(i until sections.size)) {
             when (section) {
+                is DDocParamsSectionImpl -> {
+                    builder.append(DocumentationMarkup.SECTION_HEADER_START)
+                    builder.append("Parameters:")
+                    builder.append(DocumentationMarkup.SECTION_SEPARATOR)
+                    val parameters = section.getParameters()
+                    for (parameter in parameters) {
+                        builder.append(buildParameter(parameter, linksDeclarations))
+                    }
+                    builder.append(DocumentationMarkup.SECTION_END)
+                    builder.append("</tr>")
+                }
+                is DDocMacroSectionImpl -> { /* nothing because macro is not intended to be rendered */ }
                 is DDocNamedSectionImpl -> {
                     builder.append(DocumentationMarkup.SECTION_HEADER_START)
                     builder.append(section.getTitle().text)
@@ -158,6 +167,18 @@ class DDocGenerator {
             }
         }
         builder.append(DocumentationMarkup.SECTIONS_END)
+    }
+
+    private fun buildParameter(parameter: DDocKeyValueImpl, linksDeclarations: Collection<DDocLinkDeclarationImpl>): String {
+        val builder = StringBuilder()
+
+        builder.append("<code>").append(parameter.name).append("</code>")
+        builder.append(" &ndash; ")
+        for (content in parameter.getDescriptionElements()) {
+            builder.append(buildContent(content, linksDeclarations))
+        }
+        builder.append("<br/>")
+        return builder.toString()
     }
 
     private fun buildContent(section: PsiElement, linksDeclarations: Collection<DDocLinkDeclarationImpl>): String {
