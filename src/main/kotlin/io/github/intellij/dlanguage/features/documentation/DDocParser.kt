@@ -4,56 +4,12 @@ import com.intellij.lang.ASTNode
 import com.intellij.lang.LightPsiParser
 import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiParser
+import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
+import com.intellij.psi.tree.TokenSet
 import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_END
 import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_LEADING_ASTERISKS
 import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_START
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_ANONYMOUS_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_AUTHORS_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_BUGS_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COLON
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COMMENT_DATA
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_COPYRIGHT_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_DATE_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_DEPRECATED_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_DESCRIPTION_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_EMBEDDED_CODE
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_EMBEDDED_CODE_DELIMITER
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_EXAMPLES_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_EXCLAMATION_MARK
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_HEADING
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_HEADING_CHARS
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_HISTORY_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_HORIZONTAL_RULE
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_IMAGE
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_INLINE_REFERENCE_TEXT
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LEFT_BRACKET
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LEFT_PARENTHESES
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LICENSE_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_DECLARATION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_NAME
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_TEXT
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_MACROS_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_MACRO_CALL
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_MACRO_END
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_MACRO_OPEN
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_NAMED_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_PARAMS_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_QUOTE
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_QUOTE_CHAR
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_LINK_REFERENCE_TO
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_RETURNS_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_RIGHT_BRACKET
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_RIGHT_PARENTHESES
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_SECTION_CONTENT
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_SECTION_TITLE
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_SEE_ALSO_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_STANDARDS_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_SUMMARY_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_THROWS_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_VERSION_SECTION
-import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_WHITESPACE
 
 class DDocParser : PsiParser, LightPsiParser {
     override fun parse(root: IElementType, builder: PsiBuilder): ASTNode {
@@ -68,24 +24,22 @@ class DDocParser : PsiParser, LightPsiParser {
 
 private class DDocParserImpl(private val builder: PsiBuilder) {
 
-    private var hasLineBreak = false
-    private var hasSomeData = false
-
     fun parse(root: IElementType) {
+        builder.enforceCommentTokens(SKIP_TOKENS)
         val marker = builder.mark()
-        // TODO handle ddoc (.dd) files that are not comments and have ddoc at the beginning
         if (builder.tokenType == DDOC_COMMENT_START)
             builder.advanceLexer()
         parseSections()
+        // Swallow all ending tokens that may exist
         while (!builder.eof()) {
             builder.advanceLexer()
         }
         marker.done(root)
     }
 
-    private fun isBlankToken(): Boolean {
-        return when(builder.tokenType) {
-            DDOC_COMMENT_LEADING_ASTERISKS, DDOC_WHITESPACE -> true
+    private fun isBlankToken(tokenType: IElementType? = builder.tokenType): Boolean {
+        return when(tokenType) {
+            DDocElementTypes.DDOC_WHITESPACE, TokenType.WHITE_SPACE -> true
             else -> false
         }
     }
@@ -95,40 +49,57 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
     }
 
     private fun hasNewLine(): Boolean {
-        return builder.tokenType == DDOC_WHITESPACE && builder.tokenText?.contains("\n") ?: false
+        return isBlankToken() && builder.tokenText?.contains("\n") ?: false
     }
 
     private fun has2NewLine(): Boolean {
-        return builder.tokenType == DDOC_WHITESPACE && (builder.tokenText?.count { it == '\n' } ?: 0) >= 2
+        if (!isBlankToken()) return false
+        var newLineCount = builder.tokenText?.count { it == '\n' } ?: 0
+        var i = 1
+        var next = builder.rawLookup(i)
+        // Note: could avoid this if-block if it was able to get text of next token
+        if (next == DDOC_COMMENT_LEADING_ASTERISKS) {
+            i++
+            next = builder.rawLookup(i)
+        }
+        if (next == DDocElementTypes.DDOC_WHITESPACE) {
+            val text = builder.rawLookupText(i)
+            newLineCount += text.count { it == '\n' }
+        }
+        return newLineCount >= 2
     }
 
     private fun consumeBlankLines() {
-        while (!isEndOfComment() && isBlankToken()) {
+        while (isBlankToken(getTokenType()) && !isEndOfComment()) {
             builder.advanceLexer()
         }
     }
 
-
-    private fun updateLineBreakFlagAfterAsterisks() {
-        if (hasNewLine())
-            hasLineBreak = true
+    private fun PsiBuilder.rawLookupText(steps: Int): CharSequence {
+        val start = rawTokenTypeStart(steps)
+        val end = rawTokenTypeStart(steps + 1)
+        return if (start == -1 || end == -1) "" else originalText.subSequence(start, end)
     }
 
-    private fun updateLineBreakFlagAfterWhitespace() {
-        if (has2NewLine())
-            hasLineBreak = true
+    private fun getTokenType(): IElementType? {
+        val tokenType = builder.tokenType
+        if (builder.tokenType == DDocElementTypes.DDOC_WHITESPACE) {
+            builder.remapCurrentToken(TokenType.WHITE_SPACE)
+        }
+        return tokenType
     }
 
     private fun hasSectionName(): Boolean {
         val marker = builder.mark()
-        while (!isEndOfComment() && builder.tokenType == DDOC_WHITESPACE)
-            builder.advanceLexer()
-        var res = builder.lookAhead(1) == DDOC_COLON && builder.tokenText?.contains(" ") != true
-            && (builder.lookAhead(2) == DDOC_COMMENT_DATA || builder.lookAhead(2) == DDOC_WHITESPACE)
+        val next = builder.lookAhead(1)
+        val nextNext = builder.lookAhead(2)
+        var res = next == DDocElementTypes.DDOC_COLON && builder.tokenText?.contains(" ") != true
+            // To reject `http://` eagerly
+            && (nextNext == DDocElementTypes.DDOC_COMMENT_DATA || isBlankToken(nextNext))
         if (res) {
-            builder.advanceLexer()
-            builder.advanceLexer()
-            res = if (builder.tokenType == DDOC_WHITESPACE && hasNewLine()) {
+            builder.advanceLexer() // section name
+            builder.advanceLexer() // `:`
+            res = if (hasNewLine()) {
                 true
             } else {
                 builder.tokenText?.startsWith(" ") == true
@@ -138,15 +109,13 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
         return res
     }
 
-    private fun getSectionName(): String? {
-        if (!hasSectionName()) {
-            return null
-        }
+    private fun getSectionName(): String {
+        //assert (hasSectionName())
         val marker = builder.mark()
         val name = builder.tokenText!!
-        builder.advanceLexer()
-        builder.advanceLexer()
-        marker.done(DDOC_SECTION_TITLE)
+        builder.advanceLexer() // section name
+        builder.advanceLexer() // `:`
+        marker.done(DDocElementTypes.DDOC_SECTION_TITLE)
         return name
     }
 
@@ -160,48 +129,52 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
             return
         parseDescription()
         consumeBlankLines()
-        if (isEndOfComment())
-            return
         while (!isEndOfComment()) {
-            parseSectionPart()
+            parseNamedSection()
             consumeBlankLines()
         }
     }
 
-    private fun parseSectionPart() {
+    private fun parseNamedSection() {
         val marker = builder.mark()
-        val sectionName: String? = getSectionName()
-        val markerType = when (sectionName?.uppercase()) {
-            null -> DDOC_ANONYMOUS_SECTION
-            "AUTHORS" -> DDOC_AUTHORS_SECTION
-            "BUGS" -> DDOC_BUGS_SECTION
-            "DATE" -> DDOC_DATE_SECTION
-            "DEPRECATED" -> DDOC_DEPRECATED_SECTION
-            "EXAMPLES" -> DDOC_EXAMPLES_SECTION
-            "HISTORY" -> DDOC_HISTORY_SECTION
-            "LICENSE" -> DDOC_LICENSE_SECTION
-            "RETURNS" -> DDOC_RETURNS_SECTION
-            "SEE_ALSO" -> DDOC_SEE_ALSO_SECTION
-            "STANDARDS" -> DDOC_STANDARDS_SECTION
-            "THROWS" -> DDOC_THROWS_SECTION
-            "VERSION" -> DDOC_VERSION_SECTION
-            "PARAMS" -> DDOC_PARAMS_SECTION
-            "MACROS" -> DDOC_MACROS_SECTION
-            "COPYRIGHT" -> DDOC_COPYRIGHT_SECTION
-            else -> DDOC_NAMED_SECTION
+        val sectionName: String = getSectionName()
+        val markerType = when (sectionName.uppercase()) {
+            "AUTHORS" -> DDocElementTypes.DDOC_AUTHORS_SECTION
+            "BUGS" -> DDocElementTypes.DDOC_BUGS_SECTION
+            "DATE" -> DDocElementTypes.DDOC_DATE_SECTION
+            "DEPRECATED" -> DDocElementTypes.DDOC_DEPRECATED_SECTION
+            "EXAMPLES" -> DDocElementTypes.DDOC_EXAMPLES_SECTION
+            "HISTORY" -> DDocElementTypes.DDOC_HISTORY_SECTION
+            "LICENSE" -> DDocElementTypes.DDOC_LICENSE_SECTION
+            "RETURNS" -> DDocElementTypes.DDOC_RETURNS_SECTION
+            "SEE_ALSO" -> DDocElementTypes.DDOC_SEE_ALSO_SECTION
+            "STANDARDS" -> DDocElementTypes.DDOC_STANDARDS_SECTION
+            "THROWS" -> DDocElementTypes.DDOC_THROWS_SECTION
+            "VERSION" -> DDocElementTypes.DDOC_VERSION_SECTION
+            "PARAMS" -> DDocElementTypes.DDOC_PARAMS_SECTION
+            "MACROS" -> DDocElementTypes.DDOC_MACROS_SECTION
+            "COPYRIGHT" -> DDocElementTypes.DDOC_COPYRIGHT_SECTION
+            else -> DDocElementTypes.DDOC_NAMED_SECTION
         }
         when(markerType) {
-            DDOC_MACROS_SECTION -> parseMacroSection(marker, markerType)
-            DDOC_PARAMS_SECTION -> parseParamsSection(marker, markerType)
-            else ->
-                parseSection(marker, markerType)
+            DDocElementTypes.DDOC_MACROS_SECTION,
+            DDocElementTypes.DDOC_PARAMS_SECTION -> parseSpecialSection(marker, markerType)
+            else -> {
+                do {
+                    parseParagraph()
+                    consumeBlankLines()
+                } while (!isEndOfComment() && !hasSectionName())
+                marker.done(markerType)
+            }
         }
     }
 
     private fun parseSummary() {
-        if (isEndOfComment() || hasSectionName())
+        if (hasSectionName())
             return
-        parseSection(builder.mark(), DDOC_SUMMARY_SECTION)
+        val marker = builder.mark()
+        parseParagraph()
+        marker.done(DDocElementTypes.DDOC_SUMMARY_SECTION)
     }
 
     private fun parseDescription() {
@@ -209,75 +182,57 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
             return
         val marker = builder.mark()
         while(!isEndOfComment() && !hasSectionName()) {
-            parseSection(builder.mark(), DDOC_ANONYMOUS_SECTION)
+            parseParagraph()
             consumeBlankLines()
         }
-        marker.done(DDOC_DESCRIPTION_SECTION)
+        marker.done(DDocElementTypes.DDOC_DESCRIPTION_SECTION)
     }
 
-    private fun parseSection(marker: PsiBuilder.Marker, markerType: IElementType) {
+    private fun parseParagraph() {
         val contentMarker = builder.mark()
         var continueParagraph = true
-        hasSomeData = false
-        while (!isEndOfComment() && continueParagraph) {
-            if (hasSomeData && hasSectionName()){
+        while (!isEndOfComment() && !hasSectionName() && continueParagraph) {
+            val stopSection = parseItem()
+            if (stopSection) {
                 continueParagraph = false
-            } else {
-                parseSectionContent()
-                if (hasLineBreak || hasSectionName()) {
-                    continueParagraph = false
-                }
             }
         }
-        if (hasSomeData) {
-            contentMarker.done(DDOC_SECTION_CONTENT)
-            marker.done(markerType)
-        } else {
-            contentMarker.drop()
-            marker.drop()
-        }
+        contentMarker.done(DDocElementTypes.DDOC_SECTION_PARAGRAPH)
     }
 
-    private fun parseSectionContent() {
-        val tokenType = builder.tokenType
-        when (tokenType) {
-            // In case where no leading asterisk is in the comment, then check for 2 newlines
-            DDOC_WHITESPACE -> {
-                updateLineBreakFlagAfterWhitespace()
-                builder.advanceLexer()
-                return
-            }
+    /**
+     * Return: true if we reached the end of the section, false if we should continue
+     */
+    private fun parseItem(): Boolean {
+        val tokenType = getTokenType()
+        if (tokenType == DDocElementTypes.DDOC_WHITESPACE) {
+            val endOfParagraph = has2NewLine()
+            consumeBlankLines()
+            return endOfParagraph
         }
         when (tokenType) {
-            DDOC_COMMENT_LEADING_ASTERISKS,
-                DDOC_COMMENT_END -> builder.advanceLexer()
-            DDOC_COMMENT_DATA -> builder.advanceLexer()
-            DDOC_MACRO_OPEN -> parseMacroCall()
-            DDOC_QUOTE_CHAR -> parseQuote()
-            DDOC_HEADING_CHARS -> parseHeading()
-            DDOC_LEFT_BRACKET -> parseLink()
-            DDOC_EXCLAMATION_MARK -> parseImage()
-            DDOC_EMBEDDED_CODE_DELIMITER -> parseEmbeddedCode()
+            DDOC_COMMENT_END -> builder.advanceLexer()
+            DDocElementTypes.DDOC_COMMENT_DATA -> builder.advanceLexer()
+            DDocElementTypes.DDOC_MACRO_OPEN -> parseMacroCall()
+            DDocElementTypes.DDOC_QUOTE_CHAR -> return parseQuote()
+            DDocElementTypes.DDOC_HEADING_CHARS -> parseHeading()
+            DDocElementTypes.DDOC_LEFT_BRACKET -> parseLink()
+            DDocElementTypes.DDOC_EXCLAMATION_MARK -> parseImage()
+            DDocElementTypes.DDOC_EMBEDDED_CODE_DELIMITER -> parseEmbeddedCode()
+            DDocElementTypes.DDOC_ORDERED_LIST_POINT -> parseOrderedList()
+            DDocElementTypes.DDOC_UNORDERED_LIST_POINT -> parseUnorderedList()
+            DDocElementTypes.DDOC_ID -> parseIdInNotParams()
             else -> builder.advanceLexer()
         }
-        when(tokenType) {
-            DDOC_COMMENT_LEADING_ASTERISKS -> updateLineBreakFlagAfterAsterisks()
-            DDOC_QUOTE_CHAR -> {} // Quote char is recursive, so hasLineBreak is already updated
-            else -> hasLineBreak = false
-        }
-        when (tokenType) {
-            DDOC_COMMENT_LEADING_ASTERISKS,
-                DDOC_COMMENT_START, DDOC_COMMENT_END -> {}
-            else -> hasSomeData = true
-        }
+        return false
     }
 
     private fun parseMacroCall() {
         val marker = builder.mark()
-        assert(builder.tokenType == DDOC_MACRO_OPEN)
+        assert(builder.tokenType == DDocElementTypes.DDOC_MACRO_OPEN)
         builder.advanceLexer()
-         while (!isEndOfComment() && builder.tokenType != DDOC_MACRO_END) {
-            if (builder.tokenType == DDOC_MACRO_OPEN) {
+         while (!isEndOfComment() && builder.tokenType != DDocElementTypes.DDOC_MACRO_END) {
+            if (builder.tokenType == DDocElementTypes.DDOC_MACRO_OPEN) {
                 parseMacroCall()
             } else {
                 builder.advanceLexer()
@@ -285,31 +240,30 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
         }
         if (!isEndOfComment())
             builder.advanceLexer()
-        marker.done(DDOC_MACRO_CALL)
+        marker.done(DDocElementTypes.DDOC_MACRO_CALL)
     }
 
-    private fun parseQuote() {
+    private fun parseQuote(): Boolean {
         val marker = builder.mark()
-        hasLineBreak = false
         builder.advanceLexer()
-        var newLine = false
-        // end condition: end of paragraph or end of comment or (newline + (HEADING or HORIZONTAL_RULE or BLOCK_CODE or LIST))
-        // TODO list when they are supported
-        while (!hasLineBreak && !isEndOfComment() && !(newLine &&
-                (builder.tokenType == DDOC_HORIZONTAL_RULE || builder.tokenType == DDOC_HEADING
-                || builder.tokenType == DDOC_EMBEDDED_CODE_DELIMITER))
-        ) {
-            if (builder.tokenType == DDOC_QUOTE_CHAR && newLine) {
+        // list, tables, embedded code, quote, etc. may be part of a quote
+        var sectionEnd = false
+        while (!sectionEnd && !isEndOfComment()) {
+            if (builder.tokenType == DDocElementTypes.DDOC_QUOTE_CHAR) {
                 builder.advanceLexer() // skip this one as it’s a continuation quote char
+                if (builder.tokenType == DDocElementTypes.DDOC_WHITESPACE && builder.tokenText?.contains('\n') != true) {
+                    // skip whitespace if next token on the same line to properly detect quote in quote
+                    builder.advanceLexer()
+                }
             }
-            newLine = hasNewLine()
-            parseSectionContent()
+            sectionEnd = parseItem()
         }
-        marker.done(DDOC_QUOTE)
+        marker.done(DDocElementTypes.DDOC_QUOTE)
+        return sectionEnd
     }
 
     private fun parseLink() {
-        if (builder.rawLookup(-1) != DDOC_WHITESPACE && !builder.rawLookupText(-1).endsWith(" ")) {
+        if (!isBlankToken(builder.rawLookup(-1)) && !builder.rawLookupText(-1).endsWith(" ")) {
             // no space before, it’s not a link (can be something like `int[Obj]`)
             builder.advanceLexer()
             return
@@ -321,14 +275,16 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
         val linkMarker = builder.mark()
         val marker1 = builder.mark()
         builder.advanceLexer()
-        while (!isEndOfComment() && (builder.tokenType == DDOC_WHITESPACE || builder.tokenType == DDOC_COMMENT_DATA || builder.tokenType == DDOC_QUOTE)) {
-            if (builder.tokenType == DDOC_QUOTE) {
+        while (!isEndOfComment() && (builder.tokenType == DDocElementTypes.DDOC_WHITESPACE
+                || builder.tokenType == DDocElementTypes.DDOC_COMMENT_DATA
+                || builder.tokenType == DDocElementTypes.DDOC_QUOTE)) {
+            if (builder.tokenType == DDocElementTypes.DDOC_QUOTE) {
                 parseQuote()
             } else {
                 builder.advanceLexer()
             }
         }
-        if (builder.tokenType != DDOC_RIGHT_BRACKET) {
+        if (builder.tokenType != DDocElementTypes.DDOC_RIGHT_BRACKET) {
             // not a link (`[` but not `]`)
             marker1.drop()
             linkMarker.drop()
@@ -337,53 +293,54 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
         }
         builder.advanceLexer()
         when (builder.tokenType) {
-            DDOC_LEFT_BRACKET, DDOC_LEFT_PARENTHESES -> marker1.done(DDOC_LINK_TEXT)
-            DDOC_COLON -> marker1.done(DDOC_LINK_NAME)
-            else -> marker1.done(DDOC_LINK_REFERENCE_TO)
+            DDocElementTypes.DDOC_LEFT_BRACKET,
+            DDocElementTypes.DDOC_LEFT_PARENTHESES -> marker1.done(DDocElementTypes.DDOC_LINK_TEXT)
+            DDocElementTypes.DDOC_COLON -> marker1.done(DDocElementTypes.DDOC_LINK_NAME)
+            else -> marker1.done(DDocElementTypes.DDOC_LINK_REFERENCE_TO)
         }
         when (builder.tokenType) {
-            DDOC_LEFT_BRACKET -> {
+            DDocElementTypes.DDOC_LEFT_BRACKET -> {
                 val markerReference = builder.mark()
                 builder.advanceLexer()
-                while (!isEndOfComment() && (builder.tokenType == DDOC_WHITESPACE || builder.tokenType == DDOC_COMMENT_DATA)) {
+                while (!isEndOfComment() && (builder.tokenType == DDocElementTypes.DDOC_WHITESPACE
+                        || builder.tokenType == DDocElementTypes.DDOC_COMMENT_DATA)) {
                     builder.advanceLexer()
                 }
-                if (builder.tokenType != DDOC_RIGHT_BRACKET) {
+                if (builder.tokenType != DDocElementTypes.DDOC_RIGHT_BRACKET) {
                     markerReference.rollbackTo()
-                    linkMarker.done(DDOC_LINK)
+                    linkMarker.done(DDocElementTypes.DDOC_LINK)
                     return true
                 }
                 builder.advanceLexer()
-                markerReference.done(DDOC_LINK_REFERENCE_TO)
-                linkMarker.done(DDOC_LINK)
-                return true
+                markerReference.done(DDocElementTypes.DDOC_LINK_REFERENCE_TO)
+                linkMarker.done(DDocElementTypes.DDOC_LINK)
             }
-            DDOC_LEFT_PARENTHESES -> {
+            DDocElementTypes.DDOC_LEFT_PARENTHESES -> {
                 val markerRawUrl = builder.mark()
                 builder.advanceLexer()
-                while (!isEndOfComment() && (builder.tokenType == DDOC_WHITESPACE || builder.tokenType == DDOC_COMMENT_DATA || builder.tokenType == DDOC_COLON)) {
+                while (!isEndOfComment() && (builder.tokenType == DDocElementTypes.DDOC_WHITESPACE
+                        || builder.tokenType == DDocElementTypes.DDOC_COMMENT_DATA
+                        || builder.tokenType == DDocElementTypes.DDOC_COLON)) {
                     builder.advanceLexer()
                 }
-                if (builder.tokenType != DDOC_RIGHT_PARENTHESES) {
+                if (builder.tokenType != DDocElementTypes.DDOC_RIGHT_PARENTHESES) {
                     markerRawUrl.rollbackTo()
-                    linkMarker.done(DDOC_LINK)
+                    linkMarker.done(DDocElementTypes.DDOC_LINK)
                     return true
                 }
                 builder.advanceLexer()
-                markerRawUrl.done(DDOC_LINK_INLINE_REFERENCE_TEXT)
-                linkMarker.done(DDOC_LINK)
+                markerRawUrl.done(DDocElementTypes.DDOC_LINK_INLINE_REFERENCE_TEXT)
+                linkMarker.done(DDocElementTypes.DDOC_LINK)
             }
-            DDOC_COLON -> {
+            DDocElementTypes.DDOC_COLON -> {
                 builder.advanceLexer()
                 while (!isEndOfComment() && !hasNewLine()) {
                     builder.advanceLexer()
                 }
-                linkMarker.done(DDOC_LINK_DECLARATION)
-                return true
+                linkMarker.done(DDocElementTypes.DDOC_LINK_DECLARATION)
             }
             else -> {
-                linkMarker.done(DDOC_LINK)
-                return true
+                linkMarker.done(DDocElementTypes.DDOC_LINK)
             }
         }
         return true
@@ -394,7 +351,7 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
         builder.advanceLexer()
         val wasLink = parseLinkContent()
         if (wasLink) {
-            marker.done(DDOC_IMAGE)
+            marker.done(DDocElementTypes.DDOC_IMAGE)
         } else {
             marker.drop()
         }
@@ -403,42 +360,116 @@ private class DDocParserImpl(private val builder: PsiBuilder) {
     private fun parseEmbeddedCode() {
         val marker = builder.mark()
         builder.advanceLexer()
-        while (!isEndOfComment() && builder.tokenType != DDOC_EMBEDDED_CODE_DELIMITER) {
+        while (!isEndOfComment() && builder.tokenType != DDocElementTypes.DDOC_EMBEDDED_CODE_DELIMITER) {
             builder.advanceLexer()
         }
         if (!isEndOfComment()) {
             builder.advanceLexer()
         }
-        marker.done(DDOC_EMBEDDED_CODE)
+        marker.done(DDocElementTypes.DDOC_EMBEDDED_CODE)
     }
 
     private fun parseHeading() {
-        assert(builder.tokenType == DDOC_HEADING_CHARS)
+        assert(builder.tokenType == DDocElementTypes.DDOC_HEADING_CHARS)
         val marker = builder.mark()
         builder.advanceLexer()
-        while (!isEndOfComment() && builder.tokenType != DDOC_HEADING_CHARS && builder.tokenType != DDOC_WHITESPACE) {
+        while (!isEndOfComment() && builder.tokenType != DDocElementTypes.DDOC_HEADING_CHARS
+            && builder.tokenType != DDocElementTypes.DDOC_WHITESPACE) {
             builder.advanceLexer()
         }
-        if (!isEndOfComment() && builder.tokenType != DDOC_WHITESPACE) {
+        if (!isEndOfComment() && builder.tokenType != DDocElementTypes.DDOC_WHITESPACE) {
             builder.advanceLexer()
         }
-        marker.done(DDOC_HEADING)
+        marker.done(DDocElementTypes.DDOC_HEADING)
     }
 
-    private fun parseMacroSection(marker: PsiBuilder.Marker, markerType: IElementType) {
-        // FIXME actually parse the real section
-        parseSection(marker, markerType)
+    private fun parseOrderedList() {
+        assert(builder.tokenType === DDocElementTypes.DDOC_ORDERED_LIST_POINT)
+        val marker = builder.mark()
+        val rootSpaceLevel = builder.rawLookupText(-1).split("\n").last().count { it == ' ' }
+        while(!isEndOfComment() && !has2NewLine()) {
+            consumeBlankLines()
+            val spaceLevel = builder.rawLookupText(-1).split("\n").last().count { it == ' ' }
+            if (spaceLevel < rootSpaceLevel
+                || builder.tokenType !== DDocElementTypes.DDOC_ORDERED_LIST_POINT) {
+                break
+            }
+            assert (builder.tokenType === DDocElementTypes.DDOC_ORDERED_LIST_POINT)
+            parseListContent(rootSpaceLevel)
+        }
+        marker.done(DDocElementTypes.DDOC_ORDERED_LIST)
     }
 
-    private fun parseParamsSection(marker: PsiBuilder.Marker, markerType: IElementType) {
-        // The current approach is to parse in normally and handle the params rendering and validation
-        // by directly checking the content and not the PSI. Change this method to really parse and use the PSI for them.
-        parseSection(marker, markerType)
+    private fun parseUnorderedList() {
+        val marker = builder.mark()
+        val rootSpaceLevel = builder.rawLookupText(-1).split("\n").last().count { it == ' ' }
+        while(!isEndOfComment() && !has2NewLine()) {
+            consumeBlankLines()
+            val spaceLevel = builder.rawLookupText(-1).split("\n").last().count { it == ' ' }
+            if (spaceLevel < rootSpaceLevel
+                || builder.tokenType !== DDocElementTypes.DDOC_UNORDERED_LIST_POINT) {
+                break
+            }
+            assert (builder.tokenType === DDocElementTypes.DDOC_UNORDERED_LIST_POINT)
+            parseListContent(rootSpaceLevel)
+        }
+        marker.done(DDocElementTypes.DDOC_UNORDERED_LIST)
     }
 
-    private fun PsiBuilder.rawLookupText(steps: Int): CharSequence {
-        val start = rawTokenTypeStart(steps)
-        val end = rawTokenTypeStart(steps + 1)
-        return if (start == -1 || end == -1) "" else originalText.subSequence(start, end)
+    private fun parseListContent(rootSpaceLevel: Int) {
+        val m = builder.mark()
+        builder.advanceLexer() // 1. or +
+        val contentMarker = builder.mark()
+        parseItem()
+        while (!isEndOfComment() && !has2NewLine()) {
+            consumeBlankLines()
+            val previousToken = builder.rawLookup(-1)
+            if (isBlankToken(previousToken) || previousToken === DDOC_COMMENT_LEADING_ASTERISKS) {
+                val spaceLevel = if (isBlankToken(previousToken)) builder.rawLookupText(-1).split("\n").last().count { it == ' ' } else 0
+                if (spaceLevel <= rootSpaceLevel) {
+                    break
+                }
+            }
+            parseItem()
+        }
+        contentMarker.done(DDocElementTypes.DDOC_LIST_ITEM_CONTENT)
+        m.done(DDocElementTypes.DDOC_LIST_ITEM)
     }
+
+    private fun parseIdInNotParams() {
+        assert (builder.tokenType == DDocElementTypes.DDOC_ID)
+        val m = builder.mark()
+        builder.advanceLexer()
+        if (builder.tokenType == DDocElementTypes.DDOC_WHITESPACE)
+            builder.advanceLexer()
+        assert (builder.tokenType == DDocElementTypes.DDOC_EQ)
+        builder.advanceLexer()
+        m.collapse(DDocElementTypes.DDOC_COMMENT_DATA)
+    }
+
+    private fun parseSpecialSection(marker: PsiBuilder.Marker, markerType: IElementType) {
+        // In case we have some unwanted data
+        while (!isEndOfComment() && !hasSectionName() && builder.tokenType !== DDocElementTypes.DDOC_ID) {
+            parseItem()
+        }
+        while (!isEndOfComment() && !hasSectionName()) {
+            assert (builder.tokenType === DDocElementTypes.DDOC_ID)
+            val m = builder.mark()
+            builder.advanceLexer()
+            if (getTokenType() === DDocElementTypes.DDOC_WHITESPACE) {
+                builder.advanceLexer()
+            }
+            assert(builder.tokenType === DDocElementTypes.DDOC_EQ)
+            builder.advanceLexer()
+            while (!isEndOfComment() && !hasSectionName() && builder.tokenType !== DDocElementTypes.DDOC_ID) {
+                parseItem()
+                consumeBlankLines()
+            }
+            m.done(DDocElementTypes.DDOC_KEY_VALUE_ELEMENT)
+        }
+        marker.done(markerType)
+    }
+
 }
+
+private val SKIP_TOKENS = TokenSet.create(DDOC_COMMENT_LEADING_ASTERISKS)

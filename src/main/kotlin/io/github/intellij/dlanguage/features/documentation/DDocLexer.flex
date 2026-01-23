@@ -15,7 +15,6 @@ import static io.github.intellij.dlanguage.documentation.psi.DDocMetaElementType
   private char embeddedCodeDelimiter;
 
   // TODO support nested comments support
-  // TODO support for ddoc (no leading star)
   public _DDocLexer() {
       this((java.io.Reader)null);
       macroParenCount = 0;
@@ -24,14 +23,6 @@ import static io.github.intellij.dlanguage.documentation.psi.DDocMetaElementType
     public void goTo(int offset) {
         zzCurrentPos = zzMarkedPos = zzStartRead = offset;
         zzAtEOF = false;
-    }
-
-    private void backExcludingNewLine() {
-        int i = 1;
-        while (yycharat(yylength() - i) != '#') {
-            i++;
-        }
-        yypushback(i - 1);
     }
 %}
 
@@ -52,6 +43,7 @@ DOC_COMMENT_END="*"+"/"
 DOC_COMMENT_END_NESTED="+"+"/"
 
 IDENTIFIER=({ALPHA}|{DIGIT}|"_")+
+DLANG_ID = (_|\p{xid_start}) (\p{xid_continue})*
 
 WHITE_DOC_SPACE_CHAR=[\ \t\f\n\r]
 WHITE_DOC_SPACE_NO_LR=[\ \t\f]
@@ -61,21 +53,25 @@ HEADING="#"{1,6}
 NON_HEADING="######""#"+
 
 HORIZONTAL_RULE=("- -"" -"+)|(("_"" "?"_")(" "?"_")+)|(("*"" "?"*")(" "?"*")+)
-SIMPLE_EMPHASIS="*"~([^\\]"*")
-DOUBLE_EMPHASIS="**"~([^\\]"**")
+SIMPLE_EMPHASIS="*"([^" "])([^\n])*([^\\" "\n]"*")
+DOUBLE_EMPHASIS="**"([^" "])([^\n])*([^\\" "\n]"**")
+TRIPLE_EMPHASIS="***"([^" "])([^\n])*([^\\" "\n]"***")
 EMBEDDED_CODE_DELIMITER="``""`"+|"~~""~"+|"--""-"+
 
+ORDERED_LIST_ITEM={DIGIT}+"."
+UNORDERED_LIST_ITEM="+"|"-"|"*"
 
 %state COMMENT_DATA_START, COMMENT_DATA, DOC_MACRO_START, DOC_MACRO, HEADING
 
 // exclusive state (cannot match with rules from other states)
-%xstate EMBEDDED_CODE, EMBEDDED_CODE_START
+%xstate EMBEDDED_CODE, EMBEDDED_CODE_START, ID_EQUALS
 
 // Assume that comments decorators are removed
 
 %%
 
 <YYINITIAL> {
+  // TODO ditto keyword
   {MULTILINE_DOC_COMMENT_BEGIN} { yybegin(COMMENT_DATA_START); nestedStyle = false; return DDOC_COMMENT_START; }
   {MULTILINE_DOC_COMMENT_BEGIN_NESTED} { yybegin(COMMENT_DATA_START); nestedStyle = true; return DDOC_COMMENT_START; }
   {DOC_COMMENT_BEGIN} { yybegin(COMMENT_DATA_START); return DDOC_COMMENT_START; }
@@ -130,20 +126,14 @@ EMBEDDED_CODE_DELIMITER="``""`"+|"~~""~"+|"--""-"+
 
 <HEADING> {
   {INLINE_CODE_DELIMITER}[^"`"\n\r]*{INLINE_CODE_DELIMITER} { return DDOC_INLINE_CODE; }
-  " "{HEADING}[\n\r] {
+  " "{HEADING}/[\n\r] {
             yybegin(COMMENT_DATA);
-            backExcludingNewLine();
             return DDOC_HEADING_CHARS;
         }
-  {HEADING}[\n\r] {
+  {HEADING}/[\n\r] {
           yybegin(COMMENT_DATA);
-          backExcludingNewLine();
-          int i = 1;
-          while(yycharat(yylength() - i) == '#') {
-              i++;
-          }
           // to handle the `# #\n` case
-          if (yycharat(yylength() - i) == ' ') {
+          if (yycharat(yylength() - 1) == ' ') {
             return DDOC_HEADING_CHARS;
           }
           return DDOC_COMMENT_DATA;
@@ -151,13 +141,27 @@ EMBEDDED_CODE_DELIMITER="``""`"+|"~~""~"+|"--""-"+
   [^] { return DDOC_COMMENT_DATA; }
 }
 
+<ID_EQUALS> {
+ {WHITE_DOC_SPACE_CHAR}+ { return DDOC_WHITESPACE; }
+ "=" { yybegin(COMMENT_DATA); return DDOC_EQ; }
+}
+
 <COMMENT_DATA_START> {
+  // To handle Params and Macro sections
+  {DLANG_ID}/{WHITE_DOC_SPACE_CHAR}*"=" { yybegin(ID_EQUALS); return DDOC_ID; }
+
+  // TODO table
+
+  {ORDERED_LIST_ITEM}/{WHITE_DOC_SPACE_CHAR} { yybegin(COMMENT_DATA); return DDOC_ORDERED_LIST_POINT; }
+  {UNORDERED_LIST_ITEM}/{WHITE_DOC_SPACE_CHAR} { yybegin(COMMENT_DATA); return DDOC_UNORDERED_LIST_POINT; }
   > { return DDOC_QUOTE_CHAR; }
   {HEADING}" " { yybegin(HEADING); return DDOC_HEADING_CHARS; }
-  {HEADING}[\n\r] { backExcludingNewLine(); return DDOC_HEADING_CHARS; }
+  {HEADING}/[\n\r] { return DDOC_HEADING_CHARS; }
   {EMBEDDED_CODE_DELIMITER} { yybegin(EMBEDDED_CODE); embeddedCodeDelimiter = yycharat(yylength() - 1); return DDOC_EMBEDDED_CODE_DELIMITER; }
 }
 <COMMENT_DATA_START, COMMENT_DATA> {
+  "://" { yybegin(COMMENT_DATA); return DDOC_COMMENT_DATA; }
+  "\*" { yybegin(COMMENT_DATA); return DDOC_COMMENT_DATA; }
   : { yybegin(COMMENT_DATA); return DDOC_COLON; }
   "!" { yybegin(COMMENT_DATA); return DDOC_EXCLAMATION_MARK; }
   "[" { yybegin(COMMENT_DATA); return DDOC_LEFT_BRACKET; }
@@ -165,8 +169,9 @@ EMBEDDED_CODE_DELIMITER="``""`"+|"~~""~"+|"--""-"+
   "(" { yybegin(COMMENT_DATA); return DDOC_LEFT_PARENTHESES; }
   ")" { yybegin(COMMENT_DATA); return DDOC_RIGHT_PARENTHESES; }
   {HORIZONTAL_RULE} { yybegin(COMMENT_DATA); return DDOC_HORIZONTAL_RULE; }
+  {TRIPLE_EMPHASIS} {yybegin(COMMENT_DATA); return DDOC_TRIPLE_EMPHASIS; }
   {DOUBLE_EMPHASIS} {yybegin(COMMENT_DATA); return DDOC_DOUBLE_EMPHASIS; }
-  {SIMPLE_EMPHASIS} {yybegin(COMMENT_DATA); return DDOC_SIMPLE_EMPHASIS; }  // FIXME: handle tricky cases (bold inside italic)
+  {SIMPLE_EMPHASIS} {yybegin(COMMENT_DATA); return DDOC_SIMPLE_EMPHASIS; }
   {INLINE_CODE_DELIMITER}[^"`"\n\r]*{INLINE_CODE_DELIMITER} { yybegin(COMMENT_DATA); return DDOC_INLINE_CODE; }
   {NON_HEADING} { yybegin(COMMENT_DATA); return DDOC_COMMENT_DATA; }
 }
