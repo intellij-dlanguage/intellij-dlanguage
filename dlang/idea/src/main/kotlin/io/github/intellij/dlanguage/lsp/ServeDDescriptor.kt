@@ -6,6 +6,7 @@ import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
@@ -32,6 +33,7 @@ import com.intellij.platform.lsp.api.customization.LspSignatureHelpCustomizer
 import com.intellij.platform.lsp.api.customization.LspSignatureHelpDisabled
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangFileType
+import io.github.intellij.dlanguage.lsp.settings.ServeDSettingsState
 import org.eclipse.lsp4j.CompletionItem
 import org.eclipse.lsp4j.CompletionItemKind
 import java.util.Locale
@@ -70,7 +72,7 @@ class ServeDDescriptor(project: Project, /* val cmdBuilder: ServeDCommandLineBui
     //Paths.get("/opt/serve-d_0.8.0-beta.18-linux-x86_64/serve-d").toFile()
     // todo: decide which "--provide" options we want to enable
         GeneralCommandLine(
-            "/opt/serve-d_0.8.0-beta.18-linux-x86_64/serve-d",
+            ApplicationManager.getApplication().getService(ServeDSettingsState::class.java).state.binaryPath,
             "--require", "D",
             "--lang", (Locale.getDefault() ?: Locale.UK).language,
 //                "--provide", "http",

@@ -2,8 +2,21 @@
     <extensions defaultExtensionNs="com.intellij">
         <platform.lsp.serverSupportProvider implementation="io.github.intellij.dlanguage.lsp.ServeDProvider"/>
 
-        <projectConfigurable groupId="language" order="first"
-                             displayName="D LSP (Serve-D)"
-                             instance="io.github.intellij.dlanguage.lsp.settings.ServeDSettings"/>
+<!--        <projectConfigurable groupId="language" order="first"-->
+<!--                             displayName="D LSP (Serve-D)"-->
+<!--                             instance="io.github.intellij.dlanguage.lsp.settings.ServeDSettings"/>-->
+
+        <!-- plugin settings are now in: Settings -> Languages &amp; Frameworks -> D Tools -->
+        <applicationConfigurable
+            parentId="language"
+            order="first"
+            id="ServeDSettings"
+            instance="io.github.intellij.dlanguage.lsp.settings.ServeDSettings"
+            displayName="D LSP (Serve-D)"/>
+
+        <!-- the persistent state needs to be an applicationService -->
+        <applicationService
+            serviceImplementation="io.github.intellij.dlanguage.lsp.settings.ServeDSettingsState"/>
+
     </extensions>
 </idea-plugin>

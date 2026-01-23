@@ -1,6 +1,7 @@
 package io.github.intellij.dlanguage.lsp.settings
 
 import com.intellij.ide.BrowserUtil
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.options.SearchableConfigurable
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
@@ -52,7 +53,7 @@ class ServeDSettings : SearchableConfigurable {
                     serveDPath = textFieldWithBrowseButton(
                         FileChooserDescriptorFactory.createSingleFileOrExecutableAppDescriptor().withTitle("Select Serve-D Executable"),
                         project=null,
-                        fileChosen={ it.name },
+                        fileChosen={ it.path },
                     )
                         .align(AlignX.FILL)
                         .trimmedTextValidation(
@@ -72,9 +73,34 @@ class ServeDSettings : SearchableConfigurable {
             }.enabledIf(acceptRisk.selected)
         }
 
-    override fun isModified(): Boolean = true // todo: implement properly
+    override fun isModified(): Boolean {
+        val settingsState: ServeDSettingsState = ApplicationManager.getApplication().getService(ServeDSettingsState::class.java)
+
+        return settingsState.state != ServeDSettingsState.ServeDConfigSettings(
+            binaryPath = this.serveDPath.component.text,
+            acceptedPreviewFeature = this.acceptRisk.component.isSelected
+        )
+    }
+
+    //override fun getHelpTopic(): @NonNls String? {
+    //    return super.getHelpTopic()
+    //}
+
+    override fun reset() {
+        val settingsState: ServeDSettingsState = ApplicationManager.getApplication().getService(ServeDSettingsState::class.java)
+
+        this.acceptRisk.component.isSelected = settingsState.state.acceptedPreviewFeature
+        this.serveDPath.component.text = settingsState.state.binaryPath
+    }
 
     override fun apply() {
-        TODO("Not yet implemented")
+        val settingsState: ServeDSettingsState = ApplicationManager.getApplication().getService(ServeDSettingsState::class.java)
+
+        settingsState.state.acceptedPreviewFeature = this.acceptRisk.component.isSelected
+        settingsState.state.binaryPath = this.serveDPath.component.text
+
+        // runWithModalProgressBlocking(ModalTaskOwner.guess(), "") {
+        //     saveSettings(ApplicationManager.getApplication(), forceSavingAllSettings = true)
+        // }
     }
 }

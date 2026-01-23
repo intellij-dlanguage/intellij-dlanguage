@@ -9,6 +9,7 @@ import com.intellij.platform.lsp.api.lsWidget.LspServerWidgetItem
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangFileType
 import io.github.intellij.dlanguage.lsp.settings.ServeDSettings
+import io.github.intellij.dlanguage.lsp.settings.ServeDSettingsState
 
 /**
  * Support for LSP using serve-d added for 2025.3 onward as Jetbrains now include LSP in the base platform.
@@ -25,14 +26,19 @@ class ServeDProvider : LspServerSupportProvider {
         file: VirtualFile,
         serverStarter: LspServerSupportProvider.LspServerStarter
     ) {
-        if (ApplicationManager.getApplication().isUnitTestMode) {
+        val application = ApplicationManager.getApplication()
+
+        if (application.isUnitTestMode) {
             return // don't start LSP servers during unit tests
         }
         val isDlangSourceFile = ProjectRootManager.getInstance(project)
             .fileIndex.isInProject(file)
             .and(file.fileType == DlangFileType)
 
-        if (isDlangSourceFile) {
+        val settingsState: ServeDSettingsState = application.getService(ServeDSettingsState::class.java)
+        val canStart = settingsState.state.acceptedPreviewFeature && settingsState.state.binaryPath.isNotEmpty()
+
+        if (isDlangSourceFile && canStart) {
             serverStarter.ensureServerStarted(
                 descriptor = ServeDDescriptor(project)
                 //descriptor = ServeDDescriptor(project, ServeDCommandLineBuilder())
