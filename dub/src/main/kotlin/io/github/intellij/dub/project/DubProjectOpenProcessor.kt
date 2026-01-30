@@ -11,6 +11,7 @@ import com.intellij.openapi.project.ex.ProjectManagerEx
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.application.EDT
 import com.intellij.projectImport.ProjectImportBuilder
 import com.intellij.projectImport.ProjectOpenProcessorBase
 import com.intellij.util.ArrayUtil
@@ -19,7 +20,9 @@ import io.github.intellij.dlanguage.DlangBundle.message
 import io.github.intellij.dlanguage.DlangSdkType
 import io.github.intellij.dlanguage.module.DlangModuleBuilder
 import io.github.intellij.dub.service.DubBinaryPathProvider
+import kotlinx.coroutines.Dispatchers
 import javax.swing.Icon
+import kotlinx.coroutines.withContext
 
 /**
  * Used when opening a dub project within the IDE.
@@ -55,18 +58,18 @@ class DubProjectOpenProcessor : ProjectOpenProcessorBase<DubProjectImportBuilder
         virtualFile: VirtualFile,
         projectToClose: Project?,
         forceOpenInNewFrame: Boolean
-    ): Project? {
+    ): Project? = withContext(Dispatchers.EDT) {
         LOG.debug("Opening dub project")
 
         if (projectToClose != null && !forceOpenInNewFrame) {
             val exitCode = ProjectUtil.confirmOpenOrAttachProject()
             if (exitCode == GeneralSettings.OPEN_PROJECT_SAME_WINDOW) {
                 if (!ProjectManagerEx.getInstanceEx().closeAndDispose(projectToClose)) {
-                    return null
+                    return@withContext null
                 }
             } else if (exitCode != GeneralSettings.OPEN_PROJECT_NEW_WINDOW) {
                 // not in a new window
-                return null
+                return@withContext null
             }
         }
         val baseDir = if (virtualFile.isDirectory) virtualFile else virtualFile.parent
@@ -74,29 +77,27 @@ class DubProjectOpenProcessor : ProjectOpenProcessorBase<DubProjectImportBuilder
         val project = ProjectUtil.openOrCreateProject(baseDir.name, baseDir.toNioPath())
 
         if (project != null) {
-            // Run on EDT for with the ability to take a write action lock
-            ApplicationManager.getApplication().invokeLater {
-                val mm = ModuleManager.getInstance(project)
-                mm.modules.forEach{
-                    // I couldn't figure out where project was gaining the additional module(s)
-                    // so we'll just dispose it and it'll be fine and things should work ok without it
-                    mm.disposeModule(it)
-                }
-
-                val sdk = DlangSdkType.findOrCreateSdk()
-                val builder = DlangModuleBuilder(sdk)
-
-                ApplicationManager.getApplication().runWriteAction {
-                    // must be run in a write action
-                    ProjectRootManager.getInstance(project).projectSdk = sdk
-                };
-
-                // must run on EDT for AWT events (can show dialog) but not in write action
-                builder.commit(project)
-                ProjectUtil.focusProjectWindow(project, false)
+            val mm = ModuleManager.getInstance(project)
+            mm.modules.forEach{
+                // I couldn't figure out where project was gaining the additional module(s)
+                // so we'll just dispose it and it'll be fine and things should work ok without it
+                mm.disposeModule(it)
             }
+
+            val sdk = DlangSdkType.findOrCreateSdk()
+            val builder = DlangModuleBuilder(sdk)
+
+            ApplicationManager.getApplication().runWriteAction {
+                // must be run in a write action
+                ProjectRootManager.getInstance(project).projectSdk = sdk
+            };
+
+            // must run on EDT for AWT events (can show dialog) but not in write action
+            builder.commit(project)
+            ProjectUtil.focusProjectWindow(project, false)
         }
-        return project
+
+        project
     }
 
     // Need to override when extending ProjectOpenProcessorBase<DubProjectImportBuilder>
