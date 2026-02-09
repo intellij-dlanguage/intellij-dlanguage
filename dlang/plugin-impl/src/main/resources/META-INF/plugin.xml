@@ -53,6 +53,9 @@
     </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!-- todo: have resource bundles specific to key modules. Eg dub, sdlang, debugger, dcd, serve-d, etc -->
+        <languageBundle key="i18n" path="i18n"/>
+        <languageBundle key="dcd-i18n" path="dcd-i18n"/>
 
         <!-- Add your extensions here -->
         <codeInsight.parameterInfo language="D" implementationClass="io.github.intellij.dlanguage.codeinsight.ParameterInfo"/>
@@ -311,13 +314,20 @@
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
             <synonym text="DFMT" />
         </action>
-        <action id="io.github.intellij.dlanguage.actions.RestartDCD"
-                class="io.github.intellij.dlanguage.actions.RestartDCD"
-                text="Restart DCD Server"
-                description="Restarts the DCD server"
-                icon="AllIcons.Actions.Restart">
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
-        </action>
+
+        <!-- Group DCD related actions in the Tools Menu -->
+        <group id="dlang-dcd-tools-menu-group"
+               text="DCD (D completion server)"
+               popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last" />
+
+            <action id="io.github.intellij.dlanguage.actions.RestartDCD"
+                    class="io.github.intellij.dlanguage.actions.RestartDCD">
+            </action>
+            <action id="io.github.intellij.dlanguage.actions.StopDCDServer"
+                    class="io.github.intellij.dlanguage.actions.StopDCDServer">
+            </action>
+        </group>
     </actions>
 
 </idea-plugin>
