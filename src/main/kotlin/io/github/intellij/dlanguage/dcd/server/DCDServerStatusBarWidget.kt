@@ -1,10 +1,10 @@
 package io.github.intellij.dlanguage.dcd.server
 
+import com.intellij.execution.runners.ExecutionUtil
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.actionSystem.DefaultActionGroup
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.ModuleUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectLocator
@@ -14,10 +14,10 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.CustomStatusBarWidget
 import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.openapi.wm.impl.status.EditorBasedStatusBarPopup
-import com.intellij.ui.AnimatedIcon
 import com.intellij.util.concurrency.EdtExecutorService
 import io.github.intellij.dlanguage.DlangFileType
 import io.github.intellij.dlanguage.actions.RestartDCD
+import io.github.intellij.dlanguage.actions.StopDCDServer
 import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -31,8 +31,10 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
 
     private companion object {
         const val ID = "DCD Server Status Bar Widget"
-        val log: Logger = Logger.getInstance(DCDServerStatusBarWidget::class.java)
+        const val WIDGET_TEXT = "DCD Server"
     }
+
+    private val widgetStateIcon = AllIcons.Debugger.ThreadStates.Socket
 
     private var future: ScheduledFuture<*>? = null
 
@@ -56,16 +58,18 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
 
         val state: WidgetState = when(dcdServer) {
             null -> WidgetState.HIDDEN
-            else -> return when(dcdServer.isExecutable) {
-                true -> return when(dcdServer.isRunning) {
+            else -> when(dcdServer.isExecutable) {
+                true -> when(dcdServer.isRunning) {
                     true -> {
-                        val state = WidgetState("DCD Server running", "DCD Server", false)
-                        state.icon = AllIcons.Debugger.ThreadStates.Socket
+                        val state = WidgetState("DCD Server running", WIDGET_TEXT, true)
+                        state.icon = ExecutionUtil.getLiveIndicator(widgetStateIcon, true)
+//                        state.icon = ExecutionUtil.getLiveIndicator(AnimatedIcon.Blinking(widgetStateIcon), true)
+//                        state.icon = ExecutionUtil.getLiveIndicator(IconWithDaemonOverlay(widgetStateIcon), true)
                         state
                     }
                     false -> {
-                        val state = WidgetState("Restart DCD Server", "DCD Server", true)
-                        state.icon = AnimatedIcon.Blinking(AllIcons.General.Warning) // AllIcons.Ide.FatalError
+                        val state = WidgetState("Restart DCD Server", WIDGET_TEXT, true)
+                        state.icon = ExecutionUtil.getLiveIndicator(widgetStateIcon, false)
                         state
                     }
                 }
@@ -91,9 +95,10 @@ class DCDServerStatusBarWidget(project: Project) : EditorBasedStatusBarPopup(pro
     override fun createPopup(context: DataContext): ListPopup {
         val group = DefaultActionGroup.createPopupGroupWithEmptyText()
 
-        group.add(ActionManager.getInstance().getAction(RestartDCD.ID))
-        // group.add(ActionManager.getInstance().getAction(EnableDCD.ID)) todo: #678
-        // group.add(ActionManager.getInstance().getAction(DisableDCD.ID))
+        ActionManager.getInstance().let {
+            group.add(it.getAction(RestartDCD.ID))
+            group.add(it.getAction(StopDCDServer.ID))
+        }
 
         return JBPopupFactory.getInstance()
             .createActionGroupPopup("DCD Actions", group, context, JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, true)

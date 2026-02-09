@@ -49,6 +49,11 @@ public final class DCDCompletionServer implements ToolChangeListener, Disposable
 
     private static final Logger LOG = Logger.getInstance(DCDCompletionServer.class);
 
+    /**
+     * The notification group id is defined in plugin.xml and must match the string used there.
+     */
+    public static final String NOTIFICATION_GROUP_ID = "DCDNotification";
+
     @NotNull
     public Module module;
 
@@ -79,8 +84,12 @@ public final class DCDCompletionServer implements ToolChangeListener, Disposable
         return StringUtil.isNotEmpty(path);
     }
 
+    /**
+     * Checks if the process is alive. Fos use in UI components that can indicate if the server is running
+     * @return true if there is a process running.
+     */
     public boolean isRunning() {
-        return StringUtil.isNotEmpty(path) && processHandler != null && processHandler.getProcess().isAlive();
+        return processHandler != null && processHandler.getProcess().isAlive();
     }
 
     public synchronized void exec() {
@@ -122,9 +131,9 @@ public final class DCDCompletionServer implements ToolChangeListener, Disposable
             LOG.info("DCD process started");
         } catch (final ExecutionException e) {
             NotificationGroupManager.getInstance()
-                .getNotificationGroup("DCDNotification")
+                .getNotificationGroup(NOTIFICATION_GROUP_ID)
                 .createNotification(
-                    "DCD Error",
+                    "DCD error",
                     "Unable to start a dcd server. Make sure that you have specified the path to the dcd-server and dcd-client executables correctly. You can specify executable paths under File > Settings > Languages & Frameworks > D Tools",
                     NotificationType.ERROR
                 )
@@ -213,8 +222,9 @@ public final class DCDCompletionServer implements ToolChangeListener, Disposable
 
     /**
      * Kills the existing process and closes input and output if they exist.
+     * It's public so that the RestartDCDAction can use it to manually kill the server.
      */
-    private synchronized void kill() {
+    public synchronized void kill() {
         if (processHandler != null) {
             LOG.info("Shutting down DCD Server...");
             processHandler.destroyProcess();
@@ -225,6 +235,7 @@ public final class DCDCompletionServer implements ToolChangeListener, Disposable
 
     /**
      * Restarts the dcd-server.
+     * It's public so that the RestartDCDAction can use it to manually restart the server.
      */
     public synchronized void restart() {
         kill();
