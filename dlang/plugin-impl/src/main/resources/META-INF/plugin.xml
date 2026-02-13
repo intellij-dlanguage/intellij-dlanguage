@@ -19,9 +19,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>1.39</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/71?closed=1">changelist</a>)<br/>
+        <b>1.39.3</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/75?closed=1">changelist</a>)<br/>
         <ul>
             <li>Supports IntelliJ IDEA 2025.3 - 2025.3.*</li>
+            <li>DCD Server can be manually stopped via UI if needed</li>
+            <li>Windows users can use Mago MI for debugging (gdb for Mac and Linux)</li>
         </ul>
     ]]>
     </change-notes>
