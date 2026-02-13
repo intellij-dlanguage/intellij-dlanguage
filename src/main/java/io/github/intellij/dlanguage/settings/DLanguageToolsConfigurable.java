@@ -177,9 +177,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                     } else if(!Files.isExecutable(path)) {
                         t.versionField.setText("Path is not executable");
                         t.versionField.setDisabledTextColor(UIManager.getColor("Component.warningFocusColor"));
-                    } else if(!StringUtil.containsIgnoreCase(exePath, t.command)) {
-                        t.versionField.setText(String.format("Not a valid %s binary", t.command));
-                        t.versionField.setDisabledTextColor(UIManager.getColor("Component.warningFocusColor"));
                     } else {
                         // then it's a valid path to the tool
                         t.updateVersion();
@@ -299,16 +296,6 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
     }
 
     /**
-     * Ensures that the UI component for selecting a Dub Tool can only be used to select the correct binary
-     */
-    private class DubToolBinaryChooserDescriptor extends FileChooserDescriptor {
-        DubToolBinaryChooserDescriptor(@NotNull final String binaryName) {
-            super(true, false, false, false, false, false);
-            withFileFilter(vf -> vf.getNameWithoutExtension().equalsIgnoreCase(binaryName));
-        }
-    }
-
-    /**
      * Manages the group of fields which reside to a particular tool.
      */
     class Tool implements Property, Versioned {
@@ -349,12 +336,17 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
                 new PropertyField(key.getPathKey(), pathField),
                 new PropertyField(key.getFlagsKey(), flagsField));
 
-            pathField.addBrowseFolderListener(
-                null,
-                new DubToolBinaryChooserDescriptor(command)
-                    .withTitle(String.format("Select %s executable", command))
-                    .withDescription("")
-            );
+            var dToolchooserDescriptor = new FileChooserDescriptor(true, false, false, false, false, false)
+                .withTitle(String.format("Select %s executable", command))
+                .withDescription(SystemInfo.isWindows && "gdb".equals(command) ? "On Windows mago-mi.exe can be used" : "")
+                .withShowHiddenFiles(false)
+                .withFileFilter(SystemInfo.isWindows && "gdb".equals(command) ?
+                    // on Windows the user can also use mago-mi.exe and MagoRemote.exe
+                    vf -> List.of(command, "mago-mi", "magoremote").contains(vf.getNameWithoutExtension()) :
+                    vf -> vf.getNameWithoutExtension().equalsIgnoreCase(command)
+                );
+
+            pathField.addBrowseFolderListener(null, dToolchooserDescriptor);
 
             autoFindButton.addActionListener(new LocateToolListener(pathField, command));
 
@@ -456,7 +448,7 @@ public class DLanguageToolsConfigurable implements SearchableConfigurable {
             if (StringUtil.isNotEmpty(path)) {
                 pathField.setText(StringUtil.trim(path));
             } else {
-                Messages.showErrorDialog(String.format("Could not find '%s'.", command), "DLanguage");
+                Messages.showWarningDialog(String.format("Could not find '%s'.", command), "DLanguage");
             }
         }
 
