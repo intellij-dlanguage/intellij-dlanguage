@@ -1,6 +1,8 @@
 package io.github.intellij.dlanguage.diagrams
 
 import com.intellij.diagram.*
+import com.intellij.diagram.DiagramRelationshipInfoAdapter
+import com.intellij.diagram.presentation.DiagramLineType
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.ModificationTracker
@@ -9,15 +11,25 @@ import com.intellij.psi.PsiElement
 
 /*
 * A diagram provider that generates UML based on D source code
+*
+* For example code, take a look at:
+* https://github.com/JetBrains/intellij-plugins/blob/master/AngularJS/src/org/angularjs/diagram/AngularUiRouterDiagramProvider.java
 */
 class DlangClassDiagramProvider : BaseDiagramProvider<PsiElement>() {
 
+    // val DOTTED_STROKE: BasicStroke = BasicStroke(0.7f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, floatArrayOf(2f, 2f), 0.0f)
+    // val WARNING_BORDER: StrokeBorder = StrokeBorder(DOTTED_STROKE, JBColor.red)
+    // val ERROR_BORDER: Border = JBUI.Borders.customLine(JBColor.red)
+    // val NORMAL_BORDER: Border = JBUI.Borders.customLine(Gray._190)
+
     private companion object {
-        const val ID = "DCD Server Status Bar Widget"
-        val log: Logger = Logger.getInstance(DlangClassDiagramProvider::class.java)
+        const val ID = "DlangUML"
     }
 
-    override fun getID(): String = "DlangUML"
+    val log: Logger = Logger.getInstance(DlangClassDiagramProvider::class.java)
+    val classDiagramElementManager: AbstractDiagramElementManager<PsiElement> = DlangClassDiagramElementManager()
+
+    override fun getID(): String = ID
 
     override fun getPresentableName(): String = "D class diagram"
 
@@ -25,12 +37,13 @@ class DlangClassDiagramProvider : BaseDiagramProvider<PsiElement>() {
         return DlangDiagramVisibilityManager()
     }
 
-    override fun getElementManager(): DiagramElementManager<PsiElement> = DlangClassDiagramElementManager()
+    override fun getElementManager(): DiagramElementManager<PsiElement> = this.classDiagramElementManager
 
+    // get as a service?? ApplicationManager.getApplication().getService(DlangClassDiagramVfsResolver.class)
     override fun getVfsResolver(): DiagramVfsResolver<PsiElement> = DlangClassDiagramVfsResolver()
 
     override fun getRelationshipManager(): DiagramRelationshipManager<PsiElement> {
-        TODO("Not yet implemented")
+        return DiagramRelationshipManager<PsiElement> { p0, p1, category -> DiagramRelationshipInfoAdapter("todo", DiagramLineType.DASHED) }
     }
 
     override fun createDataModel(
@@ -52,6 +65,8 @@ class DlangClassDiagramProvider : BaseDiagramProvider<PsiElement>() {
         }
 
         override fun getNodes(): MutableCollection<out DiagramNode<PsiElement>> {
+//            com.intellij.uml.UmlGraphBuilder(Project, Graph2D, Graph2DView, DiagramDataModel<?>, GraphThreadingType, DiagramPresentationModel)
+
             TODO("Not yet implemented")
         }
 
@@ -85,7 +100,7 @@ class DlangClassDiagramProvider : BaseDiagramProvider<PsiElement>() {
         override fun getCurrentVisibilityLevel(): VisibilityLevel? = visLevel
 
         override fun setCurrentVisibilityLevel(p0: VisibilityLevel?) {
-            log.info("dont think thi9s should be called")
+            //log.info("dont think this should be called")
         }
 
         override fun isRelayoutNeeded(): Boolean {
