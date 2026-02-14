@@ -40,7 +40,7 @@
     <!--<depends optional="true" config-file="idea-ultimate-only.xml">com.intellij.modules.ultimate</depends>-->
     <depends optional="true" config-file="copyright.xml">com.intellij.copyright</depends>
 
-    <!-- The uml plugin is available with Intellij Ultimate -->
+    <!-- The UML plugin (com.intellij.diagram) was originally Intellij Ultimate only -->
     <depends optional="true" config-file="plugin-uml.xml">com.intellij.diagram</depends>
 
     <!-- Both AppCode and CLion use cidr.lang -->
