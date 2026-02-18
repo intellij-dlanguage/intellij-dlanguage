@@ -69,6 +69,9 @@ class DResolveTest : DResolveTestCase() {
     fun testPublicImportsInClassWithAttributeSpecifierShouldNotResolveOutsideClass() = doTest(false)
 
     @Test
+    fun testPublicImportSelectiveImportInfiniteRecursion() = doTest()
+
+    @Test
     fun testTemplateUsageToTemplateDeclaration() = doTest()
 
     @Test

@@ -1,0 +1,2 @@
+
+public import c : bar;
