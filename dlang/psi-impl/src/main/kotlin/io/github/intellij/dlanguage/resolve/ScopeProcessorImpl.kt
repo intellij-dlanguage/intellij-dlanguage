@@ -5,10 +5,7 @@ import com.intellij.psi.ResolveState
 import com.intellij.psi.scope.PsiScopeProcessor
 import com.intellij.psi.search.GlobalSearchScope
 import io.github.intellij.dlanguage.index.DModuleIndex
-import io.github.intellij.dlanguage.psi.DLanguageBaseClassList
-import io.github.intellij.dlanguage.psi.DLanguageFunctionLiteralExpression
-import io.github.intellij.dlanguage.psi.DLanguageLambdaExpression
-import io.github.intellij.dlanguage.psi.DlangTypes
+import io.github.intellij.dlanguage.psi.*
 import io.github.intellij.dlanguage.psi.interfaces.DVisibility
 import io.github.intellij.dlanguage.psi.scope.ElementDeclarationHint
 import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil
@@ -807,7 +804,14 @@ object ScopeProcessorImpl {
         if (element.importBindings != null) {
             // with import binding restricts the scope of the corresponding single import
             val base = singleImports.removeLastOrNull()
-                ?: return true // remove the last as due to binding, we can only access to his bindings
+                ?: return true // remove the last, as, due to binding, we can only access to his bindings
+
+            // prevent infinite recursing check
+            // We know this symbol is not the one we want, as it is in a file we already processed
+            if (base.importedModuleName == (lastParent?.containingFile as? DlangPsiFile)?.getFullyQualifiedModuleName() ||
+                state.get(PROCESSED_FILES_KEY)?.contains(base.importedModuleName) == true)
+                return true
+
             for (elt in element.importBindings!!.importBinds) {
                 if (elt.namedImportBind != null) {
                     if (!processor.execute(elt.namedImportBind!!, state))

@@ -15,6 +15,7 @@ import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DLanguageSingleImportStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -24,6 +25,8 @@ import static io.github.intellij.dlanguage.utils.DPsiUtilKt.getImportText;
  * Created by francis on 7/14/2017.
  */
 public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DLanguageSingleImportStub> implements DLanguageSingleImport {
+
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(DlangSingleImportImpl.class);
 
     public DlangSingleImportImpl(@NotNull final DLanguageSingleImportStub stub, final IStubElementType nodeType) {
         super(stub, nodeType);
