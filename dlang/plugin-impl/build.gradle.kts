@@ -64,6 +64,21 @@ tasks {
                 )
         }
     }
+    prepareSandbox {
+        // disable unnecessary plugins in the sandbox IDE
+        disabledPlugins.addAll(
+            "com.intellij.ml.llm",
+            "com.intellij.mcpServer",
+            "com.intellij.findusages.ml",
+            "org.jetbrains.completion.full.line",
+            "Docker",
+            "com.intellij.kubernetes",
+            "org.intellij.qodana",
+            "intellij.jupyter",
+            "hg4idea",
+            "training"
+        )
+    }
 }
 
 tasks.register<Test>("testCompilation") {
