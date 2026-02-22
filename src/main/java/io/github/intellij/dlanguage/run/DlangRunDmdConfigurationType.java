@@ -20,7 +20,12 @@ public class DlangRunDmdConfigurationType extends ConfigurationTypeBase {
 
     private static class DLanguageFactory extends DlangRunConfigurationFactory {
         public DLanguageFactory(final ConfigurationType type) {
-            super(type);
+            super(
+                type.getId(),
+                type.getDisplayName(),
+                type.getConfigurationTypeDescription(),
+                com.intellij.openapi.util.NotNullLazyValue.createConstantValue(DLanguage.Icons.RUN)
+            );
         }
 
         @NotNull
