@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfigurationModule, Module> {
+public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfigurationModule, Module> implements RunProfileWithCompileBeforeLaunchOption {
 
     //Compiler settings properties
     private boolean betterC;
@@ -426,5 +426,20 @@ public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfig
 
     public void setProfile(final boolean profile) {
         this.profile = profile;
+    }
+
+    @Override
+    public boolean isBuildProjectOnEmptyModuleList() {
+        return true;
+    }
+
+    @Override
+    public boolean isBuildBeforeLaunchAddedByDefault() {
+        return false;
+    }
+
+    @Override
+    public boolean isExcludeCompileBeforeLaunchOption() {
+        return true;
     }
 }

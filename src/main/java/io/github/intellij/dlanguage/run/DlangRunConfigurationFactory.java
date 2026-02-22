@@ -1,34 +1,32 @@
 package io.github.intellij.dlanguage.run;
 
 import com.intellij.execution.BeforeRunTask;
-import com.intellij.execution.configurations.ConfigurationFactory;
-import com.intellij.execution.configurations.ConfigurationType;
 import com.intellij.execution.configurations.RunConfigurationSingletonPolicy;
+import com.intellij.execution.configurations.SimpleConfigurationType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
-import org.jetbrains.annotations.NonNls;
+import com.intellij.openapi.util.NotNullLazyValue;
+import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
 
 /**
+ * Base ConfigurationType class for D language configuration types that are used for running dub, dmd, or run a compiled binary
+ *
  * @author Samael Bate (singingbush)
  * created on 11/10/2020
  */
-public abstract class DlangRunConfigurationFactory extends ConfigurationFactory {
+public abstract class DlangRunConfigurationFactory extends SimpleConfigurationType {
 
-    protected DlangRunConfigurationFactory(@NotNull ConfigurationType type) {
-        super(type);
-    }
-
-    @NotNull @NonNls
-    @Override
-    public String getId() {
-        return this.getType().getId(); // needed as calling the super.getId() is deprecated
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return this.getType().getDisplayName();
+    public DlangRunConfigurationFactory(
+        @NotNull String id,
+        @Nls @NotNull String name,
+        @Nls @Nullable String description,
+        @NotNull NotNullLazyValue<Icon> icon
+    ) {
+        super(id, name, description, icon);
     }
 
     @Override
@@ -42,13 +40,20 @@ public abstract class DlangRunConfigurationFactory extends ConfigurationFactory 
     }
 
     /**
+     * Controls the default 'before launch' tasks that are configured in a run configuration
+     * <p>
      * Implemented this method so that we could suppress the /out directory being built:
-     * https://github.com/intellij-dlanguage/intellij-dlanguage/issues/489
+     * <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/issues/489">issue 489</a>
+     * <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/issues/1215">issue 1215</a>
+     * </p>
+     *
      * @param providerID the key of the Task to check
      * @param task the actual Task
      */
     @Override
     public void configureBeforeRunTaskDefaults(Key<? extends BeforeRunTask> providerID, BeforeRunTask task) {
-        super.configureBeforeRunTaskDefaults(providerID, task);
+        // by default, don't have any of our run configurations setup tasks.
+        // potentially the Run App config could override this to do a compile before running the binary
+        task.setEnabled(false);
     }
 }

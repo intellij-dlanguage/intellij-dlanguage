@@ -14,9 +14,7 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.util.PathUtil;
 import com.intellij.util.xmlb.XmlSerializer;
-import org.bouncycastle.math.raw.Mod;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +25,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfigurationModule, Module> {
+public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfigurationModule, Module> implements RunProfileWithCompileBeforeLaunchOption {
 
     @Nullable
     private String workDir;
@@ -82,7 +80,7 @@ public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfig
     }
 
     @Override
-    public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
+    public @NotNull SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
         return new DlangRunAppConfigurationEditor();
     }
 
@@ -115,7 +113,7 @@ public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfig
         return workDir;
     }
 
-    public void setWorkDir(final String workDir) {
+    public void setWorkDir(final @Nullable String workDir) {
         this.workDir = workDir;
     }
 
@@ -133,5 +131,20 @@ public class DlangRunAppConfiguration extends ModuleBasedConfiguration<RunConfig
 
     public void setEnvVars(final Map<String, String> envVars) {
         this.envVars = envVars;
+    }
+
+    @Override
+    public boolean isBuildProjectOnEmptyModuleList() {
+        return true;
+    }
+
+    @Override
+    public boolean isBuildBeforeLaunchAddedByDefault() {
+        return false;
+    }
+
+    @Override
+    public boolean isExcludeCompileBeforeLaunchOption() {
+        return true;
     }
 }

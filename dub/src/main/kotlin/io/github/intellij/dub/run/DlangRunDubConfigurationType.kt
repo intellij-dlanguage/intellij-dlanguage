@@ -4,6 +4,7 @@ import com.intellij.execution.configurations.ConfigurationType
 import com.intellij.execution.configurations.ConfigurationTypeBase
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.NotNullLazyValue
 import com.intellij.openapi.util.io.FileUtil
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangBundle.message
@@ -19,7 +20,12 @@ class DlangRunDubConfigurationType : ConfigurationTypeBase(
         addFactory(DLanguageFactory(this))
     }
 
-    private class DLanguageFactory(type: ConfigurationType?) : DlangRunConfigurationFactory(type!!) {
+    private class DLanguageFactory(type: ConfigurationType) : DlangRunConfigurationFactory(
+        type.id,
+        type.displayName,
+        type.configurationTypeDescription,
+    NotNullLazyValue.createConstantValue(type.icon)
+    ) {
         override fun createTemplateConfiguration(project: Project): RunConfiguration {
             return DlangRunDubConfiguration("DlangRunDubConfig", project, this)
         }
