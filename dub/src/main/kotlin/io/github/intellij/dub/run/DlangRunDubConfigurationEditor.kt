@@ -9,13 +9,25 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.ui.TextComponentAccessor
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
+import com.intellij.openapi.util.SystemInfo
+import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.util.text.Strings
 import com.intellij.ui.RawCommandLineEditor
 import io.github.intellij.dlanguage.DlangBundle.message
 import io.github.intellij.dlanguage.module.DlangModuleType
+import java.nio.file.Files
+import java.nio.file.Paths
 import javax.swing.*
 
 class DlangRunDubConfigurationEditor(val project: Project) : SettingsEditor<DlangRunDubConfiguration>() {
+
+    private companion object {
+        // I would have added 'opend' but when testing it seems dub doesn't support 'opend'
+        private val SUPPORTED_COMPILER_EXE = if (SystemInfo.isWindows)
+            arrayOf("dmd.exe", "ldc2.exe")
+        else
+            arrayOf("dmd", "ldc2", "gdc")
+    }
 
     private lateinit var myMainPanel: JTabbedPane
     private lateinit var panel1: JPanel
@@ -166,10 +178,18 @@ class DlangRunDubConfigurationEditor(val project: Project) : SettingsEditor<Dlan
         tfArch.text = config.tfArch
         tfDebug.text = config.tfDebug
 
-        this.tfCompiler.text = if (config.tfCompiler.isNullOrBlank()) {
-            Strings.notNullize(ProjectRootManager.getInstance(project).projectSdk?.homePath)
+        if (config.tfCompiler.isNullOrBlank() || Files.isDirectory(Paths.get(config.tfCompiler!!))) {
+            ProjectRootManager.getInstance(project).projectSdk?.homePath?.let { home ->
+                // on Windows there's x2 dmd compilers (and dub.exe):
+                // C:\D\dmd2\windows\bin\dmd.exe
+                // C:\D\dmd2\windows\bin64\dmd.exe
+                this.tfCompiler.text = Strings.notNullize(
+                    FileUtil.findFileInProvidedPath(home, *SUPPORTED_COMPILER_EXE)
+                )
+            }
         } else {
-            Strings.notNullize(config.tfCompiler).trim()
+            // default to simply "dmd" as that's the default behaviour of dub
+            this.tfCompiler.text = config.tfCompiler?.trim() ?: "dmd"
         }
 
         tfBuildMode.selectedIndex = config.buildMode
