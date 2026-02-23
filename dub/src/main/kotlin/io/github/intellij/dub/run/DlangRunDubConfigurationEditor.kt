@@ -180,6 +180,9 @@ class DlangRunDubConfigurationEditor(val project: Project) : SettingsEditor<Dlan
 
         if (config.tfCompiler.isNullOrBlank() || Files.isDirectory(Paths.get(config.tfCompiler!!))) {
             ProjectRootManager.getInstance(project).projectSdk?.homePath?.let { home ->
+                // on Windows there's x2 dmd compilers (and dub.exe):
+                // C:\D\dmd2\windows\bin\dmd.exe
+                // C:\D\dmd2\windows\bin64\dmd.exe
                 this.tfCompiler.text = Strings.notNullize(
                     FileUtil.findFileInProvidedPath(home, *SUPPORTED_COMPILER_EXE)
                 )

@@ -59,7 +59,8 @@ public class DlangSdkType extends SdkType {
             // This covers the default paths used by the Windows installer and therefore
             // https://chocolatey.org/packages/dmd is also covered (as it uses same process).
             DEFAULT_DMD_PATHS = new File[] {
-                new File("C:/D/dmd2/windows/bin/dmd.exe")
+                new File("C:/D/dmd2/windows/bin/dmd.exe"),
+                new File("C:/D/dmd2/windows/bin64/dmd.exe")
             };
             DEFAULT_DOCUMENTATION_PATHS = new File[] {
                 new File("C:/D/dmd2/html/d")
@@ -274,11 +275,21 @@ public class DlangSdkType extends SdkType {
     }
 
     /**
-     * Windows has docs in 'C:\D\dmd2\html\d' and sources in ['C:\D\dmd2\src\phobos',
-     * 'C:\D\dmd2\src\druntime\import'] OSX has docs in ??? and sources in
-     * ['/Library/D/dmd/src/phobos', '/Library/D/dmd/src/druntime/import'] Linux has docs in
-     * '/usr/share/dmd/html/d' and sources in ['/usr/include/dmd/phobos',
-     * '/usr/include/dmd/druntime/import']
+     * Windows has docs in 'C:\D\dmd2\html\d' and sources in [
+     *   'C:\D\dmd2\src\dmd\dmd',
+     *   'C:\D\dmd2\src\phobos',
+     *   'C:\D\dmd2\src\druntime\import'
+     * ]
+     * OSX has docs in ??? and sources in
+     * [
+     *   '/Library/D/dmd/src/phobos',
+     *   '/Library/D/dmd/src/druntime/import'
+     * ]
+     * Linux has docs in
+     * '/usr/share/dmd/html/d' and sources in [
+     *   '/usr/include/dmd/phobos',
+     *   '/usr/include/dmd/druntime/import'
+     * ]
      *
      * @param sdk The DMD installation
      */
