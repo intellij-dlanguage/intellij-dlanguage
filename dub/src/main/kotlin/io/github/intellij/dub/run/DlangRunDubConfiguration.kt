@@ -19,7 +19,7 @@ class DlangRunDubConfiguration(name: String?, project: Project?, factory: Config
         name, RunConfigurationModule(
             project!!
         ), factory!!
-    ) {
+    ), RunProfileWithCompileBeforeLaunchOption {
     //General tab
     var generalDubOptions = 1
 
@@ -96,4 +96,10 @@ class DlangRunDubConfiguration(name: String?, project: Project?, factory: Config
         readModule(element)
         XmlSerializer.deserializeInto(this, element)
     }
+
+    override fun isBuildProjectOnEmptyModuleList(): Boolean = true
+
+    override fun isBuildBeforeLaunchAddedByDefault(): Boolean = false
+
+    override fun isExcludeCompileBeforeLaunchOption(): Boolean = true
 }
