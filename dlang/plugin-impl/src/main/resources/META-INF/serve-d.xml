@@ -9,7 +9,7 @@
         <!-- plugin settings are now in: Settings -> Languages &amp; Frameworks -> D Tools -->
         <applicationConfigurable
             parentId="language"
-            order="first"
+            after="D Tools"
             id="ServeDSettings"
             instance="io.github.intellij.dlanguage.lsp.settings.ServeDSettings"
             displayName="D LSP (Serve-D)"/>
