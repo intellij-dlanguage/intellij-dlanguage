@@ -19,10 +19,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        <b>1.39.4</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/76?closed=1">changelist</a>)<br/>
+        <b>1.40</b> (<a href="https://github.com/intellij-dlanguage/intellij-dlanguage/milestone/77?closed=1">changelist</a>)<br/>
         <ul>
-            <li>Supports IntelliJ IDEA 2025.3 - 2026.1.*</li>
-            <li>bug fixes</li>
+            <li>Supports IntelliJ IDEA 2026.1 - 2026.1.*</li>
+            <li>Native LSP support (using serve-d)</li>
+            <li>Native debugger support</li>
         </ul>
     ]]>
     </change-notes>
