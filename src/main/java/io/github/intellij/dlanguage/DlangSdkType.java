@@ -17,6 +17,7 @@ import io.github.intellij.dlanguage.library.LibFileRootType;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import javax.swing.*;
 import java.io.File;
@@ -113,7 +114,7 @@ public class DlangSdkType extends SdkType {
                 new File("/snap/dmd/current/import/druntime") // snapcraft.io
             };
         } else {
-            LOG.warn(String.format("We didn't cater for %s", SystemInfo.getOsNameAndVersion()));
+            LOG.warn(String.format("We didn't cater for %s", SystemInfo.OS_NAME));
             DEFAULT_DMD_PATHS = new File[]{};
             DEFAULT_DOCUMENTATION_PATHS = new File[]{};
             DEFAULT_PHOBOS_PATHS = new File[]{};
@@ -166,7 +167,7 @@ public class DlangSdkType extends SdkType {
      * @return true if the sdk home contains a executable dmd compiler
      */
     @Override
-    public boolean isValidSdkHome(final String sdkHome) {
+    public boolean isValidSdkHome(final @NotNull String sdkHome) {
         final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
 
         File dmdBinary = new File(sdkHome, executableName);
@@ -193,7 +194,7 @@ public class DlangSdkType extends SdkType {
 
     @NotNull
     @Override
-    public String suggestSdkName(@Nullable final String currentSdkName, final String sdkHome) {
+    public String suggestSdkName(@Nullable final String currentSdkName, final @NonNull String sdkHome) {
         try {
             final String version = Objects.requireNonNull(getDmdVersion(sdkHome)).get(2L, TimeUnit.SECONDS);
 
@@ -300,7 +301,7 @@ public class DlangSdkType extends SdkType {
         SetupStatus status = new SetupStatus(false, false, false);
 
         if (SystemInfo.isWindows) {
-            status = setupSDKPathsFromWindowsConfigFile(sdk,sdkModificator);
+            status = setupSDKPathsFromWindowsConfigFile(sdk, sdkModificator);
         }
 
         // documentation paths (todo: find out why using 'OrderRootType.DOCUMENTATION' didn't work)
@@ -308,12 +309,12 @@ public class DlangSdkType extends SdkType {
             setupDocumentationPath(sdk, sdkModificator, status);
         }
 
-        // add phobos to sources root
+        // add phobos to classes & sources root
         if (!status.getPhobosStatus()) {
             setupPhobosPaths(sdkModificator, status);
         }
 
-        // add druntime to sources root
+        // add druntime to classes & sources root
         if (!status.getRuntimeStatus()) {
             setupRuntimePaths(sdkModificator, status);
         }
@@ -340,6 +341,7 @@ public class DlangSdkType extends SdkType {
     private void setupRuntimePaths(final SdkModificator sdkModificator, final SetupStatus status) {
         Optional<VirtualFile> druntimeSource = firstVirtualFileFrom(DEFAULT_DRUNTIME_PATHS);
         if (druntimeSource.isPresent()) {
+            sdkModificator.addRoot(druntimeSource.get(), OrderRootType.CLASSES);
             sdkModificator.addRoot(druntimeSource.get(), OrderRootType.SOURCES);
             status.setRuntime(true);
         }
@@ -351,6 +353,7 @@ public class DlangSdkType extends SdkType {
     private void setupPhobosPaths(final SdkModificator sdkModificator, final SetupStatus status) {
         final Optional<VirtualFile> phobosSource = firstVirtualFileFrom(DEFAULT_PHOBOS_PATHS);
         if (phobosSource.isPresent()) {
+            sdkModificator.addRoot(phobosSource.get(), OrderRootType.CLASSES);
             sdkModificator.addRoot(phobosSource.get(), OrderRootType.SOURCES);
             status.setPhobos(true);
         }
@@ -360,6 +363,10 @@ public class DlangSdkType extends SdkType {
     }
 
     private void setupDocumentationPath(@NotNull final Sdk sdk, final SdkModificator sdkModificator, final SetupStatus status) {
+        // We can add URLs as documentation links to the SDK
+        sdkModificator.addRoot("https://dlang.org/spec/spec.html", OrderRootType.DOCUMENTATION);
+        sdkModificator.addRoot("https://dlang.org/phobos/", OrderRootType.DOCUMENTATION);
+
 //        final File docDir = DEFAULT_DOCUMENTATION_PATH;//Paths.get(getDmdPath(sdk), "html", "d").toFile();
 //        final VirtualFile docs = docDir != null && docDir.isDirectory() ? LocalFileSystem.getInstance().findFileByPath(docDir.getAbsolutePath()) : null;
 //        if (docs != null) {
@@ -372,13 +379,14 @@ public class DlangSdkType extends SdkType {
 //            }
 //            sdkModificator.addRoot(fxDocUrl, OrderRootType.DOCUMENTATION);
 //        }
-        status.setDocumentation(true);//todo adding documentation doesn't work but its not clear why
+        status.setDocumentation(true); // todo: adding local file-based documentation doesn't work but its not clear why
 
     }
 
     @NotNull
     private SetupStatus setupSDKPathsFromWindowsConfigFile(final Sdk sdk, final SdkModificator sdkModificator) {
-        final GeneralCommandLine cmd = new GeneralCommandLine(getDmdPath(sdk));
+        final String dmd_path = getDmdPath(sdk);
+        final GeneralCommandLine cmd = new GeneralCommandLine(dmd_path);
 
         try {
             final ProcessOutput output = ApplicationManager.getApplication()
@@ -423,14 +431,19 @@ public class DlangSdkType extends SdkType {
                     }
                 }
             });
-            final String phobosPath = (new File(getDmdPath(sdk))).getParent() + phobos[0];
-            final String druntimePath = (new File(getDmdPath(sdk))).getParent() + druntime[0];
+            final String phobosPath = (new File(dmd_path)).getParent() + phobos[0];
+            final String druntimePath = (new File(dmd_path)).getParent() + druntime[0];
             final File phobosFile = new File(phobosPath);
             final File druntimeFile = new File(druntimePath);
             if (phobosFile.exists() && druntimeFile.exists()) {
                 final VirtualFile phobosVirtualFile = LocalFileSystem.getInstance().findFileByPath(phobosFile.getAbsolutePath());
                 final VirtualFile druntimeVirtualFile = LocalFileSystem.getInstance().findFileByPath(druntimeFile.getAbsolutePath());
-                if(phobosVirtualFile == null || druntimeVirtualFile == null) return new SetupStatus(false, false, false);
+                if(phobosVirtualFile == null || druntimeVirtualFile == null) {
+                    return new SetupStatus(false, false, false);
+                }
+                sdkModificator.addRoot(phobosVirtualFile, OrderRootType.CLASSES);
+                sdkModificator.addRoot(druntimeVirtualFile, OrderRootType.CLASSES);
+
                 sdkModificator.addRoot(phobosVirtualFile, OrderRootType.SOURCES);
                 sdkModificator.addRoot(druntimeVirtualFile, OrderRootType.SOURCES);
                 return new SetupStatus(true, true, false);
@@ -468,12 +481,21 @@ public class DlangSdkType extends SdkType {
         return null;
     }
 
+    /*
+    * We cn use this method to create a custom AdditionalDataConfigurable which adds another tab to the
+    * sdk within the Project Structure window (to the right of documentation sources)
+    */
     @Nullable
     @Override
     public AdditionalDataConfigurable createAdditionalDataConfigurable(
                                             @NotNull final SdkModel sdkModel,
                                             @NotNull final SdkModificator sdkModificator) {
-        return null; // it's ok to return null but would be good to see what we could do with this
+        return null;
+        // See https://github.com/intellij-dlanguage/intellij-dlanguage/issues/1231
+        // we can potentially configure additional options for things such as BetterC in the
+        // UI. There is a 'DlangSdkAdditionalDataConfigurable' class on the related branch.
+        // simply return it:
+        // new DlangSdkAdditionalDataConfigurable(sdkModel, sdkModificator);
     }
 
     @NotNull
