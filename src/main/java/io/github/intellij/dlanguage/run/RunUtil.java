@@ -27,14 +27,14 @@ public class RunUtil {
         // Verify that plugin is available
         var pluginId = PluginId.getId("com.intellij.nativeDebug");
         if (!PluginManagerCore.isPluginInstalled(pluginId)) {
-            new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE, "The plugin needs to be installed", NotificationType.ERROR)
+            new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE, "The plugin nativeDebug needs to be installed", NotificationType.ERROR)
                 .addAction(new ShowPluginsWithSearchOptionAction("Install plugin", "com.intellij.nativeDebug"))
                 .notify(project);
             return false;
         }
         // Check that it is enabled
         if (PluginManagerCore.isDisabled(pluginId)) {
-            new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE, "The plugin needs to be enabled", NotificationType.ERROR)
+            new Notification(NOTIFICATION_GROUPID, NOTIFICATION_TITLE, "The plugin nativeDebug needs to be enabled", NotificationType.ERROR)
                 .addAction(new ShowPluginsWithSearchOptionAction("Enable plugin", "com.intellij.nativeDebug"))
                 .notify(project);
             return false;
