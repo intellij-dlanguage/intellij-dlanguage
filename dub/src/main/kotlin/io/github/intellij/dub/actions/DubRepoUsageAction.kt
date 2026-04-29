@@ -14,7 +14,7 @@ import com.intellij.openapi.progress.impl.BackgroundableProcessIndicator
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.SystemInfo
-import com.intellij.openapi.util.io.FileUtil
+import com.intellij.openapi.util.io.NioFiles
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.util.SystemProperties
 import io.github.intellij.dub.Dub
@@ -189,7 +189,7 @@ class DubRepoUsageAction : AnAction(
                     .addAction(NotificationAction.createExpiring("Remove ${allOldDirectories.size} directories", {
                         _,_ -> allOldDirectories.forEach {
                             log.debug("deleting: ${it.absolutePath}")
-                            FileUtil.deleteRecursively(it.toPath())
+                            NioFiles.deleteRecursively(it.toPath())
                         }
                         NotificationGroupManager.getInstance()
                             .getNotificationGroup(Dub.NOTIFICATION_GROUP_ID)
