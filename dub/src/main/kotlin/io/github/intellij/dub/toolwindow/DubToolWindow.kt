@@ -37,11 +37,7 @@ class DubToolWindow : ToolWindowFactory {
         Disposer.register(project, dtw)
     }
 
-    /*
-    * This method replaces the old tool window condition class that was used
-    */
-    @Deprecated("Use isApplicableAsync")
-    override fun isApplicable(project: Project): Boolean {
+    override suspend fun isApplicableAsync(project: Project): Boolean {
         log.debug("DUB Tool Window Condition: value(${project.name})")
 
         val files = project.guessProjectDir()?.children ?: return false
