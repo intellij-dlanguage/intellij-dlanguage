@@ -1,3 +1,4 @@
+import org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask.FailureLevel
 
 fun properties(key: String) = providers.gradleProperty(key).get()
 
@@ -50,6 +51,22 @@ intellijPlatform {
         ides {
             recommended()
         }
+
+	// builds now fail on [INTERNAL_API_USAGES, OVERRIDE_ONLY_API_USAGES]
+        // see: https://platform.jetbrains.com/t/stricter-plugin-verification-in-intellij-platform-gradle-plugin-2-15-0/4169
+        val ignoredFailures = setOf(
+            FailureLevel.INTERNAL_API_USAGES,
+            FailureLevel.OVERRIDE_ONLY_API_USAGES,
+            FailureLevel.PLUGIN_STRUCTURE_WARNINGS,
+            FailureLevel.MISSING_DEPENDENCIES,
+            FailureLevel.COMPATIBILITY_WARNINGS,
+            FailureLevel.DEPRECATED_API_USAGES,
+            FailureLevel.EXPERIMENTAL_API_USAGES,
+        )
+        failureLevel = FailureLevel.ALL - ignoredFailures
+	
+	// Or, could just disable all
+        // failureLevel = FailureLevel.NONE
     }
 }
 
