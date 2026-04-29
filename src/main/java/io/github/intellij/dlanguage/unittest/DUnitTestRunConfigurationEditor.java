@@ -38,8 +38,12 @@ public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRun
 
         initDFileTextWithBrowse(project, myFileField);
 
-        myWorkingDirectory.addBrowseFolderListener(ExecutionBundle.message("select.working.directory.message"), null, project,
-            FileChooserDescriptorFactory.createSingleFolderDescriptor());
+        myWorkingDirectory.addBrowseFolderListener(
+            project,
+            FileChooserDescriptorFactory.singleDir()
+                .withTitle(ExecutionBundle.message("select.working.directory.message"))
+                .withDescription(null)
+        );
     }
 
     private static void initDFileTextWithBrowse(final @NotNull Project project,
