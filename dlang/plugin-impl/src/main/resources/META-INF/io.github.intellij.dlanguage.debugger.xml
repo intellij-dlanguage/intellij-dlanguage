@@ -1,0 +1,11 @@
+<idea-plugin package="io.github.intellij.dlanguage.debugger">
+    <dependencies>
+        <plugin id="com.intellij.modules.cidr.debugger"/>
+    </dependencies>
+    <extensions defaultExtensionNs="cidr.debugger">
+        <languageSupport language="D" implementationClass="io.github.intellij.dlanguage.debugger.DlangDebuggerLanguageSupport"/>
+        <editorsExtension language="D" implementationClass="io.github.intellij.dlanguage.debugger.DlangDebuggerEditorsExtension"/>
+        <lineBreakpointFileTypesProvider implementation="io.github.intellij.dlanguage.debugger.DlangLineBreakpointFileTypeProvider"/>
+        <debugProcessConfigurator implementation="io.github.intellij.dlanguage.debugger.runconfig.DDebugProcessConfigurator"/>
+    </extensions>
+</idea-plugin>

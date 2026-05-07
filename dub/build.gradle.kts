@@ -18,6 +18,7 @@ dependencies {
     api(project(":"))
     api(project(":dlang:psi-api"))
     implementation(project(":utils"))
+    implementation(project(":debugger"))
 
     testImplementation(project(":"))
     testImplementation(project(":dlang:plugin-impl"))
@@ -36,6 +37,7 @@ dependencies {
             "com.intellij.modules.json",
             "com.intellij.copyright"
         )
+        plugin("com.intellij.nativeDebug:${providers.gradleProperty("nativeDebugVersion").get()}")
         testFramework(TestFrameworkType.Platform)
     }
 }

@@ -2,9 +2,7 @@ package io.github.intellij.dub.run
 
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
-import com.intellij.execution.configurations.RunProfile
-import com.intellij.execution.configurations.RunProfileState
-import com.intellij.execution.configurations.RunnerSettings
+import com.intellij.execution.configurations.*
 import com.intellij.execution.executors.DefaultDebugExecutor
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.runners.ExecutionEnvironment
@@ -14,6 +12,7 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.InvalidDataException
 import com.intellij.openapi.util.WriteExternalException
+import io.github.intellij.dlanguage.debugger.runconfig.showRunContent
 import io.github.intellij.dlanguage.run.RunUtil
 import io.github.intellij.dub.project.DubConfigurationParser
 import io.github.intellij.dub.project.DubPackage
@@ -49,7 +48,10 @@ class DubBuildRunner : GenericProgramRunner<DubBuildRunner.DubBuildSettings>() {
                 ).toString().replace("\\", "/")
                 log.debug("Using root package of dub project for executable path: ", executableFilePath)
             }
-            return RunUtil.startDebugger(this, state, environment, project, executor, executableFilePath)
+            if (!RunUtil.checkDebuggerConfigured(project))
+                return null
+            val cmd = GeneralCommandLine().withExePath(executableFilePath)
+            return showRunContent(state as CommandLineState, environment, cmd)
         }
         val result = state.execute(environment.executor, this) ?: return null
         return RunContentDescriptor(result.executionConsole, result.processHandler, result.executionConsole.component, environment.runProfile.name)

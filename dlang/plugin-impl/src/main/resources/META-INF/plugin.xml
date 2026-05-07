@@ -42,6 +42,7 @@
 
     <!-- Both AppCode and CLion use cidr.lang -->
     <depends optional="true" config-file="clion-only.xml">com.intellij.modules.cidr.lang</depends>
+    <depends optional="true" config-file="io.github.intellij.dlanguage.debugger.xml">com.intellij.modules.cidr.debugger</depends>
     <!--<depends optional="true" config-file="clion-only.xml">com.intellij.modules.clion</depends>-->
     <!--<depends optional="true" config-file="appcode-only.xml">com.intellij.modules.appcode</depends>-->
 
@@ -285,11 +286,6 @@
                          key="d.inspections.symbol.builtinpropertyname.displayname"
                          groupKey="d.inspections.groupname"
                          shortName="BuiltinPropertyName"/>
-
-        <!--debugger-->
-        <!--<configurationType implementation="uk.co.cwspencer.ideagdb.run.GoGdbRunConfigurationType"/>-->
-        <!--<programRunner implementation="uk.co.cwspencer.ideagdb.run.GdbRunner"/>-->
-        <xdebugger.breakpointType implementation="uk.co.cwspencer.ideagdb.debug.breakpoints.GdbBreakpointType"/>
 
         <!-- Structure View -->
         <lang.psiStructureViewFactory language="D" implementationClass="io.github.intellij.dlanguage.structure.DStructureViewFactory"/>

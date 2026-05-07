@@ -1,17 +1,17 @@
 package io.github.intellij.dlanguage.run
 
 import com.intellij.execution.ExecutionException
-import com.intellij.execution.configurations.RunProfile
-import com.intellij.execution.configurations.RunProfileState
-import com.intellij.execution.configurations.RunnerSettings
+import com.intellij.execution.configurations.*
 import com.intellij.execution.executors.DefaultDebugExecutor
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.execution.runners.GenericProgramRunner
 import com.intellij.execution.ui.RunContentDescriptor
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.InvalidDataException
 import com.intellij.openapi.util.WriteExternalException
+import io.github.intellij.dlanguage.debugger.runconfig.showRunContent
 import io.github.intellij.dlanguage.run.exception.ModuleNotFoundException
 import io.github.intellij.dlanguage.run.exception.NoValidDlangSdkFound
 import org.jdom.Element
@@ -34,12 +34,17 @@ class RunAppRunner : GenericProgramRunner<RunAppRunner.RunAppSettings>() {
     @Throws(ExecutionException::class)
     override fun doExecute(state: RunProfileState, environment: ExecutionEnvironment): RunContentDescriptor? {
         if (DefaultDebugExecutor.EXECUTOR_ID == environment.executor.actionName) {
+            val project: Project = environment.project
+
             try {
                 val dlangRunAppState = state as DlangRunAppState
                 val executableFilePath = dlangRunAppState.getExecutableCommandLine(dlangRunAppState.config)
                     .exePath
                     .replace("\\", "/")
-                return RunUtil.startDebugger(this, state, environment, environment.project, environment.executor, executableFilePath)
+                if (!RunUtil.checkDebuggerConfigured(project))
+                    return null
+                val cmd = GeneralCommandLine().withExePath(executableFilePath)
+                return showRunContent(state as CommandLineState, environment, cmd)
             } catch (e: ModuleNotFoundException) {
                 e.printStackTrace()
                 log.error(e.toString())
