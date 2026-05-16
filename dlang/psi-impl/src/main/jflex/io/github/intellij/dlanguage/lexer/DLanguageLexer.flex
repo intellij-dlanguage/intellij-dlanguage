@@ -37,7 +37,12 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
 
 WHITE_SPACE_CHAR = [\ \t\f]
 NEW_LINE = [\n\r]
-WHITE_SPACE = ({WHITE_SPACE_CHAR}|{NEW_LINE})+
+
+// This sequence is special to the compiler, and can be inserted anywhere. Treat it as whitespace for now, to not have parsing error
+// If we want to improve it support, a complete implementation is necessary
+SPECIAL_TOKEN_SEQUENCE = "#"{WHITE_SPACE_CHAR}*line.*{NEW_LINE}
+
+WHITE_SPACE = ({WHITE_SPACE_CHAR}|{NEW_LINE}|{SPECIAL_TOKEN_SEQUENCE})+
 
 ID = (_|\p{xid_start}) (\p{xid_continue})*
 

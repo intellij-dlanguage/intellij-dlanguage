@@ -201,6 +201,8 @@ BAD_CHARACTER ('q"/test"d;')
     fun testtokens_xor()                  = doTest()
     fun testtokens_xor_assign()           = doTest()
 
+    fun testspecial_token_sequence()      = doTest()
+
     //issue 77
     fun testissue77() = doTest()
 
