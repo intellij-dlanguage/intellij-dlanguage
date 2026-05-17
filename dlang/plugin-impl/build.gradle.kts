@@ -13,13 +13,13 @@ plugins {
 coverallsJacoco {
     reportPath = project.layout.buildDirectory.file("reports/kover/report.xml").get().asFile.absolutePath
     // It is a little bit hacky, but it works. It provides all the sources folders to coverallsJacoco plugin
-    reportSourceSets += rootProject.allprojects.map {
+    reportSourceSets += rootProject.allprojects.flatMap {
         listOf(
             it.layout.projectDirectory.file("src/main/java").asFile,
             it.layout.projectDirectory.file("src/main/kotlin").asFile,
             it.layout.projectDirectory.file("gen").asFile,
         )
-    }.flatten()
+    }
 }
 
 repositories {
@@ -64,7 +64,7 @@ intellijPlatform {
             FailureLevel.EXPERIMENTAL_API_USAGES,
         )
         failureLevel = FailureLevel.ALL - ignoredFailures
-	
+
 	// Or, could just disable all
         // failureLevel = FailureLevel.NONE
     }
@@ -132,7 +132,8 @@ dependencies {
         if (providers.environmentVariable("CI").orNull == null)
             plugin("psiViewer:${properties("psiViewerVersion")}")
 
-        plugin("com.intellij.nativeDebug:${properties("nativeDebugVersion")}")
+        //plugin("com.intellij.nativeDebug:${properties("nativeDebugVersion")}")
+        compatiblePlugin("com.intellij.nativeDebug")
 
         pluginVerifier()
         zipSigner()
