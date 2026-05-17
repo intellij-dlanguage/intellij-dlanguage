@@ -1,0 +1,5 @@
+WHITE_SPACE ('#line 10\n\n')
+DlangTokenType.int ('int')
+WHITE_SPACE (' # line 26 "package lol"\n')
+DlangTokenType.ID ('x')
+DlangTokenType.; (';')
