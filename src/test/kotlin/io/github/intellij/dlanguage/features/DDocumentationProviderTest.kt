@@ -156,4 +156,22 @@ class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
 
         assertTrue(text!!.contains("Contains empty code snippet"))
     }
+
+    @Test
+    fun testGenerateDocWithEmptyDocComment() {
+        myFixture.configureByText("example.d", """
+            ///
+            class I {}
+            """.trimIndent())
+
+        val myCodeClass = myFixture.findElementByText("I", DLanguageClassDeclaration::class.java)
+
+        // put the caret on the declaration in the source file
+        myFixture.editor.caretModel.moveToOffset(myCodeClass!!.identifier!!.startOffset)
+        val docElement = DocumentationManager.getInstance(project)
+            .findTargetElement(myFixture.editor, myFixture.file)
+        val text = provider!!.generateDoc(docElement, null)
+        assertNotNull(text)
+        assertFalse(text!!.contains("<div class='content'>"))
+    }
 }

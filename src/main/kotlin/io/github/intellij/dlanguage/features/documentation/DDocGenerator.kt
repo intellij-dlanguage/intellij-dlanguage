@@ -92,10 +92,15 @@ class DDocGenerator {
     }
 
     private fun appendContentSections(builder: StringBuilder, sections: Array<PsiElement>, linksDeclarations: Collection<DDocLinkDeclarationImpl>) {
+        assert(sections.isNotEmpty())
+
         var i = 0
         // TODO refactor to have section only being sections (not polluted)
         while (sections[i].elementType == DDOC_WHITESPACE || sections[i].elementType == TokenType.WHITE_SPACE || sections[i].elementType == DDOC_COMMENT_LEADING_ASTERISKS) {
             i++
+            if (i >= sections.size) {
+                return
+            }
         }
         val summary = sections[i]
         if (summary is DDocSummarySectionImpl) {
@@ -115,23 +120,21 @@ class DDocGenerator {
                     return
                 }
             }
-            if (sections.size > i) {
-                while (sections[i].elementType == DDOC_WHITESPACE || sections[i].elementType == TokenType.WHITE_SPACE || sections[i].elementType == DDOC_COMMENT_LEADING_ASTERISKS) {
-                    i++
-                    if (i >= sections.size) {
-                        builder.append(DocumentationMarkup.CONTENT_END)
-                        return
-                    }
+            while (sections[i].elementType == DDOC_WHITESPACE || sections[i].elementType == TokenType.WHITE_SPACE || sections[i].elementType == DDOC_COMMENT_LEADING_ASTERISKS) {
+                i++
+                if (i >= sections.size) {
+                    builder.append(DocumentationMarkup.CONTENT_END)
+                    return
                 }
-                val description = sections[i]
-                if (description is DDocDescriptionSectionImpl) {
-                    for (content in description.getSections()) {
-                        builder.append("<p>")
-                        builder.append(buildContent(content, linksDeclarations))
-                        builder.append("</p>")
-                    }
-                    i++
+            }
+            val description = sections[i]
+            if (description is DDocDescriptionSectionImpl) {
+                for (content in description.getSections()) {
+                    builder.append("<p>")
+                    builder.append(buildContent(content, linksDeclarations))
+                    builder.append("</p>")
                 }
+                i++
             }
             builder.append(DocumentationMarkup.CONTENT_END)
         }
