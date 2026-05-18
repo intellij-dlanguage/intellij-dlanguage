@@ -490,12 +490,11 @@ public class DlangSdkType extends SdkType {
     public AdditionalDataConfigurable createAdditionalDataConfigurable(
                                             @NotNull final SdkModel sdkModel,
                                             @NotNull final SdkModificator sdkModificator) {
-        return null;
         // See https://github.com/intellij-dlanguage/intellij-dlanguage/issues/1231
         // we can potentially configure additional options for things such as BetterC in the
         // UI. There is a 'DlangSdkAdditionalDataConfigurable' class on the related branch.
         // simply return it:
-        // new DlangSdkAdditionalDataConfigurable(sdkModel, sdkModificator);
+        return new DlangSdkAdditionalDataConfigurable(sdkModel, sdkModificator);
     }
 
     @NotNull
