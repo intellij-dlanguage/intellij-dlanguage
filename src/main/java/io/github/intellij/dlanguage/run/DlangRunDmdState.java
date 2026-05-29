@@ -40,12 +40,12 @@ public class DlangRunDmdState extends CommandLineState {
     @Override
     protected ProcessHandler startProcess() throws ExecutionException {
         try {
-            final GeneralCommandLine cmd = getDmdCommandLine(config);
+            final GeneralCommandLine cmd = getDlangCompilerCommandLine(config);
             final ProcessHandler handler = new ColoredProcessHandler(cmd.createProcess(), cmd.getCommandLineString());
             ProcessTerminatedListener.attach(handler, config.getProject());
             return handler;
         } catch (final NoValidDlangSdkFound e) {
-            throw new ExecutionException("No valid DMD SDK found!");
+            throw new ExecutionException("No valid D Language SDK found!");
         } catch (final NoSourcesException e) {
             throw new ExecutionException("No D Language source files found in directory: " + e.getSourcesRoot());
         } catch (final ModuleNotFoundException e) {
@@ -58,7 +58,7 @@ public class DlangRunDmdState extends CommandLineState {
                 NotificationGroupManager.getInstance()
                     .getNotificationGroup("DMD run configuration")
                     .createNotification("DMD settings",
-                        "DMD executable path is " + (isEmpty ? "empty" : "not specified correctly") +
+                        "D compiler executable path is " + (isEmpty ? "empty" : "not specified correctly") +
                             "<br/><a href='configure'>Configure</a>",
                         NotificationType.ERROR
                     )
@@ -72,7 +72,7 @@ public class DlangRunDmdState extends CommandLineState {
      * Build command line:
      * <code>dmd -release -unittest -od{objFilesDir} -of{outputFilePath} sourceFile1.d sourceFile2.d</code>
      */
-    private GeneralCommandLine getDmdCommandLine(final DlangRunDmdConfiguration config)
+    private GeneralCommandLine getDlangCompilerCommandLine(final DlangRunDmdConfiguration config)
         throws ModuleNotFoundException, NoValidDlangSdkFound, NoSourcesException, ExecutionException {
         @Nullable final Module module = config.getConfigurationModule().getModule();
         if (module == null) {
@@ -80,7 +80,7 @@ public class DlangRunDmdState extends CommandLineState {
         }
 
         if (module.isDisposed()) {
-            LOG.warn("should not run dmd as module is disposed");
+            LOG.warn("should not run D compiler as module is disposed");
             throw new ModuleNotFoundException("module is disposed");
         }
 
@@ -90,13 +90,13 @@ public class DlangRunDmdState extends CommandLineState {
         if(sdk != null && DlangSdkType.class.isAssignableFrom(sdk.getSdkType().getClass())) {
             final DlangSdkType dlangSdkType = (DlangSdkType) sdk.getSdkType();
 
-            final String dmdPath = dlangSdkType.getDmdPath(sdk);
+            final String dCompilerPath = dlangSdkType.getDlangCompilerPath(sdk);
 
-            if (StringUtil.isEmptyOrSpaces(dmdPath)) {
-                throw new ExecutionException("DMD executable is not specified");
+            if (StringUtil.isEmptyOrSpaces(dCompilerPath)) {
+                throw new ExecutionException("D Compiler executable is not specified");
             }
-            if (!Paths.get(dmdPath).toFile().canExecute()) {
-                throw new ExecutionException("DMD is not configured correctly");
+            if (!Paths.get(dCompilerPath).toFile().canExecute()) {
+                throw new ExecutionException("D Compiler is not configured correctly");
             }
 
             final List<String> dmdParams = DlangDmdConfigToArgsConverter.getDmdParameters(config, module);
@@ -104,10 +104,10 @@ public class DlangRunDmdState extends CommandLineState {
             final GeneralCommandLine cmd = new GeneralCommandLine()
                 .withWorkDirectory(config.getProject().getBasePath())
                 .withCharset(Charset.defaultCharset())
-                .withExePath(dmdPath)
+                .withExePath(dCompilerPath)
                 .withParameters(dmdParams);
 
-            LOG.debug(String.format("dmd command: %s", cmd.getCommandLineString()));
+            LOG.debug(String.format("D compiler command: %s", cmd.getCommandLineString()));
             return cmd;
         } else {
             LOG.warn("No valid D compiler found");

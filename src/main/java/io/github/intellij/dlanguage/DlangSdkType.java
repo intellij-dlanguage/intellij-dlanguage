@@ -10,6 +10,7 @@ import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.projectRoots.impl.SdkConfigurationUtil;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -43,8 +44,7 @@ public class DlangSdkType extends SdkType {
 
     private static final Logger LOG = Logger.getInstance(DlangSdkType.class);
 
-    public static final String SDK_TYPE_ID = "DMD2 SDK";
-    private static final String SDK_NAME = "DMD v2 SDK";
+    public static final String SDK_TYPE_ID = "D Compiler";
 
     @NotNull
     private static final File[] DEFAULT_DMD_PATHS;
@@ -122,7 +122,10 @@ public class DlangSdkType extends SdkType {
         }
     }
 
-    private File dmdBinary = null;
+    /**
+     * The full path to a D compiler binary. Can be dmd, ldc, gdc, or opend.
+     */
+    private File dCompilerBinary = null;
 
     @NotNull
     public static DlangSdkType getInstance() {
@@ -157,52 +160,75 @@ public class DlangSdkType extends SdkType {
     }
 
     /**
-     * When user set up DMD SDK path this method checks if specified path contains DMD compiler executable.
-     *
+     * When user sets up a D compiler path this method checks if specified path contains a D compiler executable.
+     * <p>
+     * We allow selecting dmd, ldc2, gdc, or opend
+     * <p>
      * This method determines if it can run the dmd executable based on a home path that's passed in. So in the case
      * that the sdk home is "C:\D\dmd2\" then this method would return true if "C:\D\dmd2\windows\bin\dmd.exe" exists
      * and is executable.
+     * <p>
+     * On Linux it's likely that the compiler will be installed in a locations such as /usr/bin but a user could still
+     * have extracted a tarball and be using that, so we may still need to look for a bin directory that contains a
+     * supported compiler.
      *
-     * @param sdkHome path to the root directory of a dmd installation
+     * @param sdkHome path to the root directory of a D compiler installation
      * @return true if the sdk home contains a executable dmd compiler
      */
     @Override
     public boolean isValidSdkHome(final @NotNull String sdkHome) {
-        final String executableName = SystemInfo.isWindows ? "dmd.exe" : "dmd";
+        final @Nullable File compilerBinary = this.findRelativeBinary(sdkHome);
 
-        File dmdBinary = new File(sdkHome, executableName);
-
-        if (dmdBinary.exists() && dmdBinary.canExecute()) {
-            this.dmdBinary = dmdBinary;
+        if (compilerBinary != null && compilerBinary.exists() && compilerBinary.canExecute()) {
+            this.dCompilerBinary = compilerBinary;
             return true;
         }
 
-        if (SystemInfo.isWindows) {
-            final File dmdHome = new File(sdkHome);
-            if (dmdHome.exists() && dmdHome.isDirectory()) {
-                dmdBinary = Paths.get(sdkHome, "windows", "bin", executableName)
-                    .toFile(); // C:\D\dmd2\windows\bin\dmd.exe
-            }
-        }
-
-        if (dmdBinary.exists() && dmdBinary.canExecute()) {
-            this.dmdBinary = dmdBinary;
-            return true;
-        }
         return false;
+    }
+
+    private @Nullable File findRelativeBinary(@NotNull String sdkHome) {
+        final File sdkHomeFile = new File(sdkHome);
+
+        if (sdkHomeFile.exists() && sdkHomeFile.isDirectory()) {
+            // first look for any of the acceptable binaries in the current directory
+            @Nullable String binaryPath = FileUtil.findFileInProvidedPath(sdkHome, "dmd", "ldc2", "gdc", "opend");
+
+            if (binaryPath == null || binaryPath.isEmpty()) {
+                // does the dir have a bin directory in it?
+                var relativeBin = Paths.get(sdkHome, "bin").toFile();
+                if (relativeBin.exists() && relativeBin.isDirectory()) {
+                    // look for any of the acceptable binaries in the bin directory
+                    binaryPath = FileUtil.findFileInProvidedPath(relativeBin.getPath(), "dmd", "ldc2", "gdc", "opend");
+                }
+            }
+
+            if ((binaryPath == null || binaryPath.isEmpty()) && SystemInfo.isWindows) {
+                // if the binary path is still null and we're on Windows, we need to handle the Windows install
+                // location: 'C:\D\dmd2\windows\bin\dmd.exe'
+                var windowsBin = Paths.get(sdkHome, "windows", "bin").toFile();
+                if (windowsBin.exists() && windowsBin.isDirectory()) {
+                    // look for dmd.exe or dmd64.exe bin directory
+                    binaryPath = FileUtil.findFileInProvidedPath(windowsBin.getPath(), "dmd.exe", "dmd64.exe");
+                }
+            }
+
+            return binaryPath != null ? new File(binaryPath) : null;
+        }
+        return null;
     }
 
     @NotNull
     @Override
     public String suggestSdkName(@Nullable final String currentSdkName, final @NonNull String sdkHome) {
         try {
-            final String version = Objects.requireNonNull(getDmdVersion(sdkHome)).get(2L, TimeUnit.SECONDS);
+            final String version = Objects.requireNonNull(getCompilerVersion(sdkHome)).get(2L, TimeUnit.SECONDS);
 
-            return StringUtil.isNotEmpty(version) ? version : SDK_NAME;
+            return StringUtil.isNotEmpty(version) ? version : SDK_TYPE_ID;
         } catch (InterruptedException | TimeoutException | java.util.concurrent.ExecutionException e) {
             LOG.error("unable to run dmd --version", e);
         }
-        return SDK_NAME;
+        return SDK_TYPE_ID;
     }
 
     @Nullable
@@ -385,7 +411,7 @@ public class DlangSdkType extends SdkType {
 
     @NotNull
     private SetupStatus setupSDKPathsFromWindowsConfigFile(final Sdk sdk, final SdkModificator sdkModificator) {
-        final String dmd_path = getDmdPath(sdk);
+        final String dmd_path = getDlangCompilerPath(sdk);
         final GeneralCommandLine cmd = new GeneralCommandLine(dmd_path);
 
         try {
@@ -468,14 +494,14 @@ public class DlangSdkType extends SdkType {
     @Override
     public String getVersionString(@NotNull final String sdkHome) {
         try {
-            final String version = Objects.requireNonNull(getDmdVersion(sdkHome)).get(2000, TimeUnit.SECONDS);
+            final String version = Objects.requireNonNull(getCompilerVersion(sdkHome)).get(2000, TimeUnit.SECONDS);
 
             if (StringUtil.isNotEmpty(version)) {
                 final Matcher m = Pattern.compile("(?:.*v)(.+)").matcher(version);
                 return m.matches() ? m.group(1) : null;
             }
         } catch (InterruptedException | TimeoutException | java.util.concurrent.ExecutionException e) {
-            LOG.error("unable to run dmd --version", e);
+            LOG.error("unable to get D compiler version", e);
         }
 
         return null;
@@ -501,7 +527,7 @@ public class DlangSdkType extends SdkType {
     @NotNull
     @Override
     public String getPresentableName() {
-        return DlangBundle.INSTANCE.message("compilers.dmd.presentableName");
+        return SDK_TYPE_ID;
     }
 
     @Override
@@ -521,18 +547,18 @@ public class DlangSdkType extends SdkType {
     }
 
     /**
-     * Try to execute 'dmd --version' and return first line of the output.
+     * Try to execute the compiler binary with '--version' and return first line of the output.
      *
-     * @param sdkHome path to dmd home directory
+     * @param sdkHome path to D compiler or the compiler's home directory (if on Windows or non-system install on unix)
      * @return String containing DMD version or null
      */
     @NotNull
-    private Future<String> getDmdVersion(final String sdkHome) {
+    private Future<String> getCompilerVersion(final String sdkHome) {
         return ApplicationManager.getApplication().executeOnPooledThread(() -> {
             if (isValidSdkHome(sdkHome)) {
                 final GeneralCommandLine cmd = new GeneralCommandLine();
                 //cmd.withWorkDirectory(sdkHome.getAbsolutePath());
-                cmd.setExePath(dmdBinary.getAbsolutePath());
+                cmd.setExePath(dCompilerBinary.getAbsolutePath());
                 cmd.addParameter("--version");
 
                 try {
@@ -550,7 +576,7 @@ public class DlangSdkType extends SdkType {
                         return version;
                     }
                 } catch (final ExecutionException e) {
-                    LOG.error("There was a problem running 'dmd --version'", e);
+                    LOG.error(String.format("There was a problem running '%s --version'", dCompilerBinary.getAbsolutePath()), e);
                 }
             }
             return null;
@@ -558,16 +584,17 @@ public class DlangSdkType extends SdkType {
     }
 
     /**
-     * Returns full path to DMD compiler executable for the given Sdk (based on the home path).
+     * Returns full path to a D compiler executable for the given Sdk (based on the home path).
      * If the Sdk doesn't have a valid value then this method will simply return "dmd" in the hope that it's on the PATH
+     *
      * @param sdk an Sdk of {@link DlangSdkType}
-     * @return Either the absolute path to the dmd compiler or simply "dmd"
+     * @return Either the absolute path to a supported D compiler or simply "dmd"
      */
-    public String getDmdPath(@NotNull final Sdk sdk) {
+    public String getDlangCompilerPath(@NotNull final Sdk sdk) {
         final String homePath = sdk.getHomePath();
 
-        if (isValidSdkHome(homePath)) {
-            return dmdBinary.getAbsolutePath();
+        if (homePath != null && isValidSdkHome(homePath)) {
+            return dCompilerBinary.getAbsolutePath();
         }
 
         LOG.warn(String.format("Home path '%s' for dlang sdk was not valid. Falling back to 'dmd'", homePath));
