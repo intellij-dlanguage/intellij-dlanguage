@@ -45,7 +45,6 @@ public class DlangSdkType extends SdkType {
     private static final Logger LOG = Logger.getInstance(DlangSdkType.class);
 
     public static final String SDK_TYPE_ID = "D Compiler";
-//    private static final String SDK_NAME = "DMD v2 SDK";
 
     @NotNull
     private static final File[] DEFAULT_DMD_PATHS;
@@ -528,7 +527,7 @@ public class DlangSdkType extends SdkType {
     @NotNull
     @Override
     public String getPresentableName() {
-        return DlangBundle.INSTANCE.message("compilers.dmd.presentableName");
+        return SDK_TYPE_ID;
     }
 
     @Override
