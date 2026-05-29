@@ -194,22 +194,22 @@ public class DlangSdkType extends SdkType {
             // first look for any of the acceptable binaries in the current directory
             @Nullable String binaryPath = FileUtil.findFileInProvidedPath(sdkHome, "dmd", "ldc2", "gdc", "opend");
 
-            if (binaryPath == null) {
+            if (binaryPath == null || binaryPath.isEmpty()) {
                 // does the dir have a bin directory in it?
                 var relativeBin = Paths.get(sdkHome, "bin").toFile();
                 if (relativeBin.exists() && relativeBin.isDirectory()) {
                     // look for any of the acceptable binaries in the bin directory
-                    binaryPath = FileUtil.findFileInProvidedPath(sdkHome, "dmd", "ldc2", "gdc", "opend");
+                    binaryPath = FileUtil.findFileInProvidedPath(relativeBin.getPath(), "dmd", "ldc2", "gdc", "opend");
                 }
             }
 
-            if (binaryPath == null && SystemInfo.isWindows) {
+            if ((binaryPath == null || binaryPath.isEmpty()) && SystemInfo.isWindows) {
                 // if the binary path is still null and we're on Windows, we need to handle the Windows install
                 // location: 'C:\D\dmd2\windows\bin\dmd.exe'
                 var windowsBin = Paths.get(sdkHome, "windows", "bin").toFile();
                 if (windowsBin.exists() && windowsBin.isDirectory()) {
                     // look for dmd.exe or dmd64.exe bin directory
-                    binaryPath = FileUtil.findFileInProvidedPath(sdkHome, "dmd.exe", "dmd64.exe");
+                    binaryPath = FileUtil.findFileInProvidedPath(windowsBin.getPath(), "dmd.exe", "dmd64.exe");
                 }
             }
 
