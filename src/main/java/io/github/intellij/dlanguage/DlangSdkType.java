@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
@@ -142,6 +143,10 @@ public class DlangSdkType extends SdkType {
         return DLanguage.Icons.FILE;
     }
 
+    /**
+     * Note that this is going to be replaced by {@link #suggestHomePath(Path)}
+     * @return path of a found SDK or null
+     */
     @Nullable
     @Override
     public String suggestHomePath() {
