@@ -26,6 +26,7 @@ import io.github.intellij.dlanguage.psi.DlangPsiFile;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DToolsNotificationAction;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Paths;
 
@@ -52,13 +53,14 @@ public class DFormatAction extends DumbAwareAction {
     @Override
     public void actionPerformed(@NotNull final AnActionEvent event) {
         final PsiFile psiFile = event.getData(CommonDataKeys.PSI_FILE);
-        final VirtualFile virtualFile = event.getRequiredData(CommonDataKeys.VIRTUAL_FILE);
         final Project project = getEventProject(event);
 
         if (project == null || !(psiFile instanceof DlangPsiFile))
             return;
 
-        if (!virtualFile.isValid()) {
+        @Nullable final VirtualFile virtualFile = event.getData(CommonDataKeys.VIRTUAL_FILE);
+
+        if (virtualFile == null || !virtualFile.isValid()) {
             // if the virtual file is no longer valid (eg: it's been deleted or changed) then there's no point continuing
             return;
         }
