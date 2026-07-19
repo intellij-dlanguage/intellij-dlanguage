@@ -60,9 +60,7 @@ class DHighlightingAnnotator : Annotator {
 
     private fun highlightIdentifier(element: PsiElement): Pair<TextRange, DColor>? {
         val color = when (val parent = element.parent) {
-            is FunctionDeclaration,
-            is TemplateDeclaration,
-            is TemplateMixinDeclaration -> DColor.FUNCTION_DEFINITION
+            is Declaration -> colorForDeclarationIdentifier(parent)
             is TemplateInstance -> {
                 // don’t colorize templated class/struct/union instantiations as function calls
                 if (PsiTreeUtil.getParentOfType(parent, DLanguageBasicType::class.java, true, Declaration::class.java) == null)
@@ -81,6 +79,22 @@ class DHighlightingAnnotator : Annotator {
         is TemplateSingleArgument,
         is TemplateTypeParameter,
         is TemplateParameter -> DColor.TYPE_PARAMETER
+        else -> null
+    }
+
+    /**
+     * Return the color for an identifier that is a 'declaration'
+     * @param element: the reference of the element to color
+     */
+    private fun colorForDeclarationIdentifier(element: PsiElement) : DColor? = when (element) {
+        is ClassDeclaration -> DColor.CLASS_DEFINITION
+        is InterfaceDeclaration -> DColor.INTERFACE_DEFINITION
+        is StructDeclaration -> DColor.STRUCT_DEFINITION
+        is UnionDeclaration -> DColor.UNION_DEFINITION
+        is EnumDeclaration -> DColor.ENUM_DEFINITION
+        is FunctionDeclaration,
+        is TemplateDeclaration,
+        is TemplateMixinDeclaration -> DColor.FUNCTION_DEFINITION
         else -> null
     }
 

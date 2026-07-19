@@ -45,6 +45,12 @@ enum class DColor(humanName: String, val default: TextAttributesKey) {
     SEMICOLON("Braces and Operators//Semicolon", Default.SEMICOLON),
     COMMA("Braces and Operators//Comma", Default.COMMA),
 
+    CLASS_DEFINITION("Types//Class", Default.CLASS_NAME),
+    INTERFACE_DEFINITION("Types//Interface", CLASS_DEFINITION.textAttributesKey),
+    STRUCT_DEFINITION("Types//Struct", CLASS_DEFINITION.textAttributesKey),
+    UNION_DEFINITION("Types//Union", CLASS_DEFINITION.textAttributesKey),
+    ENUM_DEFINITION("Types//Enum", CLASS_DEFINITION.textAttributesKey),
+
     MODULE_DEFINITION("Module Definition", Default.GLOBAL_VARIABLE),
     FUNCTION_DEFINITION("Function Definition", Default.FUNCTION_DECLARATION),
     FUNCTION_CALL("Function Call", Default.FUNCTION_CALL),
