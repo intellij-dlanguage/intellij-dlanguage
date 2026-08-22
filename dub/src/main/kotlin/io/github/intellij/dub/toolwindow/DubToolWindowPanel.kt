@@ -9,6 +9,8 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.Module
+import com.intellij.openapi.module.ModuleTypeManager
+import com.intellij.openapi.module.ModuleUtil
 import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.LibraryOrSdkOrderEntry
@@ -30,7 +32,6 @@ import io.github.intellij.dlanguage.DlangSdkType
 import io.github.intellij.dlanguage.messagebus.DubChangeNotifier
 import io.github.intellij.dlanguage.messagebus.ToolChangeListener
 import io.github.intellij.dlanguage.messagebus.Topics
-import io.github.intellij.dlanguage.module.DlangModuleType
 import io.github.intellij.dlanguage.settings.ToolSettings
 import io.github.intellij.dub.actions.ConfigureDToolsAction
 import io.github.intellij.dub.actions.DubBuildAction
@@ -108,8 +109,10 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
         //        return@forEachLibrary true
         //    }
 
+        val modules = ModuleUtil.getModulesOfType(project, ModuleTypeManager.getInstance().findByID(DLanguage.MODULE_TYPE_ID))
+
         // then for every sub module would need to add:
-        DlangModuleType.findModules(project).forEach {
+        modules.forEach {
             val dubModule = DefaultMutableTreeNode(it.name) // ModuleNode(it, null)
             dubModule.userObject = ProjectViewModuleNode(project, it, ViewSettings.DEFAULT)
 
@@ -177,7 +180,7 @@ class DubToolWindowPanel(val project: Project, val toolWindow: ToolWindow) :
             val dependenciesRootNode = DefaultMutableTreeNode("Dependencies")
             dependenciesRootNode.userObject = PackageDependenciesNode(project)
 
-            dubConfig.dubPackageDependencies?.forEach {
+            dubConfig.dubPackageDependencies.forEach {
                 // LibraryNode ??
 //                val dependencyNode = DefaultMutableTreeNode("${it.name} ${it.version}")
                 val dependencyNode = DefaultMutableTreeNode(it)
