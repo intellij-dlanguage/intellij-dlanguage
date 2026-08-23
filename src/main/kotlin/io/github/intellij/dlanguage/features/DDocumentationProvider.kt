@@ -1,6 +1,6 @@
 package io.github.intellij.dlanguage.features
 
-import com.intellij.lang.documentation.AbstractDocumentationProvider
+import com.intellij.lang.documentation.DocumentationProvider
 import com.intellij.psi.PsiDocCommentBase
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -18,7 +18,7 @@ import java.util.function.Consumer
 /**
  * Created by francis on 7/18/2017.
  */
-class DDocumentationProvider : AbstractDocumentationProvider() {
+class DDocumentationProvider : DocumentationProvider {
 
     /**
      * Returns the text to show in the Ctrl-hover popup for the specified element.
@@ -71,10 +71,8 @@ class DDocumentationProvider : AbstractDocumentationProvider() {
     }
 
     /**
-     *
      * Callback for asking the doc provider for the complete documentation.
      * Underlying implementation may be time-consuming, that's why this method is expected not to be called from EDT.
-     *
      *
      * One can use [com.intellij.lang.documentation.DocumentationMarkup] to get proper content layout. Typical sample will look like this:
      * <pre>
@@ -89,7 +87,7 @@ class DDocumentationProvider : AbstractDocumentationProvider() {
      *
      * To show different content on mouse hover in editor, [.generateHoverDoc] should be implemented.
      *
-     * @param element         the element for which the documentation is requested (for example, if the mouse is over
+     * @param element the element for which the documentation is requested (for example, if the mouse is over
      * a method reference, this will be the method to which the reference is resolved).
      * @param originalElement the element under the mouse cursor
      * @return target element's documentation, or `null` if provider is unable to generate documentation
@@ -98,8 +96,10 @@ class DDocumentationProvider : AbstractDocumentationProvider() {
     override fun generateDoc(element: PsiElement?, originalElement: PsiElement?): String? {
         if (element is DNamedElement) {
             val builder = StringBuilder()
+
             var declarationElement = element
             DSignatureDocGenerator().appendDeclarationHeader(builder, declarationElement, element)
+
             val doc = DDocGenerator().generateDoc(element)
             builder.append(doc)
             return builder.toString().ifBlank { null }
