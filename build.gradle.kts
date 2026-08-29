@@ -1,5 +1,6 @@
 
 import org.jetbrains.grammarkit.tasks.GenerateLexerTask
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
@@ -106,13 +107,20 @@ dependencies {
 
     intellijPlatform {
         intellijIdea(providers.gradleProperty("ideaVersion").get())
+        // test on local install Mac:
+        //local("/Users/user/Applications/IntelliJ IDEA Ultimate.app")
+
         bundledModule("intellij.platform.langInjection")
         bundledPlugins(
             "com.intellij.java",
             "com.intellij.java.ide",
             "com.intellij.modules.json",
-            "com.intellij.copyright"
+            "com.intellij.copyright",
+            "com.intellij.diagram" // previously "uml"
         )
+
+        testBundledModule("com.intellij.diagram")
+
         testFramework(TestFrameworkType.Platform)
         testFramework(TestFrameworkType.Plugin.Java)
     }
