@@ -9,8 +9,12 @@ sentry = "8+"
 
 # plugins
 gradleIntelliJPlatformPlugin = "2.16.0"
-grammarkit = "2023.3.0.4"
-kotlin = "2.3.+"
+# https://github.com/JetBrains/gradle-grammar-kit-plugin is now archived
+# This project is archived and no longer maintained. Version 2023.3.0.4 is the final release.
+# Migrate to the IntelliJ Platform Gradle Plugin and its org.jetbrains.intellij.platform.grammarkit
+# subplugin, which now handle all Grammar-Kit integration.
+grammarkit = "2023.3.0.4" # todo: migrate to new way of setting up lexer/parser in Gradle file
+kotlin = "2.4.+"
 kover = "0.9.9"
 coverallsJacoco = "1.2.20"
 

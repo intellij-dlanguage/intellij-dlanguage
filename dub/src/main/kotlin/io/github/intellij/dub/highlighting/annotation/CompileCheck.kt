@@ -49,11 +49,11 @@ class CompileCheck : DlangLinter {
         return ""
     }
 
-    private fun findProblems(stdout: String, file: PsiFile): List<DProblem> {
+    private fun findProblems(stdout: String, file: PsiFile): List<CompilerProblem> {
         val lints = StringUtil.split(stdout, "\n")
-        val problems: MutableList<DProblem> = ArrayList()
+        val problems: MutableList<CompilerProblem> = ArrayList()
         for (lint in lints) {
-            ContainerUtil.addIfNotNull<CompilerProblem?>(problems, parseProblem(lint, file))
+            ContainerUtil.addIfNotNull(problems, parseProblem(lint, file))
         }
         return problems
     }

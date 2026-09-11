@@ -74,7 +74,7 @@ class DQuoteHandler : SimpleTokenSetQuoteHandler(
         }
     }
 
-    override fun isInsideLiteral(iterator: HighlighterIterator?): Boolean {
-        return super.isInsideLiteral(iterator) || iterator?.tokenType === IES_TEXT
+    override fun isInsideLiteral(iterator: HighlighterIterator): Boolean {
+        return super.isInsideLiteral(iterator) || iterator.tokenType === IES_TEXT
     }
 }

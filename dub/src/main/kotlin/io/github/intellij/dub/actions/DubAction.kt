@@ -2,8 +2,10 @@ package io.github.intellij.dub.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.module.ModuleTypeManager
+import com.intellij.openapi.module.ModuleUtil
 import com.intellij.openapi.project.DumbAwareAction
-import io.github.intellij.dlanguage.module.DlangModuleType
+import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dub.service.DubBinaryPathProvider
 import javax.swing.Icon
 
@@ -21,7 +23,8 @@ abstract class DubAction(text: String? = null, description: String? = null, icon
 
     private fun canUseDub(e: AnActionEvent) : Boolean {
         val project = AnAction.getEventProject(e) ?: return false
-        return DubBinaryPathProvider.isDubAvailable() && DlangModuleType.findModules(project).isNotEmpty()
+
+        return DubBinaryPathProvider.isDubAvailable() && ModuleUtil.getModulesOfType(project, ModuleTypeManager.getInstance().findByID(DLanguage.MODULE_TYPE_ID)).isNotEmpty()
     }
 
 }

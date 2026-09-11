@@ -20,8 +20,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        idea: [ '2026.1' ]
-        jdk: [ '21' ]
+        idea: [ '2026.2', '2026.2.1' ]
+        jdk: [ '25' ]
         #os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
