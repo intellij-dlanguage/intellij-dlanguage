@@ -125,7 +125,8 @@ dependencies {
             "com.intellij.java",
             "com.intellij.java.ide",
             "com.intellij.modules.json",
-            "com.intellij.copyright"
+            "com.intellij.copyright",
+            "com.intellij.diagram" // previously "uml"
         )
 
         // If not run by CICD, add some useful dev plugins
