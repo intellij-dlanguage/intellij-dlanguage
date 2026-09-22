@@ -23,26 +23,30 @@ class DDocumentationProviderTest : LightPlatformCodeInsightFixture4TestCase() {
 
     @Test
     fun testGetUrlForHandlesSingleImport() {
-        myFixture.configureByText("example.d", "import std.typecons;")
+        myFixture.configureByText("example.d", "import std.typ<caret>econs;")
 
-        val elementAndContext = DocumentationManager.getInstance(project)
-            .findTargetElementAndContext(myFixture.editor, 13, myFixture.file)!!
+        val originalElement = myFixture.elementAtCaret
 
-        val result = provider!!.getUrlFor(elementAndContext.first, elementAndContext.second)
+        val dm = DocumentationManager.getInstance(project)
+        val targetElement = dm.findTargetElement(myFixture.editor, myFixture.file)!!
+
+        val result = provider!!.getUrlFor(targetElement, originalElement)
         assertEquals("https://dlang.org/phobos/std_typecons.html", result[0])
     }
 
     @Test
     fun testGetUrlForHandlesNullAndNonImportStatement() {
-        myFixture.configureByText("example.d", "class User { int id; string name;}")
+        myFixture.configureByText("example.d", "class User { int <caret>id; string name;}")
 
-        val elementAndContext = DocumentationManager.getInstance(project)
-            .findTargetElementAndContext(myFixture.editor, 17, myFixture.file)!!
+        val originalElement = myFixture.elementAtCaret
+
+        val dm = DocumentationManager.getInstance(project)
+        val targetElement = dm.findTargetElement(myFixture.editor, myFixture.file)!!
 
         assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(null, null))
-        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(elementAndContext.first, null))
-        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(null, elementAndContext.second))
-        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(elementAndContext.first, elementAndContext.second))
+        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(targetElement, null))
+        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(null, originalElement))
+        assertEmpty("Should return empty list rather than throwing exception", provider!!.getUrlFor(targetElement, originalElement))
     }
 
     @Test

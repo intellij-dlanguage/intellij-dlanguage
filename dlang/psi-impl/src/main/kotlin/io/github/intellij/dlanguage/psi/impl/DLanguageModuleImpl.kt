@@ -149,12 +149,7 @@ class DLanguageModuleImpl(private val manager: PsiManager, private val file: Dla
     }
 
     override fun delete() {
-        checkDelete()
         file.delete()
-    }
-
-    override fun checkDelete() {
-        file.checkDelete()
     }
 
     override fun replace(newElement: PsiElement): PsiElement {

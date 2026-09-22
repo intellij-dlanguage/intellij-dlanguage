@@ -26,7 +26,7 @@ class DLanguageBlockStatementImpl(text: CharSequence?) : LazyParseablePsiElement
     }
 
     override fun getStatements(): MutableList<Statement?> {
-        return PsiTreeUtil.getChildrenOfTypeAsList<Statement?>(this, Statement::class.java)
+        return mutableListOf(PsiTreeUtil.getChildOfType<Statement?>(this, Statement::class.java))
     }
 
     override fun getOP_BRACES_RIGHT(): PsiElement? {
