@@ -42,7 +42,7 @@ class CLionDubProjectOpenProcessor : ProjectOpenProcessor() {
         }
     }
 
-    override fun doOpenProject(
+    override suspend fun openProjectAsync(
         virtualFile: VirtualFile,
         projectToClose: Project?,
         forceOpenInNewFrame: Boolean
