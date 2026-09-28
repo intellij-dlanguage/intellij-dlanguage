@@ -24,17 +24,17 @@ val overrideTestData = false
 allprojects {
     tasks {
         withType<JavaCompile> {
-            sourceCompatibility = JavaVersion.VERSION_21.majorVersion
-            targetCompatibility = JavaVersion.VERSION_21.majorVersion
+            sourceCompatibility = JavaVersion.VERSION_25.majorVersion
+            targetCompatibility = JavaVersion.VERSION_25.majorVersion
             options.encoding = "UTF-8"
             options.compilerArgs.add("-Xlint:deprecation")
         }
 
         withType<KotlinCompile> {
             compilerOptions {
-                apiVersion.set(KotlinVersion.KOTLIN_2_2)
-                languageVersion.set(KotlinVersion.KOTLIN_2_2)
-                jvmTarget.set(JvmTarget.JVM_21)
+                apiVersion.set(KotlinVersion.KOTLIN_2_4)
+                languageVersion.set(KotlinVersion.KOTLIN_2_4)
+                jvmTarget.set(JvmTarget.JVM_25)
                 //allWarningsAsErrors.set(true)
             }
         }

@@ -19,7 +19,7 @@ public abstract class DStubbedPsiElementBase<T extends StubElement<? extends Psi
 
     @Override
     public String toString() {
-        return getElementType().toString();
+        return this.getIElementType().toString();
     }
 
     //todo getNameIdentifier needs to use stubs

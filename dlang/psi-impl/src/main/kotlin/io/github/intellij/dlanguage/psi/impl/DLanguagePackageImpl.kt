@@ -127,6 +127,8 @@ class DLanguagePackageImpl(private val manager: PsiManager, private val qualifie
     }
 
     override fun navigate(requestFocus: Boolean) {
+        // todo: DirectoryIndex is now obsolete so this code needs replacing.
+        // also, should only run if canNavigate() returns true
         val directories = DirectoryIndex.getInstance(project)
                 .getDirectoriesByPackageName(qualifiedName, true)
                 .map { PsiDirectoryFactory.getInstance(project).createDirectory(it) }
@@ -189,16 +191,9 @@ class DLanguagePackageImpl(private val manager: PsiManager, private val qualifie
     }
 
     override fun delete() {
-        checkDelete()
         for (dir in directories) {
             dir.delete()
         }
-    }
-
-    override fun checkDelete() {
-       for (dir in directories) {
-           dir.checkDelete()
-       }
     }
 
     override fun replace(newElement: PsiElement): PsiElement {
