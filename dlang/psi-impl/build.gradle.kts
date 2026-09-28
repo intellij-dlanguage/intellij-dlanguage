@@ -1,5 +1,5 @@
 
-import org.jetbrains.grammarkit.tasks.GenerateLexerTask
+import org.jetbrains.intellij.platform.gradle.tasks.GenerateLexerTask
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import java.nio.file.Files
 
