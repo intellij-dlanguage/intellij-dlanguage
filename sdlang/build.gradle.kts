@@ -1,6 +1,6 @@
 
-import org.jetbrains.grammarkit.tasks.GenerateLexerTask
-import org.jetbrains.grammarkit.tasks.GenerateParserTask
+import org.jetbrains.intellij.platform.gradle.tasks.GenerateLexerTask
+import org.jetbrains.intellij.platform.gradle.tasks.GenerateParserTask
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 

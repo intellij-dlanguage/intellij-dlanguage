@@ -17,7 +17,7 @@ coverallsJacoco = "1.2.20"
 [plugins]
 gradleIntelliJPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "gradleIntelliJPlatformPlugin" }
 gradleIntelliJModule = { id = "org.jetbrains.intellij.platform.module", version.ref = "gradleIntelliJPlatformPlugin" }
-grammarkit = { id = "org.jetbrains.grammarkit", version.ref = "grammarkit" }
+grammarkit = { id = "org.jetbrains.intellij.platform.grammarkit", version.ref = "gradleIntelliJPlatformPlugin" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 coverallsJacoco = { id = "com.github.nbaztec.coveralls-jacoco", version.ref = "coverallsJacoco" }
