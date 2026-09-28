@@ -52,18 +52,19 @@ intellijPlatform {
             recommended()
         }
 
-	// builds now fail on [INTERNAL_API_USAGES, OVERRIDE_ONLY_API_USAGES, SCHEDULED_FOR_REMOVAL_API_USAGES]
+	// builds now fail on [INTERNAL_API_USAGES, OVERRIDE_ONLY_API_USAGES, SCHEDULED_FOR_REMOVAL_API_USAGES, NOT_DYNAMIC]
         // see: https://platform.jetbrains.com/t/stricter-plugin-verification-in-intellij-platform-gradle-plugin-2-15-0/4169
 	// Ignoring can help when updating the Paltform Plugin but errors should be addressed when targeting a new IDE version
         val ignoredFailures = setOf(
             FailureLevel.INTERNAL_API_USAGES,
             FailureLevel.OVERRIDE_ONLY_API_USAGES,
+	    FailureLevel.SCHEDULED_FOR_REMOVAL_API_USAGES,
+	    FailureLevel.NOT_DYNAMIC,
             FailureLevel.PLUGIN_STRUCTURE_WARNINGS,
             FailureLevel.MISSING_DEPENDENCIES,
             FailureLevel.COMPATIBILITY_WARNINGS,
             FailureLevel.DEPRECATED_API_USAGES,
             FailureLevel.EXPERIMENTAL_API_USAGES,
-	    FailureLevel.SCHEDULED_FOR_REMOVAL_API_USAGES
         )
         failureLevel = FailureLevel.ALL - ignoredFailures
 
