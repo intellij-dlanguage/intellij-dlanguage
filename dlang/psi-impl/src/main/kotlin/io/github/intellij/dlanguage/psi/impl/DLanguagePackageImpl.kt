@@ -6,7 +6,6 @@ import com.intellij.lang.ASTNode
 import com.intellij.lang.Language
 import com.intellij.navigation.ItemPresentation
 import com.intellij.navigation.ItemPresentationProviders
-import com.intellij.openapi.roots.impl.DirectoryIndex
 import com.intellij.openapi.ui.Queryable
 import com.intellij.openapi.util.NlsSafe
 import com.intellij.openapi.util.TextRange
@@ -18,6 +17,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiUtilCore
 import com.intellij.ui.IconManager
 import com.intellij.util.IncorrectOperationException
+import com.intellij.workspaceModel.core.fileIndex.impl.WorkspaceFileIndexEx
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.psi.DlangVisitor
 import io.github.intellij.dlanguage.psi.named.DLanguagePackage
@@ -127,9 +127,8 @@ class DLanguagePackageImpl(private val manager: PsiManager, private val qualifie
     }
 
     override fun navigate(requestFocus: Boolean) {
-        // todo: DirectoryIndex is now obsolete so this code needs replacing.
-        // also, should only run if canNavigate() returns true
-        val directories = DirectoryIndex.getInstance(project)
+        // todo: Should only run if canNavigate() returns true
+        val directories = WorkspaceFileIndexEx.getInstance(project)
                 .getDirectoriesByPackageName(qualifiedName, true)
                 .map { PsiDirectoryFactory.getInstance(project).createDirectory(it) }
                 .toSet()
