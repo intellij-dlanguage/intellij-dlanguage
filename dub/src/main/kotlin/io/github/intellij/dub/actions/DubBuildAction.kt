@@ -54,11 +54,15 @@ class DubBuildAction : DubAction("_Run Dub", "", AllIcons.Actions.Execute) {
             runManager.selectedConfiguration = runDubSettings
 
             // now actually start the process
-            val dubBuildRunner = ProgramRunner.PROGRAM_RUNNER_EP.findExtensionOrFail(
-                DubBuildRunner::class.java)
-            val env = ExecutionEnvironment(DefaultRunExecutor(), dubBuildRunner, runDubSettings, it)
-            env.setCallback { LOG.info("DubBuildRunner started") }
-            dubBuildRunner.execute(env)
+            val dubBuildRunner = ProgramRunner.PROGRAM_RUNNER_EP.findExtensionOrFail(DubBuildRunner::class.java)
+            dubBuildRunner.execute(
+                ExecutionEnvironment(
+                    DefaultRunExecutor(),
+                    dubBuildRunner,
+                    runDubSettings,
+                    it
+                )
+            )
         }
 
     }
