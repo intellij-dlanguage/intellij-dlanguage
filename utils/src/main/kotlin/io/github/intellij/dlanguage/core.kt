@@ -23,6 +23,13 @@ object DLanguage : Language("D") {
             @JvmField val RUN = FILE
             @JvmField val LIBRARY = FILE
 
+            // todo: create specific icons for D tools
+            @JvmField val DTOOL_DUB = SDK
+            @JvmField val DTOOL_SERVE_D = IconLoader.getIcon("/icons/tools/serve-d-lsp.svg", DLanguage::class.java)
+            @JvmField val DTOOL_DCD = SDK
+            @JvmField val DTOOL_DSCANNER = SDK
+            @JvmField val DTOOL_DFMT = SDK
+
             @JvmField val SRC_FILE = IconLoader.getIcon("/icons/d-file.png", DLanguage::class.java)
             @JvmField val SRC_FILE_RUNNABLE: Icon = LayeredIcon.layeredIcon(arrayOf(SRC_FILE, AllIcons.Nodes.RunnableMark))
             @JvmField val SRC_FILE_PACKAGE = IconLoader.getIcon("/icons/d-file-package.png", DLanguage::class.java)
