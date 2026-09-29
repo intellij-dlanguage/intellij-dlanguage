@@ -50,3 +50,13 @@ jobs:
       env:
         ORG_GRADLE_PROJECT_ideaVersion: ${{ matrix.idea }}
       run: ./gradlew verifyPlugin
+
+    # The verifyPlugin task outputs a report.html that we can upload so it's viewable on the job
+    # As archive is set to false (so html is viewable in browser) the path must match a single file
+    - uses: actions/upload-artifact@v7
+      with:
+        name: dlang-plugin-impl-verification-report-${{ matrix.idea }}.html
+        path: ${{ github.workspace }}/dlang/plugin-impl/build/reports/pluginVerifier/*/report.html
+        retention-days: 3
+        overwrite: true
+        archive: false
