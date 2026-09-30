@@ -128,6 +128,8 @@ class DLanguagePackageImpl(private val manager: PsiManager, private val qualifie
 
     override fun navigate(requestFocus: Boolean) {
         // todo: Should only run if canNavigate() returns true
+        // In 2026.2 we should be able to use:
+        // com.intellij.openapi.roots.PackageIndex.getInstance(project).getDirectoriesByPackageName(qualifiedName, false)
         val directories = WorkspaceFileIndexEx.getInstance(project)
                 .getDirectoriesByPackageName(qualifiedName, true)
                 .map { PsiDirectoryFactory.getInstance(project).createDirectory(it) }
