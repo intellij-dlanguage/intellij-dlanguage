@@ -1,6 +1,4 @@
 
-import org.jetbrains.intellij.platform.gradle.tasks.GenerateLexerTask
-import org.jetbrains.intellij.platform.gradle.tasks.GenerateParserTask
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 
@@ -27,48 +25,39 @@ dependencies {
 
     intellijPlatform {
         intellijIdea(providers.gradleProperty("ideaVersion").get())
+//        grammarKit()
+//        jflex()
         testFramework(TestFrameworkType.Platform)
     }
 }
 
-val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer") {
+tasks.generateLexer {
     // source flex file
-    sourceFile.set(file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/lexer/SDLangLexer.flex"))
-
-    // target directory for lexer
-    targetOutputDir.set(file("gen/io/github/intellij/dlanguage/sdlang/lexer"))
+    sourceFile = file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/lexer/SDLangLexer.flex")
+    // The default output directory for lexer is: "build/generated/sources/grammarkit-lexer/java/main"
+    // It will automatically be marked as a source root in Intellij
 }
 
-val generateSyntaxParser = tasks.register<GenerateParserTask>("generateSyntaxParser") {
-    sourceFile.set(file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/parser/SDLangParser.bnf"))
-    targetRootOutputDir.set(file("gen"))
-    pathToParser.set("io/github/intellij/dlanguage/sdlang/parser/SDLangParser.java")
-    pathToPsiRoot.set("io/github/intellij/dlanguage/sdlang/psi")
-}
-
-val generate by tasks.registering {
-    outputs.dir("gen")
-    dependsOn(generateSyntaxLexer, generateSyntaxParser)
+tasks.generateParser {
+    sourceFile = file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/parser/SDLangParser.bnf")
+    // The default output directory for parser is: "build/generated/sources/grammarkit-parser/java/main"
+    // It will automatically be marked as a source root in Intellij
+    pathToParser = "io/github/intellij/dlanguage/sdlang/parser/SDLangParser.java"
+    pathToPsiRoot = "io/github/intellij/dlanguage/sdlang/psi"
 }
 
 sourceSets {
     main {
-        java.srcDirs("src/main/kotlin", generate)
-        // resources.srcDirs "src/main/resources" // specifying the default causes a problem with processResources on Gradle 7
+        kotlin.srcDirs(
+            "src/main/kotlin",
+            files(tasks.generateLexer.flatMap { it.targetRootOutputDir }).builtBy(tasks.generateLexer),
+            files(tasks.generateParser.flatMap { it.targetRootOutputDir }).builtBy(tasks.generateParser),
+        )
     }
     test {
-        java.srcDirs("src/test/kotlin")
+        kotlin.srcDirs(
+            "src/test/kotlin",
+            files(tasks.generateLexer.flatMap { it.targetRootOutputDir }).builtBy(tasks.generateLexer),
+        )
     }
 }
-
-tasks.clean {
-    delete(generate)
-}
-
-// Mark the generated sources as generated in intellij idea
-idea {
-    module {
-        generatedSourceDirs = setOf(file("gen"))
-    }
-}
-
