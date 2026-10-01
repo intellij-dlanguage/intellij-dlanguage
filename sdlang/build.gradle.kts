@@ -25,39 +25,40 @@ dependencies {
 
     intellijPlatform {
         intellijIdea(providers.gradleProperty("ideaVersion").get())
-//        grammarKit()
-//        jflex()
         testFramework(TestFrameworkType.Platform)
     }
 }
 
-tasks.generateLexer {
-    // source flex file
-    sourceFile = file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/lexer/SDLangLexer.flex")
-    // The default output directory for lexer is: "build/generated/sources/grammarkit-lexer/java/main"
-    // It will automatically be marked as a source root in Intellij
-}
+tasks {
+    generateLexer {
+        // source flex file
+        sourceFile = file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/lexer/SDLangLexer.flex")
+        // The default output directory for lexer is: "build/generated/sources/grammarkit-lexer/java/main"
+        // It will automatically be marked as a source root in Intellij
+        purgeOldFiles = true
+        doLast {
+            println("SDLang Lexer (io.github.intellij.dlanguage.sdlang.lexer._SDLangLexer.java) generated")
+        }
+    }
 
-tasks.generateParser {
-    sourceFile = file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/parser/SDLangParser.bnf")
-    // The default output directory for parser is: "build/generated/sources/grammarkit-parser/java/main"
-    // It will automatically be marked as a source root in Intellij
-    pathToParser = "io/github/intellij/dlanguage/sdlang/parser/SDLangParser.java"
-    pathToPsiRoot = "io/github/intellij/dlanguage/sdlang/psi"
+    generateParser {
+        sourceFile = file("src/main/kotlin/io/github/intellij/dlanguage/sdlang/parser/SDLangParser.bnf")
+        // The default output directory for parser is: "build/generated/sources/grammarkit-parser/java/main"
+        // It will automatically be marked as a source root in Intellij
+        pathToParser = "io/github/intellij/dlanguage/sdlang/parser/SDLangParser.java"
+        pathToPsiRoot = "io/github/intellij/dlanguage/sdlang/psi"
+        purgeOldFiles = true
+        doLast {
+            println("SDLang Parser and psi elements generated")
+        }
+    }
 }
 
 sourceSets {
     main {
-        kotlin.srcDirs(
-            "src/main/kotlin",
+        java.srcDirs(
             files(tasks.generateLexer.flatMap { it.targetRootOutputDir }).builtBy(tasks.generateLexer),
             files(tasks.generateParser.flatMap { it.targetRootOutputDir }).builtBy(tasks.generateParser),
-        )
-    }
-    test {
-        kotlin.srcDirs(
-            "src/test/kotlin",
-            files(tasks.generateLexer.flatMap { it.targetRootOutputDir }).builtBy(tasks.generateLexer),
         )
     }
 }
