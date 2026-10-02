@@ -1,7 +1,9 @@
 #!/usr/bin/rdmd
 /**
 Script to generate the psi implementations. Generated files are located at the current location.
-Note: This script is written to be executed in gen/io/github/intellij/dlanguage/psi/ directory
+Note: This script is written to be executed in the generated psi directory.
+This used to be 'gen/io/github/intellij/dlanguage/psi/' but since Grammarkit was updated it's now
+in the build directory: 'build/generated/sources/rdmd-parser/java/main/io/github/intellij/dlanguage/psi/'
  */
 
 //todo add stub children finder, to prevent loading of psi tree
@@ -966,14 +968,17 @@ int main(string[] args) {
     }
     bool genInterface = args[1] == "Interface";
     if(genInterface) {
-        writeln("re-generating Java interfaces");
+        writeln("Generating Java interfaces");
     } else {
-        writeln("re-generating Java implementation classes");
+        writeln("Generating Java implementation classes");
     }
 
+    string packagePath = genInterface ? "io/github/intellij/dlanguage/psi" : "io/github/intellij/dlanguage/psi/impl";
+
     // preparatory work
-    if (!genInterface && !exists("impl"))
-        mkdir("impl");
+    if (!exists(packagePath)) {
+        mkdirRecurse(packagePath);
+    }
 
     foreach(string key; types_children.keys) {
         import std.algorithm;
@@ -990,7 +995,7 @@ int main(string[] args) {
             }
             interfaceFile ~= "\n}\n";
 
-            File f = File(interfaceClassName ~ ".java", "w");
+            File f = File(chainPath(packagePath, interfaceClassName ~ ".java"), "w");
             f.write(interfaceFile);
             f.close();
         } else {
@@ -1015,7 +1020,7 @@ int main(string[] args) {
             }
             implFile ~= "\n}\n";
 
-            File f = File(chainPath("impl", implClassName ~ ".java"), "w");
+            File f = File(chainPath(packagePath, implClassName ~ ".java"), "w");
             f.write(implFile);
             f.close();
         }
@@ -1067,7 +1072,7 @@ int main(string[] args) {
             implFile ~= "\n}\n";
             string javaFileName = implClassName ~ ".java";
 
-            File f = File(chainPath("impl", javaFileName), "w");
+            File f = File(chainPath(packagePath, javaFileName), "w");
             f.write(implFile);
             f.close();
 
