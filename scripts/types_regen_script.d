@@ -1056,7 +1056,7 @@ int main(string[] args) {
             interfaceFile ~= "\n}\n";
             string javaFileName = interfaceClassName ~ ".java";
 
-            File f = File(javaFileName, "w");
+            File f = File(chainPath(packagePath, javaFileName), "w");
             f.write(interfaceFile);
             f.close();
 
