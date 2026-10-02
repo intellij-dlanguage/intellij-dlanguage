@@ -1,6 +1,4 @@
-
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-import java.nio.file.Files
 
 plugins {
     id("java")
@@ -17,40 +15,29 @@ repositories {
     }
 }
 
-val ensureDirectory = tasks.register("ensureDirectory") {
-    val file = file("gen/io/github/intellij/dlanguage/psi/")
-    outputs.dir("gen/io/github/intellij/dlanguage/psi")
-    doFirst {
-        Files.createDirectories(file.toPath())
-    }
-}
+val regenOutputTargetBase = "build/generated/sources/rdmd-parser/java/main"
 
-val generatePsi = tasks.register<Exec>("generatePsi") {
-    dependsOn(ensureDirectory)
-    workingDir("gen/io/github/intellij/dlanguage/psi/")
+val generatePsiInterfaces = tasks.register<Exec>("generatePsiInterfaces") {
+    description = "Generate PSI interfaces using rdmd"
+    outputs.dir(regenOutputTargetBase)
+    workingDir(regenOutputTargetBase)
     executable("rdmd")
     args("${rootProject.projectDir}/scripts/types_regen_script.d", "Interface")
-}
-
-val generate by tasks.registering {
-    outputs.dirs("gen")
-    inputs.file("${rootProject.projectDir}/scripts/types_regen_script.d")
-    dependsOn(
-        generatePsi,
-    )
+    doLast {
+        println(standardOutput)
+        println("Dlang psi-api PSI Interfaces generated using rdmd")
+    }
 }
 
 sourceSets {
     main {
-        java.srcDirs("src/main/java", "src/main/kotlin", generate, "src/main/jflex")
+        java.srcDirs(
+            files("src/main/jflex"),
+            files("src/main/java"),
+            files("src/main/kotlin"),
+            files(regenOutputTargetBase).builtBy(generatePsiInterfaces),
+        )
     }
-    test {
-        java.srcDirs("src/test/java", "src/test/kotlin")
-    }
-}
-
-tasks.clean {
-    delete(generate)
 }
 
 dependencies {
@@ -61,12 +48,5 @@ dependencies {
     intellijPlatform {
         intellijIdea(providers.gradleProperty("ideaVersion").get())
         testFramework(TestFrameworkType.Platform)
-    }
-}
-
-// Mark the generated sources as generated in intellij idea
-idea {
-    module {
-        generatedSourceDirs = setOf(file("gen"))
     }
 }

@@ -1,7 +1,4 @@
-
-import org.jetbrains.intellij.platform.gradle.tasks.GenerateLexerTask
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-import java.nio.file.Files
 
 plugins {
     id("java")
@@ -19,61 +16,38 @@ repositories {
     }
 }
 
-val generateSyntaxLexer = tasks.register<GenerateLexerTask>("generateSyntaxLexer") {
-    // source flex file
-    sourceFile.set(file("src/main/jflex/io/github/intellij/dlanguage/lexer/DLanguageLexer.flex"))
-
-    // target directory for lexer
-    targetOutputDir.set(file("gen/io/github/intellij/dlanguage/"))
-}
-
-/*
- * Create's the working directory needed for the generatePsi task.
- * 'gen/io/github/intellij/dlanguage/psi'
- * Note that the types_regen_script.d script will create an 'impl' directory within this path
- * for the generated Java implementation classes.
- */
-val createWorkingDirectory = tasks.register<DefaultTask>("createWorkingDirectory") {
-    description = "Create required working dir for the generatePsi task"
-    val file = file("gen/io/github/intellij/dlanguage/psi")
-    outputs.dir("gen/io/github/intellij/dlanguage/psi")
-    doFirst {
-        Files.createDirectories(file.toPath())
+tasks.generateLexer {
+    sourceFile = file("src/main/jflex/io/github/intellij/dlanguage/lexer/DLanguageLexer.flex")
+    purgeOldFiles = true
+    doLast {
+        println("Dlang psi-impl Lexer (io.github.intellij.dlanguage.lexer._DlangLexer.java) generated")
     }
 }
 
-val generatePsi = tasks.register<Exec>("generatePsi") {
+val regenOutputTargetBase = "build/generated/sources/rdmd-parser/java/main"
+
+val generatePsiImplementation = tasks.register<Exec>("generatePsiImplementation") {
     description = "Generate PSI implementation classes using rdmd"
-    dependsOn(createWorkingDirectory)
-    outputs.dir("gen/io/github/intellij/dlanguage/psi/impl")
-    workingDir("gen/io/github/intellij/dlanguage/psi/")
+    outputs.dir(regenOutputTargetBase)
+    workingDir(regenOutputTargetBase)
     executable("rdmd")
     args("${rootProject.projectDir}/scripts/types_regen_script.d", "Implementation")
     doLast {
-        standardOutput?.let { println(it) }
+        println(standardOutput)
+        println("Dlang psi-impl PSI Implementation generated using rdmd")
     }
-}
-
-val generate by tasks.registering {
-    outputs.dirs("gen")
-    inputs.file("${rootProject.projectDir}/scripts/types_regen_script.d")
-    dependsOn(
-        generateSyntaxLexer,
-        generatePsi,
-    )
 }
 
 sourceSets {
     main {
-        java.srcDirs("src/main/java", "src/main/kotlin", generate , "src/main/jflex")
+        java.srcDirs(
+            files("src/main/jflex"),
+            files("src/main/java"),
+            files("src/main/kotlin"), // we have Java source files in Kotlin dir?!?
+            files(tasks.generateLexer.flatMap { it.targetRootOutputDir }).builtBy(tasks.generateLexer),
+            files(regenOutputTargetBase).builtBy(generatePsiImplementation),
+        )
     }
-    test {
-        java.srcDirs("src/test/java", "src/test/kotlin")
-    }
-}
-
-tasks.clean {
-    delete(generate)
 }
 
 dependencies {
@@ -85,12 +59,5 @@ dependencies {
     intellijPlatform {
         intellijIdea(providers.gradleProperty("ideaVersion").get())
         testFramework(TestFrameworkType.Platform)
-    }
-}
-
-// Mark the generated sources as generated in intellij idea
-idea {
-    module {
-        generatedSourceDirs = setOf(file("gen"))
     }
 }
