@@ -106,12 +106,16 @@ dependencies {
 
     intellijPlatform {
         intellijIdea(providers.gradleProperty("ideaVersion").get())
-        bundledModule("intellij.platform.langInjection")
+        bundledModules("intellij.platform.langInjection",
+            // TODO 2026.3 replace the two lines bellow by a "com.intellij.platform.testRunner" in bundledPlugins
+            "intellij.platform.testRunner",
+            "intellij.platform.smRunner",
+        )
         bundledPlugins(
             "com.intellij.java",
             "com.intellij.java.ide",
             "com.intellij.modules.json",
-            "com.intellij.copyright"
+            "com.intellij.copyright",
         )
         testFramework(TestFrameworkType.Platform)
         testFramework(TestFrameworkType.Plugin.Java)
