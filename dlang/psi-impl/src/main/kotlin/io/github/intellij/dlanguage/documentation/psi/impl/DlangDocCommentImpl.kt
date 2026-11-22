@@ -10,15 +10,13 @@ import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_
 import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_LEADING_ASTERISKS
 import io.github.intellij.dlanguage.documentation.psi.DDocMetaElementTypes.DDOC_COMMENT_START
 import io.github.intellij.dlanguage.documentation.psi.DlangDocComment
-import io.github.intellij.dlanguage.psi.interfaces.DNamedElement
+import io.github.intellij.dlanguage.psi.interfaces.DPsiCommentedElement
 
 class DlangDocCommentImpl(type: IElementType, text: CharSequence?) : LazyParseablePsiElement(type, text),
     DlangDocComment {
     override fun getTokenType(): IElementType = elementType
 
-    // TODO introduce DPsiDocCommentOwner interface
-    //  make some DPsiElement (the one that can have DDoc actually) implement it and return this new Interface instead
-    override fun getOwner(): DNamedElement? = PsiTreeUtil.getParentOfType(this, DNamedElement::class.java, /* strict */ true)
+    override fun getOwner(): DPsiCommentedElement? = PsiTreeUtil.getParentOfType(this, DPsiCommentedElement::class.java, /* strict */ true)
 
     override fun accept(visitor: PsiElementVisitor) = visitor.visitComment(this)
 

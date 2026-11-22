@@ -3,8 +3,11 @@ package io.github.intellij.dlanguage.psi.impl.named;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiWhiteSpace;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import io.github.intellij.dlanguage.documentation.psi.DlangDocComment;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.psi.interfaces.Expression;
@@ -16,6 +19,7 @@ import io.github.intellij.dlanguage.stubs.DLanguageEnumMemberStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DLanguageEnumMemberImpl extends
@@ -76,6 +80,55 @@ public class DLanguageEnumMemberImpl extends
     @Nullable
     public PsiElement getNameIdentifier() {
         return getIdentifier();
+    }
+
+    @Override
+    public List<DlangDocComment> getDocComments() {
+        var result = new ArrayList<DlangDocComment>();
+
+        var prev = getPrevSibling();
+
+        while (prev instanceof PsiWhiteSpace) {
+            prev = prev.getPrevSibling();
+        }
+
+        if (prev instanceof DlangDocComment candidate) {
+            prev = prev.getPrevSibling();
+            if (prev instanceof PsiWhiteSpace) {
+                var text = prev.getText();
+                if (text.contains("\n") || text.contains("\r"))
+                    result.add(candidate);
+            }
+        }
+
+        var next = getNextSibling();
+
+        while (next instanceof PsiWhiteSpace) {
+            var text = next.getText();
+            if (text.contains("\n") || text.contains("\r"))
+                return result;
+
+            next = next.getNextSibling();
+        }
+
+        // skip comma if exists
+        if (next instanceof LeafPsiElement && next.getText().equals(",")) {
+            next = next.getNextSibling();
+        }
+
+        while (next instanceof PsiWhiteSpace) {
+            var text = next.getText();
+            if (text.contains("\n") || text.contains("\r"))
+                return result;
+
+            next = next.getNextSibling();
+        }
+
+        if (next instanceof DlangDocComment doc) {
+            result.add(doc);
+        }
+
+        return result;
     }
 
     @Override

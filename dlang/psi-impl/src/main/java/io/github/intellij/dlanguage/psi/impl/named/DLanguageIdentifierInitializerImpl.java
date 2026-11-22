@@ -7,14 +7,18 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import io.github.intellij.dlanguage.documentation.psi.DlangDocComment;
 import io.github.intellij.dlanguage.psi.*;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.named.DLanguageIdentifierInitializer;
 import io.github.intellij.dlanguage.psi.types.DType;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DLanguageIdentifierInitializerStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 import static io.github.intellij.dlanguage.psi.types.DTypesUtilKt.getDtypeWithSuffixes;
 
@@ -67,6 +71,14 @@ public class DLanguageIdentifierInitializerImpl extends
     @Override
     public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this,processor, state, lastParent, place);
+    }
+
+    @Override
+    public List<DlangDocComment> getDocComments() {
+        var parent = getParent();
+        if (parent instanceof Declaration decl)
+            return decl.getDocComments();
+        return List.of();
     }
 
     @Override
