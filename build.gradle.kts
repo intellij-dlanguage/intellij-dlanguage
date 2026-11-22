@@ -63,14 +63,16 @@ tasks.register<Test>("testCompilation") {
 }
 
 val generateDocSyntaxLexer = tasks.register<GenerateLexerTask>("generateDocSyntaxLexer") {
+    description = "Generate the documentation syntax lexer"
     // source flex file
     sourceFile.set(file("src/main/kotlin/io/github/intellij/dlanguage/features/documentation/DDocLexer.flex"))
 
     // target directory for lexer
-    targetOutputDir.set(file("gen/io/github/intellij/dlanguage/features/documentation/"))
+    targetRootOutputDir.set(file("gen/io/github/intellij/dlanguage/features/documentation/"))
 }
 
-val generate by tasks.registering {
+val generate = tasks.register("generate") {
+    description = "Do All code generation"
     outputs.dir("gen")
     dependsOn(generateDocSyntaxLexer)
 }

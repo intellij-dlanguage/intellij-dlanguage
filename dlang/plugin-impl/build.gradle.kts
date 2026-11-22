@@ -103,6 +103,7 @@ tasks {
 }
 
 tasks.register<Test>("testCompilation") {
+    description = "Compilation of tests"
     group = "Verification"
     dependsOn(tasks.classes, tasks.testClasses)
     useJUnit {
