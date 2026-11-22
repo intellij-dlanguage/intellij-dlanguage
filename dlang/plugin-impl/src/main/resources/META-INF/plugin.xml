@@ -105,8 +105,12 @@
         <annotator language="D" implementationClass="io.github.intellij.dlanguage.annotator.DUnclosedCommentAnnotator"/>
         <externalAnnotator language="D"
                            implementationClass="io.github.intellij.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
-        <lang.documentationProvider language="D"
-                                    implementationClass="io.github.intellij.dlanguage.features.DDocumentationProvider"/>
+
+        <platform.backend.documentation.linkHandler implementation="io.github.intellij.dlanguage.features.DDocumentationLinkHandler"/>
+        <platform.backend.documentation.psiTargetProvider
+            implementation="io.github.intellij.dlanguage.features.DPsiDocumentationTarget"/>
+        <platform.backend.documentation.inlineDocumentationProvider
+            implementation="io.github.intellij.dlanguage.features.DInlineDocumentationProvider"/>
         <!-- Refactoring -->
 
         <renameFileActionProvider implementation="io.github.intellij.dlanguage.refactoring.rename.DlangRenameFileActionProvider"/>

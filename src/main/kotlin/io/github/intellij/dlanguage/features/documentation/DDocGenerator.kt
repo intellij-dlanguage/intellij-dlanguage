@@ -5,7 +5,6 @@ import com.intellij.lang.documentation.DocumentationMarkup
 import com.intellij.lang.documentation.QuickDocHighlightingHelper
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.TokenType
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.childLeafs
@@ -38,8 +37,7 @@ import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC
 import io.github.intellij.dlanguage.features.documentation.DDocElementTypes.DDOC_WHITESPACE
 import io.github.intellij.dlanguage.features.documentation.psi.DlangDocPsiElement
 import io.github.intellij.dlanguage.features.documentation.psi.impl.*
-import io.github.intellij.dlanguage.psi.interfaces.VariableDeclaration
-import io.github.intellij.dlanguage.utils.*
+import io.github.intellij.dlanguage.psi.interfaces.DPsiCommentedElement
 
 class DDocGenerator {
 
@@ -49,21 +47,10 @@ class DDocGenerator {
         renderedDoc = false
         val builder = StringBuilder()
 
-        if (element is FunctionDeclaration ||
-            element is VariableDeclaration ||
-            element is ClassDeclaration ||
-            element is InterfaceDeclaration ||
-            element is AliasDeclaration ||
-            element is EnumDeclaration ||
-            element is StructDeclaration ||
-            element is UnionDeclaration ||
-            element is TemplateDeclaration)  {
-            val elements = element.children.takeWhile { it is DlangDocComment || it is PsiWhiteSpace }.filterIsInstance<DlangDocComment>()
+        if (element is DPsiCommentedElement)  {
+            val elements = element.docComments
             if (elements.isNotEmpty())
                 appendDdoc(builder, elements)
-        }
-        if (element is EnumMember) {
-            // TODO find enum member documentation
         }
         return builder.toString()
     }

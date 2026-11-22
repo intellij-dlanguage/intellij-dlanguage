@@ -7,11 +7,13 @@ import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import io.github.intellij.dlanguage.documentation.psi.DlangDocComment;
 import io.github.intellij.dlanguage.psi.DLanguageInitializer;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameters;
 import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.DlangVisitor;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
+import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.named.DLanguageAutoAssignment;
 import io.github.intellij.dlanguage.psi.types.DType;
 import io.github.intellij.dlanguage.psi.types.DUnknownType;
@@ -19,6 +21,8 @@ import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DLanguageAutoAssignmentStub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class DLanguageAutoAssignmentImpl extends
     DNamedStubbedPsiElementBase<DLanguageAutoAssignmentStub> implements DLanguageAutoAssignment {
@@ -72,6 +76,14 @@ public class DLanguageAutoAssignmentImpl extends
 
     public boolean processDeclarations(@NotNull final PsiScopeProcessor processor, @NotNull final ResolveState state, final PsiElement lastParent, @NotNull final PsiElement place) {
         return ScopeProcessorImpl.INSTANCE.processDeclarations(this, processor, state, lastParent, place);
+    }
+
+    @Override
+    public List<DlangDocComment> getDocComments() {
+        var parent = getParent();
+        if (parent instanceof Declaration decl)
+            return decl.getDocComments();
+        return List.of();
     }
 
     @NotNull
