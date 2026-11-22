@@ -24,17 +24,17 @@ val overrideTestData = false
 allprojects {
     tasks {
         withType<JavaCompile> {
-            sourceCompatibility = JavaVersion.VERSION_21.majorVersion
-            targetCompatibility = JavaVersion.VERSION_21.majorVersion
+            sourceCompatibility = JavaVersion.VERSION_25.majorVersion
+            targetCompatibility = JavaVersion.VERSION_25.majorVersion
             options.encoding = "UTF-8"
             options.compilerArgs.add("-Xlint:deprecation")
         }
 
         withType<KotlinCompile> {
             compilerOptions {
-                apiVersion.set(KotlinVersion.KOTLIN_2_2)
-                languageVersion.set(KotlinVersion.KOTLIN_2_2)
-                jvmTarget.set(JvmTarget.JVM_21)
+                apiVersion.set(KotlinVersion.KOTLIN_2_4)
+                languageVersion.set(KotlinVersion.KOTLIN_2_4)
+                jvmTarget.set(JvmTarget.JVM_25)
                 //allWarningsAsErrors.set(true)
             }
         }
@@ -106,12 +106,16 @@ dependencies {
 
     intellijPlatform {
         intellijIdea(providers.gradleProperty("ideaVersion").get())
-        bundledModule("intellij.platform.langInjection")
+        bundledModules("intellij.platform.langInjection",
+            // TODO 2026.3 replace the two lines bellow by a "com.intellij.platform.testRunner" in bundledPlugins
+            "intellij.platform.testRunner",
+            "intellij.platform.smRunner",
+        )
         bundledPlugins(
             "com.intellij.java",
             "com.intellij.java.ide",
             "com.intellij.modules.json",
-            "com.intellij.copyright"
+            "com.intellij.copyright",
         )
         testFramework(TestFrameworkType.Platform)
         testFramework(TestFrameworkType.Plugin.Java)

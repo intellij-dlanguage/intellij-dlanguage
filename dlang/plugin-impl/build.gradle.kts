@@ -50,7 +50,7 @@ intellijPlatform {
     }
     pluginVerification {
         ides {
-            recommended()
+            current()
         }
 
 	    // builds now fail on [INTERNAL_API_USAGES, OVERRIDE_ONLY_API_USAGES, SCHEDULED_FOR_REMOVAL_API_USAGES, NOT_DYNAMIC]
