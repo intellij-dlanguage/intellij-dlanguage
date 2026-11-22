@@ -211,4 +211,7 @@ BAD_CHARACTER ('q"/test"d;')
 
     //issue 1159
     fun testissue1159() = doTest()
+
+    //issue 1282
+    fun testunicode_char_in_comment() = doTest()
 }
