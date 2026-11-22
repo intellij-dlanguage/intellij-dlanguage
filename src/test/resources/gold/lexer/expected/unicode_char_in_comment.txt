@@ -1,0 +1,3 @@
+DlangTokenType.LINE_COMMENT ('// block restriction until erifyCFG covers that.')
+WHITE_SPACE ('\n')
+DlangTokenType.LINE_DOC ('/// block restriction until erifyCFG covers that.')
