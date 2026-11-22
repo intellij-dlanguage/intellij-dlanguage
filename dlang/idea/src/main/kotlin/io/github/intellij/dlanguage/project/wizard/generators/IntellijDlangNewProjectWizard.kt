@@ -1,8 +1,6 @@
 package io.github.intellij.dlanguage.project.wizard.generators
 
 import com.intellij.ide.highlighter.ModuleFileType
-import com.intellij.ide.projectWizard.NewProjectWizardCollector.BuildSystem.logSdkChanged
-import com.intellij.ide.projectWizard.NewProjectWizardCollector.BuildSystem.logSdkFinished
 import com.intellij.ide.projectWizard.generators.AssetsNewProjectWizardStep
 import com.intellij.ide.projectWizard.generators.IntelliJNewProjectWizardStep
 import com.intellij.ide.starters.local.StandardAssetsProvider
@@ -18,7 +16,10 @@ import com.intellij.openapi.projectRoots.SdkTypeId
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.roots.ui.configuration.sdkComboBox
 import com.intellij.openapi.util.io.FileUtil
-import com.intellij.ui.dsl.builder.*
+import com.intellij.ui.dsl.builder.BottomGap
+import com.intellij.ui.dsl.builder.COLUMNS_MEDIUM
+import com.intellij.ui.dsl.builder.Panel
+import com.intellij.ui.dsl.builder.columns
 import io.github.intellij.dlanguage.DLanguage
 import io.github.intellij.dlanguage.DlangBundle
 import io.github.intellij.dlanguage.DlangSdkType
@@ -100,8 +101,6 @@ internal class IntellijDlangNewProjectWizard : BuildSystemDlangNewProjectWizard 
                     sdkTypeFilter = { it: SdkTypeId -> it is DlangSdkType }
                 )
                     .columns(COLUMNS_MEDIUM)
-                    .whenItemSelectedFromUi { jdkIntent.javaVersion?.let { logSdkChanged(it.feature) } }
-                    .onApply { jdkIntent.javaVersion?.let { logSdkFinished(it.feature) } }
             }.bottomGap(BottomGap.SMALL)
         }
     }
