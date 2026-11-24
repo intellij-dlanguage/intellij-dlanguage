@@ -36,15 +36,17 @@ class DLLDBDriverConfiguration() : LLDBDriverConfiguration() {
     override fun getDriverName(): String = "Dlang LLDB"
 }
 
-fun showRunContent(state: CommandLineState, environment: ExecutionEnvironment, cmd: GeneralCommandLine): RunContentDescriptor {
+fun showRunContent(state: CommandLineState, environment: ExecutionEnvironment, cmd: GeneralCommandLine): RunContentDescriptor? {
     // TODO GDB or LLDB
     val runParameters = DDebugRunParameters(DGDBDriverConfiguration(), TrivialInstaller(cmd), ArchitectureType.forVmCpuArch(CpuArch.CURRENT))
     return XDebuggerManager.getInstance(environment.project)
-        .startSession(environment, object : XDebugProcessStarter() {
+        .newSessionBuilder( object : XDebugProcessStarter() {
             override fun start(session: XDebugSession): XDebugProcess =
                 CidrLocalDebugProcess(runParameters, session, state.consoleBuilder, { Filter.EMPTY_ARRAY }, false).apply {
                     ProcessTerminatedListener.attach(processHandler, environment.project)
                     start()
                 }
-        }).runContentDescriptor
+        }).environment(environment)
+        .startSession()
+        .runContentDescriptor
 }
